@@ -1,0 +1,1 @@
+.model BSS138 NMOS(Vto=1.20260002613067 Kp=7.774172e-001 Nfs=150000000000 Eta=0 Level=3 L=1e-4 W=1e-4 Gamma=0 Phi=0.6 Is=1e-24 Js=0 Pb=0.8 Cj=0 Cjsw=0 Cgso=0 Cgdo=0 Cgbo=0 Tox=1e-07 Xj=0 U0=600 Vmax=30000 Vds=50 Ron=3.5 Qg=2.4n mfg=onsemi)
