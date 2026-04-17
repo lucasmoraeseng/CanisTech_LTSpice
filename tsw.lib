@@ -1,0 +1,21 @@
+.SUBCKT SW_TIME A B
++ PARAMS: TON=10m TOFF=100 RON=1m ROFF=1Meg
+
+* Fonte de controle baseada no tempo
+VCTRL ctrl 0 PWL(
++ 0       0
++ {TON}   0
++ {TON+1n} 1
++ {TOFF}  1
++ {TOFF+1n} 0)
+
+* Chave controlada por tensão
+S1 A B ctrl 0 SWMOD
+
+.model SWMOD SW(
++ RON={RON}
++ ROFF={ROFF}
++ VT=0.5
++ VH=0)
+
+.ENDS SW_TIME
