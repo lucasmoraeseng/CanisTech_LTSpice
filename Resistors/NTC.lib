@@ -1,0 +1,57 @@
+
+
+
+.SUBCKT NTC_dev A B
++ PARAMS:
++ R0=20
++ BETA=3950
++ T0=298.15
++ RTH=125
++ CTH=0.24
++ TAMB=25
+
+* Nó térmico (temperatura em °C representada como tensão)
+.ic V(T)={TAMB}
+
+* Resistência dependente da temperatura local
+RNTC A B R={ R0*exp( BETA*(1/(V(T,0)+273.15) - 1/T0) ) }
+
+* Potência dissipada (sempre positiva)
+GHEAT 0 T VALUE={ abs(I(RNTC)*V(A,B)) }
+
+* Rede térmica
+RTH1 T Tamb {RTH}
+CTH1 T 0 {CTH}
+
+* Fonte de temperatura ambiente
+VAMB Tamb 0 {TAMB}
+
+.ENDS NTC_dev
+
+
+.SUBCKT NTC_20R A B PARAMS: tol=0
+
+X1 A B NTC_dev
++ PARAMS:
++ R0={20*(1+tol/100)}
++ BETA=3950
++ T0=298.15
++ RTH=125
++ CTH=0.24
++ TAMB=25
+
+.ENDS NTC_20R
+
+
+.SUBCKT NTC_10K A B PARAMS: tol=0
+
+X1 A B NTC_dev
++ PARAMS:
++ R0={10000*(1+tol/100)}
++ BETA=3950
++ T0=298.15
++ RTH=125
++ CTH=0.24
++ TAMB=25
+
+.ENDS NTC_10K
