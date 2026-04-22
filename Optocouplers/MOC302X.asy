@@ -33,10 +33,12 @@ TEXT -43 -32 Left 0 led+
 TEXT -43 80 Left 0 led-
 TEXT 62 -31 Left 0 mt2
 TEXT 62 79 Left 0 mt1
+
 SYMATTR Prefix X
 SYMATTR Description OPTO-TRIAC
-SYMATTR ModelFile Sborka.lib
-SYMATTR SpiceModel MOC3023
+SYMATTR SpiceModel MOC3021
+SYMATTR ModelFile Optocouplers/MOC302x.lib
+
 PIN -48 -16 NONE 8
 PINATTR PinName led+
 PINATTR SpiceOrder 1

@@ -1,0 +1,131 @@
+* ==========================================================
+* MOC30xx_BASE – Optotriac Zero-Cross (functional model)
+* Stable, hysteretic, load-driven conduction
+* LTspice compatible
+* Pins: A K MT1 MT2
+* ==========================================================
+
+.subckt MOC30xx_BASE A K MT1 MT2 PARAMS:
++ VF_LED=1.3
++ IR_LED=100u
++ IFT=5m
++ IH_ON=500u
++ IH_OFF=300u
++ VINH=12
++ IDRM=10n
++ IDRM_INH=2m
++ RON=0.1
+
+************************************************************
+* INPUT SIDE – LED
+************************************************************
+DLED A K DLED_CORE
+.model DLED_CORE D(Is={IR_LED} N=1.8 Rs=5 Vfwd={VF_LED})
+
+* LED current sense (legal I())
+VLED_SENSE A A_SENSE 0
+
+************************************************************
+* TRIAC SIDE – LOOP BREAKING & SENSING
+************************************************************
+* Small series resistance for numerical stability
+R_SER MT2 MT2_S 100m
+
+* Current sense element for hold current
+VAC_SENSE MT2_S MT2_INT 0
+
+************************************************************
+* AC VOLTAGE SENSE – ZERO CROSS DETECTOR
+************************************************************
+E_AC VAC 0 VALUE = { V(MT1,MT2) }
+
+************************************************************
+* ZERO-CROSS WINDOW (SMOOTH)
+* ZC_OK ≈ 1 when |VAC| < VINH
+************************************************************
+
+* Zero-cross raw detector
+B_ZC_RAW ZC_RAW 0 V = {
++ 0.5*(1 - tanh((abs(V(VAC)) - VINH)/1))
++ }
+
+* Temporal smoothing (prevents chatter)
+R_ZC ZC_RAW ZC_OK 10k
+C_ZC ZC_OK 0 100n
+
+
+************************************************************
+* TRIGGER CONDITION (LED CURRENT + ZERO CROSS)
+************************************************************
+B_TRIG TRIG 0 V = {
++ 0.5*(1 + tanh((abs(I(VLED_SENSE)) - IFT)/0.0005))
++ * V(ZC_OK)
++ }
+
+************************************************************
+* TRIAC LATCH (STATE MEMORY)
+************************************************************
+C_STATE STATE 0 1u IC=0
+R_STATE STATE 0 200Meg
+
+* Set latch when triggered
+B_SET STATE 0 I = {
++ 1m * tanh(10*V(TRIG))
++ }
+
+************************************************************
+* HOLD CURRENT DETECTION WITH HYSTERESIS
+************************************************************
+* Detect holding (turn-on threshold)
+B_IH_ON IH_OK 0 V = {
++ 0.5*(1 + tanh((abs(I(VAC_SENSE)) - IH_ON)/0.0001))
++ }
+
+* Reset latch only when current < IH_OFF
+B_RESET STATE 0 I = {
++ -1m * tanh(10*(IH_OFF - abs(I(VAC_SENSE))))
++ }
+
+************************************************************
+* TRIAC CONDUCTION PATH (REAL CURRENT FLOW)
+************************************************************
+* Smooth resistance transition to avoid timestep collapse
+R_TRIAC MT2_INT MT1 R = {
++ RON + 1e9*(1 - tanh(5*V(STATE)))
++ }
+
+************************************************************
+* LEAKAGE CURRENTS
+************************************************************
+* Off-state leakage
+G_LEAK MT1 MT2 VALUE = { IDRM }
+
+* Leakage when zero-cross is inhibited
+G_LEAK_INH MT1 MT2 VALUE = {
++ (1 - V(ZC_OK)) * IDRM_INH
++ }
+
+.ends MOC30xx_BASE
+
+
+************************************************************
+* TRIAC INDIVIDUAL PARTS
+************************************************************
+
+.subckt MOC3081 A K MT2 MT1
+XCORE A K MT2 MT1 MOC30xx_BASE PARAMS:
++ IFT=15m
++ VINH=12
+.ends MOC3081
+
+.subckt MOC3082 A K MT2 MT1
+XCORE A K MT2 MT1 MOC30xx_BASE PARAMS:
++ IFT=10m
++ VINH=12
+.ends MOC3082
+
+.subckt MOC3083 A K MT2 MT1
+XCORE A K MT2 MT1 MOC30xx_BASE PARAMS:
++ IFT=5m
++ VINH=12
+.ends MOC3083

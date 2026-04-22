@@ -12,7 +12,7 @@ Q1 vb1p vb1 4 0 NPN1
 R3 vb1 4 {RH2}
 D1 1 2 DL
 R1 ctrl1 4 1
-C1 ctrl1 4 10µ
+C1 ctrl1 4 10u
 R2 ctrl1 vb1 {RH1}
 R4 vd1 vb1p {RH3}
 B1 ctrl1 4 I=-500*I(D1)*3m/Itrig 
@@ -45,7 +45,7 @@ Q1 vb1p vb1 4 0 NPN1
 R3 vb1 4 {RH2}
 D1 1 2 DL
 R1 ctrl1 4 1
-C1 ctrl1 4 10µ
+C1 ctrl1 4 10u
 R2 ctrl1 vb1 {RH1}
 R4 vd1 vb1p {RH3}
 B1 ctrl1 4 I=-500*I(D1)*3m/Itrig 
@@ -78,7 +78,7 @@ Q1 vb1p vb1 4 0 NPN1
 R3 vb1 4 {RH2}
 D1 1 2 DL
 R1 ctrl1 4 1
-C1 ctrl1 4 10µ
+C1 ctrl1 4 10u
 R2 ctrl1 vb1 {RH1}
 R4 vd1 vb1p {RH3}
 B1 ctrl1 4 I=-500*I(D1)*3m/Itrig 
@@ -111,7 +111,7 @@ Q1 vb1p vb1 4 0 NPN1
 R3 vb1 4 {RH2}
 D1 1 2 DL
 R1 ctrl1 4 1
-C1 ctrl1 4 10µ
+C1 ctrl1 4 10u
 R2 ctrl1 vb1 {RH1}
 R4 vd1 vb1p {RH3}
 B1 ctrl1 4 I=-500*I(D1)*3m/Itrig 
