@@ -1,0 +1,18 @@
+.SUBCKT EFT_Burst OUTPUT GND
++ PARAMS: VPEAK=1k FREQ=5k NBURST=15 TREP=300m
+
+* Gerador de pulsos EFT conforme IEC 61000-4-4
+* VPEAK: Tensão de pico (0.5k, 1k, 2k, 4k)
+* FREQ: Frequência de repetição (5k ou 100k Hz)
+* NBURST: Número de pulsos por rajada
+* TREP: Período de repetição das rajadas
+
+* Fonte de tensão pulsada - gera os pulsos rápidos
+* PULSE(V1 V2 TD TR TF PW PER)
+* TD=0, TR=5ns, TF=50ns, PW=50ns, PER=200ns (para 5kHz)
+V1 OUTPUT GND PULSE(0 {VPEAK} 0 5n 50n 50n {1/FREQ})
+
+* Resistência de saída para casamento com 50 ohms
+R1 OUTPUT GND 50
+
+.ENDS EFT_Burst
