@@ -10,7 +10,6 @@
 + IR_LED=100u
 + IFT=5m
 + IH_ON=500u
-+ IH_OFF=300u
 + VINH=12
 + IDRM=10n
 + IDRM_INH=2m
@@ -19,25 +18,21 @@
 ************************************************************
 * INPUT SIDE – LED
 ************************************************************
-DLED A K DLED_CORE
+DLED A_INT K DLED_CORE
 .model DLED_CORE D(Is={IR_LED} N=1.8 Rs=5 Vfwd={VF_LED})
 
-* LED current sense (legal I())
-VLED_SENSE A A_SENSE 0
+R_LED A A_INT 1m
 
 ************************************************************
 * TRIAC SIDE – LOOP BREAKING & SENSING
 ************************************************************
 * Small series resistance for numerical stability
-R_SER MT2 MT2_S 100m
-
-* Current sense element for hold current
-VAC_SENSE MT2_S MT2_INT 0
+R_SER MT2 MT2_S R={RON/100}
 
 ************************************************************
 * AC VOLTAGE SENSE – ZERO CROSS DETECTOR
 ************************************************************
-E_AC VAC 0 VALUE = { V(MT1,MT2) }
+B_AC VAC 0 V={ V(MT1,MT2) }
 
 ************************************************************
 * ZERO-CROSS WINDOW (SMOOTH)
@@ -45,65 +40,76 @@ E_AC VAC 0 VALUE = { V(MT1,MT2) }
 ************************************************************
 
 * Zero-cross raw detector
-B_ZC_RAW ZC_RAW 0 V = {
-+ 0.5*(1 - tanh((abs(V(VAC)) - VINH)/1))
+B_ZC ZC_OK 0 V = {
++ 0.5*(1 - tanh(100*(abs(V(VAC)) - VINH)))
 + }
-
-* Temporal smoothing (prevents chatter)
-R_ZC ZC_RAW ZC_OK 10k
-C_ZC ZC_OK 0 100n
 
 
 ************************************************************
 * TRIGGER CONDITION (LED CURRENT + ZERO CROSS)
 ************************************************************
+B_ILED ILED_OK 0 V={
++ 0.5*(1 + tanh((abs(I(R_LED)) - IFT)*2k))
++ }
+
 B_TRIG TRIG 0 V = {
-+ 0.5*(1 + tanh((abs(I(VLED_SENSE)) - IFT)/0.0005))
-+ * V(ZC_OK)
++ V(ILED_OK) * V(ZC_OK)
 + }
 
 ************************************************************
 * TRIAC LATCH (STATE MEMORY)
 ************************************************************
-C_STATE STATE 0 1u IC=0
-R_STATE STATE 0 200Meg
+C_STATE PS_STATE 0 1u IC=0
+R_STATE PS_STATE 0 200Meg
 
 * Set latch when triggered
-B_SET STATE 0 I = {
-+ 1m * tanh(10*V(TRIG))
+B_SET VSET 0 V = {
++ 0.5 * (tanh(10*(V(TRIG)-0.5))+1)
 + }
+
+D_SET VSET D_SET_R D_IDEAL
+.model D_IDEAL D(Is=1e-15 N=1 Rs=10m Ron=10m Roff=1e10 Vfwd=1u)
+
+R_SET D_SET_R PS_STATE 10
 
 ************************************************************
 * HOLD CURRENT DETECTION WITH HYSTERESIS
 ************************************************************
 * Detect holding (turn-on threshold)
-B_IH_ON IH_OK 0 V = {
-+ 0.5*(1 + tanh((abs(I(VAC_SENSE)) - IH_ON)/0.0001))
+B_IH_ON IH_OK 0 V={
++ (tanh((abs(I(R_SER))-IH_ON)*50k)+1)*0.5
 + }
 
-* Reset latch only when current < IH_OFF
-B_RESET STATE 0 I = {
-+ -1m * tanh(10*(IH_OFF - abs(I(VAC_SENSE))))
+B_RESET_COND RESET_COND 0 V={
++ limit(V(IH_OK) + V(ILED_OK),0,1)
++ }
+
+B_RESET PS_STATE 0 I={
++ 1-V(RESET_COND)
++ }
+
+B_STATE STATE 0 V={
++ limit(V(PS_STATE),0,1)
 + }
 
 ************************************************************
 * TRIAC CONDUCTION PATH (REAL CURRENT FLOW)
 ************************************************************
 * Smooth resistance transition to avoid timestep collapse
-R_TRIAC MT2_INT MT1 R = {
-+ RON + 1e9*(1 - tanh(5*V(STATE)))
+R_TRIAC MT2_S MT1 R = {
++ RON + 1e9 * (1 - tanh(1000 * V(STATE)))
 + }
 
 ************************************************************
 * LEAKAGE CURRENTS
 ************************************************************
 * Off-state leakage
-G_LEAK MT1 MT2 VALUE = { IDRM }
+B_LEAK MT1 MT2 I={ IDRM }
 
 * Leakage when zero-cross is inhibited
-G_LEAK_INH MT1 MT2 VALUE = {
-+ (1 - V(ZC_OK)) * IDRM_INH
-+ }
+* B_LEAK_INH MT1 MT2 I={
+* + (1 - V(ZC_OK)) * IDRM_INH
+* + }
 
 .ends MOC30xx_BASE
 
