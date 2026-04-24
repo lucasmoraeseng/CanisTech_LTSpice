@@ -1,18 +1,88 @@
-.SUBCKT EFT_Burst OUTPUT GND
-+ PARAMS: VPEAK=1k FREQ=5k NBURST=15 TREP=300m
+* ==========================================================
+* EFT_BURST_BASE – IEC 61000-4-4 EFT Generator
+* With integrated capacitive coupling (CDN simplified)
+*
+* Pins:
+*   LINE   -> node to inject EFT (mains or DC line)
+*   GND    -> local reference / earth
+* ==========================================================
 
-* Gerador de pulsos EFT conforme IEC 61000-4-4
-* VPEAK: Tensão de pico (0.5k, 1k, 2k, 4k)
-* FREQ: Frequência de repetição (5k ou 100k Hz)
-* NBURST: Número de pulsos por rajada
-* TREP: Período de repetição das rajadas
+.subckt EFT_BURST_BASE LINE GND PARAMS:
++ VPEAK=1k        ; Peak EFT voltage (±)
++ FREQ=5k         ; Pulse repetition freq inside burst
++ TBURST=15m      ; Burst duration (IEC ≈ 15 ms)
++ TREP=300m       ; Burst repetition period
++ TRISE=5n        ; Rise time
++ TFALL=50n       ; Fall time
++ TPW=50n         ; Pulse width
++ ZSRC=50         ; Source impedance (IEC ≈ 50 ohm)
++ CCPL=100p       ; Capacitive coupling (IEC typical)
++ RDIS=1Meg       ; Discharge resistor
++ TDELAY=0        ; Delay before first burst
 
-* Fonte de tensão pulsada - gera os pulsos rápidos
-* PULSE(V1 V2 TD TR TF PW PER)
-* TD=0, TR=5ns, TF=50ns, PW=50ns, PER=200ns (para 5kHz)
-V1 OUTPUT GND PULSE(0 {VPEAK} 0 5n 50n 50n {1/FREQ})
+* ----------------------------------------------------------
+* Derived parameters
+* ----------------------------------------------------------
+.param TPER = {1/FREQ}
 
-* Resistência de saída para casamento com 50 ohms
-R1 OUTPUT GND 50
+* ----------------------------------------------------------
+* Burst envelope (IEC ON/OFF window) – delayed
+* ----------------------------------------------------------
+V_ENV ENV GND PULSE(
++ 0 1
++ {TDELAY}
++ 1u 1u
++ {TBURST}
++ {TREP}
++ )
 
-.ENDS EFT_Burst
+* ----------------------------------------------------------
+* Fast EFT pulse generator – delayed
+* ----------------------------------------------------------
+V_PULSE PULSE_RAW GND PULSE(
++ 0 {VPEAK}
++ {TDELAY}
++ {TRISE} {TFALL}
++ {TPW}
++ {TPER}
++ )
+
+* ----------------------------------------------------------
+* Gate pulses with burst envelope
+* ----------------------------------------------------------
+B_EFT EFT_SRC GND V = { V(PULSE_RAW) * V(ENV) }
+
+* ----------------------------------------------------------
+* Source impedance (IEC requirement)
+* ----------------------------------------------------------
+R_SRC EFT_SRC EFT_INT {ZSRC}
+
+* ----------------------------------------------------------
+* Capacitive coupling network (embedded CDN)
+* ----------------------------------------------------------
+C_CPL EFT_INT LINE {CCPL}
+R_DIS EFT_INT GND {RDIS}
+
+.ends EFT_BURST_BASE
+
+
+.subckt EFT_CLASS_RESIDENTIAL LINE GND
+XGEN LINE GND EFT_BURST_BASE PARAMS:
++ VPEAK=1k
++ FREQ=5k
++ TDELAY={TDELAY}
+.ends EFT_CLASS_RESIDENTIAL
+
+.subckt EFT_CLASS_IND_LIGHT LINE GND
+XGEN LINE GND EFT_BURST_BASE PARAMS:
++ VPEAK=2k
++ FREQ=5k
++ TDELAY={TDELAY}
+.ends EFT_CLASS_IND_LIGHT
+
+.subckt EFT_CLASS_IND_HEAVY LINE GND
+XGEN LINE GND EFT_BURST_BASE PARAMS:
++ VPEAK=4k
++ FREQ=5k
++ TDELAY={TDELAY}
+.ends EFT_CLASS_IND_HEAVY
