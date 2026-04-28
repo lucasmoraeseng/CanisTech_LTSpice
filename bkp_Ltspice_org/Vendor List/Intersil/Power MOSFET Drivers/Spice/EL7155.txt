@@ -1,0 +1,52 @@
+*EL7155C Spice Model
+*Revision A, March 2002
+*Connection	Vs+
+*		|	OE
+*		|	|	VIN
+*		|	|	|	GND
+*		|	|	|	|	VL
+*		|	|	|	|	|	OUTL
+*		|	|	|	|	|	|	OUTH
+*		|	|	|	|	|	|	|	VH
+*		|	|	|	|	|	|	|	|
+.subckt EL7155C	1	2	3	4	5	6	7	8
+c1 3 4 3.5pF
+r1 3 4 10Meg
+sp1 11 1 3 4 swp
+rp1 11 4 10K
+*
+* OE pin input
+c2 2 4 3.5p 
+r2 2 4 10Meg
+*
+*Voutp path
+e1 10 4 11 4 1
+sp3 10 13 2 4 swp
+r5 10 4 1k
+r3 13 1 10K
+sp9 7 8 4 13 swp1
+r7 13 4 10k
+d1 5 7 den
+d3 7 1 den
+clh 7 4 50pF
+*
+*VoutL path
+e2 9 4 11 4 1
+sp4 9 14 2 4 swp
+r4 14 4 10K
+r6 9 4 1k
+sp10 6 5 14 4 swn
+d2 5 6 den
+d4 6 1 den
+Cll 6 4 50pF
+*Set the lowest VL --- -5V lower than gnd
+V1 4 15 5
+d5 15 5 den
+*
+* switch model
+.model swp vswitch ron=4 roff=10Meg von=2.4 voff=2
+.model swn vswitch ron=4 roff=10Meg von=5 voff =4
+.model swp1 vswitch ron=4 roff=10Meg von=0 voff=-1
+.model den D (n=1)
+.ends EL7155C
+*$

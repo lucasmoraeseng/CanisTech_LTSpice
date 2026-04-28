@@ -1,0 +1,56 @@
+* FILENAME:         NE696M01.CIR
+* NEC PART NUMBER:  NE696M01
+* LAST MODIFIED:    2/97
+* BIAS CONDITIONS:  Vce=0.5V to 5.0V, Ic=0.5mA to 10mA
+* FREQ RANGE:       0.4GHz to 7.5GHz
+*
+*                         CCB           
+*                     .---||---.                      
+*   BASE              |        |              COLLECTOR
+*                     |   /----o-------o---Lcx---o
+*   o---Lbx------o-LB-o--|Q1   |       |         
+*                |    B   \   --       |         
+*                |        |   -- CCE  --         
+*         CBEpkg--      E o----'      -- CCEpkg  
+*               --        |            |     
+*                |       LE            |     
+*                '--------o------------'     
+*                         |
+*                        Lex               
+*                         | 
+*                         o EMITTER
+*       
+*       CCB    = 0.05pF           LB  = 1.3nH
+*       CCE    = 0.15pF           LE  = 0.22nH
+*       CBEpkg = 0.13pF           Lbx = 0.15nH
+*       CCEpkg = 0.5pF            Lcx = 0.58nH
+*                                 Lex = 0.15nH
+*
+*                    c b e
+.SUBCKT NE696M01/CEL 2 1 3
+Q1  8 7 9 NE69600
+CCB 7 8 0.05E-12
+CCE 8 9 0.15E-12
+LB  4 7 1.3E-9
+LE  9 6 0.22E-9
+CBEPKG 4 6 0.13E-12
+CCEPKG 5 6 0.5E-12
+LBX 1 4 0.15E-9
+LEX 6 3 0.15E-9
+LCX 2 5 0.58E-9
+.MODEL NE69600 NPN 
++( IS=7.0e-16     BF=119           NF=1.06        VAF=20.5         IKF=0.18  
++ ISE=1e-13       NE=2             BR=6.5         NR=1.08          VAR=18     
++ IKR=0.015       ISC=0            NC=2           RE=1.23          RB=11
++ RBM=2.5         IRB=0.009        RC=5           CJE=0.4e-12      VJE=0.68 
++ MJE=0.5         CJC=0.18e-12     VJC=0.5        MJC=0.34         XCJC=0.6
++ CJS=0           VJS=0.75         MJS=0          FC=0.5           TF=4e-12
++ XTF=5.2         VTF=4.58         ITF=0.01       PTF=0            TR=1e-9
++ EG=1.11         XTB=0            XTI=3          KF=0             AF=1   )
+*
+* NOTE:  CEL develops models using the Libra simulator.
+*        For this simulator, a value of 0 for IKR is 
+*        interpreted as infinity.
+.ENDS
+*$
+

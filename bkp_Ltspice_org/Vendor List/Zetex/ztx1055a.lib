@@ -1,0 +1,23 @@
+
+*ZETEX  ZTX1055A Spice model   Last revision 25/1/95
+*
+.MODEL ZTX1055A  NPN IS=1.60E-12  NF=1.0  BF=500  IKF=4.0  VAF=120
++               ISE=4.0E-13  NE=1.4  NR=1.0  BR=80  IKR=2.5  VAR=15
++               ISC=5.0E-10  NC=1.7  RB=0.1  RE=0.040  RC=0.030
++               CJC=63.3E-12  CJE=512.6E-12  MJC=0.439  MJE=0.373
++               VJC=0.511  VJE=0.800  TF=700E-12  TR=110E-9
+*
+*
+*                          (C)  1995 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

@@ -1,0 +1,288 @@
+*SRC=MBR10100CT;DI_MBR10100CT;Diodes;Si;  100V  10.0A  5.00ns   Diodes Inc. 
+.MODEL DI_MBR10100CT D  ( IS=27.9n RS=4.20m BV=100 IBV=100u
++ CJO=555p  M=0.333 N=1.28 TT=7.20n )
+
+*SRC=MBR1030;DI_MBR1030;Diodes;Si;  30.0V  10.0A  5.00ns   Diodes Inc. Schottky Barrier Rectifier
+.MODEL DI_MBR1030 D  ( IS=2.62m RS=4.20m BV=30.0 IBV=100u
++ CJO=796p  M=0.333 N=2.12 TT=7.20n )
+
+*SRC=MBR1030CT;DI_MBR1030CT;Diodes;Si;  30.0V  10.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_MBR1030CT D  ( IS=4.25u RS=13.0m BV=30.0 IBV=100u
++ CJO=318p  M=0.333 N=1.15 TT=14.4n )
+
+*SRC=MBR1035;DI_MBR1035;Diodes;Si;  35.0V  10.0A  5.00ns   Diodes Inc. Schottky Barrier Rectifier
+.MODEL DI_MBR1035 D  ( IS=2.62m RS=4.20m BV=35.0 IBV=100u
++ CJO=796p  M=0.333 N=2.12 TT=7.20n )
+
+*SRC=MBR1040;DI_MBR1040;Diodes;Si;  40.0V  10.0A  5.00ns   Diodes Inc. Schottky Barrier Rectifier
+.MODEL DI_MBR1040 D  ( IS=2.62m RS=4.20m BV=40.0 IBV=100u
++ CJO=796p  M=0.333 N=2.12 TT=7.20n )
+
+*SRC=MBR1040CT;DI_MBR1040CT;Diodes;Si;  40.0V  10.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_MBR1040CT D  ( IS=4.25u RS=13.0m BV=40.0 IBV=100u
++ CJO=318p  M=0.333 N=1.15 TT=14.4n )
+
+*SRC=MBR1045;DI_MBR1045;Diodes;Si;  45.0V  10.0A  5.00ns   Diodes Inc. Schottky Barrier Rectifier
+.MODEL DI_MBR1045 D  ( IS=2.62m RS=4.20m BV=45.0 IBV=100u
++ CJO=796p  M=0.333 N=2.12 TT=7.20n )
+
+*SRC=MBR1045CT;DI_MBR1045CT;Diodes;Si;  45.0V  10.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_MBR1045CT D  ( IS=4.25u RS=13.0m BV=45.0 IBV=100u
++ CJO=318p  M=0.333 N=1.15 TT=14.4n )
+
+*SRC=MBR1050;DI_MBR1050;Diodes;Si;  50.0V  10.0A  5.00ns   Diodes Inc. Schottky Barrier Rectifier
+.MODEL DI_MBR1050 D  ( IS=153u RS=3.17m BV=50.0 IBV=100u
++ CJO=796p  M=0.333 N=1.96 TT=7.20n )
+
+*SRC=MBR1050CT;DI_MBR1050CT;Diodes;Si;  50.0V  10.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_MBR1050CT D  ( IS=7.24u RS=14.5m BV=50.0 IBV=100u
++ CJO=318p  M=0.333 N=1.29 TT=14.4n )
+
+*SRC=MBR1060;DI_MBR1060;Diodes;Si;  60.0V  10.0A  5.00ns   Diodes Inc. Schottky Barrier Rectifier
+.MODEL DI_MBR1060 D  ( IS=153u RS=3.17m BV=60.0 IBV=100u
++ CJO=796p  M=0.333 N=1.96 TT=7.20n )
+
+*SRC=MBR1060CT;DI_MBR1060CT;Diodes;Si;  60.0V  10.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_MBR1060CT D  ( IS=7.24u RS=14.5m BV=60.0 IBV=100u
++ CJO=318p  M=0.333 N=1.29 TT=14.4n )
+
+*SRC=SB1100;DI_SB1100;Diodes;Si;  100.0V  1.00A  5.00ns   Diodes Inc. Schottky 
+.MODEL DI_SB1100 D  ( IS=6.63u RS=62.3m BV=100.0 IBV=500u 
++ CJO=199p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SB120;DI_SB120;Diodes;Si;  20.0V  1.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SB120 D  ( IS=31.5u RS=49.2m BV=20.0 IBV=500u
++ CJO=239p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SB130;DI_SB130;Diodes;Si;  30.0V  1.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SB130 D  ( IS=31.5u RS=49.2m BV=30.0 IBV=500u
++ CJO=239p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SB140;DI_SB140;Diodes;Si;  40.0V  1.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SB140 D  ( IS=31.5u RS=49.2m BV=40.0 IBV=500u
++ CJO=239p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SB150;DI_SB150;Diodes;Si;  50.0V  1.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SB150 D  ( IS=1.17u RS=42.0m BV=50.0 IBV=500u
++ CJO=172p  M=0.333 N=1.28 TT=7.20n )
+
+*SRC=SB160;DI_SB160;Diodes;Si;  60.0V  1.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SB160 D  ( IS=1.17u RS=42.0m BV=60.0 IBV=500u
++ CJO=172p  M=0.333 N=1.28 TT=7.20n )
+
+*SRC=SB170;DI_SB170;Diodes;Si;  70.0V  1.00A  5.00ns   Diodes Inc. Schottky 
+.MODEL DI_SB170 D  ( IS=6.63u RS=62.3m BV=70.0 IBV=500u 
++ CJO=199p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SB180;DI_SB180;Diodes;Si;  80.0V  1.00A  5.00ns   Diodes Inc. Schottky 
+.MODEL DI_SB180 D  ( IS=6.63u RS=62.3m BV=80.0 IBV=500u 
++ CJO=199p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SB190;DI_SB190;Diodes;Si;  90.0V  1.00A  5.00ns   Diodes Inc. Schottky 
+.MODEL DI_SB190 D  ( IS=6.63u RS=62.3m BV=90.0 IBV=500u 
++ CJO=199p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SB340;DI_SB340;Diodes;Si;  40.0V  3.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SB340 D  ( IS=85.9n RS=18.5m BV=40.0 IBV=70.0u
++ CJO=411p  M=0.333 N=0.754 TT=7.20n )
+
+*SRC=SBL1030;DI_SBL1030;Diodes;Si;  30.0V  10.0A  5.00ns   Diodes Inc. Schottky .MODEL DI_SBL1030 D  ( IS=759u RS=4.20m BV=30.0 IBV=1.00m+ CJO=2.12n  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SBL1030CT;DI_SBL1030CT;Diodes;Si;  30.0V  10.0A  5.00ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL1030CT D  ( IS=759u RS=4.20m BV=30.0 IBV=500u+ CJO=941p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SBL1035;DI_SBL1035;Diodes;Si;  35.0V  10.0A  5.00ns   Diodes Inc. Schottky .MODEL DI_SBL1035 D  ( IS=759u RS=4.20m BV=35.0 IBV=1.00m+ CJO=2.12n  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SBL1035CT;DI_SBL1035CT;Diodes;Si;  35.0V  10.0A  5.00ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL1035CT D  ( IS=759u RS=4.20m BV=35.0 IBV=500u+ CJO=941p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SBL1040;DI_SBL1040;Diodes;Si;  40.0V  10.0A  5.00ns   Diodes Inc. Schottky .MODEL DI_SBL1040 D  ( IS=759u RS=4.20m BV=40.0 IBV=1.00m+ CJO=2.12n  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SBL1040CT;DI_SBL1040CT;Diodes;Si;  40.0V  10.0A  5.00ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL1040CT D  ( IS=759u RS=4.20m BV=40.0 IBV=500u+ CJO=941p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SBL1045;DI_SBL1045;Diodes;Si;  45.0V  10.0A  5.00ns   Diodes Inc. Schottky .MODEL DI_SBL1045 D  ( IS=759u RS=4.20m BV=45.0 IBV=1.00m+ CJO=2.12n  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SBL1045CT;DI_SBL1045CT;Diodes;Si;  45.0V  10.0A  5.00ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL1045CT D  ( IS=759u RS=4.20m BV=45.0 IBV=500u+ CJO=941p  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SBL1050;DI_SBL1050;Diodes;Si;  50.0V  10.0A  5.00ns   Diodes Inc. Schottky .MODEL DI_SBL1050 D  ( IS=210u RS=4.22m BV=50.0 IBV=1.00m+ CJO=2.12n  M=0.333 N=2.03 TT=7.20n )
+
+*SRC=SBL1050CT;DI_SBL1050CT;Diodes;Si;  50.0V  10.0A  5.00ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL1050CT D  ( IS=210u RS=4.22m BV=50.0 IBV=500u+ CJO=941p  M=0.333 N=2.03 TT=7.20n )
+
+*SRC=SBL1060;DI_SBL1060;Diodes;Si;  60.0V  10.0A  5.00ns   Diodes Inc. Schottky .MODEL DI_SBL1060 D  ( IS=210u RS=4.22m BV=60.0 IBV=1.00m+ CJO=2.12n  M=0.333 N=2.03 TT=7.20n )
+
+*SRC=SBL1060CT;DI_SBL1060CT;Diodes;Si;  60.0V  10.0A  5.00ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL1060CT D  ( IS=210u RS=4.22m BV=60.0 IBV=500u+ CJO=941p  M=0.333 N=2.03 TT=7.20n )
+
+*SRC=SBL1630;DI_SBL1630;Diodes;Si;  30.0V  16.0A  5.00ns   Diodes Inc. Schottky.MODEL DI_SBL1630 D  ( IS=903u RS=3.60m BV=30.0 IBV=1.00m+ CJO=1.72n  M=0.333 N=1.67 TT=7.20n )
+
+*SRC=SBL1630PT;DI_SBL1630PT;Diodes;Si;  30.0V  16.0A  5.00ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL1630PT D  ( IS=575u RS=3.47m BV=30.0 IBV=500u
++ CJO=1.86n  M=0.333 N=1.68 TT=7.20n )
+
+*SRC=SBL1635;DI_SBL1635;Diodes;Si;  35.0V  16.0A  5.00ns   Diodes Inc. Schottky.MODEL DI_SBL1635 D  ( IS=903u RS=3.60m BV=35.0 IBV=1.00m+ CJO=1.72n  M=0.333 N=1.67 TT=7.20n )
+
+*SRC=SBL1635PT;DI_SBL1635PT;Diodes;Si;  35.0V  16.0A  5.00ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL1635PT D  ( IS=575u RS=3.47m BV=35.0 IBV=500u
++ CJO=1.86n  M=0.333 N=1.68 TT=7.20n )
+
+*SRC=SBL1640;DI_SBL1640;Diodes;Si;  40.0V  16.0A  5.00ns   Diodes Inc. Schottky.MODEL DI_SBL1640 D  ( IS=903u RS=3.60m BV=40.0 IBV=1.00m+ CJO=1.72n  M=0.333 N=1.67 TT=7.20n )
+
+*SRC=SBL1640PT;DI_SBL1640PT;Diodes;Si;  40.0V  16.0A  5.00ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL1640PT D  ( IS=575u RS=3.47m BV=40.0 IBV=500u
++ CJO=1.86n  M=0.333 N=1.68 TT=7.20n )
+
+*SRC=SBL1645;DI_SBL1645;Diodes;Si;  45.0V  16.0A  5.00ns   Diodes Inc. Schottky.MODEL DI_SBL1645 D  ( IS=903u RS=3.60m BV=45.0 IBV=1.00m+ CJO=1.72n  M=0.333 N=1.67 TT=7.20n )
+
+*SRC=SBL1645PT;DI_SBL1645PT;Diodes;Si;  45.0V  16.0A  5.00ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL1645PT D  ( IS=575u RS=3.47m BV=45.0 IBV=500u
++ CJO=1.86n  M=0.333 N=1.68 TT=7.20n )
+
+*SRC=SBL1650;DI_SBL1650;Diodes;Si;  50.0V  16.0A  5.00ns   Diodes Inc. Schottky.MODEL DI_SBL1650 D  ( IS=1.38m RS=3.22m BV=50.0 IBV=1.00m+ CJO=1.72n  M=0.333 N=2.27 TT=7.20n )
+
+*SRC=SBL1650PT;DI_SBL1650PT;Diodes;Si;  50.0V  16.0A  5.00ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL1650PT D  ( IS=89.9u RS=3.60m BV=50.0 IBV=500u
++ CJO=1.86n  M=0.333 N=1.67 TT=7.20n )
+
+*SRC=SBL1660;DI_SBL1660;Diodes;Si;  60.0V  16.0A  5.00ns   Diodes Inc. Schottky.MODEL DI_SBL1660 D  ( IS=1.38m RS=3.22m BV=60.0 IBV=1.00m+ CJO=1.72n  M=0.333 N=2.27 TT=7.20n )
+
+*SRC=SBL1660PT;DI_SBL1660PT;Diodes;Si;  60.0V  16.0A  5.00ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL1660PT D  ( IS=89.9u RS=3.60m BV=60.0 IBV=500u
++ CJO=1.86n  M=0.333 N=1.67 TT=7.20n )
+
+*SRC=SBL2030CT;DI_SBL2030CT;Diodes;Si;  30.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2030CT D  ( IS=4.83m RS=2.37m BV=30.0 IBV=1.00m+ CJO=1.34n  M=0.333 N=2.28 TT=14.4n )
+
+*SRC=SBL2030PT;DI_SBL2030PT;Diodes;Si;  30.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2030PT D  ( IS=597u RS=2.88m BV=30.0 IBV=1.00m+ CJO=2.52n  M=0.333 N=1.59 TT=14.4n )
+
+*SRC=SBL2035CT;DI_SBL2035CT;Diodes;Si;  35.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2035CT D  ( IS=4.83m RS=2.37m BV=35.0 IBV=1.00m+ CJO=1.34n  M=0.333 N=2.28 TT=14.4n )
+
+*SRC=SBL2035PT;DI_SBL2035PT;Diodes;Si;  35.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2035PT D  ( IS=597u RS=2.88m BV=35.0 IBV=1.00m+ CJO=2.52n  M=0.333 N=1.59 TT=14.4n )
+
+*SRC=SBL2040CT;DI_SBL2040CT;Diodes;Si;  40.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2040CT D  ( IS=4.83m RS=2.37m BV=40.0 IBV=1.00m+ CJO=1.34n  M=0.333 N=2.28 TT=14.4n )
+
+*SRC=SBL2040PT;DI_SBL2040PT;Diodes;Si;  40.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2040PT D  ( IS=597u RS=2.88m BV=40.0 IBV=1.00m+ CJO=2.52n  M=0.333 N=1.59 TT=14.4n )
+
+*SRC=SBL2045CT;DI_SBL2045CT;Diodes;Si;  45.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2045CT D  ( IS=4.83m RS=2.37m BV=45.0 IBV=1.00m+ CJO=1.34n  M=0.333 N=2.28 TT=14.4n )
+
+*SRC=SBL2045PT;DI_SBL2045PT;Diodes;Si;  45.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2045PT D  ( IS=597u RS=2.88m BV=45.0 IBV=1.00m+ CJO=2.52n  M=0.333 N=1.59 TT=14.4n )
+
+*SRC=SBL2050CT;DI_SBL2050CT;Diodes;Si;  50.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2050CT D  ( IS=3.50m RS=2.11m BV=50.0 IBV=1.00m+ CJO=1.34n  M=0.333 N=2.95 TT=14.4n )
+
+*SRC=SBL2050PT;DI_SBL2050PT;Diodes;Si;  50.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2050PT D  ( IS=587u RS=2.11m BV=50.0 IBV=1.00m+ CJO=2.52n  M=0.333 N=2.12 TT=14.4n )
+
+*SRC=SBL2060CT;DI_SBL2060CT;Diodes;Si;  60.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2060CT D  ( IS=3.50m RS=2.11m BV=60.0 IBV=1.00m+ CJO=1.34n  M=0.333 N=2.95 TT=14.4n )
+
+*SRC=SBL2060PT;DI_SBL2060PT;Diodes;Si;  60.0V  20.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL2060PT D  ( IS=587u RS=2.11m BV=60.0 IBV=1.00m+ CJO=2.52n  M=0.333 N=2.12 TT=14.4n )
+
+*SRC=SBL3030CT;DI_SBL3030CT;Diodes;Si;  30.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL3030CT D  ( IS=200u RS=1.92m BV=30.0 IBV=1.00m+ CJO=809p  M=0.333 N=1.42 TT=14.4n )
+
+*SRC=SBL3030PT;DI_SBL3030PT;Diodes;Si;  30.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL3030PT D  ( IS=441u RS=1.92m BV=30.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=1.51 TT=14.4n )
+
+*SRC=SBL3035PT;DI_SBL3035PT;Diodes;Si;  35.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL3035PT D  ( IS=441u RS=1.92m BV=35.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=1.51 TT=14.4n )
+
+*SRC=SBL3040CT;DI_SBL3040CT;Diodes;Si;  40.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL3040CT D  ( IS=200u RS=1.92m BV=40.0 IBV=1.00m+ CJO=809p  M=0.333 N=1.42 TT=14.4n )
+
+*SRC=SBL3040PT;DI_SBL3040PT;Diodes;Si;  40.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL3040PT D  ( IS=441u RS=1.92m BV=40.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=1.51 TT=14.4n )
+
+*SRC=SBL3045CT;DI_SBL3045CT;Diodes;Si;  45.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL3045CT D  ( IS=200u RS=1.92m BV=45.0 IBV=1.00m+ CJO=809p  M=0.333 N=1.42 TT=14.4n )
+
+*SRC=SBL3045PT;DI_SBL3045PT;Diodes;Si;  45.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL3045PT D  ( IS=441u RS=1.92m BV=45.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=1.51 TT=14.4n )
+
+*SRC=SBL3050CT;DI_SBL3050CT;Diodes;Si;  50.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL3050CT D  ( IS=264u RS=1.99m BV=50.0 IBV=1.00m+ CJO=809p  M=0.333 N=1.67 TT=14.4n )
+
+*SRC=SBL3050PT;DI_SBL3050PT;Diodes;Si;  50.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL3050PT D  ( IS=346u RS=1.61m BV=50.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=2.02 TT=14.4n )
+
+*SRC=SBL3060CT;DI_SBL3060CT;Diodes;Si;  60.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL3060CT D  ( IS=264u RS=1.99m BV=60.0 IBV=1.00m+ CJO=809p  M=0.333 N=1.67 TT=14.4n )
+
+*SRC=SBL3060PT;DI_SBL3060PT;Diodes;Si;  60.0V  30.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL3060PT D  ( IS=346u RS=1.61m BV=60.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=2.02 TT=14.4n)
+
+*SRC=SBL4030PT;DI_SBL4030PT;Diodes;Si;  30.0V  40.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL4030PT D  ( IS=10.9u RS=1.53m BV=30.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=1.08 TT=14.4n )
+
+*SRC=SBL4035PT;DI_SBL4035PT;Diodes;Si;  35.0V  40.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL4035PT D  ( IS=10.9u RS=1.53m BV=35.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=1.08 TT=14.4n )
+
+*SRC=SBL4040PT;DI_SBL4040PT;Diodes;Si;  40.0V  40.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL4040PT D  ( IS=10.9u RS=1.53m BV=40.0 IBV=1.00m+ CJO=1.33n  M=0.333 N=1.08 TT=14.4n )
+
+*SRC=SBL4045PT;DI_SBL4045PT;Diodes;Si;  45.0V  40.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL4045PT D  ( IS=10.9u RS=1.53m BV=45.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=1.08 TT=14.4n )
+
+*SRC=SBL4050PT;DI_SBL4050PT;Diodes;Si;  50.0V  40.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL4050PT D  ( IS=53.0u RS=1.26m BV=50.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=1.70 TT=14.4n )
+
+*SRC=SBL4060PT;DI_SBL4060PT;Diodes;Si;  60.0V  40.0A  10.0ns   Diodes Inc. Schottky - Single device of dual
+.MODEL DI_SBL4060PT D  ( IS=53.0u RS=1.26m BV=60.0 IBV=1.00m
++ CJO=1.33n  M=0.333 N=1.70 TT=14.4n )
+
+*SRC=SBL530;DI_SBL530;Diodes;Si;  30.0V  5.00A  10.0ns   Diodes Inc. Schottky.MODEL DI_SBL530 D  ( IS=926u RS=9.47m BV=30.0 IBV=500u+ CJO=968p  M=0.333 N=1.69 TT=14.4n )
+
+*SRC=SBL535;DI_SBL535;Diodes;Si;  35.0V  5.00A  10.0ns   Diodes Inc. Schottky.MODEL DI_SBL535 D  ( IS=926u RS=9.47m BV=35.0 IBV=500u+ CJO=968p  M=0.333 N=1.69 TT=14.4n )
+
+*SRC=SBL540;DI_SBL540;Diodes;Si;  40.0V  5.00A  10.0ns   Diodes Inc. Schottky.MODEL DI_SBL540 D  ( IS=926u RS=9.47m BV=40.0 IBV=500u+ CJO=968p  M=0.333 N=1.69 TT=14.4n )
+
+*SRC=SBL545;DI_SBL545;Diodes;Si;  45.0V  5.00A  10.0ns   Diodes Inc. Schottky.MODEL DI_SBL545 D  ( IS=926u RS=9.47m BV=45.0 IBV=500u+ CJO=968p  M=0.333 N=1.69 TT=14.4n )
+
+*SRC=SBL550;DI_SBL550;Diodes;Si;  50.0V  5.00A  10.0ns   Diodes Inc. Schottky.MODEL DI_SBL550 D  ( IS=14.0u RS=8.33m BV=50.0 IBV=500u+ CJO=968p  M=0.333 N=1.70 TT=14.4n )
+
+*SRC=SBL560;DI_SBL560;Diodes;Si;  60.0V  5.00A  10.0ns   Diodes Inc. Schottky.MODEL DI_SBL560 D  ( IS=14.0u RS=8.33m BV=60.0 IBV=500u+ CJO=968p  M=0.333 N=1.70 TT=14.4n )
+
+*SRC=SBL6030PT;DI_SBL6030PT;Diodes;Si;  30.0V  60.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL6030PT D  ( IS=1.93m RS=917u BV=30.0 IBV=20.0m+ CJO=3.25n  M=0.333 N=1.68 TT=14.4n )
+
+*SRC=SBL6040PT;DI_SBL6040PT;Diodes;Si;  40.0V  60.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL6040PT D  ( IS=1.93m RS=917u BV=40.0 IBV=20.0m+ CJO=3.25n  M=0.333 N=1.68 TT=14.4n )
+
+*SRC=SBL6050PT;DI_SBL6050PT;Diodes;Si;  50.0V  60.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL6050PT D  ( IS=353u RS=909u BV=50.0 IBV=20.0m+ CJO=3.25n  M=0.333 N=1.76 TT=14.4n )
+
+*SRC=SBL6060PT;DI_SBL6060PT;Diodes;Si;  60.0V  60.0A  10.0ns   Diodes Inc. Schottky - Single device of dual.MODEL DI_SBL6060PT D  ( IS=353u RS=909u BV=60.0 IBV=20.0m+ CJO=3.25n  M=0.333 N=1.76 TT=14.4n )
+
+*SRC=SBL830;DI_SBL830;Diodes;Si;  30.0V  8.00A  10.0ns   Diodes Inc. Schottky
+.MODEL DI_SBL830 D  ( IS=396u RS=4.50m BV=30.0 IBV=500u
++ CJO=1.72n  M=0.333 N=1.71 TT=14.4n )
+
+*SRC=SBL835;DI_SBL835;Diodes;Si;  35.0V  8.00A  10.0ns   Diodes Inc. Schottky
+.MODEL DI_SBL835 D  ( IS=396u RS=4.50m BV=35.0 IBV=500u
++ CJO=1.72n  M=0.333 N=1.71 TT=14.4n )
+
+*SRC=SBL840;DI_SBL840;Diodes;Si;  40.0V  8.00A  10.0ns   Diodes Inc. Schottky
+.MODEL DI_SBL840 D  ( IS=396u RS=4.50m BV=40.0 IBV=500u
++ CJO=1.72n  M=0.333 N=1.71 TT=14.4n )
+
+*SRC=SBL845;DI_SBL845;Diodes;Si;  45.0V  8.00A  10.0ns   Diodes Inc. Schottky
+.MODEL DI_SBL845 D  ( IS=396u RS=4.50m BV=45.0 IBV=500u
++ CJO=1.72n  M=0.333 N=1.71 TT=14.4n )
+
+*SRC=SBL850;DI_SBL850;Diodes;Si;  50.0V  8.00A  10.0ns   Diodes Inc. Schottky
+.MODEL DI_SBL850 D  ( IS=30.8u RS=5.66m BV=50.0 IBV=500u
++ CJO=1.72n  M=0.333 N=1.69 TT=14.4n )
+
+*SRC=SBL860;DI_SBL860;Diodes;Si;  60.0V  8.00A  10.0ns   Diodes Inc. Schottky
+.MODEL DI_SBL860 D  ( IS=30.8u RS=5.66m BV=60.0 IBV=500u
++ CJO=1.72n  M=0.333 N=1.69 TT=14.4n )
+
+*SRC=SD830;DI_SD830;Diodes;Si;  30.0V  8.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SD830 D  ( IS=248u RS=5.25m BV=30.0 IBV=1.00m
++ CJO=1.06n  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SD840;DI_SD840;Diodes;Si;  40.0V  8.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SD840 D  ( IS=248u RS=5.25m BV=40.0 IBV=1.00m
++ CJO=1.06n  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SD845;DI_SD845;Diodes;Si;  45.0V  8.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SD845 D  ( IS=248u RS=5.25m BV=45.0 IBV=1.00m
++ CJO=1.06n  M=0.333 N=1.70 TT=7.20n )
+
+*SRC=SD860;DI_SD860;Diodes;Si;  60.0V  8.00A  5.00ns   Diodes Inc. Schottky
+.MODEL DI_SD860 D  ( IS=248u RS=5.25m BV=60.0 IBV=1.00m
++ CJO=1.06n  M=0.333 N=1.70 TT=7.20n )
+

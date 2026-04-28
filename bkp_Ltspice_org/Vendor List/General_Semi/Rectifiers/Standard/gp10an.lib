@@ -1,0 +1,13 @@
+GP10A-N
+.MODEL GP10A_N D
+ + is=0.000000002868
+ + n=1.713
+ + =rs=0.03513
+ + xti=3
+ + cjo=0.00000000001564
+ + m=.3259
+ + vj=.3905
+ + bv=reverse voltage
+ + ibv=0.00000006
+ + tt=0.000001475
+*look datasheet (e.g. 600V for GP10J)

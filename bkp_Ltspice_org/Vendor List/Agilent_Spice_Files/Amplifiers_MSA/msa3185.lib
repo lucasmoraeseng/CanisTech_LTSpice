@@ -1,0 +1,73 @@
+*SPICE model for MSA3185
+*Start Package model 
+.SUBCKT MSA3185   OUT   IN   GND
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T1
+C1T1    11      0       .059PF
+LT1     11      12      .493NH
+C2T1    12      0       .059PF
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T2
+C1T2    14      0       .042PF
+LT2     14      15      .076NH
+C2T2    15      0       .042PF
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T3
+C1T3    13      0       .039PF
+LT3     13      DIEOUT  .330NH
+C2T3    DIEOUT  0       .039PF
+* Bond wire inductance
+LLB     12      DIEIN   .55NH
+LLE     15      DIEGND  .1NH
+* Contact inductance
+LL1     IN      11      .05NH
+LL2     GND     14      .01NH
+LL3     OUT     13      .05NH
+*Parasitic capacitances
+CCEB    12      15      .02PF
+CCEC    15      DIEOUT  .03PF
+CCBC    12      DIEOUT  .03PF
+* INSERT DIE MODEL
+XA31DIE DIEOUT  DIEIN   DIEGND  MSA31
+.ENDS
+*end Package model
+*
+* Start die model
+.SUBCKT MSA31   DIEOUT  DIEIN   DIEGND
+RF      DIEIN   DIEOUT  1115  
+RE      Q2E     DIEGND  0
+RB      DIEIN   DIEGND  570   
+RBIAS   Q1E     DIEGND  75    
+CF      DIEIN   DIEOUT  0.06PF
+CP1     Q1E     DIEOUT  0.05PF
+CP2     Q2E     DIEOUT  0.25PF
+XA31Q1  DIEOUT  DIEIN   Q1E     A31Q1
+XA31Q2  DIEOUT  Q1E     Q2E     A31Q2
+.ENDS
+* Q1 distributed base model
+.SUBCKT A31Q1   Q1C     Q1B     Q1E
+RB1     Q1B     11     2.42  
+RB2     11      12     7.45  
+RB3     12      B1     6.25  
+RE      E1      Q1E    0.55  
+RC      C1      Q1C    5     
+Q1      C1      B1     E1      QMSA    180
+DCD1    Q1B     C1     DMOD    292
+DCD2    11      C1     DMOD    292
+DCD3    12      C1     DMOD    146
+.ENDS
+* Q2 distributed base model
+.SUBCKT A31Q2   Q2C     Q2B     Q2E
+RB1     Q2B     21     1.48  
+RB2     21      22     4.47  
+RB3     22      B2     3.75  
+RE      E2      Q2E    0.33  
+RC      C2      Q2C    5     
+Q1      C2      B2     E2      QMSA    300
+DCD1    Q2B     C2     DMOD    432
+DCD2    21      C2     DMOD    486
+DCD3    22      C2     DMOD    243
+.ENDS
+.MODEL  DMOD    D(IS=1E-25, CJO=2.45E-16, VJ=.76, M=.53, BV=45, IBV=1E-9)
+.MODEL  QMSA    NPN (BF=90, BR=5, IS=1.65E-18, VA=20, TF=12PS,
++               CJE=1.8E-15, VJE=1.01, MJE=0.6, PTF=25, XTB=1.818,
++               VTF=6, ITF=3E-4, IKF=1.333E-4, XTF=4, NF=1.03, ISE=5E-15,
++               NE=2.5)
+*end die model

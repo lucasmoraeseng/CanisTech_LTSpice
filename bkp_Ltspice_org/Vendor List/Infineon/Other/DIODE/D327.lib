@@ -1,0 +1,17 @@
+*****************************************************************
+* INFINEON technologies                                         *
+* RF & Discrete Semiconductors                                  *
+* SCHOTTKY DIODE SPICE ( DIODE CHIP ONLY )                          *
+*                                                               *
+* Version:  1.1                                                 *
+* Date:     November 1999                                       *
+*****************************************************************
+.MODEL D327 D(IS=51.5N RS=0.257 N=1.03 XTI=3.0 EG=.680 
++ CJO=39.0P M=.475 VJ=.410 FC=.500 BV=40 IBV=10.00U TT=10P)
+* Extracted By: 
+* SIEMENS Semiconductors 
+* HL HF PE SIL
+* J.P. Schaffer
+* Date:
+* 3. September 1998 
+*****************************************************************

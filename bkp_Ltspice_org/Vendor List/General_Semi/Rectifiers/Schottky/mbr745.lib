@@ -1,0 +1,35 @@
+****************************************
+* (c)2000 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Buermen@fe.uni-lj.si         *
+****************************************
+
+.SUBCKT MBR745 1 2
+.MODEL DIO D(
++   N=1.26803
++  IS=6.69366E-006
++  RS=0.0133035
++  EG=0.767148
++ XTI=2.06139
++ CJO=8.35628E-010
++  VJ=0.574325
++   M=0.447529
++  FC=0.5
++  TT=1.4427E-009
++  BV=45
++ IBV=0.0001
++  KF=0
++  AF=1 )
+
+.MODEL GR D(
++   N=1.97425
++  IS=1.00072E-012
++  RS=0.01
++  EG=1.11121
++ XTI=3.00027 )
+
+DD 1 2 DIO
+DG 1 2 GR
+.ENDS

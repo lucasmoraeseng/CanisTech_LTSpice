@@ -1,0 +1,21 @@
+*ZETEX  ZSS1510 Spice model   Last revision 23/04/98 
+*
+.MODEL ZSS1510 D IS=6.7E-8 N=1.05 RS=10.6 XTI=2 EG=0.56 
++CJO=0.55E-12 M=1 VJ=0.4 FC=.5 BV=30.5 IBV=1E-3 
++NBV=85 IBVL=4E-6 NBVL=200 
+*
+*
+*                          (C)  1991 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP
+

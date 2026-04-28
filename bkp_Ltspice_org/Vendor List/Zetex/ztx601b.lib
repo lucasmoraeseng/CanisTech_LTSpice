@@ -1,0 +1,26 @@
+*ZETEX  ZTX601B  Darlington Spice Subcircuit    Last revision 9/5/94
+*
+.SUBCKT ZTX601B 1 2 3
+*               C B E
+Q1 1 2 4 SUB601B
+Q2 1 4 3 SUB601B 2.74
+*
+.MODEL SUB601B NPN IS=8.354E-14 BF=130 VAF=18.3 IKF=0.2 ISE=2E-13
++NE=1.45 BR=2 VAR=6.5 NR=1 IKR=0.2 ISC=6.138E-13 NC=1.46 RB=0.5 RE=0.25
++RC=0.3 CJE=83.7E-12 VJE=0.6868 MJE=0.3362 CJC=8.6E-12 VJC=0.3679 MJC=0.3607 
++TF=1E-9 TR=1800E-9
+.ENDS ZTX601B
+*
+*                          (C)  1994 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

@@ -1,0 +1,20 @@
+RGP10A-J
+ .MODEL RGP10A-J D
+ + is=0.0000039
+ + n=3.187
+ + rs=0.04425
+ + xti=8.700
+ + cjo=0.00000000001827
+ + m=.3292
+ + vj=.3905
+ + isr=0.0000000001
+ + bv=reverse voltage*
+ + ibv=0.00007
+ + tt=0.0000003009
+
+* 50 for RGP10A
+* 100 for RGP10B
+* 200 for RGP10D
+
+* 400 for RGP10G
+* 600 for RGP10J

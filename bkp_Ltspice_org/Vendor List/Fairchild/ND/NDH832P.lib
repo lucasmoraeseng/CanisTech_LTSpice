@@ -1,0 +1,60 @@
+* NDH832P ELECTRICAL MODEL (SuperSOT-8 P-Ch DMOS) (Preliminary)
+* ------------------------
+.SUBCKT  NDH832P  20  10  30
+Rg     10    1    1
+M1      2    1    3    3    DMOS    L=1u   W=1u
+.MODEL DMOS PMOS (VTO={-0.9*{-0.00296*TEMP+1.074}}  KP={-0.02*TEMP+14.5}
++ THETA=0.086  VMAX=4E5  LEVEL=3)
+Cgs     1    3    600p
+Rd     20    4    4m TC=0.004
+Dds     4    3    DDS
+.MODEL     DDS    D(BV={20*{0.000624*TEMP+0.9844}}   M=0.3  CJO=600p   VJ=0.8)
+Dbody   20   3    DBODY
+.MODEL   DBODY    D(IS=1.4E-13   N=1   RS=40m   TT=100n)
+Ra      4    2    8m TC=0.004
+Rs      3    5    1m
+Ls      5    30   0.5n
+M2      1    8    6    6   INTER
+E2      8    6    4    1   2
+.MODEL   INTER    PMOS(VTO=0  KP=10   LEVEL=1)
+Cgdmax  7    4    2500p
+Rcgd    7    4    10meg
+Dgd     4    6    DGD
+Rdgd    4    6    10meg
+.MODEL     DGD    D(M=0.5   CJO=2200p   VJ=0.12)
+M3      7    9    1    1   INTER
+E3      9    1    4    1   -2
+.ENDS NDH832P
+*
+* NDH832P THERMAL MODEL
+* ---------------------
+.SUBCKT   832PTHM   50  40  100
+
+Rop       50   60   1meg
+Cop       60   70   1u   IC=0
+E_W       40   70   40   60  1meg
+
+E_Pave    80   40   VALUE = {V(40,70)/(TIME+1n)}
+R80       80   40   1k
+
+E_Tja     100   40   VALUE = {V(80,40)*156*V(90,40)}
+R100      100   40   1k
+
+R90       90   40   1k
+E_rja     90   40   table {TIME} ; Normalized NDH832P Single Pulsed rja(t)
++(0.0001,0.0009)
++(0.001,0.005)
++(0.01,0.023347)
++(0.05,0.059072)
++(0.1,0.087589)
++(0.2,0.130696)
++(0.5,0.224473)
++(1,0.324895)
++(2,0.4391)
++(10,0.702954)
++(20,0.803376)
++(50,0.900844)
++(100,0.962025)
++(200,1)
++(300,1)
+.ENDS 832PTHM

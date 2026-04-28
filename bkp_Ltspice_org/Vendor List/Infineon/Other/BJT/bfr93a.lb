@@ -1,0 +1,50 @@
+***************************************************************
+
+* SIEMENS Small Signal Semiconductors
+
+* GUMMEL-POON MODEL CHIP PARAMETERS IN SPICE 2G6 SYNTAX
+
+* VALID UP TO 6 GHZ
+
+* >>> T259 <<< (CHIP)
+
+* Extracted on behalf of SIEMENS Small Signal Semiconductors by
+
+* Institut fuer Mobil- und Satellitenfunktechnik (IMST)
+
+* (C) 1996 SIEMENS AG
+
+* Version 1.0    September 1996
+
+***************************************************************
+
+.MODEL BFR93A NPN(
+
++ IS = 8.6752e-15     BF = 137.63       NF = 0.93633
+
++ VAF = 20.011        IKF = 0.33395     ISE = 2.6193e-12
+
++ NE = 1.5466         BR = 59           NR = 0.88761
+
++ VAR = 26.834        IKR = 0.015129    ISC = 7.0823e-16
+
++ NC = 1.95           RB = 7.2326       IRB = 4.3806e-05
+
++ RBM = 3.4649        RE = 1.0075       RC = 0.13193
+
++ CJE = 3.1538e-15    VJE = 0.70393     MJE = 0.5071
+
++ TF = 3.3388e-11     XTF = 0.28319     VTF = 0.17765
+
++ ITF = 0.0025184     PTF = 0           CJC = 1.0395e-12
+
++ VJC = 0.72744       MJC = 0.34565     XCJC = 0.21422
+
++ TR = 1.1061e-09     CJS= 0            VJS = 0.75
+
++ MJS = 0             XTB = 0           EG = 1.11
+
++ XTI = 3             FC = 0.75935)
+
+**************************************************************
+

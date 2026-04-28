@@ -1,0 +1,25 @@
+***************************************************************
+* SIEMENS Small Signal Semiconductors
+* GUMMEL-POON MODEL CHIP PARAMETERS IN SPICE 2G6 SYNTAX
+* VALID UP TO 6 GHZ
+* >>> T309 <<< (CHIP)
+* Extracted on behalf of SIEMENS Small Signal Semiconductors by
+* Institut fuer Mobil- und Satellitenfunktechnik (IMST)
+* (C) 1996 SIEMENS AG
+* Version 1.0    September 1996
+***************************************************************
+.MODEL T309 PNP(
++ IS = 1.0366e-15     BF = 80           NF = 1.0313
++ VAF = 8.4866        IKF = 0.47497     ISE = 1.6295e-14
++ NE = 1.3702         BR = 16.116       NR = 1.2907
++ VAR = 9.5149        IKR = 0.012081    ISC = 9.4971e-17
++ NC = 1.038          RB = 3.2133       IRB = 0.00046855
++ RBM = 2.0822        RE = 1.9597       RC = 1.1393
++ CJE = 2.0636e-14    VJE = 0.84456     MJE = 0.68352
++ TF = 5.4303e-11     XTF = 0.27447     VTF = 0.19311
++ ITF = 0.0030573     PTF = 0           CJC = 2.6904e-12
++ VJC = 1.0282        MJC = 0.5401      XCJC = 0.075977
++ TR = 3.4233e-10     CJS= 0            VJS = 0.75
++ MJS = 0             XTB = 0           EG = 1.11
++ XTI = 3             FC = 0.54298)
+***************************************************************

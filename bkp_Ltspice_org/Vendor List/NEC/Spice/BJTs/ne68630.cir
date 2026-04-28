@@ -1,0 +1,55 @@
+* FILENAME:         NE68630.CIR
+* NEC PART NUMBER:  NE68630
+* LAST MODIFIED:    6/96 
+* BIAS CONDITIONS:  Vce=2.5V to 3V, Ic=0.3mA to 5mA
+* FREQ RANGE:       0.1GHz to 3.0GHz
+*
+*                     CCBpkg
+*             .-------||--------.
+*             |          CCB    |
+*             |      .--||---.  |     COLLECTOR
+* BASE        |      |        | |
+*             |      |   /----o-o-----o--Lcx--o
+*     o--Lbx--o-LB---o--|Q1   |       |
+*             |      B   \   --       --
+*             |          |   -- CCE   -- CCEpkg
+*             --CBEpkg E o----'       |
+*             --         |            |
+*             |         LE            |
+*             `----------o------------'
+*                        |
+*                        Lex
+*                        |
+*                        o EMITTER
+*
+*       CCB   = 0.18pF           LB  = 0.004nH
+*       CCE   = 0.18pF           LE  = 0.004nH
+*       CCBpkg= 0.080pF          Lbx = 0.8nH
+*       CCEpkg= 0.080pF          Lcx = 0.35nH
+*       CBEpkg= 0.018pF          Lex = 1.4nH
+*
+*                   c b e
+.SUBCKT NE68630/CEL 2 1 3
+Q1  5 7 8 NE68600
+CCB 7 5 0.18E-12
+CCE 5 8 0.18E-12
+LE  8 6 0.004E-9
+LB  4 7 0.004E-9
+CCBPKG 4 5 0.08E-12
+CCEPKG 5 6 0.08E-12
+CBEPKG 4 6 0.018E-12
+LBX 1 4 0.8E-9
+LCX 5 2 0.35E-9
+LEX 6 3 1.4E-9
+.MODEL NE68600 NPN 
++(IS=30.2e-18    BF=143.5         NF=0.990       VAF=40.0         IKF=0.10
++ ISE=5.42e-14   NE=2.58          BR=6.95        NR=0.990         VAR=2.66
++ IKR=1.51       ISC=7.82e-14     NC=4.86        RE=1.75          RB=17.0
++ RBM=3.0        IRB=7.59e-4      RC=10.0        CJE=0.168e-12    VJE=1.18
++ MJE=0.368      CJC=0.095e-12    VJC=0.715      MJC=0.512        XCJC=0.10
++ CJS=0.0        VJS=0.750        MJS=0.0        FC=0.50          TF=8.0e-12
++ XTF=0.390      VTF=0.668        ITF=0.060      PTF=60.0         TR=0.0
++ EG=1.11        XTB=0.0          XTI=3.0        KF=0.0           AF=1.0 )
+.ENDS
+*$
+

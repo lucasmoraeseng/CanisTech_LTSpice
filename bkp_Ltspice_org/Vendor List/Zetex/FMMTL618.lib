@@ -1,0 +1,22 @@
+*ZETEX  FMMTL618 Spice model   Last revision 25/06/98 
+*
+.MODEL FMMTL618  NPN IS =2.5E-13 NF =1 BF =600 IKF=1 VAF=51 ISE=2E-13 
++NE =1.4 NR =1 BR =150 IKR=.5 VAR=25 ISC=1e-13 NC =1.47 RB =0.5
++RE =0.055 RC =0.055 CJC=23E-12 MJC=0.33 VJC=0.75 CJE=98E-12 TF =0.8E-9 
++TR =30e-9 
+*
+*
+*                          (C)  1991 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP
+

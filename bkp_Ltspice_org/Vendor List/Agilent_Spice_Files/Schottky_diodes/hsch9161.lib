@@ -1,0 +1,18 @@
+*SPICE model for HSCH-9161
+*Because of the high leakage of this diode under reverse bias, 
+*it must be modeled as an anti-parallel pair. 
+*D1 represents the characteristic of the HSCH-9161 under forward bias 
+*and D2 (in the forward direction) gives the V-I curve of the HSCH-9161 under reverse bias.. 
+* 
+*
+.SUBCKT HSCH9161 1 2
+DCD1    1	2	DMOD1
+DCD2    2	1	DMOD2 
+C1	1	2	0.011E-12
+*Bond pad parasitics
+.MODEL  DMOD1	D(IS=12E-6, CJO=0.03E-12, VJ=.26, BV=10, IBV=10E-12
++		EG=1.42, N=1.2, RS=50, XTI=2, M=0.5)
+.MODEL  DMOD2	D(IS=84E-6, CJO=0.03E-12, VJ=.26, BV=10, IBV=10E-12
++		EG=1.42, N=40, RS=10, XTI=2, M=0.5)
+.ENDS
+

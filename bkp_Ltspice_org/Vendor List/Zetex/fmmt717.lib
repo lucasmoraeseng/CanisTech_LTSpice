@@ -1,0 +1,23 @@
+*ZETEX  FMMT717  Spice model   Last revision 25/3/94
+*
+.MODEL FMMT717 PNP IS =5.5E-13  BF =500 IKF =3 VAF =14.93 
++              ISE=1.75E-13 NE =1.5 NR =1.00 BR =280 IKR=0.3 
++              VAR=5.64 ISC=6.01E-13 NC =1.34 RB =0.3 RE =0.03
++              RC =0.025 CJC=116.9E-12 MJC=0.3456 VJC=0.4576 
++              CJE=223.6E-12 MJE=0.4803 VJE=0.9091 TF =1.2E-9 
++              TR =2E-9
+*
+*
+*                          (C)  1994 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

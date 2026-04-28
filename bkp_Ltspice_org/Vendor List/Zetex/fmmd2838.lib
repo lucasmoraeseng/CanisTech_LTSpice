@@ -1,0 +1,25 @@
+*   ZETEX  FMMD2838   Spice Model        Last revision 21/8/92
+*
+.MODEL FMMD2838 D IS=4.856E-9 N=2.01 RS=1.358 XTI=3 
++      EG=1.11 BV=162 IBV=2.587E-3 TT=4.184E-9
+*
+*      FOR LATER VERSIONS OF SPICE:-  SET RS=.908 AND ADD
+*    + ISR=2.032E-18 NR=6.974 IKF=44.08E-3
+*
+*   NOTE: FOR RF OPERATION ADD PACKAGE INDUCTANCE OF 2.5E-9H AND
+*         PARALLEL CAPACITANCE OF 0.35E-12F. 
+*
+*
+*                          (C)  1992 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

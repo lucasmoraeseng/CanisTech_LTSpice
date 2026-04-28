@@ -1,0 +1,23 @@
+hip2500 Macro Model Excersising Test
+* HIP2500 MACRO MODEL Pin Order.                    
+*       vdd hin sd  lin vss vb  ho  vs  vcc lo  com  (sbckt name in .lib)
+*
+xh2500  100 109 110 111 106 112 113 114 115 116 117  hip2500
+*
+vdd	100	0	pulse(0 12 1n 100n 10n 1 2)
+vhin	109	0	pulse(0 12 100n 10n 10n 850n 2u)
+vsd     110     0       0
+vlin    111     0       pulse(0 12 1.1u 10n 10n 850n 2u)
+vss     106     0       0
+vb      112     114     pulse(0 12 1n 100n 12n 1 2)
+cho     113     0       1000p
+vs      114     0       0
+vcc     115     0       pulse(0 12 1n 100n 10n 1 2)
+clo     116     0       1000p
+vcomm   117     0       0
+*
+.options node list
+.lib hip2500.lib
+.probe
+.tran .1u 5u 
+.end

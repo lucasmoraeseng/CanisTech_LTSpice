@@ -1,0 +1,22 @@
+*   ZETEX   FZT1151A   Spice model   Last revision 12/12/96
+*
+.MODEL FZT1151A PNP IS=1.7e-12 NF=1.004 ISE=1.02e-13 NE=1.55 BF=562
++              VAF=26.01 IKF=3.5 NR=.97 ISC=1.5e-13 NC=1.3 BR=38
++              VAR=2.41 IKR=0.3 RE=25.37e-3 RB=250e-3 RC=25e-3 
++              CJE=440e-12 CJC=160e-12 VJC=1.058 MJC=0.5678
++              TF=0.8e-9 TR=55.5e-9
+*
+*
+*                          (C)  1996 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

@@ -1,0 +1,55 @@
+* CA3096N NPN model
+* created using Parts release 6.3a on 02/23/97 at 15:21
+* Parts is a MicroSim product.
+.MODEL CA3096N NPN
++ IS=10.000E-15
++ BF=466.52
++ VAF=100
++ IKF=14.030E-3
++ ISE=74.093E-15
++ NE=1.6606
++ BR=.1001
++ VAR=100
++ IKR=10.010E-3
++ ISC=10.000E-15
++ NK=.46898
++ RC=10
++ CJE=1.2825E-12
++ MJE=.33333
++ CJC=786.59E-15
++ MJC=.33333
++ TF=490.39E-12
++ XTF=5.3212
++ VTF=28.396
++ ITF=.27408
++ TR=10.000E-9
+*$
+
+
+
+
+* CA3096P PNP model
+* created using Parts release 6.3a on 02/23/97 at 16:07
+* Parts is a MicroSim product.
+.MODEL CA3096P PNP
++ IS=10.000E-15
++ BF=94.511
++ VAF=100
++ IKF=1.1177E-3
++ ISE=976.47E-15
++ NE=1.9980
++ BR=.1001
++ VAR=100
++ IKR=10.010E-3
++ ISC=10.000E-15
++ NK=.53243
++ CJE=1.4535E-12
++ MJE=.33333
++ CJC=3.8474E-12
++ MJC=.33333
++ TF=24.300E-9
++ XTF=10.054
++ VTF=9.7920
++ ITF=1.2571
++ TR=10.000E-9
+*$

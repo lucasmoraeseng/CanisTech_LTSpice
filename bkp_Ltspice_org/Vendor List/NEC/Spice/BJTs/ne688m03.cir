@@ -1,0 +1,52 @@
+* FILENAME:        NE688M03.CIR
+* NEC PART NUMBER: NE688M03
+* LAST MODIFIED:   11/98
+* BIAS CONDITIONS: Vce=0.5V to 5V, Ic=0.5mA to 80mA
+* FREQ RANGE:      0.1GHz to 5GHz
+* Hfe:		 86.7 at Vce=1v, Ic=3mA
+*
+*                            CCBpkg
+*                   ,--------||-----------.
+*                   |                     |
+*                   |        CCB          |
+*                   |    .---||---.       |
+*  BASE             |    |        |       |   COLLECTOR
+*                   |    |   /----o-------o--Lcx------o
+*  o-------Lbx------o-LB-o--|Q1   |       |
+*                        B   \   --       |
+*                            |   -- CCE  --
+*                          E o----'      -- CCEpkg
+*                            |            |
+*                           LE            |
+*                            o------------'
+*                            |
+*                            |
+*                           Lex
+*                            | 
+*                            o EMITTER
+*
+*       CCB    = 0.24pF           LB  = 0.5nH
+*       CCE    = 0.27pF           LE  = 0.6nH
+*       CCBpkg = 0.08pF           Lbx = 0.12nH
+*       CCEpkg = 0.08pF           Lcx = 0.10nH
+*                                 Lex = 0.12nH
+*
+Q1  5 7 8 NE68800
+CCB 7 5 0.24E-12
+CCE 5 8 0.27E-12
+LE  8 6 0.6E-9
+LB  4 7 0.5E-9
+CCBPKG 4 5 0.08E-12
+CCEPKG 5 6 0.08E-12
+LBX 1 4 0.12E-9
+LCX 5 2 0.10E-9
+LEX 6 3 0.12E-9
+.MODEL NE68800 NPN 
++( IS=3.8e-16    BF=135.7         NF=1           VAF=28           IKF=0.6
++ ISE=3.8e-15    NE=1.49          BR=12.3        NR=1.1           VAR=3.5
++ IKR=0.06       ISC=3.5e-16      NC=1.62        RE=0.40          RB=6.14
++ RBM=3.5        IRB=0.001        RC=4.2         CJE=0.796e-12    VJE=0.71
++ MJE=0.38       CJC=0.549e-12    VJC=0.65       MJC=0.48         XCJC=0.56
++ CJS=0.0        VJS=0.750        MJS=0.0        FC=0.75          TF=11e-12         
++ XTF=0.36       VTF=0.65         ITF=0.61       PTF=50           TR=32e-12                
++ EG=1.11        XTB=0.0          XTI=3.0        KF=1.5e-14       AF=1.22)

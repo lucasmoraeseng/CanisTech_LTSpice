@@ -1,0 +1,59 @@
+*
+* Subcircuit for Parmeko mains transformer model 6000/71
+*
+* Primary 230/240V AC
+*
+* Secondary 318V AC @ 300mA DC
+*           6.3V AC @ 5A
+*
+* D.Munro - 10/4/97
+*
+* 10/04/97  Initial model
+*
+* 02/05/97  Model changed to take out leaked inductance/capacitance etc.
+*           Also "leak" resistors put in to stop error messages when windings
+*           were left unconnected.
+*
+*
+* Pin 1   Mains neutral
+*     2   Mains 230V tap
+*     3   Mains 240V tap
+*
+*     4,5 318V AC
+*     6,7 6.3V AC
+*
+.SUBCKT PARMEKO 1 2 3 4 5 6 7
+*
+* Primary
+*
+Rpri1   1       10      5.7
+Lpri1   10      2       5.1H
+Rpri2   2       11      0.5
+Lpri2   11      3       10mH
+Rleak1  0       1       1000MEG
+Rleak2  0       2       1000MEG
+Rleak3  0       3       1000MEG
+*
+* HV Secondary
+*
+Rsec1   4       20      18
+Lsec1   20      21      4.8H
+Rsec2   21      22      7.5
+Lsec2   22      5       1.17H
+Rleak4  0       4       1000MEG
+Rleak5  0       5       1000MEG
+*
+* Heater secondary
+*
+Rsec3   6       30      0.025
+Lsec3   30      31      1.09mH
+Rsec4   31      32      0.025
+Lsec4   32      7       1.09mH
+Rleak6  0       6       1000MEG
+Rleak7  0       7       1000MEG
+*
+* Coupling
+*
+K1      Lpri1 Lpri2 Lsec1 Lsec2 Lsec3 Lsec4 0.997
+.ENDS 
+

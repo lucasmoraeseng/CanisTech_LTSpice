@@ -1,0 +1,24 @@
+*ZETEX  BPW41 Spice model  Last revision 24/08/98
+*
+*To model reverse current due to low intensity illumination
+*use a current source (typically 50nA/lux) across the diode.
+*
+.MODEL BPW41 D IS=1.40E-10 N=1.1 RS=75 IKF=4E-5 
++CJO=73.4E-12 M=.46 VJ=.39 ISR=2E-10 NR=2 BV=160 
++IBV=1E-4 TT=2.5E-5 
+*
+*
+*                          (C)  1991 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP
+

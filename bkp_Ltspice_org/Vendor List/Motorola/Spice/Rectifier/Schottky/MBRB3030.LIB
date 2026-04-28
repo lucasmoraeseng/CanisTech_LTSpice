@@ -1,0 +1,52 @@
+###############################################################################
+#                                                                             #
+#                                                                             #
+#                                                                             #
+#        #############################################################        #
+#        #                                                           #        #
+#        #                        mbrb3030ct                         #        # 
+#        #                                                           #        #
+#        #                                                           #        #
+#        #                  Motorola Power Rectifier                 #        # 
+#        #                         30 AMPERES                        #        #
+#        #                          30 VOLTS                         #        #
+#        #                                                           #        #
+#        #               This model was developed by                 #        #
+#        #                      Analogy, Inc.                        #        #
+#        #                    9205 SW Gemini Dr.                     #        #
+#        #                   Beaverton, OR  97005                    #        #
+#        #               Copyright 1994 Analogy, Inc.                #        #
+#        #                  All Rights Reserved                      #        #
+#        #                                                           #        #
+#        #    The content of this model is subject to change         #        #
+#        #    without notice and may not be modified or altered      #        #
+#        #    without permission from Motorola, Inc.  This model     #        #
+#        #    has been carefully checked and is believed to be       #        #
+#        #    accurate, however neither Analogy nor Motorola         #        #
+#        #    assume liability for the use of this model or the      #        #
+#        #    results obtained from using it.                        #        #
+#        #                                                           #        #
+#        #    For more information regarding modeling services,      #        #
+#        #    model libraries or simulation products, please         #        #
+#        #    call Analogy, Inc. (503) 626-9700.                     #        #
+#        #                                                           #        #
+#        #############################################################        #
+#                                                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+.model mbrb3030ct d
++ is= 6.208e-06
++ rs= 0.003257
++ n= 1.035
++ tt= 1e-09
++ cjo= 4.44e-09
++ vj= 0.548
++ m= 0.4804
++ eg= 0.6
++ xti= 5
++ fc= 0.5
++ bv= 40
++ ibv= 0.01
++ kf= 0
++ af= 1

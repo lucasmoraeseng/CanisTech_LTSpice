@@ -1,0 +1,7 @@
+
+.model BAT54    D(Is=31.12n N=1.048 Rs=1.256 Ikf=0 Xti=3 Eg=1.11 Cjo=13.36p M=.3913
++               Vj=.3905 Fc=.5 Isr=2.465u Nr=2 Bv=50 Ibv=10u)
+*		Fairchild	pid=bat54	case=SOT23
+*		04-04-00 
+*		
+*$

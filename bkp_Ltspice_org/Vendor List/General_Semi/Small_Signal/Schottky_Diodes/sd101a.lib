@@ -1,0 +1,33 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+.SUBCKT SD101A 1 2
+.MODEL SD D (
++   N=1.70463
++  IS=1.55043E-007
++  RS=31.5955
++  EG=0.69
++ XTI=2 
++ CJO=2E-012
++  VJ=0.314625
++   M=0.188302
++  FC=0.5
++  TT=1.4427E-009
++  BV=60
++ IBV=0.001
++  KF=0
++  AF=1 )
+.MODEL PND D (
++   N=2.01276
++  IS=2.08639E-009
++  RS=0.577781
++  EG=1.11
++ XTI=3 )
+D1 1 2 SD
+D2 1 2 PND
+.ENDS

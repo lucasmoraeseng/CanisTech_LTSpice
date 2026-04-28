@@ -1,0 +1,22 @@
+*ZETEX  ZTX360 Spice model   Last revision 14/12/92
+*
+.MODEL ZTX360 NPN IS =2.4508E-14 NF =1.003 BF =75 IKF=1.0 VAF=83
++             ISE=6.2319E-13 NE =1.4459 NR =1.018 BR =2.3 IKR=1.8 
++             VAR=37 ISC=1.2805E-8 NC =1.9335 RB =0.165 RE =0.126 
++             RC =0.200 CJC=18.24E-12 MJC=0.2654 VJC=0.1131 
++             CJE=62E-12 TF =0.54E-9 TR =200E-9
+*
+*
+*                          (C)  1992 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

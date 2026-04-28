@@ -1,0 +1,58 @@
+*EL5220C/EL5420C spice model. This spice model modes the single amplifier for EL5220C and EL5420C
+*The AC responses are based on Rl=10K, Cl=10pF
+* connections:        +input
+*                       |  -input
+*                       |    | +Vsupply
+*                       |    |    | -Vsupply
+*                       |    |    |    |  output
+*                       |    |    |    |    |
+.subckt EL5220C         3    2    8    4    1
+*
+*Input stage
+m1 10 5 9 9 mod2 L=1e-6 W=126e-6
+m2 11 2 9 9 mod2 L=1e-6 W=126e-6
+m3 12 5 14 14 mod1 L=1e-6 W=126e-6
+m4 13 2 14 14 mod1 L=1e-6 W=126e-6
+r1 10 4 4k
+r2 11 4 4k
+r3 12 8 4k
+r4 13 8 4k
+ca 10 11 0.5p
+cb 12 13 0.5p
+is1 8 9 50u
+is2 14 4 50u
+vos 5 6 2mV
+*
+*voltage noise
+idn 500 25 3.121mA
+cdn 25 26 1GF
+vdn 26 500 0V
+dn  25 500 den
+h1 6 3 vdn 14
+*
+*G1,G2 stage
+g1 500 15 10 11 2.0e-4
+g2 500 15 12 13 2.0e-4 
+rt 15 500 0.8e8
+ct 15 1 9pF
+d1 15 20 dx
+d2 21 15 dx
+*
+*output stage
+m5 1 17 8 8 mod2 L=1e-6 W=1000e-6
+m6 1 18 4 4 mod1 L=1e-6 W=1000e-6
+e1 8 17 poly(1) (500, 15) 0.9 1
+e2 18 4 poly(1) (15, 500) 0.9 1
+*
+*Reference voltage
+Eref 500 0 poly(2) (8,0) (4,0) 0 0.5 0.5
+esp 20 500 poly(1) (8,4) -0.1 0.5
+esn 21 500 poly(1) (4,8) 0.1 0.5
+Iss 8 4 346uA
+*
+.model mod1 nmos (kp=10e-6,VTO=0.8V, lambda=0.01)
+.model mod2 pmos (kp=10e-6,VTO=-0.8V, lambda=0.01)
+.model dx d(N=0.01)
+.model den d(kf=3.2e-13 af=1)
+.ends EL5220C
+*$

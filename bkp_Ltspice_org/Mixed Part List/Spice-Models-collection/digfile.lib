@@ -1,0 +1,467 @@
+* Library of digital input and output devices for Digital Files option
+
+*  Copyright OrCAD, Inc. 1998 All Rights Reserved.
+
+* Release date: July 1993
+
+* $Revision:   1.6  $
+* $Author:   RPEREZ  $
+* $Date:   17 Apr 1998 11:07:14  $
+*
+*
+*** digital input devices *****************************************************
+
+* The parameters in this library were derived from:
+*
+*   The TTL Data Book, Texas Instruments, 1985
+*     vol. 2, pp 1-21 to 1-26
+*   Supplement to TTL Data Book, Texas Instruments, 1984
+*     vol. 3, pp 3-17 to 3-19
+*   High-speed CMOS Logic Data Book, Texas Instruments, 1984
+*     pp 2-4 to 2-16
+*   CMOS Integrated Circuits Databook, RCA Solid State, 1983
+*     pp 44-55
+
+* Example use:  N3 out 0 VCC DIN74LS
+*    VCC must be connected to a +5 volt supply
+
+* Notes:
+* 1) Unlike the other libraries, this one is not ready to use as it is.
+*    Each .MODEL statement has 3 parameters missing: the name of the
+*    file to read for digital input, the format of that file, and the
+*    file's time step.  You must supply these parameters before using
+*    these models.  Also, you may need to change the characters used
+*    to designate the low, high, unknown, and high impedance states;
+*    these models use "0", "1", "X", and "Z".  We have set the "X"
+*    state to be halfway between the "0" and "1" states; you can
+*    change this if it is not appropriate for your application.
+*    Because you will want to make some or all of these changes,
+*    we recommend making a working copy of this file instead of using
+*    the original.
+* 2) Each logic family has one or more digital input devices in this
+*    library: standard drive, buffer drive, and open-collector drive.
+*    These devices are the output stage of the digital component, but
+*    are called "digital input devices" because they provide input to
+*    the analog circuitry.  The 54 series of families have the same
+*    parameters as the 74 series.  The 54/74HCT family has the same
+*    parameters as the 54/74HC family.
+* 3) The values in these models only work properly if the low-level
+*    node (the 2nd node) in the "N" device is connected to ground and
+*    the high-level node (the 3rd node) is connected to VCC.  For the
+*    bipolar families VCC must be +5 volts (this includes open-collector
+*    outputs); for the 74HC CMOS family VCC must be between +4.5 and +6
+*    volts; for the 4000 CMOS family VCC must be between +3 and +18 volts.
+*    The first node is the output of the "N" device.
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74LS family
+
+*   standard drive
+*
+.model DIN74LS dinput(
++	s0name = "0", s0tsw = 8ns, s0rlo = 30.6 s0rhi = 1.5k,
++	s1name = "1", s1tsw = 8ns, s1rlo = 203  s1rhi = 87.1,
++	s2name = "X", s2tsw = 4ns, s2rlo = 78.8 s2rhi = 361)
+*$
+*   buffer drive
+*
+.model DIN74LSB dinput(
++	s0name = "0", s0tsw = 8ns, s0rlo = 7.96 s0rhi = 226,
++	s1name = "1", s1tsw = 8ns, s1rlo = 203  s1rhi = 87.1,
++	s2name = "X", s2tsw = 4ns, s2rlo = 40.2 s2rhi = 140,
++	s3name = "Z", s3tsw = 8ns, s3rlo = 200k s3rhi = 200k)
+*$
+*   open-collector output
+*
+.model DIN74LSOC dinput(
++	s0name = "0", s0tsw = 8ns, s0rlo = 30.6 s0rhi = 1.5k,
++	s1name = "1", s1tsw = 8ns, s1rlo = 200k s1rhi = 200k,
++	s2name = "X", s2tsw = 4ns, s2rlo = 2470 s2rhi = 17.3k)
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74 family (standard TTL)
+
+*   standard drive
+*
+.model DIN74 dinput(
++	s0name = "0", s0tsw = 5ns, s0rlo = 8.54 s0rhi = 38.9,
++	s1name = "1", s1tsw = 8ns, s1rlo = 486  s1rhi = 209,
++	s2name = "X", s2tsw = 4ns, s2rlo = 64.4 s2rhi = 90.1,
++	s3name = "Z", s3tsw = 8ns, s3rlo = 100k s3rhi = 100k)
+*$
+*   open-collector output
+*
+.model DIN74OC dinput(
++	s0name = "0", s0tsw = 5ns, s0rlo = 8.54 s0rhi = 38.9,
++	s1name = "1", s1tsw = 8ns, s1rlo = 100k s1rhi = 100k,
++	s2name = "X", s2tsw = 4ns, s2rlo = 924  s2rhi = 1970)
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74S family
+
+*   standard drive
+*
+.model DIN74S dinput(
++	s0name = "0", s0tsw = 2.5ns, s0rlo = 10.9 s0rhi = 292,
++	s1name = "1", s1tsw = 2.5ns, s1rlo = 174  s1rhi = 74.6,
++	s2name = "X", s2tsw = 1.3ns, s2rlo = 43.5 s2rhi = 148,
++	s3name = "Z", s3tsw = 5ns,   s3rlo = 40k  s3rhi = 40k)
+*$
+*   open-collector output
+*
+.model DIN74SOC dinput(
++	s0name = "0", s0tsw = 2.5ns, s0rlo = 10.9 s0rhi = 292,
++	s1name = "1", s1tsw = 2.5ns, s1rlo = 40k  s1rhi = 40k,
++	s2name = "X", s2tsw = 1.3ns, s2rlo = 660  s2rhi = 3420)
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74ALS family
+
+*   standard drive
+*
+.model DIN74ALS dinput(
++	s0name = "0", s0tsw = 1ns, s0rlo = 30.6 s0rhi = 1.5k,
++	s1name = "1", s1tsw = 3.5ns,s1rlo= 174  s1rhi = 74.6,
++	s2name = "X", s2tsw = 2ns, s2rlo = 73.0 s2rhi = 335)
+*$
+*   buffer drive
+*
+.model DIN74ALSB dinput(
++	s0name = "0", s0tsw = 3ns, s0rlo = 10.8 s0rhi = 328,
++	s1name = "1", s1tsw = 3.5ns,s1rlo= 62.5 s1rhi = 146,
++	s2name = "X", s2tsw = 3ns, s2rlo = 26.0 s2rhi = 219,
++	s3name = "Z", s3tsw = 4ns, s3rlo = 100k s3rhi = 100k)
+*$
+*   open-collector output
+*
+.model DIN74ALSOC dinput(
++	s0name = "0", s0tsw = 1ns, s0rlo = 30.6 s0rhi = 1.5k,
++	s1name = "1", s1tsw = 3.5ns,s1rlo= 100k s1rhi = 100k,
++	s2name = "X", s2tsw = 2ns, s2rlo = 1750 s2rhi = 12.2k)
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74AS family
+
+*   standard drive
+*
+.model DIN74AS dinput(
++	s0name = "0", s0tsw = 1ns, s0rlo = 10.9 s0rhi = 292,
++	s1name = "1", s1tsw = 1.5ns,s1rlo= 97.3 s1rhi = 41.7,
++	s2name = "X", s2tsw = 1ns, s2rlo = 32.6 s2rhi = 110)
+*$
+*   buffer drive
+*
+.model DIN74ASB dinput(
++	s0name = "0", s0tsw = 1ns, s0rlo = 3.28 s0rhi = 93.2,
++	s1name = "1", s1tsw = 1.5ns,s1rlo= 15.1 s1rhi = 35.3,
++	s2name = "X", s2tsw = 1ns, s2rlo = 7.04 s2rhi = 57.4,
++	s3name = "Z", s3tsw = 2ns, s3rlo = 40k  s3rhi = 40k)
+*$
+*   open collector output
+*
+.model DIN74ASOC dinput(
++	s0name = "0", s0tsw = 1ns, s0rlo = 10.9 s0rhi = 292,
++	s1name = "1", s1tsw = 1.5ns,s1rlo= 40k  s1rhi = 40k,
++	s2name = "X", s2tsw = 1ns, s2rlo = 660  s2rhi = 3420)
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74HC family
+
+*   standard drive
+*
+.model DIN74HC dinput(
++	s0name = "0", s0tsw = 400ns, s0rlo = 30    s0rhi = 10MEG,
++	s1name = "1", s1tsw = 400ns, s1rlo = 10MEG s1rhi = 40,
++	s2name = "X", s2tsw = 200ns, s2rlo = 17.3k s2rhi = 20.0k)
+*$
+*   buffer drive
+*
+.model DIN74HCB dinput(
++	s0name = "0", s0tsw = 400ns, s0rlo = 20    s0rhi = 10MEG,
++	s1name = "1", s1tsw = 400ns, s1rlo = 10MEG s1rhi = 26.7,
++	s2name = "X", s2tsw = 200ns, s2rlo = 14.1k s2rhi = 16.3k,
++	s3name = "Z", s3tsw = 400ns, s3rlo = 10MEG s3rhi = 10MEG)
+*$
+*   open-drain output
+*
+.model DIN74HCOD dinput(
++	s0name = "0", s0tsw = 400ns, s0rlo = 30    s0rhi = 10MEG,
++	s1name = "1", s1tsw = 400ns, s1rlo = 10MEG s1rhi = 10MEG,
++	s2name = "X", s2tsw = 200ns, s2rlo = 17.3k s2rhi = 10MEG)
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 4000 CMOS family (A and B series)
+
+*   standard drive
+*
+.model DIN4000 dinput(
++	s0name = "0", s0tsw = 400ns, s0rlo = 225   s0rhi = 10MEG,
++	s1name = "1", s1tsw = 400ns, s1rlo = 10MEG s1rhi = 225,
++	s2name = "X", s2tsw = 200ns, s2rlo = 47.4k s2rhi = 47.4k)
+*$
+*   buffer drive
+*
+.model DIN4000B dinput(
++	s0name = "0", s0tsw = 400ns, s0rlo = 53.3  s0rhi = 10MEG,
++	s1name = "1", s1tsw = 400ns, s1rlo = 10MEG s1rhi = 53.3,
++	s2name = "X", s2tsw = 200ns, s2rlo = 23.1k s2rhi = 23.1k,
++	s3name = "Z", s3tsw = 400ns, s3rlo = 10MEG s3rhi = 10MEG)
+*$
+*   open-drain output
+*
+.model DIN4000OD dinput(
++	s0name = "0", s0tsw = 400ns, s0rlo = 225   s0rhi = 10MEG,
++	s1name = "1", s1tsw = 400ns, s1rlo = 10MEG s1rhi = 10MEG,
++	s2name = "X", s2tsw = 200ns, s2rlo = 47.4k s2rhi = 10MEG)
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+
+*** digital output devices ****************************************************
+
+* The parameters in this model library were derived from:
+*
+*   The TTL Data Book, Texas Instruments, 1985
+*     vol. 2, pp 1-21 to 1-26 and pp 3-79 to 3-81
+*   Supplement to TTL Data Book, Texas Instruments, 1984
+*     vol. 3, pp 3-17 to 3-19
+*   High-speed CMOS Logic Data Book, Texas Instruments, 1984
+*     pp 2-4 to 2-16
+*   CMOS Integrated Circuits Databook, RCA Solid State, 1983
+*     pp 44-55
+
+* Example use:  O3 bus3 0 DO74
+*               X3 bus3 0 VCC DO74LS
+
+* Notes:
+* 1) Unlike the other libraries, this one is not ready to use as it is.
+*    Each .MODEL statement has 3 parameters missing: the name of the
+*    file to read for digital input, the format of that file, and the
+*    file's time step.  You must supply these parameters before using
+*    these models.  Also, you may need to change the characters used
+*    to designate the low, high, and unknown states; these models use
+*    "0", "1", and "X".  You can change this if it is not appropriate
+*    for your application.  Because you will want to make some or all
+*    of these changes, we recommend making a working copy of this file
+*    instead of using the original.
+* 2) The "O" devices are the input stage of the digital component, but
+*    are called "digital output devices" because they provide output
+*    from the analog circuitry.  Each TTL logic family has two digital
+*    output devices in this library: a simple model and a more elaborate
+*    model.  The simple model is a .MODEL statement and translates a
+*    voltage into a logic state.  The elaborate model is a .SUBCKT
+*    definition and contains the simple model plus components which
+*    provide electrical loading.  We recommend using the simple model
+*    if you can: it takes up less memory and less computer time.  The
+*    CMOS families have only a simple model which includes their
+*    capacitive loading.
+* 3) If you use the simple model, you must place "O" devices, with the
+*    2nd node connected to ground.  If you use the elaborate model, you
+*    must place "X" devices.
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74/54 family (standard TTL), elaborate model
+
+*   standard
+*
+* connections:   gate's input
+*                |
+.subckt DO74     1
+*
+O0	1	0	DOTTL
+D0	0	1	D74
+D1	2	1	D74
+R1	2	3	1k
+V1	3	0	2v
+R2	1	4	100k
+V2	4	0	5v
+.ends
+*$
+.model D74 D(is=1e-16 rs=25 cjo=2pf)
+
+*   Schmidt trigger
+*
+* connections:   gate's input
+*                |
+.subckt DO74SCH  1
+*
+O0	1	0	DOTTLSCH
+D0	0	1	D74
+D1	2	1	D74
+R1	2	3	1k
+V1	3	0	2v
+R2	1	4	100k
+V2	4	0	5v
+.ends
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74/54LS family, elaborate model
+
+*   standard
+*
+* connections:   gate's input
+*                |
+.subckt DO74LS   1
+*
+O0	1	0	DOTTL
+D0	0	1	D74S
+D1	2	1	D74S
+R1	2	3	1k
+V1	3	0	2v
+R2	1	4	100k
+V2	4	0	5v
+.ends
+*$
+*   Schmidt trigger
+*
+* connections:     gate's input
+*                  |
+.subckt DO74LSSCH  1
+*
+O0	1	0	DOTTLSCH
+D0	0	1	D74S
+D1	2	1	D74S
+R1	2	3	4k
+V1	3	0	2v
+R2	1	4	200k
+V2	4	0	5v
+.ends
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74/54S family, elaborate model
+
+*   standard
+*
+* connections:   gate's input
+*                |
+.subckt DO74S    1
+*
+O0	1	0	DOTTL
+D0	0	1	D74S
+D1	2	1	D74S
+R1	2	3	.8k
+V1	3	0	2v
+R2	1	4	80k
+V2	4	0	5v
+.ends
+*$
+*   Schmidt trigger
+*
+* connections:   gate's input
+*                |
+.subckt DO74SSCH 1
+*
+O0	1	0	DOTTLSCH
+D0	0	1	D74S
+D1	2	1	D74S
+R1	2	3	.8k
+V1	3	0	2v
+R2	1	4	80k
+V2	4	0	5v
+.ends
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74/54ALS family, elaborate model
+
+*   standard
+*
+* connections:   gate's input
+*                |
+.subckt DO74ALS  1
+*
+O0	1	0	DOTTL
+D0	0	1	D74S
+D1	2	1	D74S
+R1	2	3	16k
+V1	3	0	2v
+R2	1	4	200k
+V2	4	0	5v
+.ends
+*$
+*   Schmidt trigger
+*
+* connections:     gate's input
+*                  |
+.subckt DO74ALSSCH 1
+*
+O0	1	0	DOTTLSCH
+D0	0	1	D74S
+D1	2	1	D74S
+R1	2	3	16k
+V1	3	0	2v
+R2	1	4	200k
+V2	4	0	5v
+.ends
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* 74/54AS family, elaborate model
+
+*   standard
+*
+* connections:   gate's input
+*                |
+.subckt DO74AS   1
+*
+O0	1	0	DOTTL
+D0	0	1	D74S
+D1	2	1	D74S
+R1	2	3	16k
+V1	3	0	2v
+R2	1	4	200k
+V2	4	0	5v
+.ends
+*$
+*   Schmidt trigger
+*
+* connections:   gate's input
+*                |
+.subckt DO74ASSCH 1
+*
+O0	1	0	DOTTLSCH
+D0	0	1	D74S
+D1	2	1	D74S
+R1	2	3	16k
+V1	3	0	2v
+R2	1	4	200k
+V2	4	0	5v
+.ends
+.model D74S D(is=1e-11 rs=25 cjo=2pf)
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*$
+* Simple models
+
+*   TTL (also includes 54/74 LS, S, ALS, AS, HCT families)
+*
+.model DOTTL doutput(
++	s0name = "0", s0vlo = -1.5, s0vhi = 0.9,
++	s1name = "1", s1vlo =  1.1, s1vhi = 7.0,
++	s2name = "X", s2vlo =  0.9, s2vhi = 1.1)
+*$
+*   TTL, schmidt trigger (also includes 54/74 LS, S, ALS, AS, HCT families)
+*
+.model DOTTLSCH doutput(
++	s0name = "0", s0vlo = -1.5, s0vhi = 1.66,
++	s1name = "1", s1vlo = 0.86, s1vhi = 7.0)
+*$
+*   74/54HC CMOS (VCC = 5v)
+*
+.model DOHC doutput(cload = 3pf,
++	s0name = "0", s0vlo = -.5, s0vhi = 2.0,
++	s1name = "1", s1vlo = 2.5, s1vhi = 7.0,
++	s2name = "X", s2vlo = 2.0, s2vhi = 2.5)
+*$
+*   74/54HC CMOS (VCC = 5v), schmidt trigger
+*
+.model DOHCSCH doutput(cload = 3pf,
++	s0name = "0", s0vlo = -.5, s0vhi = 2.5,
++	s1name = "1", s1vlo = 2.0, s1vhi = 7.0)
+*$
+*   4000 CMOS (VCC = 10v)
+*
+.model DO4000 doutput(cload = 5pf,
++	s0name = "0", s0vlo = -.5, s0vhi = 5.0,
++	s1name = "1", s1vlo = 5.5, s1vhi = 10.5,
++	s2name = "X", s2vlo = 5.0, s2vhi = 5.5)
+*$
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+* end of library file
+

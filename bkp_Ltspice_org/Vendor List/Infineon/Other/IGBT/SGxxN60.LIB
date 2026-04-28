@@ -1,0 +1,633 @@
+*****************************************************************
+* SIEMENS Power Semiconductors      		SGxxN60.LIB	*
+*								*
+* Model library for S-IGBTs  (V1.1)       	02/99   	*
+*                                                               *
+* Models provided by SIEMENS are not warranted by SIEMENS as    *
+* fully representing all of the specifications and operating    *
+* characteristics of the semiconductor product to which the     *
+* model relates. The model describe the characteristics of a    * 
+* typical device.                                               * 
+* In all cases, the current data sheet information for a given  *
+* device is the final design guideline and the only actual      *
+* performance specification.                                    *
+* Altough models can be a useful tool in evaluating device      *
+* performance, they cannot model exact device performance under *
+* all conditions, nor are they intended to replace bread-       *
+* boarding for final verification. SIEMENS therefore does not   *
+* assume any liability arising from their use.                  *
+* SIEMENS reserves the right to change models without prior     * 
+* notice.                                                       *
+*                                                               *
+* This library contains models for the following SIEMENS        *
+* S-IGBT: 		                                        *
+*                                                               *
+*  SGP02N60 / SGB02N60  /  SGD02N60  /  SGU02N60                *
+*  SGP04N60 / SGB04N60  /  SGD04N60  /  SGU04N60                *
+*  SGP06N60 / SGB06N60  /  SGD06N60  /  SGU06N60                *
+*  SGP10N60 / SGB10N60  /  SGW10N60  		                *
+*  SGP15N60 / SGB15N60  /  SGW15N60  		                *
+*  SGP20N60 / SGB20N60  /  SGW20N60  		                *
+*  SGP30N60 / SGB30N60  /  SGW30N60  		                *
+*  			                                        * 
+*****************************************************************
+* S-IGBT * KM6/Si 6.10.98 Si *
+*****************************************************************
+.SUBCKT SGP02N60 ano gate kat
+*****************************
+* Parameters of Siemens SGP02N60	
+* units cm, s, A, V
+.PARAM 
++q = 1.6E-19	eps0 = 8.85E-14	epsi = 11.8
++ni = 1.45E10
++un = 1350	up = 450
++A = 0.0166	Agd = 0.0122	wb = 95.5E-4	
++Nb = 1.45E14	taub = 30E-6	
++Ise = 0.9E-12	Cje = 14.2p
++Cjs = 14.2p
++Vth = 4.5	Kp = 0.55
++Cox = 0.75n	Cgs = 155p
++Rs = 67.3m	Rg = 57.4
++Lc = 3E-4
+*****************************************************************************************************************
+MFET	d g s s 	MOS
+DE	e de 		D1
+DS	kat d		D2				
+**************************
+.MODEL	MOS	NMOS	(LEVEL=1,VTO={VTH},KP={KP})
+.MODEL 	D1	D	(IS={ISE},CJO={CJE})
+.MODEL	D2	D	(IS={ISE},CJO={CJS},TT={Taub})
+*******************************************
+RG	gate g		{Rg}
+RS	s kat		{Rs}
+RM	d s		100k
+RC	d dr		{0.1*Rg}
+CGS	g s		{Cgs}
+COX	g ox		{Cox}
+*****************************
+* voltage across depletion region below gate:
+EDEP	dr ox	VALUE = {Vdep(V(d,g))}
+* current through base resistor:
+GIA	ano e 	VALUE = {V(ano,e)/Rb(V(b))}
+* charge control:
+GIQ	e d	VALUE = {IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+* collector (hole) current:
+GIPC	e kat	VALUE = {IPC(V(d,kat),I(VDXJ),I(VINE),V(b))}
+************************************************
+* current probe for electron current at emitter:
+VINE	de d	0
+*****************************
+* subcircuit for base charge:
+*****************************
+CQB	b 0	1u
+RQB	b 0	{Taub/1u}
+GIB	0 b	VALUE	{IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+**************************************************
+* subcircuit for time derivative dxj/dt = I(VDXJ):
+**************************************************
+EXJ	xj1 0	VALUE	{1e6*xj(V(d,kat))}
+CXJ	xj  0	1u
+VDXJ	xj1 xj2	0
+RXJ	xj2 xj	10m
+*****************
+.PARAM	D  = {2*0.026*un*up/(un+up)}
+.PARAM	L  = {SQRT(D*Taub)}	
+.PARAM 	QN = {q*A*wb*Nb}
+.PARAM	Fpc = {4*Lc*Ise/(3.14*wb*un*0.026*q*A*ni*q*A*ni)}
+.PARAM	VPT = {q*Nb*wb*wb/(2*eps0*epsi)}
+.PARAM	VN = {q*Nb*eps0*epsi*(Agd/Cox)*(Agd/Cox)}
+.PARAM	XF = {SQRT(2*eps0*epsi/(q*Nb))}
+*************************************************
+.FUNC	Vdep(V)	{MAX(V,0)+VN*(1-SQRT(1+2*MAX(V,0)/VN))}
+.FUNC	Qeff(Z)	{(un+up)*MAX((2-Fpc*Z*1E-6)*Z*1E-6,QN*1E-8)}
+.FUNC	Rb(Z)	{wb*wb*LOG(1+Qeff(Z)/(un*QN+(un+up)*Fpc*Z*Z*1E-12))/Qeff(Z)}
+.FUNC	xj(V)	{XF*SQRT(MAX(1+V,0))}
+.FUNC	w(V)	{MAX(1e-4,wb-xj(V))}
+.FUNC	Td(V,X)	{(0.1/D)*w(V)*w(V)/(1+w(V)*MAX(X,0)/(12*D))}
+.FUNC	F1(V)	{Taub*(COSH(w(V)/L)-1)}
+.FUNC	F2(V,X)	{0.5*(1+TANH(w(V)*X/(6*D)))}
+.FUNC	QS0(V)	{q*A*L*ni*TANH(0.5*w(V)/L)}
+.FUNC	Qb0(V,Y)	{QS0(V)*SQRT(MAX(Y/ISE,0))}
+.FUNC	IQ(V,X,Y,Z)	{Qb0(V,Y)/Taub+(Qb0(V,Y)-Z*1e-6)/(Td(V,X)+1e-18)}
+.FUNC	IPC(V,X,Y,Z)	{(1/3)*(Y+IQ(V,X,Y,Z))+(4/3)*(Qb0(V,Y)/F1(V)+MAX(Qb0(V,Y)/Taub-IQ(V,X,Y,Z),0)*F2(V,X))}
+****************************************************************
+.ENDS
+****************************************************************************************************************
+*
+*
+****************************************************************************************************************
+****************************************************************************************************************
+.SUBCKT SGP04N60 ano gate kat
+****************************
+* Parameters of Siemens SGP04N60	
+* units cm, s, A, V
+.PARAM 
++q = 1.6E-19	eps0 = 8.85E-14	epsi = 11.8
++ni = 1.45E10
++un = 1350	up = 450
++A = 0.0315	Agd = 0.0230	wb = 95.5E-4	
++Nb = 1.45E14	taub = 30E-6	
++Ise = 1.7E-12	Cje = 26.8p
++Cjs = 26.8p
++Vth = 4.5	Kp = 1.04
++Cox = 1.5n	Cgs = 280p
++Rs = 38.5m	Rg = 30.2
++Lc = 3E-4
+***************************************************************************************************************
+.PARAM	D  = {2*0.026*un*up/(un+up)}
+.PARAM	L  = {SQRT(D*Taub)}	
+.PARAM 	QN = {q*A*wb*Nb}
+.PARAM	Fpc = {4*Lc*Ise/(3.14*wb*un*0.026*q*A*ni*q*A*ni)}
+.PARAM	VPT = {q*Nb*wb*wb/(2*eps0*epsi)}
+.PARAM	VN = {q*Nb*eps0*epsi*(Agd/Cox)*(Agd/Cox)}
+.PARAM	XF = {SQRT(2*eps0*epsi/(q*Nb))}
+***************************************************************************************************************
+MFET	d g s s 	MOS
+DE	e de 		D1
+DS	kat d		D2				
+**************************
+.MODEL	MOS	NMOS	(LEVEL=1,VTO={VTH},KP={KP})
+.MODEL 	D1	D	(IS={ISE},CJO={CJE})
+.MODEL	D2	D	(IS={ISE},CJO={CJS},TT={Taub})
+*******************************************
+RG	gate g		{Rg}
+RS	s kat		{Rs}
+RM	d s		100k
+RC	d dr		{0.1*Rg}
+CGS	g s		{Cgs}
+COX	g ox		{Cox}
+*****************************
+* voltage across depletion region below gate:
+EDEP	dr ox	VALUE = {Vdep(V(d,g))}
+* current through base resistor:
+GIA	ano e 	VALUE = {V(ano,e)/Rb(V(b))}
+* charge control:
+GIQ	e d	VALUE = {IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+* collector (hole) current:
+GIPC	e kat	VALUE = {IPC(V(d,kat),I(VDXJ),I(VINE),V(b))}
+************************************************
+* current probe for electron current at emitter:
+VINE	de d	0
+*****************************
+* subcircuit for base charge:
+*****************************
+CQB	b 0	1u
+RQB	b 0	{Taub/1u}
+GIB	0 b	VALUE	{IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+**************************************************
+* subcircuit for time derivative dxj/dt = I(VDXJ):
+**************************************************
+EXJ	xj1 0	VALUE	{1e6*xj(V(d,kat))}
+CXJ	xj  0	1u
+VDXJ	xj1 xj2	0
+RXJ	xj2 xj	10m
+*****************
+.PARAM	D  = {2*0.026*un*up/(un+up)}
+.PARAM	L  = {SQRT(D*Taub)}	
+.PARAM 	QN = {q*A*wb*Nb}
+.PARAM	Fpc = {4*Lc*Ise/(3.14*wb*un*0.026*q*A*ni*q*A*ni)}
+.PARAM	VPT = {q*Nb*wb*wb/(2*eps0*epsi)}
+.PARAM	VN = {q*Nb*eps0*epsi*(Agd/Cox)*(Agd/Cox)}
+.PARAM	XF = {SQRT(2*eps0*epsi/(q*Nb))}
+*************************************************
+.FUNC	Vdep(V)	{MAX(V,0)+VN*(1-SQRT(1+2*MAX(V,0)/VN))}
+.FUNC	Qeff(Z)	{(un+up)*MAX((2-Fpc*Z*1E-6)*Z*1E-6,QN*1E-8)}
+.FUNC	Rb(Z)	{wb*wb*LOG(1+Qeff(Z)/(un*QN+(un+up)*Fpc*Z*Z*1E-12))/Qeff(Z)}
+.FUNC	xj(V)	{XF*SQRT(MAX(1+V,0))}
+.FUNC	w(V)	{MAX(1e-4,wb-xj(V))}
+.FUNC	Td(V,X)	{(0.1/D)*w(V)*w(V)/(1+w(V)*MAX(X,0)/(12*D))}
+.FUNC	F1(V)	{Taub*(COSH(w(V)/L)-1)}
+.FUNC	F2(V,X)	{0.5*(1+TANH(w(V)*X/(6*D)))}
+.FUNC	QS0(V)	{q*A*L*ni*TANH(0.5*w(V)/L)}
+.FUNC	Qb0(V,Y)	{QS0(V)*SQRT(MAX(Y/ISE,0))}
+.FUNC	IQ(V,X,Y,Z)	{Qb0(V,Y)/Taub+(Qb0(V,Y)-Z*1e-6)/(Td(V,X)+1e-18)}
+.FUNC	IPC(V,X,Y,Z)	{(1/3)*(Y+IQ(V,X,Y,Z))+(4/3)*(Qb0(V,Y)/F1(V)+MAX(Qb0(V,Y)/Taub-IQ(V,X,Y,Z),0)*F2(V,X))}
+****************************************************************
+.ENDS
+****************************************************************************************************************
+*
+*
+****************************************************************************************************************
+****************************************************************************************************************
+.SUBCKT SGP06N60 ano gate kat
+*****************
+* Parameters of Siemens SGP06N60	
+* units cm, s, A, V
+.PARAM 
++q = 1.6E-19	eps0 = 8.85E-14	epsi = 11.8
++ni = 1.45E10
++un = 1350	up = 450
++A = 0.0430	Agd = 0.0310	wb = 95.5E-4	
++Nb = 1.45E14	
++taub = 30E-6
++Ise = 2.3E-12
++Cje = 36.6p
++Cjs = 36.6p
++Vth = 4.5
++Kp = 1.42
++Cox = 2.25n	Cgs = 400p
++Rs = 30.0m	
++Rg = 20.5
++Lc = 3E-4
+***************************************************************************************************************
+MFET	d g s s 	MOS
+DE	e de 		D1
+DS	kat d		D2				
+**************************
+.MODEL	MOS	NMOS	(LEVEL=1,VTO={VTH},KP={KP})
+.MODEL 	D1	D	(IS={ISE},CJO={CJE})
+.MODEL	D2	D	(IS={ISE},CJO={CJS},TT={Taub})
+*******************************************
+RG	gate g		{Rg}
+RS	s kat		{Rs}
+RM	d s		100k
+RC	d dr		{0.1*Rg}
+CGS	g s		{Cgs}
+COX	g ox		{Cox}
+*****************************
+* voltage across depletion region below gate:
+EDEP	dr ox	VALUE = {Vdep(V(d,g))}
+* current through base resistor:
+GIA	ano e 	VALUE = {V(ano,e)/Rb(V(b))}
+* charge control:
+GIQ	e d	VALUE = {IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+* collector (hole) current:
+GIPC	e kat	VALUE = {IPC(V(d,kat),I(VDXJ),I(VINE),V(b))}
+************************************************
+* current probe for electron current at emitter:
+VINE	de d	0
+*****************************
+* subcircuit for base charge:
+*****************************
+CQB	b 0	1u
+RQB	b 0	{Taub/1u}
+GIB	0 b	VALUE	{IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+**************************************************
+* subcircuit for time derivative dxj/dt = I(VDXJ):
+**************************************************
+EXJ	xj1 0	VALUE	{1e6*xj(V(d,kat))}
+CXJ	xj  0	1u
+VDXJ	xj1 xj2	0
+RXJ	xj2 xj	10m
+***************************************************************************************************************
+.PARAM	D  = {2*0.026*un*up/(un+up)}
+.PARAM	L  = {SQRT(D*Taub)}	
+.PARAM 	QN = {q*A*wb*Nb}
+.PARAM	Fpc = {4*Lc*Ise/(3.14*wb*un*0.026*q*A*ni*q*A*ni)}
+.PARAM	VPT = {q*Nb*wb*wb/(2*eps0*epsi)}
+.PARAM	VN = {q*Nb*eps0*epsi*(Agd/Cox)*(Agd/Cox)}
+.PARAM	XF = {SQRT(2*eps0*epsi/(q*Nb))}
+*************************************************
+.FUNC	Vdep(V)	{MAX(V,0)+VN*(1-SQRT(1+2*MAX(V,0)/VN))}
+.FUNC	Qeff(Z)	{(un+up)*MAX((2-Fpc*Z*1E-6)*Z*1E-6,QN*1E-8)}
+.FUNC	Rb(Z)	{wb*wb*LOG(1+Qeff(Z)/(un*QN+(un+up)*Fpc*Z*Z*1E-12))/Qeff(Z)}
+.FUNC	xj(V)	{XF*SQRT(MAX(1+V,0))}
+.FUNC	w(V)	{MAX(1e-4,wb-xj(V))}
+.FUNC	Td(V,X)	{(0.1/D)*w(V)*w(V)/(1+w(V)*MAX(X,0)/(12*D))}
+.FUNC	F1(V)	{Taub*(COSH(w(V)/L)-1)}
+.FUNC	F2(V,X)	{0.5*(1+TANH(w(V)*X/(6*D)))}
+.FUNC	QS0(V)	{q*A*L*ni*TANH(0.5*w(V)/L)}
+.FUNC	Qb0(V,Y)	{QS0(V)*SQRT(MAX(Y/ISE,0))}
+.FUNC	IQ(V,X,Y,Z)	{Qb0(V,Y)/Taub+(Qb0(V,Y)-Z*1e-6)/(Td(V,X)+1e-18)}
+.FUNC	IPC(V,X,Y,Z)	{(1/3)*(Y+IQ(V,X,Y,Z))+(4/3)*(Qb0(V,Y)/F1(V)+MAX(Qb0(V,Y)/Taub-IQ(V,X,Y,Z),0)*F2(V,X))}
+****************************************************************
+.ENDS
+****************************************************************************************************************
+*
+*
+****************************************************************************************************************
+****************************************************************************************************************
+.SUBCKT SGP10N60 ano gate kat
+****************************
+* Parameters of Siemens SGP10N60	
+* units cm, s, A, V
+.PARAM 
++q = 1.6E-19	eps0 = 8.85E-14	epsi = 11.8
++ni = 1.45E10
++un = 1350	up = 450
++A = 0.0870	Agd = 0.0700	wb = 95.5E-4	
++Nb = 1.45E14	taub = 30E-6	
++Ise = 4.7E-12	Cje = 57.4p
++Cjs = 57.4p
++Vth = 4.5	Kp = 2.137
++Cox = 4.75n	Cgs = 650p
++Rs = 18.1m	Rg = 9.0
++Lc = 3E-4
+***************************************************************************************************************
+MFET	d g s s 	MOS
+DE	e de 		D1
+DS	kat d		D2				
+**************************
+.MODEL	MOS	NMOS	(LEVEL=1,VTO={VTH},KP={KP})
+.MODEL 	D1	D	(IS={ISE},CJO={CJE})
+.MODEL	D2	D	(IS={ISE},CJO={CJS},TT={Taub})
+*******************************************
+RG	gate g		{Rg}
+RS	s kat		{Rs}
+RM	d s		100k
+RC	d dr		{0.1*Rg}
+CGS	g s		{Cgs}
+COX	g ox		{Cox}
+*****************************
+* voltage across depletion region below gate:
+EDEP	dr ox	VALUE = {Vdep(V(d,g))}
+* current through base resistor:
+GIA	ano e 	VALUE = {V(ano,e)/Rb(V(b))}
+* charge control:
+GIQ	e d	VALUE = {IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+* collector (hole) current:
+GIPC	e kat	VALUE = {IPC(V(d,kat),I(VDXJ),I(VINE),V(b))}
+************************************************
+* current probe for electron current at emitter:
+VINE	de d	0
+*****************************
+* subcircuit for base charge:
+*****************************
+CQB	b 0	1u
+RQB	b 0	{Taub/1u}
+GIB	0 b	VALUE	{IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+**************************************************
+* subcircuit for time derivative dxj/dt = I(VDXJ):
+**************************************************
+EXJ	xj1 0	VALUE	{1e6*xj(V(d,kat))}
+CXJ	xj  0	1u
+VDXJ	xj1 xj2	0
+RXJ	xj2 xj	10m
+***************************************************************************************************************
+.PARAM	D  = {2*0.026*un*up/(un+up)}
+.PARAM	L  = {SQRT(D*Taub)}	
+.PARAM 	QN = {q*A*wb*Nb}
+.PARAM	Fpc = {4*Lc*Ise/(3.14*wb*un*0.026*q*A*ni*q*A*ni)}
+.PARAM	VPT = {q*Nb*wb*wb/(2*eps0*epsi)}
+.PARAM	VN = {q*Nb*eps0*epsi*(Agd/Cox)*(Agd/Cox)}
+.PARAM	XF = {SQRT(2*eps0*epsi/(q*Nb))}
+*************************************************
+.FUNC	Vdep(V)	{MAX(V,0)+VN*(1-SQRT(1+2*MAX(V,0)/VN))}
+.FUNC	Qeff(Z)	{(un+up)*MAX((2-Fpc*Z*1E-6)*Z*1E-6,QN*1E-8)}
+.FUNC	Rb(Z)	{wb*wb*LOG(1+Qeff(Z)/(un*QN+(un+up)*Fpc*Z*Z*1E-12))/Qeff(Z)}
+.FUNC	xj(V)	{XF*SQRT(MAX(1+V,0))}
+.FUNC	w(V)	{MAX(1e-4,wb-xj(V))}
+.FUNC	Td(V,X)	{(0.1/D)*w(V)*w(V)/(1+w(V)*MAX(X,0)/(12*D))}
+.FUNC	F1(V)	{Taub*(COSH(w(V)/L)-1)}
+.FUNC	F2(V,X)	{0.5*(1+TANH(w(V)*X/(6*D)))}
+.FUNC	QS0(V)	{q*A*L*ni*TANH(0.5*w(V)/L)}
+.FUNC	Qb0(V,Y)	{QS0(V)*SQRT(MAX(Y/ISE,0))}
+.FUNC	IQ(V,X,Y,Z)	{Qb0(V,Y)/Taub+(Qb0(V,Y)-Z*1e-6)/(Td(V,X)+1e-18)}
+.FUNC	IPC(V,X,Y,Z)	{(1/3)*(Y+IQ(V,X,Y,Z))+(4/3)*(Qb0(V,Y)/F1(V)+MAX(Qb0(V,Y)/Taub-IQ(V,X,Y,Z),0)*F2(V,X))}
+****************************************************************
+.ENDS
+****************************************************************************************************************
+*
+*
+****************************************************************************************************************
+****************************************************************************************************************
+.SUBCKT SGP15N60 ano gate kat
+*****************
+* Parameters of Siemens SGP15N60	
+* units cm, s, A, V
+.PARAM 
++q = 1.6E-19	eps0 = 8.85E-14	epsi = 11.8
++ni = 1.45E10
++un = 1350	up = 450
++A = 0.106	Agd = 0.077	wb = 95.5E-4	
++Nb = 1.45E14	taub = 30E-6	
++Ise = 5.9E-12	Cje = 90.0p
++Cjs = 90.0p
++Vth = 4.5	Kp = 3.51
++Cox = 5.62n	Cgs = 955p
++Rs = 16.1m	Rg = 5.5
++Lc = 3E-4
+****************************************************************************************************************
+MFET	d g s s 	MOS
+DE	e de 		D1
+DS	kat d		D2				
+**************************
+.MODEL	MOS	NMOS	(LEVEL=1,VTO={VTH},KP={KP})
+.MODEL 	D1	D	(IS={ISE},CJO={CJE})
+.MODEL	D2	D	(IS={ISE},CJO={CJS},TT={Taub})
+*******************************************
+RG	gate g		{Rg}
+RS	s kat		{Rs}
+RM	d s		100k
+RC	d dr		{0.1*Rg}
+CGS	g s		{Cgs}
+COX	g ox		{Cox}
+*****************************
+* voltage across depletion region below gate:
+EDEP	dr ox	VALUE = {Vdep(V(d,g))}
+* current through base resistor:
+GIA	ano e 	VALUE = {V(ano,e)/Rb(V(b))}
+* charge control:
+GIQ	e d	VALUE = {IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+* collector (hole) current:
+GIPC	e kat	VALUE = {IPC(V(d,kat),I(VDXJ),I(VINE),V(b))}
+************************************************
+* current probe for electron current at emitter:
+VINE	de d	0
+*****************************
+* subcircuit for base charge:
+*****************************
+CQB	b 0	1u
+RQB	b 0	{Taub/1u}
+GIB	0 b	VALUE	{IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+**************************************************
+* subcircuit for time derivative dxj/dt = I(VDXJ):
+**************************************************
+EXJ	xj1 0	VALUE	{1e6*xj(V(d,kat))}
+CXJ	xj  0	1u
+VDXJ	xj1 xj2	0
+RXJ	xj2 xj	10m
+***************************************************************************************************************
+.PARAM	D  = {2*0.026*un*up/(un+up)}
+.PARAM	L  = {SQRT(D*Taub)}	
+.PARAM 	QN = {q*A*wb*Nb}
+.PARAM	Fpc = {4*Lc*Ise/(3.14*wb*un*0.026*q*A*ni*q*A*ni)}
+.PARAM	VPT = {q*Nb*wb*wb/(2*eps0*epsi)}
+.PARAM	VN = {q*Nb*eps0*epsi*(Agd/Cox)*(Agd/Cox)}
+.PARAM	XF = {SQRT(2*eps0*epsi/(q*Nb))}
+*************************************************
+.FUNC	Vdep(V)	{MAX(V,0)+VN*(1-SQRT(1+2*MAX(V,0)/VN))}
+.FUNC	Qeff(Z)	{(un+up)*MAX((2-Fpc*Z*1E-6)*Z*1E-6,QN*1E-8)}
+.FUNC	Rb(Z)	{wb*wb*LOG(1+Qeff(Z)/(un*QN+(un+up)*Fpc*Z*Z*1E-12))/Qeff(Z)}
+.FUNC	xj(V)	{XF*SQRT(MAX(1+V,0))}
+.FUNC	w(V)	{MAX(1e-4,wb-xj(V))}
+.FUNC	Td(V,X)	{(0.1/D)*w(V)*w(V)/(1+w(V)*MAX(X,0)/(12*D))}
+.FUNC	F1(V)	{Taub*(COSH(w(V)/L)-1)}
+.FUNC	F2(V,X)	{0.5*(1+TANH(w(V)*X/(6*D)))}
+.FUNC	QS0(V)	{q*A*L*ni*TANH(0.5*w(V)/L)}
+.FUNC	Qb0(V,Y)	{QS0(V)*SQRT(MAX(Y/ISE,0))}
+.FUNC	IQ(V,X,Y,Z)	{Qb0(V,Y)/Taub+(Qb0(V,Y)-Z*1e-6)/(Td(V,X)+1e-18)}
+.FUNC	IPC(V,X,Y,Z)	{(1/3)*(Y+IQ(V,X,Y,Z))+(4/3)*(Qb0(V,Y)/F1(V)+MAX(Qb0(V,Y)/Taub-IQ(V,X,Y,Z),0)*F2(V,X))}
+****************************************************************
+.ENDS
+****************************************************************************************************************
+*
+*
+****************************************************************************************************************
+****************************************************************************************************************
+.SUBCKT SGP20N60 ano gate kat
+* Parameters of Siemens SGP20N60	
+* units cm, s, A, V
+.PARAM 
++q = 1.6E-19	eps0 = 8.85E-14	epsi = 11.8
++ni = 1.45E10
++un = 1350	up = 450
++A = 0.142	Agd = 0.104	wb = 95.5E-4	
++Nb = 1.45E14	taub = 30E-6	
++Ise = 7.6E-12	Cje = 121.0p
++Cjs = 121.0p
++Vth = 4.5	Kp = 4.70
++Cox = 7.45n	Cgs = 1270p
++Rs = 13.6m	Rg = 4.6
++Lc = 4E-4
+****************************************************************************************************************
+MFET	d g s s 	MOS
+DE	e de 		D1
+DS	kat d		D2				
+**************************
+.MODEL	MOS	NMOS	(LEVEL=1,VTO={VTH},KP={KP})
+.MODEL 	D1	D	(IS={ISE},CJO={CJE})
+.MODEL	D2	D	(IS={ISE},CJO={CJS},TT={Taub})
+*******************************************
+RG	gate g		{Rg}
+RS	s kat		{Rs}
+RM	d s		100k
+RC	d dr		{0.1*Rg}
+CGS	g s		{Cgs}
+COX	g ox		{Cox}
+*****************************
+* voltage across depletion region below gate:
+EDEP	dr ox	VALUE = {Vdep(V(d,g))}
+* current through base resistor:
+GIA	ano e 	VALUE = {V(ano,e)/Rb(V(b))}
+* charge control:
+GIQ	e d	VALUE = {IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+* collector (hole) current:
+GIPC	e kat	VALUE = {IPC(V(d,kat),I(VDXJ),I(VINE),V(b))}
+************************************************
+* current probe for electron current at emitter:
+VINE	de d	0
+*****************************
+* subcircuit for base charge:
+*****************************
+CQB	b 0	1u
+RQB	b 0	{Taub/1u}
+GIB	0 b	VALUE	{IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+**************************************************
+* subcircuit for time derivative dxj/dt = I(VDXJ):
+**************************************************
+EXJ	xj1 0	VALUE	{1e6*xj(V(d,kat))}
+CXJ	xj  0	1u
+VDXJ	xj1 xj2	0
+RXJ	xj2 xj	10m
+***************************************************************************************************************
+.PARAM	D  = {2*0.026*un*up/(un+up)}
+.PARAM	L  = {SQRT(D*Taub)}	
+.PARAM 	QN = {q*A*wb*Nb}
+.PARAM	Fpc = {4*Lc*Ise/(3.14*wb*un*0.026*q*A*ni*q*A*ni)}
+.PARAM	VPT = {q*Nb*wb*wb/(2*eps0*epsi)}
+.PARAM	VN = {q*Nb*eps0*epsi*(Agd/Cox)*(Agd/Cox)}
+.PARAM	XF = {SQRT(2*eps0*epsi/(q*Nb))}
+*************************************************
+.FUNC	Vdep(V)	{MAX(V,0)+VN*(1-SQRT(1+2*MAX(V,0)/VN))}
+.FUNC	Qeff(Z)	{(un+up)*MAX((2-Fpc*Z*1E-6)*Z*1E-6,QN*1E-8)}
+.FUNC	Rb(Z)	{wb*wb*LOG(1+Qeff(Z)/(un*QN+(un+up)*Fpc*Z*Z*1E-12))/Qeff(Z)}
+.FUNC	xj(V)	{XF*SQRT(MAX(1+V,0))}
+.FUNC	w(V)	{MAX(1e-4,wb-xj(V))}
+.FUNC	Td(V,X)	{(0.1/D)*w(V)*w(V)/(1+w(V)*MAX(X,0)/(12*D))}
+.FUNC	F1(V)	{Taub*(COSH(w(V)/L)-1)}
+.FUNC	F2(V,X)	{0.5*(1+TANH(w(V)*X/(6*D)))}
+.FUNC	QS0(V)	{q*A*L*ni*TANH(0.5*w(V)/L)}
+.FUNC	Qb0(V,Y)	{QS0(V)*SQRT(MAX(Y/ISE,0))}
+.FUNC	IQ(V,X,Y,Z)	{Qb0(V,Y)/Taub+(Qb0(V,Y)-Z*1e-6)/(Td(V,X)+1e-18)}
+.FUNC	IPC(V,X,Y,Z)	{(1/3)*(Y+IQ(V,X,Y,Z))+(4/3)*(Qb0(V,Y)/F1(V)+MAX(Qb0(V,Y)/Taub-IQ(V,X,Y,Z),0)*F2(V,X))}
+****************************************************************
+.ENDS
+****************************************************************************************************************
+*
+*
+****************************************************************************************************************
+****************************************************************************************************************
+.SUBCKT SGP30N60 ano gate kat
+*****************
+* Parameters of Siemens SGP30N60	
+* units cm, s, A, V
+.PARAM 
++q = 1.6E-19	eps0 = 8.85E-14	epsi = 11.8
++ni = 1.45E10
++un = 1350	up = 450
++A = 0.207	Agd = 0.151	wb = 95.5E-4	
++Nb = 1.45E14	taub = 30E-6	
++Ise = 11.4E-12	Cje = 176.0p
++Cjs = 176.0p
++Vth = 4.5	Kp = 6.85
++Cox = 10.15n	Cgs = 1890p
++Rs = 11.5m	Rg = 3.2
++Lc = 3E-4
+****************************************************************************************************************
+MFET	d g s s 	MOS
+DE	e de 		D1
+DS	kat d		D2				
+**************************
+.MODEL	MOS	NMOS	(LEVEL=1,VTO={VTH},KP={KP})
+.MODEL 	D1	D	(IS={ISE},CJO={CJE})
+.MODEL	D2	D	(IS={ISE},CJO={CJS},TT={Taub})
+*******************************************
+RG	gate g		{Rg}
+RS	s kat		{Rs}
+RM	d s		100k
+RC	d dr		{0.1*Rg}
+CGS	g s		{Cgs}
+COX	g ox		{Cox}
+*****************************
+* voltage across depletion region below gate:
+EDEP	dr ox	VALUE = {Vdep(V(d,g))}
+* current through base resistor:
+GIA	ano e 	VALUE = {V(ano,e)/Rb(V(b))}
+* charge control:
+GIQ	e d	VALUE = {IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+* collector (hole) current:
+GIPC	e kat	VALUE = {IPC(V(d,kat),I(VDXJ),I(VINE),V(b))}
+************************************************
+* current probe for electron current at emitter:
+VINE	de d	0
+*****************************
+* subcircuit for base charge:
+*****************************
+CQB	b 0	1u
+RQB	b 0	{Taub/1u}
+GIB	0 b	VALUE	{IQ(V(d,kat),I(VDXJ),I(VINE),V(b))}
+**************************************************
+* subcircuit for time derivative dxj/dt = I(VDXJ):
+**************************************************
+EXJ	xj1 0	VALUE	{1e6*xj(V(d,kat))}
+CXJ	xj  0	1u
+VDXJ	xj1 xj2	0
+RXJ	xj2 xj	10m
+***************************************************************************************************************
+.PARAM	D  = {2*0.026*un*up/(un+up)}
+.PARAM	L  = {SQRT(D*Taub)}	
+.PARAM 	QN = {q*A*wb*Nb}
+.PARAM	Fpc = {4*Lc*Ise/(3.14*wb*un*0.026*q*A*ni*q*A*ni)}
+.PARAM	VPT = {q*Nb*wb*wb/(2*eps0*epsi)}
+.PARAM	VN = {q*Nb*eps0*epsi*(Agd/Cox)*(Agd/Cox)}
+.PARAM	XF = {SQRT(2*eps0*epsi/(q*Nb))}
+*************************************************
+.FUNC	Vdep(V)	{MAX(V,0)+VN*(1-SQRT(1+2*MAX(V,0)/VN))}
+.FUNC	Qeff(Z)	{(un+up)*MAX((2-Fpc*Z*1E-6)*Z*1E-6,QN*1E-8)}
+.FUNC	Rb(Z)	{wb*wb*LOG(1+Qeff(Z)/(un*QN+(un+up)*Fpc*Z*Z*1E-12))/Qeff(Z)}
+.FUNC	xj(V)	{XF*SQRT(MAX(1+V,0))}
+.FUNC	w(V)	{MAX(1e-4,wb-xj(V))}
+.FUNC	Td(V,X)	{(0.1/D)*w(V)*w(V)/(1+w(V)*MAX(X,0)/(12*D))}
+.FUNC	F1(V)	{Taub*(COSH(w(V)/L)-1)}
+.FUNC	F2(V,X)	{0.5*(1+TANH(w(V)*X/(6*D)))}
+.FUNC	QS0(V)	{q*A*L*ni*TANH(0.5*w(V)/L)}
+.FUNC	Qb0(V,Y)	{QS0(V)*SQRT(MAX(Y/ISE,0))}
+.FUNC	IQ(V,X,Y,Z)	{Qb0(V,Y)/Taub+(Qb0(V,Y)-Z*1e-6)/(Td(V,X)+1e-18)}
+.FUNC	IPC(V,X,Y,Z)	{(1/3)*(Y+IQ(V,X,Y,Z))+(4/3)*(Qb0(V,Y)/F1(V)+MAX(Qb0(V,Y)/Taub-IQ(V,X,Y,Z),0)*F2(V,X))}
+****************************************************************
+.ENDS
+****************************************************************************************************************
+*
+*
+****************************************************************************************************************

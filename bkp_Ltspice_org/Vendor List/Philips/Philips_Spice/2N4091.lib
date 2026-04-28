@@ -1,0 +1,16 @@
+*PHILIPS SEMICONDUCTORS        Version: 1.0
+*Filename: 2N4091.prm        Date: Oct 1992
+*
+.MODEL  N4091   NJF 
++             VTO = -8.0337E+000
++            BETA = 1.56450E-003
++          LAMBDA = 1.00000E-002
++              RD = 8.25115E-001
++              RS = 8.25115E-001
++              IS = 6.54620E-016
++            CGS  = 8.75000E-012
++            CGD  = 1.37500E-011
++              PB = 7.72344E-001
++              FC = 5.00000E-001
+*Parameter with default value: FC
+

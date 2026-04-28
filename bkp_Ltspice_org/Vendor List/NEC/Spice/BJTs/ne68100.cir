@@ -1,0 +1,43 @@
+* FILENAME:        NE68100.CIR
+* NEC PART NUMBER: NE68100
+* LAST MODIFIED:   5/96
+* BIAS CONDITIONS: VCE=8V, IC=7mA,20mA; VCE=2.5V, IC=0.3/1/3mA
+* FREQ RANGE:      1.5GHz TO 10GHz
+*
+*                CCB
+*            .---||---.            CCB=0.07pF
+*            |        |C           CCE=0.01pF
+*            |   /----o---LC----o  
+*  o----LB---o--|     |            LB=0.18nH (QTY 1-13.4mil)
+*            B   \   --            LC=0.01nH (QTY 1- 8.3mil)
+*                |   -- CCE        LE=0.15nH (QTY 2-17.6mil)
+*              E o----'            Bond wire: 0.7mil 
+*                |                            diameter gold
+*               LE
+*                |
+*                o
+*
+*                   c b e
+.SUBCKT NE68100/CEL 2 1 3
+Q1  5 4 6 NE68100
+CCB 4 5 0.07E-12
+CCE 5 6 0.01E-12
+LE  6 3 0.15E-9
+LB  1 4 0.18E-9
+LC  5 2 0.01E-9
+.MODEL NE68100 NPN 
++( IS=2.70e-16   BF=185.0         NF=1.02        VAF=15.0         IKF=0.055
++ ISE=1.77e-11   NE=2.10          BR=1.0         NR=1.0           VAR=0.0
++ IKR=0.0        ISC=0.0          NC=2.0         RE=0.6           RB=12.0
++ RBM=3.70       IRB=1.20e-5      RC=8.0         CJE=1.20e-12     VJE=0.770
++ MJE=0.50       CJC=0.80e-12     VJC=0.270      MJC=0.560        XCJC=0.0
++ CJS=0.0        VJS=0.750        MJS=0.0        FC=0.50          TF=14.0e-12
++ XTF=3.0        VTF=25.0         ITF=0.10       PTF=0.0          TR=0.30e-9
++ EG=1.11        XTB=0.0          XTI=3.0        KF=0.0           AF=1.0 )
+*
+* NOTE:  CEL develops models using the Libra simulator.
+*        For this simulator, a value of 0 for VAR and
+*        IKR is interpreted as infinity.
+.ENDS
+*$
+

@@ -1,0 +1,7691 @@
+* Library of PCI82430 I/O Buffer Models
+
+*  Copyright OrCAD, Inc. 1998 All Rights Reserved.
+
+
+* $Revision:   1.2  $
+* $Author:   RPEREZ  $
+* $Date:   17 Apr 1998 10:39:36  $
+*
+
+* ---------------------------------------------------------------------
+*
+* Application note:  Initializing the output node may help convergence.
+*
+* ---------------------------------------------------------------------
+*
+*$
+*                                         
+*  Component:           CY7C175,7C1031
+*  Signals:             ALL
+*  Buffer Type          ALL  
+*  Revision:            1.0
+*
+*  Model type:          best case:  max ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt CY7C_B          100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 55m           ; package bond wire and lead resistance at output
++ L_pkg = 5n            ; package bond wire and lead inductance at output
++ C_pkg = 1p            ; package bond wire and lead capacitance at output
++ C_comp = 4p           ; die capacitance at output
++ dVdt_r = 22           ; output rise time in V/ns
++ dVdt_f = 47           ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, 0m
++ -4.0v, 0m
++ -3.0v, 0m
++ -2.0v, 0m
++ -1.0v, 0m
++ 0.0v, 30m
++ 0.5v, 120m
++ 1.0v, 200m
++ 1.5v, 230m
++ 2.0v, 250m
++ 2.5v, 255m
++ 3.0v, 258m
++ 3.5v, 262m
++ 4.0v, 264m
++ 4.5v, 265m
++ 5.0v, 265m
++ 10.0v, 265m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, -16m
++ -4.0v, -16m
++ -3.0v, -16m
++ -2.0v, -16m
++ -1.0v, -16m
++ 0.0v, -16m
++ 0.5v, -27m
++ 1.0v, -39m
++ 1.5v, -70m
++ 2.0v, -100m
++ 2.5v, -141m
++ 3.0v, -180m
++ 3.5v, -212m
++ 4.0v, -253m
++ 4.5v, -290m
++ 5.0v, -320m
++ 10.0v, -320m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           CY7C175,7C1031
+*  Signals:             ALL
+*  Buffer Type          ALL  
+*  Revision:            1.0
+*
+*  Model type:          worst case:  min ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt CY7C_W          100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 55m           ; package bond wire and lead resistance at output
++ L_pkg = 6n            ; package bond wire and lead inductance at output
++ C_pkg = 1.25p         ; package bond wire and lead capacitance at output
++ C_comp = 4p           ; die capacitance at output
++ dVdt_r = 14           ; output rise time in V/ns
++ dVdt_f = 32           ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, 0m
++ -4.0v, 0m
++ -3.0v, 0m
++ -2.0v, 0m
++ -1.0v, 0m
++ 0.0v, 9m
++ 0.5v, 35m
++ 1.0v, 70m
++ 1.5v, 90m
++ 2.0v, 102m
++ 2.5v, 106m
++ 3.0v, 108m
++ 3.5v, 110m
++ 4.0v, 112m
++ 4.5v, 114m
++ 5.0v, 116m
++ 10.0v, 116m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, -5m
++ -4.0v, -5m
++ -3.0v, -5m
++ -2.0v, -5m
++ -1.0v, -5m
++ 0.0v, -5m
++ 0.5v, -5m
++ 1.0v, -5m
++ 1.5v, -10m
++ 2.0v, -14m
++ 2.5v, -25m
++ 3.0v, -40m
++ 3.5v, -62m
++ 4.0v, -85m
++ 4.5v, -112m
++ 5.0v, -130m
++ 10.0v, -130m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             BCLKOUT
+*  Buffer Type          O  
+*  ESC1 Revision:       1.0
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ESC1_B 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 226m          ; package bond wire and lead resistance at output
++ L_pkg = 8.5n          ; package bond wire and lead inductance at output
++ C_pkg = 1.9p          ; package bond wire and lead capacitance at output
++ C_comp = 2p           ; die capacitance at output
++ dVdt_r = {5.25/0.95}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.89}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -216m
++ -4.0v, -212m
++ -3.0v, -207m
++ -2.0v, -189m
++ -1.0v, -126m
++ 0.0v, 0m
++ 0.5v, 71m
++ 1.0v, 126m
++ 1.5v, 163m
++ 2.0v, 189m
++ 2.5v, 202m
++ 3.0v, 207m
++ 3.5v, 210m
++ 4.0v, 212m
++ 4.5v, 214m
++ 5.0v, 216m
++ 10.0v, 230m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 184m
++ -4.0v, 173m
++ -3.0v, 157m
++ -2.0v, 125m
++ -1.0v, 72m
++ 0.0v, 0m
++ 0.5v, -38m
++ 1.0v, -72m
++ 1.5v, -102m
++ 2.0v, -125m
++ 2.5v, -142m
++ 3.0v, -157m
++ 3.5v, -166m
++ 4.0v, -173m
++ 4.5v, -179m
++ 5.0v, -184m
++ 10.0v, -215m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             BCLKOUT
+*  Buffer Type          O  
+*  ESC1 Revision:       1.0
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ESC1_W 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 405m          ; package bond wire and lead resistance at output
++ L_pkg = 15.1n         ; package bond wire and lead inductance at output
++ C_pkg = 2.8p          ; package bond wire and lead capacitance at output
++ C_comp = 7.2p         ; die capacitance at output
++ dVdt_r = {4.75/2.20}  ; output rise time in V/ns
++ dVdt_f = {4.75/2.70}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -110m
++ -4.0v, -107m
++ -3.0v, -103m
++ -2.0v, -91m
++ -1.0v, -57m
++ 0.0v, 0m
++ 0.5v, 31m
++ 1.0v, 57m
++ 1.5v, 76m
++ 2.0v, 91m
++ 2.5v, 100m
++ 3.0v, 103m
++ 3.5v, 105m
++ 4.0v, 107m
++ 4.5v, 109m
++ 5.0v, 111m
++ 10.0v, 120m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 76m
++ -4.0v, 73m
++ -3.0v, 68m
++ -2.0v, 56m
++ -1.0v, 32m
++ 0.0v, 0m
++ 0.5v, -18m
++ 1.0v, -32m
++ 1.5v, -45m
++ 2.0v, -56m
++ 2.5v, -63m
++ 3.0v, -68m
++ 3.5v, -71m
++ 4.0v, -73m
++ 4.5v, -74m
++ 5.0v, -76m
++ 10.0v, -85m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             BALE,BE#[3:0],CHRDY,CMD#,EOP,EX16#,EX32#,EXRDY,IORC#,
+*                       IOWC#,LA[31:2],M16#,MRDC#,MSBURST#,MWTC#,M/IO,NOWS#,
+*                       REFRESH#,RSTDDRV,SA0,SA1,SBHE#,SD[7:0],SMRDC#,SMWTCH#,
+*                       SPKR,START#,W/R# (Note:  EXRDY,EX16#,CHRDY,EX32#,
+*                       M16#, and NOWS# are open drain signals, and can only
+*                       be driven low.)
+*
+*  Buffer Type          O  
+*  ESC2 Revision:       1.0
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ESC2_B 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 226m          ; package bond wire and lead resistance at output
++ L_pkg = 8.5n          ; package bond wire and lead inductance at output
++ C_pkg = 1.9p          ; package bond wire and lead capacitance at output
++ C_comp = 2p           ; die capacitance at output
++ dVdt_r = {5.25/0.45}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.44}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -216m
++ -4.0v, -212m
++ -3.0v, -207m
++ -2.0v, -189m
++ -1.0v, -126m
++ 0.0v, 0m
++ 0.5v, 71m
++ 1.0v, 126m
++ 1.5v, 163m
++ 2.0v, 189m
++ 2.5v, 202m
++ 3.0v, 207m
++ 3.5v, 210m
++ 4.0v, 212m
++ 4.5v, 214m
++ 5.0v, 216m
++ 10.0v, 230m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 135m
++ -4.0v, 127m
++ -3.0v, 113m
++ -2.0v, 91m
++ -1.0v, 53m
++ 0.0v, 0m
++ 0.5v, -28m
++ 1.0v, -53m
++ 1.5v, -75m
++ 2.0v, -91m
++ 2.5v, -105m
++ 3.0v, -113m
++ 3.5v, -121m
++ 4.0v, -127m
++ 4.5v, -131m
++ 5.0v, -135m
++ 10.0v, -155m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             BALE,BE#[3:0],CHRDY,CMD#,EOP,EX16#,EX32#,EXRDY,IORC#,
+*                       IOWC#,LA[31:2],M16#,MRDC#,MSBURST#,MWTC#,M/IO,NOWS#,
+*                       REFRESH#,RSTDDRV,SA0,SA1,SBHE#,SD[7:0],SMRDC#,SMWTCH#,
+*                       SPKR,START#,W/R# (Note:  EXRDY,EX16#,CHRDY,EX32#,
+*                       M16#, and NOWS# are open drain signals, and can only
+*                       be driven low.)
+*
+*  Buffer Type          O  
+*  ESC2 Revision:       1.0
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ESC2_W 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 405m          ; package bond wire and lead resistance at output
++ L_pkg = 15.1n         ; package bond wire and lead inductance at output
++ C_pkg = 2.8p          ; package bond wire and lead capacitance at output
++ C_comp = 7.2p         ; die capacitance at output
++ dVdt_r = {4.75/1.45}  ; output rise time in V/ns
++ dVdt_f = {4.75/1.61}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -110m
++ -4.0v, -107m
++ -3.0v, -103m
++ -2.0v, -91m
++ -1.0v, -57m
++ 0.0v, 0m
++ 0.5v, 31m
++ 1.0v, 57m
++ 1.5v, 76m
++ 2.0v, 91m
++ 2.5v, 100m
++ 3.0v, 103m
++ 3.5v, 105m
++ 4.0v, 107m
++ 4.5v, 109m
++ 5.0v, 111m
++ 10.0v, 120m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 57m
++ -4.0v, 54m
++ -3.0v, 50m
++ -2.0v, 40m
++ -1.0v, 23m
++ 0.0v, 0m
++ 0.5v, -13m
++ 1.0v, -23m
++ 1.5v, -33m
++ 2.0v, -40m
++ 2.5v, -46m
++ 3.0v, -50m
++ 3.5v, -52m
++ 4.0v, -54m
++ 4.5v, -55m
++ 5.0v, -57m
++ 10.0v, -66m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             SALE#
+*  Buffer Type          I/O  
+*  ESC3 Revision:       1.0
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ESC3_B 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 226m          ; package bond wire and lead resistance at output
++ L_pkg = 8.5n          ; package bond wire and lead inductance at output
++ C_pkg = 1.9p          ; package bond wire and lead capacitance at output
++ C_comp = 2p           ; die capacitance at output
++ dVdt_r = {5.25/0.94}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.89}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -156m
++ -4.0v, -154m
++ -3.0v, -150m
++ -2.0v, -136m
++ -1.0v, -90m
++ 0.0v, 0m
++ 0.5v, 52m
++ 1.0v, 90m
++ 1.5v, 118
++ 2.0v, 136m
++ 2.5v, 146m
++ 3.0v, 150m
++ 3.5v, 152m
++ 4.0v, 154m
++ 4.5v, 155m
++ 5.0v, 156m
++ 10.0v, 166m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 159m
++ -4.0v, 149m
++ -3.0v, 135m
++ -2.0v, 108m
++ -1.0v, 62m
++ 0.0v, 0m
++ 0.5v, -33m
++ 1.0v, -62m
++ 1.5v, -89m
++ 2.0v, -108m
++ 2.5v, -124m
++ 3.0v, -135m
++ 3.5v, -143m
++ 4.0v, -149m
++ 4.5v, -155m
++ 5.0v, -159m
++ 10.0v, -182m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             SALE#
+*  Buffer Type          I/O  
+*  ESC3 Revision:       1.0
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ESC3_W 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 405m          ; package bond wire and lead resistance at output
++ L_pkg = 15.1n         ; package bond wire and lead inductance at output
++ C_pkg = 2.8p          ; package bond wire and lead capacitance at output
++ C_comp = 7.2p         ; die capacitance at output
++ dVdt_r = {4.75/1.85}  ; output rise time in V/ns
++ dVdt_f = {4.75/2.00}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -79m
++ -4.0v, -77m
++ -3.0v, -74m
++ -2.0v, -66m
++ -1.0v, -41m
++ 0.0v, 0m
++ 0.5v, 23m
++ 1.0v, 41m
++ 1.5v, 55m
++ 2.0v, 66m
++ 2.5v, 72m
++ 3.0v, 74m
++ 3.5v, 76m
++ 4.0v, 77m
++ 4.5v, 78m
++ 5.0v, 79m
++ 10.0v, 89m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 67m
++ -4.0v, 64m
++ -3.0v, 59m
++ -2.0v, 49m
++ -1.0v, 28m
++ 0.0v, 0m
++ 0.5v, -15m
++ 1.0v, -28m
++ 1.5v, -39m
++ 2.0v, -49m
++ 2.5v, -54m
++ 3.0v, -59m
++ 3.5v, -62m
++ 4.0v, -64m
++ 4.5v, -65m
++ 5.0v, -67m
++ 10.0v, -76m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             AEN#,AEN[4:1],ALTA20,ALTRST#,CRAMWR#,DACK[3:0]#,
+*                       DACK[7:5]#,DLIGHT#,FDCCS#,GPCS[2:0]#,IGNNE#,INT,
+*                       KYBDCS#,LASADE#,MACK[3:0],NMI,RTCALE,RTCRD#,RTCWR#,
+*                       SALAOE#,SDCPYEN0[3:1]#,SDCPYEN013#,SDCPYUP,SDLE[3:0]#,
+*                       SDOE[2:0]#,XBUSOE#,XBUSTR#,EISAHOLD,CRAMRD#,NMFLUSH#
+*  Buffer Type          O,I/O  
+*  ESC4 Revision:       1.0
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ESC4_B 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 226m          ; package bond wire and lead resistance at output
++ L_pkg = 8.5n          ; package bond wire and lead inductance at output
++ C_pkg = 1.9p          ; package bond wire and lead capacitance at output
++ C_comp = 1.7p         ; die capacitance at output
++ dVdt_r = {5.25/0.53}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.48}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -120m
++ -4.0v, -118m
++ -3.0v, -115m
++ -2.0v, -105m
++ -1.0v, -70m
++ 0.0v, 0m
++ 0.5v, 40m
++ 1.0v, 70m
++ 1.5v, 91m
++ 2.0v, 105m
++ 2.5v, 112m
++ 3.0v, 115m
++ 3.5v, 117m
++ 4.0v, 118m
++ 4.5v, 119m
++ 5.0v, 120m
++ 10.0v, 130m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 135m
++ -4.0v, 127m
++ -3.0v, 113m
++ -2.0v, 91m
++ -1.0v, 53m
++ 0.0v, 0m
++ 0.5v, -28m
++ 1.0v, -53m
++ 1.5v, -75m
++ 2.0v, -91m
++ 2.5v, -105m
++ 3.0v, -113m
++ 3.5v, -121m
++ 4.0v, -127m
++ 4.5v, -131m
++ 5.0v, -135m
++ 10.0v, -155m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             AEN#,AEN[4:1],ALTA20,ALTRST#,CRAMWR#,DACK[3:0]#,
+*                       DACK[7:5]#,DLIGHT#,FDCCS#,GPCS[2:0]#,IGNNE#,INT,
+*                       KYBDCS#,LASADE#,MACK[3:0],NMI,RTCALE,RTCRD#,RTCWR#,
+*                       SALAOE#,SDCPYEN0[3:1]#,SDCPYEN013#,SDCPYUP,SDLE[3:0]#,
+*                       SDOE[2:0]#,XBUSOE#,XBUSTR#,EISAHOLD,CRAMRD#,NMFLUSH#
+*  Buffer Type          O,I/O  
+*  ESC4 Revision:       1.0
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ESC4_W 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 405m          ; package bond wire and lead resistance at output
++ L_pkg = 15.1n         ; package bond wire and lead inductance at output
++ C_pkg = 2.8p          ; package bond wire and lead capacitance at output
++ C_comp = 5.1p         ; die capacitance at output
++ dVdt_r = {4.75/2.40}  ; output rise time in V/ns
++ dVdt_f = {4.75/2.46}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -62m
++ -4.0v, -57m
++ -3.0v, -56m
++ -2.0v, -49m
++ -1.0v, -31m
++ 0.0v, 0m
++ 0.5v, 17m
++ 1.0v, 31m
++ 1.5v, 41m
++ 2.0v, 49m
++ 2.5v, 54m
++ 3.0v, 56m
++ 3.5v, 56m
++ 4.0v, 57m
++ 4.5v, 57m
++ 5.0v, 57m
++ 10.0v, 62m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 56m
++ -4.0v, 52m
++ -3.0v, 49m
++ -2.0v, 39m
++ -1.0v, 23m
++ 0.0v, 0m
++ 0.5v, -12m
++ 1.0v, -23m
++ 1.5v, -32m
++ 2.0v, -39m
++ 2.5v, -45m
++ 3.0v, -49m
++ 3.5v, -51m
++ 4.0v, -52m
++ 4.5v, -55m
++ 5.0v, -56m
++ 10.0v, -61m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             ABFULL,DREQ[3:0],DREQ[7:5],DSKCHG,FERR#,IO16#,
+*                       IOCHK#,IRQ1,IRQ[7:3],IRQ8#,IRQ[15:9],PCICLK,
+*                       MASTER16#,MREQ[7:0]#,OSC,PERR#,RESET#,SERR#,SLBURST#,
+*                       TEST#,BCLK,EISAHLDA,PEREQ#
+*  Buffer Type          I
+*  ESC5 Revision:       1.0
+*
+*  Model type:          best case:  min package parasitics, min die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt ESC5_B  	100 	200 	300
++ PARAMS:
++ R_pkg = 226m
++ L_pkg = 8.5n
++ C_pkg = 1.9p
++ C_comp = 0.7p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -1825m
++ -1.0v, -100m
++ -0.9v, -60m
++ -0.8v, -30m
++ -0.7v, -10m
++ -0.6v, -3m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 1150m
++ -1.0v, 48m
++ -0.9v, 25m
++ -0.8v, 12m
++ -0.7v, 6m
++ -0.6v, 3m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82374EB ESC
+*  Signals:             ABFULL,DREQ[3:0],DREQ[7:5],DSKCHG,FERR#,IO16#,
+*                       IOCHK#,IRQ1,IRQ[7:3],IRQ8#,IRQ[15:9],PCICLK,
+*                       MASTER16#,MREQ[7:0]#,OSC,PERR#,RESET#,SERR#,SLBURST#,
+*                       TEST#,BCLK,EISAHLDA,PEREQ#
+*  Buffer Type          I
+*  ESC5 Revision:       1.0
+*
+*  Model type:          worst case:  max package parasitics, max die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt ESC5_W  	100 	200 	300
++ PARAMS:
++ R_pkg = 405m
++ L_pkg = 15.1n
++ C_pkg = 2.8p
++ C_comp = 3.1p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -1825m
++ -1.0v, -100m
++ -0.9v, -60m
++ -0.8v, -30m
++ -0.7v, -10m
++ -0.6v, -3m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 1150m
++ -1.0v, 48m
++ -0.9v, 25m
++ -0.8v, 12m
++ -0.7v, 6m
++ -0.6v, 3m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           ICW79B486/586
+*  Signals:             ALL
+*  Buffer Type          ALL  
+*  Revision:            1.0
+*
+*  Model type:          best case:  max ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ICW79B_B        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 50m           ; package bond wire and lead resistance at output
++ L_pkg = 4n            ; package bond wire and lead inductance at output
++ C_pkg = 1p            ; package bond wire and lead capacitance at output
++ C_comp = 5p           ; die capacitance at output
++ dVdt_r = 4            ; output rise time in V/ns
++ dVdt_f = 5.5          ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, 0m
++ -4.0v, 0m
++ -3.0v, 0m
++ -2.0v, 0m
++ -1.0v, 0m
++ 0.0v, 0m
++ 0.5v, 28m
++ 1.0v, 57m
++ 1.5v, 84m
++ 2.0v, 111m
++ 2.5v, 137m
++ 3.0v, 162m
++ 3.5v, 183m
++ 4.0v, 207m
++ 4.5v, 224m
++ 5.0v, 240m
++ 10.0v, 261m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -900m
++ -1.0v, -80m
++ -0.9v, -50m
++ -0.8v, -25m
++ -0.7v, -8m
++ -0.6v, 3m
++ -0.5v, -0.6m
++ -0.4v, -0.05m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 0m
++ -4.0v, 0m
++ -3.0v, 0m
++ -2.0v, 0m
++ -1.0v, 0m
++ 0.0v, 0m
++ 0.5v, -0.5m
++ 1.0v, -1.0m
++ 1.4v, -4.0m
++ 1.6v, -18m
++ 2.3v, -67m
++ 2.5v, -90m
++ 2.7v, -106m
++ 2.9v, -129m
++ 3.5v, -171m
++ 4.0v, -207m
++ 4.5v, -240m
++ 5.0v, -272m
++ 10.0v, -272m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           ICW79B486/586
+*  Signals:             ALL
+*  Buffer Type          ALL  
+*  Revision:            1.0
+*
+*  Model type:          worst case:  min ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt ICW79B_W        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 100m          ; package bond wire and lead resistance at output
++ L_pkg = 7n            ; package bond wire and lead inductance at output
++ C_pkg = 2p            ; package bond wire and lead capacitance at output
++ C_comp = 8p           ; die capacitance at output
++ dVdt_r = 2            ; output rise time in V/ns
++ dVdt_f = 2            ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, 0m
++ -4.0v, 0m
++ -3.0v, 0m
++ -2.0v, 0m
++ -1.0v, 0m
++ 0.0v, 0m
++ 0.5v, 21m
++ 1.0v, 41.5m
++ 1.5v, 58m
++ 2.0v, 74m
++ 2.5v, 86.5m
++ 3.0v, 94m
++ 3.5v, 96m
++ 4.0v, 96m
++ 4.5v, 96.5m
++ 5.0v, 97m
++ 10.0v, 101m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -900m
++ -1.0v, -80m
++ -0.9v, -50m
++ -0.8v, -25m
++ -0.7v, -8m
++ -0.6v, 3m
++ -0.5v, -0.6m
++ -0.4v, -0.05m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 0m
++ -4.0v, 0m
++ -3.0v, 0m
++ -2.0v, 0m
++ -1.0v, 0m
++ 0.0v, 0m
++ 0.5v, 0m
++ 1.0v, -0.5m
++ 1.4v, -1.0m
++ 1.6v, -2.0m
++ 2.3v, -42m
++ 2.5v, -54m
++ 2.7v, -67m
++ 2.9v, -120m
++ 3.5v, -170m
++ 4.0v, -207m
++ 4.5v, -245m
++ 5.0v, -281m
++ 10.0v, -281m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             D[0-31],HP[0-3],MP[0-3]
+*  Buffer Type          I/O  
+*  LBX1 Revision:       1.2
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt LBX1_B 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 38m           ; package bond wire and lead resistance at output
++ L_pkg = 7.59n         ; package bond wire and lead inductance at output
++ C_pkg = 0.94p         ; package bond wire and lead capacitance at output
++ C_comp = 3.06p        ; die capacitance at output
++ dVdt_r = {5.25/0.55}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.49}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -216m
++ -4.0v, -212m
++ -3.0v, -207m
++ -2.0v, -189m
++ -1.0v, -126m
++ 0.0v, 0m
++ 0.5v, 71m
++ 1.0v, 126m
++ 1.5v, 163m
++ 2.0v, 189m
++ 2.5v, 202m
++ 3.0v, 207m
++ 3.5v, 210m
++ 4.0v, 212m
++ 4.5v, 214m
++ 5.0v, 216m
++ 10.0v, 230m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 184m
++ -4.0v, 173m
++ -3.0v, 157m
++ -2.0v, 125m
++ -1.0v, 72m
++ 0.0v, 0m
++ 0.5v, -38m
++ 1.0v, -72m
++ 1.5v, -102m
++ 2.0v, -125m
++ 2.5v, -142m
++ 3.0v, -157m
++ 3.5v, -166m
++ 4.0v, -173m
++ 4.5v, -179m
++ 5.0v, -184m
++ 10.0v, -215m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             D[0-31],HP[0-3],MP[0-3]
+*  Buffer Type          I/O  
+*  LBX1 Revision:       1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt LBX1_W 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 45m           ; package bond wire and lead resistance at output
++ L_pkg = 10.41n        ; package bond wire and lead inductance at output
++ C_pkg = 1.16p         ; package bond wire and lead capacitance at output
++ C_comp = 7.84p        ; die capacitance at output
++ dVdt_r = {4.75/2.00}  ; output rise time in V/ns
++ dVdt_f = {4.75/2.34}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -110m
++ -4.0v, -107m
++ -3.0v, -103m
++ -2.0v, -91m
++ -1.0v, -57m
++ 0.0v, 0m
++ 0.5v, 31m
++ 1.0v, 57m
++ 1.5v, 76m
++ 2.0v, 91m
++ 2.5v, 100m
++ 3.0v, 103m
++ 3.5v, 105m
++ 4.0v, 107m
++ 4.5v, 109m
++ 5.0v, 111m
++ 10.0v, 120m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 76m
++ -4.0v, 73m
++ -3.0v, 68m
++ -2.0v, 56m
++ -1.0v, 32m
++ 0.0v, 0m
++ 0.5v, -18m
++ 1.0v, -32m
++ 1.5v, -45m
++ 2.0v, -56m
++ 2.5v, -63m
++ 3.0v, -68m
++ 3.5v, -71m
++ 4.0v, -73m
++ 4.5v, -74m
++ 5.0v, -76m
++ 10.0v, -85m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             AD[0-15]
+*  Buffer Type          I/O  
+*  LBX2 Revision:       1.2
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt LBX2_B 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 38m           ; package bond wire and lead resistance at output
++ L_pkg = 7.59n         ; package bond wire and lead inductance at output
++ C_pkg = 0.94p         ; package bond wire and lead capacitance at output
++ C_comp = 3.06p        ; die capacitance at output
++ dVdt_r = {5.25/0.45}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.44}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -216m
++ -4.0v, -212m
++ -3.0v, -207m
++ -2.0v, -189m
++ -1.0v, -126m
++ 0.0v, 0m
++ 0.5v, 71m
++ 1.0v, 126m
++ 1.5v, 163m
++ 2.0v, 189m
++ 2.5v, 202m
++ 3.0v, 207m
++ 3.5v, 210m
++ 4.0v, 212m
++ 4.5v, 214m
++ 5.0v, 216m
++ 10.0v, 230m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 135m
++ -4.0v, 127m
++ -3.0v, 113m
++ -2.0v, 91m
++ -1.0v, 53m
++ 0.0v, 0m
++ 0.5v, -28m
++ 1.0v, -53m
++ 1.5v, -75m
++ 2.0v, -91m
++ 2.5v, -105m
++ 3.0v, -113m
++ 3.5v, -121m
++ 4.0v, -127m
++ 4.5v, -131m
++ 5.0v, -135m
++ 10.0v, -155m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             AD[0-15]
+*  Buffer Type          I/O  
+*  LBX2 Revision:       1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt LBX2_W 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 45m           ; package bond wire and lead resistance at output
++ L_pkg = 10.41n        ; package bond wire and lead inductance at output
++ C_pkg = 1.16p         ; package bond wire and lead capacitance at output
++ C_comp = 7.84p        ; die capacitance at output
++ dVdt_r = {4.75/1.45}  ; output rise time in V/ns
++ dVdt_f = {4.75/1.61}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -110m
++ -4.0v, -107m
++ -3.0v, -103m
++ -2.0v, -91m
++ -1.0v, -57m
++ 0.0v, 0m
++ 0.5v, 31m
++ 1.0v, 57m
++ 1.5v, 76m
++ 2.0v, 91m
++ 2.5v, 100m
++ 3.0v, 103m
++ 3.5v, 105m
++ 4.0v, 107m
++ 4.5v, 109m
++ 5.0v, 111m
++ 10.0v, 120m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 57m
++ -4.0v, 54m
++ -3.0v, 50m
++ -2.0v, 40m
++ -1.0v, 23m
++ 0.0v, 0m
++ 0.5v, -13m
++ 1.0v, -23m
++ 1.5v, -33m
++ 2.0v, -40m
++ 2.5v, -46m
++ 3.0v, -50m
++ 3.5v, -52m
++ 4.0v, -54m
++ 4.5v, -55m
++ 5.0v, -57m
++ 10.0v, -66m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             MD[0-31]
+*  Buffer Type          I/O  
+*  LBX3 Revision:       1.2
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt LBX3_B 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 38m           ; package bond wire and lead resistance at output
++ L_pkg = 7.59n         ; package bond wire and lead inductance at output
++ C_pkg = 0.94p         ; package bond wire and lead capacitance at output
++ C_comp = 3.06p        ; die capacitance at output
++ dVdt_r = {5.25/0.54}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.49}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -156m
++ -4.0v, -154m
++ -3.0v, -150m
++ -2.0v, -136m
++ -1.0v, -90m
++ 0.0v, 0m
++ 0.5v, 52m
++ 1.0v, 90m
++ 1.5v, 118m
++ 2.0v, 136m
++ 2.5v, 146m
++ 3.0v, 150m
++ 3.5v, 152m
++ 4.0v, 154m
++ 4.5v, 155m
++ 5.0v, 156m
++ 10.0v, 166m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 159m
++ -4.0v, 149m
++ -3.0v, 135m
++ -2.0v, 108m
++ -1.0v, 62m
++ 0.0v, 0m
++ 0.5v, -33m
++ 1.0v, -62m
++ 1.5v, -89m
++ 2.0v, -108m
++ 2.5v, -124m
++ 3.0v, -135m
++ 3.5v, -143m
++ 4.0v, -149m
++ 4.5v, -155m
++ 5.0v, -159m
++ 10.0v, -182m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             MD[0-31]
+*  Buffer Type          I/O  
+*  LBX3 Revision:       1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt LBX3_W 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 45m           ; package bond wire and lead resistance at output
++ L_pkg = 10.41n        ; package bond wire and lead inductance at output
++ C_pkg = 1.16p         ; package bond wire and lead capacitance at output
++ C_comp = 7.84p        ; die capacitance at output
++ dVdt_r = {4.75/2.07}  ; output rise time in V/ns
++ dVdt_f = {4.75/2.25}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -79m
++ -4.0v, -77m
++ -3.0v, -74m
++ -2.0v, -66m
++ -1.0v, -41m
++ 0.0v, 0m
++ 0.5v, 23m
++ 1.0v, 41m
++ 1.5v, 55m
++ 2.0v, 66m
++ 2.5v, 72m
++ 3.0v, 74m
++ 3.5v, 76m
++ 4.0v, 77m
++ 4.5v, 78m
++ 5.0v, 79m
++ 10.0v, 89m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 67m
++ -4.0v, 64m
++ -3.0v, 59m
++ -2.0v, 49m
++ -1.0v, 28m
++ 0.0v, 0m
++ 0.5v, -15m
++ 1.0v, -28m
++ 1.5v, -39m
++ 2.0v, -49m
++ 2.5v, -54m
++ 3.0v, -59m
++ 3.5v, -62m
++ 4.0v, -64m
++ 4.5v, -65m
++ 5.0v, -67m
++ 10.0v, -76m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             HIG[0-4],MIG[0-2],PIG[0-3],DRVPCI,MDLE,TRDY#,PCLK,
+*                       HCLK,RESET,TEST,TSCON
+*  Buffer Type          I
+*  LBX4 Revision:       1.2
+*
+*  Model type:          best case:  min package parasitics, min die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt LBX4_B   	100 	200 	300
++ PARAMS:
++ R_pkg = 38m
++ L_pkg = 7.59n
++ C_pkg = 0.94p
++ C_comp = 1.06p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -1825m
++ -1.0v, -100m
++ -0.9v, -60m
++ -0.8v, -30m
++ -0.7v, -10m
++ -0.6v, -3m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 1150m
++ -1.0v, 48m
++ -0.9v, 25m
++ -0.8v, 12m
++ -0.7v, 6m
++ -0.6v, 3m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             HIG[0-4],MIG[0-2],PIG[0-3],DRVPCI,MDLE,TRDY#,PCLK,
+*                       HCLK,RESET,TEST,TSCON
+*  Buffer Type          I
+*  LBX4 Revision:       1.2
+*
+*  Model type:          worst case:  max package parasitics, max die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt LBX4_W  	100 	200 	300
++ PARAMS:
++ R_pkg = 45m
++ L_pkg = 10.41n
++ C_pkg = 1.16p
++ C_comp = 3.84p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -1825m
++ -1.0v, -100m
++ -0.9v, -60m
++ -0.8v, -30m
++ -0.7v, -10m
++ -0.6v, -3m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 1150m
++ -1.0v, 48m
++ -0.9v, 25m
++ -0.8v, 12m
++ -0.7v, 6m
++ -0.6v, 3m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             A[15:0]
+*  Buffer Type          I/O  
+*  LBX5 Revision:       1.2
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt LBX5_B 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 38m           ; package bond wire and lead resistance at output
++ L_pkg = 7.59n         ; package bond wire and lead inductance at output
++ C_pkg = 0.94p         ; package bond wire and lead capacitance at output
++ C_comp = 3.06p        ; die capacitance at output
++ dVdt_r = {5.25/0.85}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.80}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -216m
++ -4.0v, -212m
++ -3.0v, -207m
++ -2.0v, -189m
++ -1.0v, -126m
++ 0.0v, 0m
++ 0.5v, 71m
++ 1.0v, 126m
++ 1.5v, 163m
++ 2.0v, 189m
++ 2.5v, 202m
++ 3.0v, 207m
++ 3.5v, 210m
++ 4.0v, 212m
++ 4.5v, 214m
++ 5.0v, 216m
++ 10.0v, 230m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 184m
++ -4.0v, 173m
++ -3.0v, 157m
++ -2.0v, 125m
++ -1.0v, 72m
++ 0.0v, 0m
++ 0.5v, -38m
++ 1.0v, -72m
++ 1.5v, -102m
++ 2.0v, -125m
++ 2.5v, -142m
++ 3.0v, -157m
++ 3.5v, -166m
++ 4.0v, -173m
++ 4.5v, -179m
++ 5.0v, -184m
++ 10.0v, -215m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           LBX
+*  Signals:             A[15:0]
+*  Buffer Type          I/O  
+*  LBX5 Revision:       1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt LBX5_W 	        100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 45m           ; package bond wire and lead resistance at output
++ L_pkg = 10.41n        ; package bond wire and lead inductance at output
++ C_pkg = 1.16p         ; package bond wire and lead capacitance at output
++ C_comp = 7.84p        ; die capacitance at output
++ dVdt_r = {4.75/3.20}  ; output rise time in V/ns
++ dVdt_f = {4.75/4.40}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -110m
++ -4.0v, -107m
++ -3.0v, -103m
++ -2.0v, -91m
++ -1.0v, -57m
++ 0.0v, 0m
++ 0.5v, 31m
++ 1.0v, 57m
++ 1.5v, 76m
++ 2.0v, 91m
++ 2.5v, 100m
++ 3.0v, 103m
++ 3.5v, 105m
++ 4.0v, 107m
++ 4.5v, 109m
++ 5.0v, 111m
++ 10.0v, 120m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 76m
++ -4.0v, 73m
++ -3.0v, 68m
++ -2.0v, 56m
++ -1.0v, 32m
++ 0.0v, 0m
++ 0.5v, -18m
++ 1.0v, -32m
++ 1.5v, -45m
++ 2.0v, -56m
++ 2.5v, -63m
++ 3.0v, -68m
++ 3.5v, -71m
++ 4.0v, -73m
++ 4.5v, -74m
++ 5.0v, -76m
++ 10.0v, -85m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           MCM67A618,MCM67B618,MCM67B518
+*  Signals:             ALL
+*  Buffer Type          ALL  
+*  Revision:            1.0
+*
+*  Model type:          best case:  max ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt MCM67_B         100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 50m           ; package bond wire and lead resistance at output
++ L_pkg = 3n            ; package bond wire and lead inductance at output
++ C_pkg = 0.5p          ; package bond wire and lead capacitance at output
++ C_comp = 2p           ; die capacitance at output
++ dVdt_r = 2.3          ; output rise time in V/ns
++ dVdt_f = 2.8          ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, 0m
++ -4.0v, 0m
++ -3.0v, 0m
++ -2.0v, 0m
++ -1.0v, 0m
++ 0.0v, 0m
++ 0.5v, 60m
++ 1.0v, 107m
++ 1.5v, 137m
++ 2.0v, 154m
++ 2.5v, 160m
++ 3.0v, 162m
++ 3.5v, 163m
++ 4.0v, 164m
++ 4.5v, 164m
++ 5.0v, 164m
++ 10.0v, 164m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -70m
++ -1.0v, -70m
++ -0.9v, -25m
++ -0.8v, -2m
++ -0.7v, -0.1m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 2m
++ -4.0v, 2m
++ -3.0v, 2m
++ -2.0v, 2m
++ -1.0v, 2m
++ 0.0v, 2m
++ 0.5v, 1.3m
++ 1.0v, 0.6m
++ 1.5v, 0.2m
++ 2.0v, -13m
++ 2.5v, -45m
++ 3.0v, -77m
++ 3.5v, -102m
++ 4.0v, -124m
++ 4.5v, -136m
++ 5.0v, -145m
++ 10.0v, -145m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 50m
++ -1.0v, 50m
++ -0.9v, 20m
++ -0.8v, 2.1m
++ -0.7v, 0.1m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           MCM67A618,MCM67B618,MCM67B518
+*  Signals:             ALL
+*  Buffer Type          ALL  
+*  Revision:            1.0
+*
+*  Model type:          worst case:  min ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt MCM67_W         100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 200m          ; package bond wire and lead resistance at output
++ L_pkg = 6n            ; package bond wire and lead inductance at output
++ C_pkg = 1p            ; package bond wire and lead capacitance at output
++ C_comp = 7p           ; die capacitance at output
++ dVdt_r = 1.3          ; output rise time in V/ns
++ dVdt_f = 1.5          ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, 0m
++ -4.0v, 0m
++ -3.0v, 0m
++ -2.0v, 0m
++ -1.0v, 0m
++ 0.0v, 0m
++ 0.5v, 38m
++ 1.0v, 68m
++ 1.5v, 90m
++ 2.0v, 104m
++ 2.5v, 110m
++ 3.0v, 112m
++ 3.5v, 113m
++ 4.0v, 114m
++ 4.5v, 115m
++ 5.0v, 115m
++ 10.0v, 115m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -70m
++ -1.0v, -70m
++ -0.9v, -25m
++ -0.8v, -2m
++ -0.7v, -0.1m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 2m
++ -4.0v, 2m
++ -3.0v, 2m
++ -2.0v, 2m
++ -1.0v, 2m
++ 0.0v, 2m
++ 0.5v, 1.4m
++ 1.0v, 0.7m
++ 1.5v, 0.3m
++ 2.0v, -7m
++ 2.5v, -29m
++ 3.0v, -55m
++ 3.5v, -78m
++ 4.0v, -96m
++ 4.5v, -106m
++ 5.0v, -110m
++ 10.0v, -110m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 50m
++ -1.0v, 50m
++ -0.9v, 20m
++ -0.8v, 2.1m
++ -0.7v, 0.1m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82375EB PCEB
+*  Signals:             AD[31:0],BE[3:0]#,C/BE[3:0]#,DEVSEL#,EX32#,EXRDY,
+*                       FRAME#,IO16#,IRDY#,LOCK#,MSBURST#,M/IO#,PAR,
+*                       PCILOCK#,PERR#,SD[31:0],SLBURST#,START#,STOP#,
+*                       TRDY#,W/R#,LA[31:2] (Note:  EXRDY,EX32#, and IO16#
+*                       are open drain signals and can only drive low.)
+*  Buffer Type          I/O  
+*  PCEB1 Revision:      1.0
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCEB1_B         100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 226m          ; package bond wire and lead resistance at output
++ L_pkg = 8.5n          ; package bond wire and lead inductance at output
++ C_pkg = 1.9p          ; package bond wire and lead capacitance at output
++ C_comp = 2p           ; die capacitance at output
++ dVdt_r = {4.75/1.45}  ; output rise time in V/ns
++ dVdt_f = {4.75/1.61}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -216m
++ -4.0v, -212m
++ -3.0v, -207m
++ -2.0v, -189m
++ -1.0v, -126m
++ 0.0v, 0m
++ 0.5v, 71m
++ 1.0v, 126m
++ 1.5v, 163m
++ 2.0v, 189m
++ 2.5v, 202m
++ 3.0v, 207m
++ 3.5v, 210m
++ 4.0v, 212m
++ 4.5v, 214m
++ 5.0v, 216m
++ 10.0v, 230m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 135m
++ -4.0v, 127m
++ -3.0v, 113m
++ -2.0v, 91m
++ -1.0v, 53m
++ 0.0v, 0m
++ 0.5v, -28m
++ 1.0v, -53m
++ 1.5v, -75m
++ 2.0v, -91m
++ 2.5v, -105m
++ 3.0v, -113m
++ 3.5v, -121m
++ 4.0v, -127m
++ 4.5v, -131m
++ 5.0v, -135m
++ 10.0v, -155m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82375EB PCEB
+*  Signals:             AD[31:0],BE[3:0]#,C/BE[3:0]#,DEVSEL#,EX32#,EXRDY,
+*                       FRAME#,IO16#,IRDY#,LOCK#,MSBURST#,M/IO#,PAR,
+*                       PCILOCK#,PERR#,SD[31:0],SLBURST#,START#,STOP#,
+*                       TRDY#,W/R#,LA[31:2] (Note:  EXRDY,EX32#, and IO16#
+*                       are open drain signals and can only drive low.)
+*  Buffer Type          I/O  
+*  PCEB1 Revision:      1.0
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCEB1_W         100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 405m          ; package bond wire and lead resistance at output
++ L_pkg = 15.1n         ; package bond wire and lead inductance at output
++ C_pkg = 2.8p          ; package bond wire and lead capacitance at output
++ C_comp = 7.2p         ; die capacitance at output
++ dVdt_r = {4.75/1.45}  ; output rise time in V/ns
++ dVdt_f = {4.75/1.61}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -110m
++ -4.0v, -107m
++ -3.0v, -103m
++ -2.0v, -91m
++ -1.0v, -57m
++ 0.0v, 0m
++ 0.5v, 31m
++ 1.0v, 57m
++ 1.5v, 76m
++ 2.0v, 91m
++ 2.5v, 100m
++ 3.0v, 103m
++ 3.5v, 105m
++ 4.0v, 107m
++ 4.5v, 109m
++ 5.0v, 111m
++ 10.0v, 120m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 57m
++ -4.0v, 54m
++ -3.0v, 50m
++ -2.0v, 40m
++ -1.0v, 23m
++ 0.0v, 0m
++ 0.5v, -13m
++ 1.0v, -23m
++ 1.5v, -33m
++ 2.0v, -40m
++ 2.5v, -46m
++ 3.0v, -50m
++ 3.5v, -52m
++ 4.0v, -54m
++ 4.5v, -55m
++ 5.0v, -57m
++ 10.0v, -66m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82375EB PCEB
+*  Signals:             CPUGNT#,GNT[3:0]#,FLUSHREQ#,MEMCS#,MEMREQ#,PEREQ#,
+*                       EISAHLDA,NMFLUSH#
+*  Buffer Type          O  
+*  PCEB2 Revision:      1.0
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCEB2_B         100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 226m          ; package bond wire and lead resistance at output
++ L_pkg = 8.5n          ; package bond wire and lead inductance at output
++ C_pkg = 1.9p          ; package bond wire and lead capacitance at output
++ C_comp = 3.06p        ; die capacitance at output
++ dVdt_r = {5.25/0.54}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.49}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -156m
++ -4.0v, -154m
++ -3.0v, -150m
++ -2.0v, -136m
++ -1.0v, -90m
++ 0.0v, 0m
++ 0.5v, 52m
++ 1.0v, 90m
++ 1.5v, 118m
++ 2.0v, 136m
++ 2.5v, 146m
++ 3.0v, 150m
++ 3.5v, 152m
++ 4.0v, 154m
++ 4.5v, 155m
++ 5.0v, 156m
++ 10.0v, 166m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 159m
++ -4.0v, 149m
++ -3.0v, 135m
++ -2.0v, 108m
++ -1.0v, 62m
++ 0.0v, 0m
++ 0.5v, -33m
++ 1.0v, -62m
++ 1.5v, -89m
++ 2.0v, -108m
++ 2.5v, -124m
++ 3.0v, -135m
++ 3.5v, -143m
++ 4.0v, -149m
++ 4.5v, -155m
++ 5.0v, -159m
++ 10.0v, -182m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82375EB PCEB
+*  Signals:             CPUGNT#,GNT[3:0]#,FLUSHREQ#,MEMCS#,MEMREQ#,PEREQ#,
+*                       EISAHLDA,NMFLUSH#
+*  Buffer Type          O  
+*  PCEB2 Revision:      1.0
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCEB2_W         100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 405m          ; package bond wire and lead resistance at output
++ L_pkg = 15.1n         ; package bond wire and lead inductance at output
++ C_pkg = 2.8p          ; package bond wire and lead capacitance at output
++ C_comp = 7.84p        ; die capacitance at output
++ dVdt_r = {4.75/2.07}  ; output rise time in V/ns
++ dVdt_f = {4.75/2.25}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -79m
++ -4.0v, -77m
++ -3.0v, -74m
++ -2.0v, -66m
++ -1.0v, -41m
++ 0.0v, 0m
++ 0.5v, 23m
++ 1.0v, 41m
++ 1.5v, 55m
++ 2.0v, 66m
++ 2.5v, 72m
++ 3.0v, 74m
++ 3.5v, 76m
++ 4.0v, 77m
++ 4.5v, 78m
++ 5.0v, 79m
++ 10.0v, 89m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 67m
++ -4.0v, 64m
++ -3.0v, 59m
++ -2.0v, 49m
++ -1.0v, 28m
++ 0.0v, 0m
++ 0.5v, -15m
++ 1.0v, -28m
++ 1.5v, -39m
++ 2.0v, -49m
++ 2.5v, -54m
++ 3.0v, -59m
++ 3.5v, -62m
++ 4.0v, -64m
++ 4.5v, -65m
++ 5.0v, -67m
++ 10.0v, -76m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82375EB PCEB
+*  Signals:             BCLK,EISAHOLD,SDCPYEN0[3:1]#,SDCPYEN013#,SDCPYUP,
+*                       SDLE[3:0]#,SDEO[2:0]#,CMD#,CPUREQ#,EX16#,IDSEL,
+*                       MEMACK#,PCIRST,PIODEC#,REFRESH#,REQ[3:1]#,TEST#
+*  Buffer Type          I
+*  PCEB3 Revision:      1.0
+*
+*  Model type:          best case:  min package parasitics, min die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt PCEB3_B 	100 	200 	300
++ PARAMS:
++ R_pkg = 226m
++ L_pkg = 8.5n
++ C_pkg = 1.9p
++ C_comp = 0.7p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -1825m
++ -1.0v, -100m
++ -0.9v, -60m
++ -0.8v, -30m
++ -0.7v, -10m
++ -0.6v, -3m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 1150m
++ -1.0v, 48m
++ -0.9v, 25m
++ -0.8v, 12m
++ -0.7v, 6m
++ -0.6v, 3m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           S82375EB PCEB
+*  Signals:             BCLK,EISAHOLD,SDCPYEN0[3:1]#,SDCPYEN013#,SDCPYUP,
+*                       SDLE[3:0]#,SDEO[2:0]#,CMD#,CPUREQ#,EX16#,IDSEL,
+*                       MEMACK#,PCIRST,PIODEC#,REFRESH#,REQ[3:1]#,TEST#
+*  Buffer Type          I
+*  PCEB3 Revision:      1.0
+*
+*  Model type:          worst case:  max package parasitics, max die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt PCEB3_W 	100 	200 	300
++ PARAMS:
++ R_pkg = 405m
++ L_pkg = 15.1n
++ C_pkg = 2.8p
++ C_comp = 3.1p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -1825m
++ -1.0v, -100m
++ -0.9v, -60m
++ -0.8v, -30m
++ -0.7v, -10m
++ -0.6v, -3m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 1150m
++ -1.0v, 48m
++ -0.9v, 25m
++ -0.8v, 12m
++ -0.7v, 6m
++ -0.6v, 3m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             A0-A31,DRVPCI (out only)
+*  Buffer Type:         I/O     
+*  PCMC1 Revision:      1.2
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC1_B 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 227m          ; package bond wire and lead resistance at output
++ L_pkg = 26.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.21p         ; package bond wire and lead capacitance at output
++ C_comp = 2.79p        ; die capacitance at output
++ dVdt_r = {5.25/1.24}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.94}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -62m
++ -4.0v, -61m
++ -3.0v, -60m
++ -2.0v, -56m
++ -1.0v, -38m
++ 0.0v, 0m
++ 0.5v, 22m
++ 1.0v, 38m
++ 1.5v, 49m
++ 2.0v, 56m
++ 2.5v, 60m
++ 3.0v, 61m
++ 3.5v, 61m
++ 4.0v, 62m
++ 4.5v, 62m
++ 5.0v, 63m
++ 10.0v, 70m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -75m
++ -0.7v, -20m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 67m
++ -4.0v, 65m
++ -3.0v, 60m
++ -2.0v, 48m
++ -1.0v, 29m
++ 0.0v, 0m
++ 0.5v, -16m
++ 1.0v, -29m
++ 1.5v, -40m
++ 2.0v, -48m
++ 2.5v, -55m
++ 3.0v, -60m
++ 3.5v, -63m
++ 4.0v, -65m
++ 4.5v, -66m
++ 5.0v, -67m
++ 10.0v, -77m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 90m
++ -0.7v, 20m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             A0-A31,DRVPCI (out only)
+*  Buffer Type:         I/O     
+*  PCMC1 Revision:      1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC1_W 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 227m          ; package bond wire and lead resistance at output
++ L_pkg = 32.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.36p         ; package bond wire and lead capacitance at output
++ C_comp = 7.64p        ; die capacitance at output
++ dVdt_r = {4.75/4.01}  ; output rise time in V/ns
++ dVdt_f = {4.75/3.30}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -34m
++ -4.0v, -33m
++ -3.0v, -32m
++ -2.0v, -30m
++ -1.0v, -20m
++ 0.0v, 0m
++ 0.5v, 11m
++ 1.0v, 20m
++ 1.5v, 26m
++ 2.0v, 30m
++ 2.5v, 32m
++ 3.0v, 33m
++ 3.5v, 33m
++ 4.0v, 33m
++ 4.5v, 34m
++ 5.0v, 34m
++ 10.0v, 40m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -75m
++ -0.7v, -20m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 30m
++ -4.0v, 29m
++ -3.0v, 28m
++ -2.0v, 23m
++ -1.0v, 14m
++ 0.0v, 0m
++ 0.5v, -8m
++ 1.0v, -14m
++ 1.5v, -19m
++ 2.0v, -23m
++ 2.5v, -26m
++ 3.0v, -28m
++ 3.5v, -29m
++ 4.0v, -29m
++ 4.5v, -30m
++ 5.0v, -30m
++ 10.0v, -35m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 90m
++ -0.7v, 20m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             PIGO-PIG3
+*  Buffer Type:         O     
+*  PCMC2 Revision:      1.2
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC2_B 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 227m          ; package bond wire and lead resistance at output
++ L_pkg = 26.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.21p         ; package bond wire and lead capacitance at output
++ C_comp = 1.79p        ; die capacitance at output
++ dVdt_r = {5.25/0.74}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.5}   ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -62m
++ -4.0v, -61m
++ -3.0v, -60m
++ -2.0v, -56m
++ -1.0v, -38m
++ 0.0v, 0m
++ 0.5v, 22m
++ 1.0v, 38m
++ 1.5v, 49m
++ 2.0v, 56m
++ 2.5v, 60m
++ 3.0v, 61m
++ 3.5v, 61m
++ 4.0v, 62m
++ 4.5v, 62m
++ 5.0v, 63m
++ 10.0v, 70m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -75m
++ -0.7v, -20m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 67m
++ -4.0v, 65m
++ -3.0v, 60m
++ -2.0v, 48m
++ -1.0v, 29m
++ 0.0v, 0m
++ 0.5v, -16m
++ 1.0v, -29m
++ 1.5v, -40m
++ 2.0v, -48m
++ 2.5v, -55m
++ 3.0v, -60m
++ 3.5v, -63m
++ 4.0v, -65m
++ 4.5v, -66m
++ 5.0v, -67m
++ 10.0v, -77m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 90m
++ -0.7v, 20m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             PIGO-PIG3
+*  Buffer Type:         O     
+*  PCMC2 Revision:      1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC2_W 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 277m          ; package bond wire and lead resistance at output
++ L_pkg = 32.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.36p         ; package bond wire and lead capacitance at output
++ C_comp = 5.64p        ; die capacitance at output
++ dVdt_r = {4.75/2.73}  ; output rise time in V/ns
++ dVdt_f = {4.75/2.64}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -34m
++ -4.0v, -33m
++ -3.0v, -32m
++ -2.0v, -30m
++ -1.0v, -20m
++ 0.0v, 0m
++ 0.5v, 11m
++ 1.0v, 20m
++ 1.5v, 26m
++ 2.0v, 30m
++ 2.5v, 32m
++ 3.0v, 33m
++ 3.5v, 33m
++ 4.0v, 33m
++ 4.5v, 34m
++ 5.0v, 34m
++ 10.0v, 40m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -75m
++ -0.7v, -20m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 67m
++ -4.0v, 65m
++ -3.0v, 60m
++ -2.0v, 48m
++ -1.0v, 29m
++ 0.0v, 0m
++ 0.5v, -16m
++ 1.0v, -29m
++ 1.5v, -40m
++ 2.0v, -48m
++ 2.5v, -55m
++ 3.0v, -60m
++ 3.5v, -63m
++ 4.0v, -65m
++ 4.5v, -66m
++ 5.0v, -67m
++ 10.0v, -77m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 90m
++ -0.7v, 20m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             CALE
+*  Buffer Type:         O     
+*  PCMC4 Revision:      1.2
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC4_B 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 227m          ; package bond wire and lead resistance at output
++ L_pkg = 26.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.21p         ; package bond wire and lead capacitance at output
++ C_comp = 1.79p        ; die capacitance at output
++ dVdt_r = {5.25/0.40}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.40}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -62m
++ -4.0v, -61m
++ -3.0v, -60m
++ -2.0v, -56m
++ -1.0v, -38m
++ 0.0v, 0m
++ 0.5v, 22m
++ 1.0v, 38m
++ 1.5v, 49m
++ 2.0v, 56m
++ 2.5v, 60m
++ 3.0v, 61m
++ 3.5v, 61m
++ 4.0v, 62m
++ 4.5v, 62m
++ 5.0v, 63m
++ 10.0v, 70m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -75m
++ -0.7v, -20m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 67m
++ -4.0v, 65m
++ -3.0v, 60m
++ -2.0v, 48m
++ -1.0v, 29m
++ 0.0v, 0m
++ 0.5v, -16m
++ 1.0v, -29m
++ 1.5v, -40m
++ 2.0v, -48m
++ 2.5v, -55m
++ 3.0v, -60m
++ 3.5v, -63m
++ 4.0v, -65m
++ 4.5v, -66m
++ 5.0v, -67m
++ 10.0v, -77m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 90m
++ -0.7v, 20m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             CALE
+*  Buffer Type:         O     
+*  PCMC4 Revision:      1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC4_W 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 277m          ; package bond wire and lead resistance at output
++ L_pkg = 32.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.36p         ; package bond wire and lead capacitance at output
++ C_comp = 5.64p        ; die capacitance at output
++ dVdt_r = {4.75/1.02}  ; output rise time in V/ns
++ dVdt_f = {4.75/2.56}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -34m
++ -4.0v, -33m
++ -3.0v, -32m
++ -2.0v, -30m
++ -1.0v, -20m
++ 0.0v, 0m
++ 0.5v, 11m
++ 1.0v, 20m
++ 1.5v, 26m
++ 2.0v, 30m
++ 2.5v, 32m
++ 3.0v, 33m
++ 3.5v, 33m
++ 4.0v, 33m
++ 4.5v, 34m
++ 5.0v, 34m
++ 10.0v, 40m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -75m
++ -0.7v, -20m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 67m
++ -4.0v, 65m
++ -3.0v, 60m
++ -2.0v, 48m
++ -1.0v, 29m
++ 0.0v, 0m
++ 0.5v, -16m
++ 1.0v, -29m
++ 1.5v, -40m
++ 2.0v, -48m
++ 2.5v, -55m
++ 3.0v, -60m
++ 3.5v, -63m
++ 4.0v, -65m
++ 4.5v, -66m
++ 5.0v, -67m
++ 10.0v, -77m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 90m
++ -0.7v, 20m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             BRDY#,NA#,HCLKout[6:1],HIG[0-4],MIG[0-2],REQ#,MDLE
+*  Buffer Type:         O     
+*  PCMC5 Revision:      1.2
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC5_B 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 227m          ; package bond wire and lead resistance at output
++ L_pkg = 26.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.21p         ; package bond wire and lead capacitance at output
++ C_comp = 1.79p        ; die capacitance at output
++ dVdt_r = {5.25/0.37}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.27}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -121m
++ -4.0v, -119m
++ -3.0v, -117m
++ -2.0v, -111m
++ -1.0v, -76m
++ 0.0v, 0m
++ 0.5v, 44m
++ 1.0v, 76m
++ 1.5v, 97m
++ 2.0v, 111m
++ 2.5v, 116m
++ 3.0v, 117m
++ 3.5v, 118m
++ 4.0v, 119m
++ 4.5v, 120m
++ 5.0v, 121m
++ 10.0v, 125m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -74m
++ -0.7v, -18m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 130m
++ -4.0v, 126m
++ -3.0v, 119m
++ -2.0v, 97m
++ -1.0v, 58m
++ 0.0v, 0m
++ 0.5v, -32m
++ 1.0v, -58m
++ 1.5v, -80m
++ 2.0v, -97m
++ 2.5v, -110m
++ 3.0v, -119m
++ 3.5v, -123m
++ 4.0v, -126m
++ 4.5v, -128m
++ 5.0v, -130m
++ 10.0v, -146m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 285m
++ -0.9v, 180m
++ -0.8v, 96m
++ -0.7v, 28m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             BRDY#,NA#,HCLKout[6:1],HIG[0-4],MIG[0-2],REQ#,MDLE
+*  Buffer Type:         O     
+*  PCMC5 Revision:      1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC5_W 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 277m          ; package bond wire and lead resistance at output
++ L_pkg = 32.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.36p         ; package bond wire and lead capacitance at output
++ C_comp = 5.64p        ; die capacitance at output
++ dVdt_r = {4.75/0.76}  ; output rise time in V/ns
++ dVdt_f = {4.75/1.06}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -70m
++ -4.0v, -69m
++ -3.0v, -68m
++ -2.0v, -62m
++ -1.0v, -40m
++ 0.0v, 0m
++ 0.5v, 23m
++ 1.0v, 40m
++ 1.5v, 53m
++ 2.0v, 62m
++ 2.5v, 66m
++ 3.0v, 68m
++ 3.5v, 69m
++ 4.0v, 69m
++ 4.5v, 70m
++ 5.0v, 70m
++ 10.0v, 75m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -74m
++ -0.7v, -18m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 64m
++ -4.0v, 62m
++ -3.0v, 58m
++ -2.0v, 48m
++ -1.0v, 28m
++ 0.0v, 0m
++ 0.5v, -16m
++ 1.0v, -28m
++ 1.5v, -39m
++ 2.0v, -48m
++ 2.5v, -54m
++ 3.0v, -58m
++ 3.5v, -61m
++ 4.0v, -62m
++ 4.5v, -63m
++ 5.0v, -64m
++ 10.0v, -73m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 285m
++ -0.9v, 180m
++ -0.8v, 96m
++ -0.7v, 28m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             MA[0-10],(MA11),RAS#[0-5],COE#[0-1],CAS#[0-7],
+*                       CADS#[0-1],CWE#[0-7],MEMACK#,CADV#[0-1],WE#,KEN#,
+*                       EADS#,INV,AHOLD,BOFF#,CPURST,PEN#,INIT
+*  Buffer Type          O           
+*  PCMC6 Revision:      1.2
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC6_B 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 227m          ; package bond wire and lead resistance at output
++ L_pkg = 26.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.21p         ; package bond wire and lead capacitance at output
++ C_comp = 1.79p        ; die capacitance at output
++ dVdt_r = {5.25/0.40}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.27}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -121m
++ -4.0v, -119m
++ -3.0v, -117m
++ -2.0v, -111m
++ -1.0v, -76m
++ 0.0v, 0m
++ 0.5v, 44m
++ 1.0v, 76m
++ 1.5v, 97m
++ 2.0v, 111m
++ 2.5v, 116m
++ 3.0v, 117m
++ 3.5v, 118m
++ 4.0v, 119m
++ 4.5v, 120m
++ 5.0v, 121m
++ 10.0v, 125m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -74m
++ -0.7v, -18m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 67m
++ -4.0v, 65m
++ -3.0v, 60m
++ -2.0v, 48m
++ -1.0v, 29m
++ 0.0v, 0m
++ 0.5v, -16m
++ 1.0v, -29m
++ 1.5v, -40m
++ 2.0v, -48m
++ 2.5v, -55m
++ 3.0v, -60m
++ 3.5v, -63m
++ 4.0v, -65m
++ 4.5v, -66m
++ 5.0v, -67m
++ 10.0v, -77m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 90m
++ -0.7v, 20m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             MA[0-10],(MA11),RAS#[0-5],COE#[0-1],CAS#[0-7],
+*                       CADS#[0-1],CWE#[0-7],MEMACK#,CADV#[0-1],WE#,KEN#,
+*                       EADS#,INV,AHOLD,BOFF#,CPURST,PEN#,INIT
+*  Buffer Type          O           
+*  PCMC6 Revision:      1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC6_W 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 277m          ; package bond wire and lead resistance at output
++ L_pkg = 32.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.36p         ; package bond wire and lead capacitance at output
++ C_comp = 5.64p        ; die capacitance at output
++ dVdt_r = {4.75/1.02}  ; output rise time in V/ns
++ dVdt_f = {4.75/1.06}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -70m
++ -4.0v, -69m
++ -3.0v, -68m
++ -2.0v, -62m
++ -1.0v, -40m
++ 0.0v, 0m
++ 0.5v, 23m
++ 1.0v, 40m
++ 1.5v, 53m
++ 2.0v, 62m
++ 2.5v, 66m
++ 3.0v, 68m
++ 3.5v, 69m
++ 4.0v, 69m
++ 4.5v, 70m
++ 5.0v, 70m
++ 10.0v, 75m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -3800m
++ -1.0v, -225m
++ -0.9v, -145m
++ -0.8v, -74m
++ -0.7v, -18m
++ -0.6v, -2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 30m
++ -4.0v, 29m
++ -3.0v, 28m
++ -2.0v, 23m
++ -1.0v, 14m
++ 0.0v, 0m
++ 0.5v, -8m
++ 1.0v, -14m
++ 1.5v, -19m
++ 2.0v, -23m
++ 2.5v, -26m
++ 3.0v, -28m
++ 3.5v, -29m
++ 4.0v, -29m
++ 4.5v, -30m
++ 5.0v, -30m
++ 10.0v, -35m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4400m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 90m
++ -0.7v, 20m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             TRDY#,IRDY#,PLOCK#,CBE#[3:0],PAR,STOP#,PERR#,SERR#
+*                       (Note: SERR# is an open drain and can only be 
+*                       driven low),FRAME#
+*                       Output Only:  CAA[6:3],CAB[6:3],PCIRST,PCLKout
+*  Buffer Type          I/O  
+*  PCMC7 Revision:      1.2
+*
+*  Model type:          best case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC7_B 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 227m          ; package bond wire and lead resistance at output
++ L_pkg = 26.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.21p         ; package bond wire and lead capacitance at output
++ C_comp = 2.79p        ; die capacitance at output
++ dVdt_r = {5.25/0.30}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.29}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -206m
++ -4.0v, -203m
++ -3.0v, -200m
++ -2.0v, -191m
++ -1.0v, -130m
++ 0.0v, 0m
++ 0.5v, 75m
++ 1.0v, 130m
++ 1.5v, 167m
++ 2.0v, 191m
++ 2.5v, 198m
++ 3.0v, 200m
++ 3.5v, 202m
++ 4.0v, 203m
++ 4.5v, 205m
++ 5.0v, 206m
++ 10.0v, 219m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -6140m
++ -1.0v, -360m
++ -0.9v, -220m
++ -0.8v, -122m
++ -0.7v, -31m
++ -0.6v, -3m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 133m
++ -4.0v, 129m
++ -3.0v, 122m
++ -2.0v, 99m
++ -1.0v, 60m
++ 0.0v, 0m
++ 0.5v, -32m
++ 1.0v, -60m
++ 1.5v, -82m
++ 2.0v, -99m
++ 2.5v, -113m
++ 3.0v, -122m
++ 3.5v, -127m
++ 4.0v, -129m
++ 4.5v, -131m
++ 5.0v, -133m
++ 10.0v, -150m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4375m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 94m
++ -0.7v, 26m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             TRDY#,IRDY#,PLOCK#,CBE#[3:0],PAR,STOP#,PERR#,SERR#
+*                       (Note: SERR# is an open drain and can only be 
+*                       driven low),FRAME#
+*                       Output Only:  CAA[6:3],CAB[6:3],PCIRST,PCLKout
+*  Buffer Type          I/O  
+*  PCMC7 Revision:      1.2
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt PCMC7_W 	100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 277m          ; package bond wire and lead resistance at output
++ L_pkg = 32.75n        ; package bond wire and lead inductance at output
++ C_pkg = 1.36p         ; package bond wire and lead capacitance at output
++ C_comp = 7.64p        ; die capacitance at output
++ dVdt_r = {4.75/0.72}  ; output rise time in V/ns
++ dVdt_f = {4.75/1.22}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -111m
++ -4.0v, -110m
++ -3.0v, -108m
++ -2.0v, -97m
++ -1.0v, -64m
++ 0.0v, 0m
++ 0.5v, 36m
++ 1.0v, 64m
++ 1.5v, 84m
++ 2.0v, 97m
++ 2.5v, 106m
++ 3.0v, 108m
++ 3.5v, 109m
++ 4.0v, 110m
++ 4.5v, 111m
++ 5.0v, 111m
++ 10.0v, 117m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -6140m
++ -1.0v, -360m
++ -0.9v, -220m
++ -0.8v, -122m
++ -0.7v, -31m
++ -0.6v, -3m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 62m
++ -4.0v, 60m
++ -3.0v, 56m
++ -2.0v, 46m
++ -1.0v, 27m
++ 0.0v, 0m
++ 0.5v, -15m
++ 1.0v, -27m
++ 1.5v, -38m
++ 2.0v, -46m
++ 2.5v, -52m
++ 3.0v, -56m
++ 3.5v, -59m
++ 4.0v, -60m
++ 4.5v, -61m
++ 5.0v, -62m
++ 10.0v, -69m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 4375m
++ -1.0v, 275m
++ -0.9v, 175m
++ -0.8v, 94m
++ -0.7v, 26m
++ -0.6v, 2m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             BE#[0-7],HCLKosc,M/IO#,CACHE#,HITM#,ADS#,HLOCK#,
+*                       PCHK#,GNT#,HCLKin,PCLKIN,W/R#,FLSHBUF#,MEMCS#,
+*                       MEMREQ#,D/C#,SMIACT#,(SMIACT2#),PWROK,PPOUT0,
+*                       PPOUT1,EOL,TESTEN
+*  Buffer Type          I
+*  PCMC8 Revision:      1.2
+*
+*  Model type:          best case:  min package parasitics, min die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt PCMC8_B 	100 	200 	300
++ PARAMS:
++ R_pkg = 227m
++ L_pkg = 26.75n
++ C_pkg = 1.21p
++ C_comp = 0.79p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -3800m
++ -1.0v, -245m
++ -0.9v, -157m
++ -0.8v, -77m
++ -0.7v, -19m
++ -0.6v, -2m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 4451m
++ -1.0v, 301m
++ -0.9v, 199m
++ -0.8v, 101m
++ -0.7v, 30m
++ -0.6v, 1m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           PCMC
+*  Signals:             BE#[0-7],HCLKosc,M/IO#,CACHE#,HITM#,ADS#,HLOCK#,
+*                       PCHK#,GNT#,HCLKin,PCLKIN,W/R#,FLSHBUF#,MEMCS#,
+*                       MEMREQ#,D/C#,SMIACT#,(SMIACT2#),PWROK,PPOUT0,
+*                       PPOUT1,EOL,TESTEN
+*  Buffer Type          I
+*  PCMC8 Revision:      1.2
+*
+*  Model type:          worst case:  max package parasitics, max die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt PCMC8_W 	100 	200 	300
++ PARAMS:
++ R_pkg = 277m
++ L_pkg = 32.75n
++ C_pkg = 1.36p
++ C_comp = 3.64p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -3800m
++ -1.0v, -245m
++ -0.9v, -157m
++ -0.8v, -77m
++ -0.7v, -19m
++ -0.6v, -2m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 4451m
++ -1.0v, 301m
++ -0.9v, 199m
++ -0.8v, 101m
++ -0.7v, 30m
++ -0.6v, 1m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           SIO
+*  Signals:             AD[31:0],AEN,BALE,C/BE[3:0]#,EOP,DACK[3:0]#,
+*                       DACK[7:5],DEVSEL#,FRAME#,IOCHRDY,IOR#,IOW#,IRDY#,
+*                       LA[23:17],LOCK#,SYSCLK,MEMCS16#,MEMR#,MEMW#,REFRESH#,
+*                       RSTDRV,SA[19:0],SBHE#,SD[15:0],SMEMR#,SMEMW#,SPKR,
+*                       STOP#,TRDY#
+*  Buffer Type          I/O  
+*  SIO1 Revision:       1.1
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt SIO1_B          100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 226m          ; package bond wire and lead resistance at output
++ L_pkg = 8.5n          ; package bond wire and lead inductance at output
++ C_pkg = 1.9p          ; package bond wire and lead capacitance at output
++ C_comp = 2.7p         ; die capacitance at output
++ dVdt_r = {5.25/0.45}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.44}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -216m
++ -4.0v, -212m
++ -3.0v, -207m
++ -2.0v, -189m
++ -1.0v, -126m
++ 0.0v, 0m
++ 0.5v, 71m
++ 1.0v, 126m
++ 1.5v, 163m
++ 2.0v, 189m
++ 2.5v, 202m
++ 3.0v, 207m
++ 3.5v, 210m
++ 4.0v, 212m
++ 4.5v, 214m
++ 5.0v, 216m
++ 10.0v, 230m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 135m
++ -4.0v, 127m
++ -3.0v, 113m
++ -2.0v, 91m
++ -1.0v, 53m
++ 0.0v, 0m
++ 0.5v, -28m
++ 1.0v, -53m
++ 1.5v, -75m
++ 2.0v, -91m
++ 2.5v, -105m
++ 3.0v, -113m
++ 3.5v, -121m
++ 4.0v, -127m
++ 4.5v, -131m
++ 5.0v, -135m
++ 10.0v, -155m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           SIO
+*  Signals:             AD[31:0],AEN,BALE,C/BE[3:0]#,EOP,DACK[3:0]#,
+*                       DACK[7:5],DEVSEL#,FRAME#,IOCHRDY,IOR#,IOW#,IRDY#,
+*                       LA[23:17],LOCK#,SYSCLK,MEMCS16#,MEMR#,MEMW#,REFRESH#,
+*                       RSTDRV,SA[19:0],SBHE#,SD[15:0],SMEMR#,SMEMW#,SPKR,
+*                       STOP#,TRDY#
+*  Buffer Type          I/O  
+*  SIO1 Revision:       1.1
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt SIO1_W          100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 405m          ; package bond wire and lead resistance at output
++ L_pkg = 15.1n         ; package bond wire and lead inductance at output
++ C_pkg = 2.8p          ; package bond wire and lead capacitance at output
++ C_comp = 7.1p         ; die capacitance at output
++ dVdt_r = {4.75/1.45}  ; output rise time in V/ns
++ dVdt_f = {4.75/1.61}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -110m
++ -4.0v, -107m
++ -3.0v, -103m
++ -2.0v, -91m
++ -1.0v, -57m
++ 0.0v, 0m
++ 0.5v, 31m
++ 1.0v, 57m
++ 1.5v, 76m
++ 2.0v, 91m
++ 2.5v, 100m
++ 3.0v, 103m
++ 3.5v, 105m
++ 4.0v, 107m
++ 4.5v, 109m
++ 5.0v, 111m
++ 10.0v, 120m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1725m
++ -1.0v, -110m
++ -0.9v, -70m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 57m
++ -4.0v, 54m
++ -3.0v, 50m
++ -2.0v, 40m
++ -1.0v, 23m
++ 0.0v, 0m
++ 0.5v, -13m
++ 1.0v, -23m
++ 1.5v, -33m
++ 2.0v, -40m
++ 2.5v, -46m
++ 3.0v, -50m
++ 3.5v, -52m
++ 4.0v, -54m
++ 4.5v, -55m
++ 5.0v, -57m
++ 10.0v, -66m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 970m
++ -1.0v, 74m
++ -0.9v, 52m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           SIO
+*  Signals:             ALT_A20,ALT_RST#,INT,NMI,ECSADDR[0:3],GNNE#,ECSEN#,
+*                       UBUSOE#,UBUSTR
+*  Buffer Type          O  
+*  SIO2 Revision:       1.1
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt SIO2_B          100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 226m          ; package bond wire and lead resistance at output
++ L_pkg = 8.5n          ; package bond wire and lead inductance at output
++ C_pkg = 1.9p          ; package bond wire and lead capacitance at output
++ C_comp = 1.7p         ; die capacitance at output
++ dVdt_r = {5.25/0.65}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.73}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -83m
++ -4.0v, -82m
++ -3.0v, -80m
++ -2.0v, -73m
++ -1.0v, -49m
++ 0.0v, 0m
++ 0.5v, 28m
++ 1.0v, 49m
++ 1.5v, 64m
++ 2.0v, 73m
++ 2.5v, 78m
++ 3.0v, 80m
++ 3.5v, 81m
++ 4.0v, 82m
++ 4.5v, 83m
++ 5.0v, 84m
++ 10.0v, 90m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 99m
++ -4.0v, 92m
++ -3.0v, 83m
++ -2.0v, 66m
++ -1.0v, 38m
++ 0.0v, 0m
++ 0.5v, -20m
++ 1.0v, -38m
++ 1.5v, -54m
++ 2.0v, -66m
++ 2.5v, -76m
++ 3.0v, -83m
++ 3.5v, -88m
++ 4.0v, -92m
++ 4.5v, -96m
++ 5.0v, -99m
++ 10.0v, -118m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           SIO
+*  Signals:             ALT_A20,ALT_RST#,INT,NMI,ECSADDR[0:3],GNNE#,ECSEN#,
+*                       UBUSOE#,UBUSTR
+*  Buffer Type          O  
+*  SIO2 Revision:       1.1
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt SIO2_W          100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 405m          ; package bond wire and lead resistance at output
++ L_pkg = 15.1n         ; package bond wire and lead inductance at output
++ C_pkg = 2.8p          ; package bond wire and lead capacitance at output
++ C_comp = 5.1p         ; die capacitance at output
++ dVdt_r = {4.75/4.69}  ; output rise time in V/ns
++ dVdt_f = {4.75/5.08}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -42m
++ -4.0v, -41m
++ -3.0v, -40m
++ -2.0v, -35m
++ -1.0v, -22m
++ 0.0v, 0m
++ 0.5v, 12m
++ 1.0v, 22m
++ 1.5v, 30m
++ 2.0v, 35m
++ 2.5v, 38m
++ 3.0v, 40m
++ 3.5v, 41m
++ 4.0v, 42m
++ 4.5v, 42m
++ 5.0v, 43m
++ 10.0v, 48m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 42m
++ -4.0v, 41m
++ -3.0v, 40m
++ -2.0v, 35m
++ -1.0v, 22m
++ 0.0v, 0m
++ 0.5v, -9m
++ 1.0v, -16m
++ 1.5v, -24m
++ 2.0v, -30m
++ 2.5v, -34m
++ 3.0v, -37m
++ 3.5v, -38m
++ 4.0v, -39m
++ 4.5v, -39m
++ 5.0v, -40m
++ 10.0v, -45m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           SIO
+*  Signals:             CPUGNT#,GNT0#,FLSHREQ#,GNT1#,MEMREQ#,MEMCS#
+*  Buffer Type          O  
+*  SIO3 Revision:       1.1
+*
+*  Model type:          best case:  min ramp time, min package parasitics, 
+*                       min die capacitance, max output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt SIO3_B          100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 226m          ; package bond wire and lead resistance at output
++ L_pkg = 8.5n          ; package bond wire and lead inductance at output
++ C_pkg = 1.9p          ; package bond wire and lead capacitance at output
++ C_comp = 1.7p         ; die capacitance at output
++ dVdt_r = {5.25/0.53}  ; output rise time in V/ns
++ dVdt_f = {5.25/0.48}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -120m
++ -4.0v, -118m
++ -3.0v, -115m
++ -2.0v, -105m
++ -1.0v, -70m
++ 0.0v, 0m
++ 0.5v, 40m
++ 1.0v, 70m
++ 1.5v, 91m
++ 2.0v, 105m
++ 2.5v, 112m
++ 3.0v, 115m
++ 3.5v, 117m
++ 4.0v, 118m
++ 4.5v, 119m
++ 5.0v, 120m
++ 10.0v, 130m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 135m
++ -4.0v, 127m
++ -3.0v, 113m
++ -2.0v, 91m
++ -1.0v, 53m
++ 0.0v, 0m
++ 0.5v, -28m
++ 1.0v, -53m
++ 1.5v, -75m
++ 2.0v, -91m
++ 2.5v, -105m
++ 3.0v, -113m
++ 3.5v, -121m
++ 4.0v, -127m
++ 4.5v, -131m
++ 5.0v, -135m
++ 10.0v, -155m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           SIO
+*  Signals:             CPUGNT#,GNT0#,FLSHREQ#,GNT1#,MEMREQ#,MEMCS#
+*  Buffer Type          O  
+*  SIO3 Revision:       1.1
+*
+*  Model type:          worst case:  max ramp time, max package parasitics, 
+*                       max die capacitance, min output current
+*
+*
+*
+*                 	Input	Output	VCC	GND	Enable
+.subckt SIO3_W          100  	200 	300 	400 	500
++ PARAMS:
++ R_pkg = 405m          ; package bond wire and lead resistance at output
++ L_pkg = 15.1n         ; package bond wire and lead inductance at output
++ C_pkg = 2.8p          ; package bond wire and lead capacitance at output
++ C_comp = 5.1p         ; die capacitance at output
++ dVdt_r = {4.75/2.40}  ; output rise time in V/ns
++ dVdt_f = {4.75/2.46}  ; output fall time in V/ns
+*
+*
+******* Parameters *******
+.PARAM Rtr = { (1/dVdt_r) * 1e5}
+.PARAM Rtf = { (1/dVdt_f) * 1e5 }
+.PARAM Vinh = 1.56v             ; Input high threshold voltage
+.PARAM Vinl = 1.47v		; Input low threshold voltage
+*
+******* Input and Enable Threshld **********************
+Ein_thr_dn 800 0 VALUE = {TABLE(V(100,400),
++ Vinl, 0,
++ Vinl+1e-6, 1)}
+*
+Ein_thr_up 810 0 VALUE = {TABLE (V(100,400),
++ Vinh-1e-6, 1,
++ Vinh, 0)}
+*
+Ein_thr 530 0 VALUE = {TABLE (V(500,400),
++ Vinl, 0,
++ Vinh, 1)}
+*
+Edn 820 0 VALUE = {LIMIT(V(800,0), 0, V(530,0))}
+Eup 830 0 VALUE = {LIMIT(V(810,0), 0, V(530,0))}
+Rdum1 530 0 10meg
+Rdum2 800 0 10meg
+Rdum3 810 0 10meg
+Rdum4 820 0 10meg
+Rdum5 830 0 10meg
+*
+******** Rise & Fall Time *******
+Gramp_dn 840 400a VALUE={v(840,400a) / (abs(v(840,400) * Rtf
++ + V(820,400) * 1e9) + 1e-4) }
+rgramp_dn 400a 400 0.1
+Cramp_dn 840 400 0.01p
+*
+GRchrg_dn 840 220 VALUE={v(840,220)/(abs(v(830,0) * 1e+7)+1e-4)}
+cchrg_dn 840 220 1f
+rchrg_dn 840 220 10meg
+*
+Gramp_up 300a 850 VALUE = {v(300a,850) / (abs(v(300,850) * Rtr +
++ V(830,400) * 1e9) + 1e-4)}
+Vramp_up 300a 300 10u
+Cramp_up 850 300 0.01pf
+*
+ERchrg_up 850 220b VALUE = {I(Vchrg_up) * (abs(v(820,0) * 1e9) + 1e-4)}
+Vchrg_up 220b 220 0
+cchrg_up 850 220 5f
+*
+******* Output Pulldown *******
+Esw_dn 240 0 VALUE = { TABLE(v(840),
++ 4.5-1e-5, 1,
++ 4.5, 0) }
+*
+Rout_dn 220 400 1
+Gadj_dn 220 400 VALUE = {V(280,220)}
+Elim_dn 280 400 VALUE = {LIMIT(v(260,0), -v(240,0)*1e3, v(240,0)*1e3)}
+Epwl_dn 260 0 TABLE {v(220,840)}
++ -5.0v, -62m
++ -4.0v, -57m
++ -3.0v, -56m
++ -2.0v, -49m
++ -1.0v, -31m
++ 0.0v, 0m
++ 0.5v, 17m
++ 1.0v, 31m
++ 1.5v, 41m
++ 2.0v, 49m
++ 2.5v, 54m
++ 3.0v, 56m
++ 3.5v, 56m
++ 4.0v, 57m
++ 4.5v, 57m
++ 5.0v, 57m
++ 10.0v, 62m
+Rdum6 240 0 10meg
+Rdum7 260 0 10meg
+Rdum8 280 400 10meg
+*
+******* Output clamp to GND *******
+Ggnd_out 220 400 TABLE {v(220,400)}
++ -5.0v, -1680m
++ -1.0v, -108m
++ -0.9v, -69m
++ -0.8v, -35m
++ -0.7v, -5m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output pullup *******
+Esw_up 230 0 VALUE = {TABLE(v(850),
++ 0.5, 0,
++ 0.5+1e-5, 1 )}
+*
+Rout_up 300 220 1
+Gadj_up 300 220 VALUE={v(220,270)}
+Elim_up 300 270 VALUE={LIMIT(v(0,250), -v(230)*1e3, v(230)*1e3)}
+Epwl_up 250 0 TABLE={v(850,220)}
++ -5.0v, 56m
++ -4.0v, 52m
++ -3.0v, 49m
++ -2.0v, 39m
++ -1.0v, 23m
++ 0.0v, 0m
++ 0.5v, -12m
++ 1.0v, -23m
++ 1.5v, -32m
++ 2.0v, -39m
++ 2.5v, -45m
++ 3.0v, -49m
++ 3.5v, -51m
++ 4.0v, -52m
++ 4.5v, -55m
++ 5.0v, -56m
++ 10.0v, -61m
+Rdum9 230 0 10meg
+Rdum10 250 0 10meg
+Rdum11 270 300 10meg
+*
+******* Output clamp to VCC ********
+GVcc_out 220 300 TABLE {V(300,220)}
++ -5.0v, 870m
++ -1.0v, 71m
++ -0.9v, 50m
++ -0.8v, 30m
++ -0.7v, 4m
++ -0.6v, 0m
++ -0.5v, 0m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output Package *******
+Cout_pkg 200 400 {C_pkg}
+Rout_pkg 200 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 400 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           SIO
+*  Signals:             CPURREQ#,DREQ[7:5],DREQ[3:0],DSKCHG,FERR#,IDSEL,
+*                       IOCHK#,IOCS16#,IRQ1,IRQ12/M,IRQ[15:14],IRQ8#,
+*                       IRQ[11:9],IRQ[7:3],OSC,MASTER#,MEMACK#,PCICLK,PCIRST,
+*                       REQ#[2:0],TEST,ZEROWS#
+*  Buffer Type          I
+*  SIO4 Revision:       1.1
+*
+*  Model type:          best case:  min package parasitics, min die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt SIO4_B  	100 	200 	300
++ PARAMS:
++ R_pkg = 226m
++ L_pkg = 8.5n
++ C_pkg = 1.9p
++ C_comp = 0.7p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -1825m
++ -1.0v, -100m
++ -0.9v, -60m
++ -0.8v, -30m
++ -0.7v, -10m
++ -0.6v, -3m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 1150m
++ -1.0v, 48m
++ -0.9v, 25m
++ -0.8v, 12m
++ -0.7v, 6m
++ -0.6v, 3m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+
+*                                         
+*  Component:           SIO
+*  Signals:             CPURREQ#,DREQ[7:5],DREQ[3:0],DSKCHG,FERR#,IDSEL,
+*                       IOCHK#,IOCS16#,IRQ1,IRQ12/M,IRQ[15:14],IRQ8#,
+*                       IRQ[11:9],IRQ[7:3],OSC,MASTER#,MEMACK#,PCICLK,PCIRST,
+*                       REQ#[2:0],TEST,ZEROWS#
+*  Buffer Type          I
+*  SIO4 Revision:       1.1
+*
+*  Model type:          worst case:  max package parasitics, max die
+*                       capacitance
+*
+*
+*
+* 			INPUT	VCC	GND
+.subckt SIO4_W  	100 	200 	300
++ PARAMS:
++ R_pkg = 405m
++ L_pkg = 15.1n
++ C_pkg = 2.8p
++ C_comp = 3.1p
+*
+*
+******* Output clamp to GND *******
+Ggnd_out 220 300 TABLE {V(220,300)}
++ -5.0v, -1825m
++ -1.0v, -100m
++ -0.9v, -60m
++ -0.8v, -30m
++ -0.7v, -10m
++ -0.6v, -3m
++ -0.5v, -0.5m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Output clamp to VCC ******
+GVcc_out 220 200 TABLE {V(200,220)}
++ -5.0v, 1150m
++ -1.0v, 48m
++ -0.9v, 25m
++ -0.8v, 12m
++ -0.7v, 6m
++ -0.6v, 3m
++ -0.5v, 0.3m
++ -0.4v, 0m
++ 0.0v, 0m
+*
+******* Input Package *******
+Cout_pkg 100 300 {C_pkg}
+Rout_pkg 100 210 {R_pkg}
+Lout_pkg 210 220 {L_pkg}
+Rout_snb 210 220 100
+Cout_die 220 300 {C_comp}
+******* End of Subcircuit *******
+.ENDS
+*$
+

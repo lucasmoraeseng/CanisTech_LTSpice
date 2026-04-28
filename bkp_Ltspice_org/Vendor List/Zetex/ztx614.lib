@@ -1,0 +1,28 @@
+*ZETEX  ZTX614 Spice model   Last revision 17/12/92
+*
+.SUBCKT ZTX614 1 2 3
+*              C B E
+Q1 1 2 4 SUB614
+Q2 1 4 3 SUB614 5.39
+.ENDS ZTX614
+*
+.MODEL SUB614 NPN IS =1.575E-14 NF =1.00 BF =280 IKF=0.08 VAF=284 
++             ISE=5.8853E-15 NE =1.3517 NR =1.0469 BR =11 IKR=0.2 
++             VAR=13 ISC=5.3795E-14 NC =1.257 RB =0.22 RE =0.375 
++             RC =0.40 CJC=3.6E-12 MJC=0.3393 VJC=0.4127 
++             CJE=23.7E-12 TF =1.73E-9 TR =260E-9
+*
+*
+*                          (C)  1992 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

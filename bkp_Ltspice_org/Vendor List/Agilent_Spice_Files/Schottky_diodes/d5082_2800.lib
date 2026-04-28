@@ -1,0 +1,10 @@
+*SPICE model for 5082-2800
+*The parameters are for a single diode. Parameters also apply 
+*to the individual diodes within multiple diode configurations. 
+
+.SUBCKT d5082_2800 1 2
+DCD1    1     2      DMOD    
+.MODEL  DMOD	D(IS=2.2E-9, CJO=1.6E-12, VJ=.6, BV=75, IBV=1E-5
++		EG=0.69, N=1.08, RS=25, XTI=2, M=0.5)
+.ENDS
+

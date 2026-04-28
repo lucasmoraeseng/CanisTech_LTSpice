@@ -1,0 +1,16 @@
+*PHILIPS SEMICONDUCTORS        Version 1.0
+*Filename: BFU310.PRM       date: oct 1992
+*
+.MODEL  BFU310   NJF
++             VTO = -3.8366E+000
++            BETA = 2.88371E-003
++          LAMBDA = 2.00998E-002
++              RD = 1.53610E+000
++              RS = 1.53610E+000
++              IS = 4.18900E-016
++            CGS  = 7.90000E-012
++            CGD  = 6.70000E-012
++              PB = 7.58274E-001
++              FC = 5.00000E-001
+*Parameter with default value: FC
+

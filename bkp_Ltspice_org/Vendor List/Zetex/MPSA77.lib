@@ -1,0 +1,30 @@
+*ZETEX  MPSA77 Darlington Spice Subcircuit   Last revision 8/9/98
+*
+.SUBCKT MPSA77 1 2 3
+*              C B E
+Q1 1 2 4 SUBa77
+Q2 1 4 3 SUBa77 4.4
+*
+.MODEL SUBa77 PNP IS =3E-14 
++BF =170 VAF=65 NF =1.04 IKF=.05 ISE=2E-12 NE =3
++BR =80 VAR=8 NR =1.0 IKR=.01 ISC=1.4E-13 NC =1.13
++RB =0.6 RE =0.8 RC =0.7 
++CJE=23E-12 VJE=0.5 MJE=.45 CJC=8.4E-12 VJC=0.5 MJC=.45 
++TF=1.2e-9 TR=1e-7
+.ENDS MPSA77
+*
+*
+*                          (C)  1991 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP
+

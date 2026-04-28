@@ -1,0 +1,39 @@
+* FILENAME:         NE85600.CIR
+* NEC PART NUMBER:  NE85600
+* LAST MODIFIED:    7/97
+* BIAS CONDITIONS:  Vce=1V to 10V, Ic=0.25mA to 40mA
+* FREQ RANGE:       0.1GHz to 7.0GHz
+*
+*                CCB
+*            .---||---.            CCB=0.087pF
+*            |        |C           CCE=0.16pF
+*            |   /----o---LC----o  
+*  o----LB---o--|     |            LB=0.295nH (QTY 1- 9.3mil)
+*            B   \   --            LC=0.01 nH (QTY 1- 8.3mil)
+*                |   -- CCE        LE=0.103nH (QTY 2-15.2mil)
+*              E o----'            Bond wire: 0.7mil 
+*                |                            diameter gold
+*               LE
+*                |
+*                o
+*
+*                   c b e
+.SUBCKT NE85600/CEL 2 1 3
+Q1  5 4 6 NE85600
+CCB 4 5 0.087E-12
+CCE 5 6 0.16E-12
+LE  6 3 0.103E-9
+LB  1 4 0.295E-9
+LC  5 2 0.01E-9
+.MODEL NE85600 NPN 
++( IS=6e-16      BF=120           NF=0.978       VAF=10           IKF=0.08 
++ ISE=32e-16     NE=1.93          BR=12          NR=0.991         VAR=3.9 
++ IKR=0.17       ISC=0            NC=2           RE=0.38          RB=4.16
++ RBM=3.6        IRB=1.96e-4      RC=2           CJE=2.8e-12      VJE=1.3  
++ MJE=0.5        CJC=1.1e-12      VJC=0.7        MJC=0.55         XCJC=0.3   
++ CJS=0          VJS=0.75         MJS=0          FC=0.5           TF=10e-12
++ XTF=6          VTF=10           ITF=0.2        PTF=0            TR=1e-9
++ EG=1.11        XTB=0            XTI=3          KF=1.56e-18      AF=1.49 )
+.ENDS
+*$
+

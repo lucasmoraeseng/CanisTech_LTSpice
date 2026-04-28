@@ -1,0 +1,175 @@
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Inc.
+* Models developed and under copyright by:
+* National Semiconductor, Inc.  
+
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice: This material is intended for free software support.
+* The file may be copied, and distributed; however, reselling the 
+*  material is illegal
+
+*////////////////////////////////////////////////////////////////////
+* For ordering or technical information on these models, contact:
+* National Semiconductor's Customer Response Center
+*                 7:00 A.M.--7:00 P.M.  U.S. Central Time
+*                                (800) 272-9959
+* For Applications support, contact the Internet address:
+*  Appshelp@galaxy.nsc.com
+
+*////////////////////////////////////////
+*LM7131B Operational Amplifier Macro-Model
+*////////////////////////////////////////
+*
+* connections:  non-inverting input
+*                  |      inverting input
+*                  |      |      positive power supply
+*                  |      |      |       negative power supply
+*                  |      |      |       |      output
+*                  |      |      |       |      |
+*                  |      |      |       |      |
+.SUBCKT LM7131B/NS 3      2      4       5      6
+*
+*Features
+*Internal Frequency Compensation
+*High Gain Bandwidth            70MHz
+*Single Supply Operation
+*******INPUT STAGE*********
+RINB 2 18 1000
+RINA 3 19 1000
+DIN1 5 18 DMOD1
+DIN2 18 4 DMOD1
+DIN3 5 19 DMOD1
+DIN4 19 4 DMOD1
+*******INTERNAL BIAS SECTIONS*********
+EXX 10 5 17 5 1.0
+EEE 10 50 17 5 1.0
+ECC 40 10 4 17 1.0
+RAA 4 17 100MEG
+RBB 17 5 100MEG
+ISET 10 24 1e-3
+DA1 24 23 DMOD1
+RBAL 23 22 1000
+ESUPP 22 21 4 5 1.0
+VOFF 21 10 -1.25
+DA2 24 25 DMOD1
+VSENS1 25 26 DC 0
+RSET 26 10 1K
+CSET 26 10 1e-10
+*******TEMP. DRIFT  EFFECTS *********
+FSET 10 31 VSENS1 1.0
+R001 34 10 1K
+FTEMP 10 27 VSENS1 1.0
+DTA 27 10 DMOD1
+DTB 28 29 DMOD1
+VTEMP 29 10 DC 0
+********CMRR and PSRR SECTIONS*********
+ECMR 38 10 11 10 1.0
+VCMX 38 39 DC 0
+RCM2 41 10 1MEG
+EPSR 42 10 4 10 1.0
+CDC1 43 42 10U
+VPSX 43 44 DC 0
+RPSR2 45 10 1MEG
+*******INTERNAL GAIN STAGE*********
+FCXX 57 10 VCXX 100
+DCX1 98 97 DMOD1
+DCX2 95 94 DMOD1
+RCX1 99 98 100
+RCX2 94 98 100
+VCXX 99 96 DC 0
+ECMX 96 10 11 10 1.0
+DLIM1 52 57 DMOD1
+DLIM2 57 51 DMOD1
+ELIMP 51 10 26 10 99.3
+GDM 10 57 3 2 1
+C1 58 59 1e-10
+DCLMP2 59 40 DMOD1
+DCLMP1 50 59 DMOD1
+RO2 59 10 1K
+GO3 10 71 59 10 1
+RO3 71 10 1
+*******OUTPUT STAGE*********
+DDN1 73 74 DMOD1
+DDN2 73 710 DMOD1
+DDP1 75 72 DMOD1
+DDP2 71 720 DMOD1
+RDN2 710 71 100
+RDP 720 72 100
+VOOP 40 76 DC 0
+VOON 77 50 DC 0
+QNO 76 73 78 NPN1
+QNP 77 72 79 PNP1
+RNO 78 81 1
+RPO 79 81 1
+VOX 86 6 DC 0
+RNT 76 81 100MEG
+RPT 81 77 1MEG
+*******CURRENT BALANCE SECTION*********
+FX 10 93 VOX 1.0
+DFX1 93 91 DMOD1
+VFX1 91 10 DC 0
+DFX2 92 93 DMOD1
+VFX2 10 92 DC 0
+FPX 4 10 VFX1 1.0
+FNX 10 5 VFX2 1.0
+*******VARIABLE SECTION*********
+FIN1 18 5 VTEMP 0.999975
+FIN2 19 5 VTEMP 1.00002
+* Input Bias Currents
+CIN1 2 10 1e-12
+CIN2 3 10 1e-12
+* C-M Input Capacitance
+RD1 18 11 5e+06
+RD2 19 11 5e+06
+* Diff.  Input Resistance
+RCM 11 10 7.5e+06
+* C-M.  Input Resistance
+GOS 10 57 31 32 0.007
+* Input Offset Voltage
+FCMR 10 57 VCMX 10
+*Low Freq. CMRR
+FPSR 10 57 VPSX 632.456
+*Low Freq. PSRR
+RSLOPE 4 5 7194.24
+*Slope of  Supply Current vs. Supp. Voltage
+GPWR 4 5 26 10 0.006383
+*Quiescent Power Diss.
+ETEMP 27 28 32 33 0.101048
+RVOS 31 32 MRVOS 1K
+.MODEL MRVOS RES (TC1=0.02)
+*Temp. Co. of Offset Voltage
+RIB 32 33 MRIB 1K
+.MODEL MRIB RES (TC1=0.000704658)
+*Temp. Co. of Input Bias Current
+RISC 33 34 MRISC 1K
+.MODEL MRISC RES (TC1=0)
+RCM1 39 41 316.228
+CCM 41 10 1.59155e-11
+* CMRR vs. Freq.
+RPSR1 44 45 316.228
+CPSR 45 10 7.95775e-11
+* PSRR vs. Freq.
+ELIMN 10 52 26 10 99.3
+RDM 57 10 531.565
+C2 57 557 6.30418e-12
+RZERO  557  10   500
+ECMP 40 97 26 10 1.5
+ECMN 95 50 26 10 0.5
+G2 58 10 57 10 0.00012
+R2 58 10 15.677
+GO2 59 10 58 10 1
+*Slew-Rate and AC Resp. Settings
+EPOS 40 74 26 10 0.2
+ENEG 75 50 26 10 0.15
+*Output Voltage Swing Settings
+GSOURCE 74 73 33 34 0.00065
+GSINK 72 75 33 34 0.0004
+*Output Current Sink/Source Settings
+ROO 81 86 7.5
+*Output Resistance Setting
+.MODEL DMOD1 D
+.MODEL NPN1 NPN (BF=100 IS=1e-15)
+.MODEL PNP1 PNP (BF=100 IS=1e-15)
+.ENDS 
+*
+*$

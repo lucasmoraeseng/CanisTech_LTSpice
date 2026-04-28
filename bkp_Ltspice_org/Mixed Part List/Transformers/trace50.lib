@@ -1,0 +1,41 @@
+*
+* Trace Elliot 50W output transformer, part 73-TRAN-50WOP
+*
+* D.Munro 10/4/97
+*
+* Pin 1   anode'
+*     2   HT
+*     3   anode''
+*
+*     4,5 output 16 ohm
+*
+* Note that altough the transformer is tapped 4/8/16 ohms, only the
+* 16 ohm output is modelled.
+*
+.SUBCKT trace50 1 2 3 4 5
+L12	in1	in2	41.02m
+C1_1	in2	2	-797.5p
+Rdc1	in1	N61	60.55
+Lmag	in1	2	99.45
+Rcore	in1	2	2.458Meg
+Rac1	N61	1	63.93
+Lac1	N61	1	0.1083
+L23	in2	in3	78.28m
+C2_23	3	5	831.3p
+C3_23	3	N43	503.0p
+Efwd2	N82	3	in2	2	1.000
+Vsens2	N82	N42	
+Ffbk2	in2	2	Vsens2	1.000
+C1_2	N82	3	251.9p
+Rdc2	N42	N62	61.68
+Rac2	N62	2	62.58
+Lac2	N62	2	0.2074
+Efwd3	N83	5	in3	2	0.1352
+Vsens3	N83	N43	
+Ffbk3	in3	2	Vsens3	0.1352
+C1_3	N83	5	2.426p
+Rdc3	N43	N63	0.8561
+Rac3	N63	4	1.501
+Lac3	N63	4	694.1u
+.ENDS 
+

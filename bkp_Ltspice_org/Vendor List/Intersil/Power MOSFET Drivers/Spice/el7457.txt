@@ -1,0 +1,45 @@
+*EL7457C Spice Model
+*Revision A, March 2002
+*This spice model only models one channel.  
+*Connection	INA
+*		|	OE
+*		|	|	VL
+*		|	|	|	GND
+*		|	|	|	|	VS-
+*		|	|	|	|	|	VH
+*		|	|	|	|	|	|	OUTA
+*		|	|	|	|	|	|	|	VS+
+*		|	|	|	|	|	|	|	|
+.subckt EL7457C	1	2	4	5	9	12	15	16
+*channel A
+ca1 1 5 3.5pF
+ra1 1 5 10Meg
+spa1 17 16 1 5 swp
+spa2 17 9 5 1 swp1
+*
+* OE pin input
+c2 2 5 3.5p 
+r2 2 5 10Meg
+*
+e1a 18 5 17 5 1
+ra3 18 5 10k
+spa3 18 19 2 5 swp
+ra4 19 5 10k
+spa4 15 12 19 5 swn
+spa6 18 20 2 5 swp
+ra6 20 16 10k
+ra5 20 5 10k
+spa5 15 4 5 20 swp1
+d1a 15 12 den
+d2a 15 16 den
+d3 9 5 den
+d4 9 4 den
+cla 15 5 80pF
+*
+* switch model
+.model swp vswitch ron=4 roff=10Meg von=2.4 voff=2
+.model swn vswitch ron=4 roff=10Meg von=5 voff =4
+.model swp1 vswitch ron=4 roff=10Meg von=0 voff=-1
+.model den D (n=1)
+.ends EL7457C
+*$

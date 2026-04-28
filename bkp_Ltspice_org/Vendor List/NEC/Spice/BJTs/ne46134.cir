@@ -1,0 +1,56 @@
+* FILENAME:        NE46134.CIR
+* NEC PART NUMBER: NE46134
+* LAST MODIFIED:   11/97
+* BIAS CONDITIONS: Vce=5V, to 12.5V,  Ic=50mA to 100mA
+* FREQ RANGE:      0.1GHz TO 2.5GHz
+*                            CCBpkg
+*                    .-------||--------.  
+*                    |          CCB    |   
+*                    |      .--||---.  |          COLLECTOR
+* BASE               |      |        | |             
+*             __Tb_  |      |   /----o-o-------o----o
+*  o---------|_____|-o-LB---o--|Q1   |         |  
+*                    |      B   \   --         |  
+*                   --          |   -- CCE     --  
+*                   -- CBEpkg E o----'         --CCEpkg
+*                    |          |              | 
+*                    |         LE              |  
+*                    `----------o--------------'  
+*                               |                  
+*                               -                  
+*                              | |  Te             
+*                              | |                 
+*                               -                  
+*                               |
+*                               o EMITTER
+*                    
+*
+*       CCB   = 0.03 pF       LB  = 1.2nH          Tb/Te:   
+*       CCE   = 0.5 pF        LE  = 1.2nH          z=60 ohms
+*       CCBpkg= 0.18pF                             l=50 mils
+*       CCEpkg= 0.18pF                             a=0.0001
+*       CBEpkg= 0.01pF                             f=0.9GHz
+*
+*                   c b e
+.SUBCKT NE46134/CEL 2 1 3 
+Q1 2 6 7 NE46100
+CCB 6 2  0.03E-12
+CCE 2 7  0.5E-12
+LB  4 6  1.2E-9
+LE  7 5  1.2E-9
+TB 1 0 4 0 Z0=60 TD=9.63E-12
+TE 5 0 3 0 Z0=60 TD=9.63E-12
+CCBPKG 4 2 0.18E-12
+CCEPKG 2 5 0.18E-12
+CBEPKG 4 5 0.01E-12
+.MODEL NE46100 NPN
++( IS=8.7e-16    BF=185.0         NF=0.959       VAF=30.0         IKF=0.20
++ ISE=5.70e-13   NE=1.80          BR=5.0         NR=1.0           VAR=12.4  
++ IKR=0.018      ISC=1.0e-14      NC=1.95        RE=0.630         RB=6.0
++ RBM=4.0        IRB=0.004        RC=3.0         CJE=4.9e-12      VJE=0.60
++ MJE=0.450      CJC=2.50e-12     VJC=0.830      MJC=0.330        XCJC=0.20
++ CJS=0.0        VJS=0.750        MJS=0.0        FC=0.50          TF=12.9e-12 
++ XTF=1.60       VTF=19.9         ITF=0.40       PTF=0.0          TR=1.70e-8 
++ EG=1.11        XTB=0.0          XTI=3.0        KF=0.0           AF=1.0 )
+.ENDS
+*$

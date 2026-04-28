@@ -1,0 +1,30 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+* Diode 1: nodes 1 and 2
+* Diode 2: nodes 3 and 2
+
+.SUBCKT FEP16DT 1 2 3
+D1 1 2 LEGD
+D2 3 2 LEGD
+.MODEL LEGD D (
++   N=2.19208
++  IS=4.77901E-006
++  RS=0.00507912
++  EG=1.05256
++ XTI=3.06339
++ CJO=1.89436E-010
++  VJ=0.595461
++   M=0.416973
++  FC=0.5
++  TT=8.63206E-008
++  BV=200
++ IBV=0.05
++  KF=0
++  AF=1 )
+.ENDS

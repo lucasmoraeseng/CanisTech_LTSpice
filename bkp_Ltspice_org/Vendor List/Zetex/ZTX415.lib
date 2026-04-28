@@ -1,0 +1,41 @@
+*ZETEX  ZTX415 Spice model   Last Revision 29/7/99
+*
+*The model below simulates the normal transistor operation.  If you 
+*wish to simulate the transistor in avalanche a simple model can be 
+*constructed using a switch in series with a resistor, a voltage source 
+*and an inductor.  For initial simulation with Vcc of 240V and minimum 
+*lead length try 2ohm, 40V and 4nH.  The avalanche performance is 
+*highly dependent on the external circuit components and 
+*interconnections which must be modelled with stray inductance and 
+*resistive losses.
+*
+*This model was prepared using MicroSim PSpice.
+*Spice software which does not support RCO & GAMMA will 
+*model the quasi-saturation region incorrectly.  The
+*resulting model will return optimistic values for
+*forward Vcesat, current gain and Tdon.  
+*To improve simulation in a simplified model try 
+*increasing RE and decreasing BF and IKF
+*
+.MODEL ZTX415 NPN IS =3E-14 NF =1 BF =110 IKF=0.4
++VAF=1900 ISE=1E-12 NE =1.6 RCO=19 GAMMA=19E-9 
++ NR =1 BR =7 IKR=0.2 VAR=75 ISC=1e-10 NC =1.9 
++ RB =0.4 RE =0.1 RC =0.1 
++ CJC=10.9E-12 MJC=0.347 VJC=0.476 CJE=82.6E-12 
++ TF =1.3E-9 TR =2.3e-7 
+*
+*$
+*
+*                          (C)  1991 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

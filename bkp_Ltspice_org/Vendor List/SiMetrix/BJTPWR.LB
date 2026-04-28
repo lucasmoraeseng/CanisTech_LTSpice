@@ -1,0 +1,327 @@
+* SIMetrix model library
+
+* Copyright (C) 1998 Newbury Technology Ltd. All rights reserved.
+* 
+* These models are believed to be accurate but Newbury Technology Ltd.
+* offers no guarantee as to their fitness for any purpose nor do they
+* accept any responsibility for damage caused directly or indirectly
+* by their use.
+*
+*
+* 2.10.98
+
+
+
+* From Philips data. Capacitance from NS Discrete 1978.
+.model BD135 npn ( IS=4.74E-14 VAF=50.0 BF=200 IKF=0.2486 NE=1.1793
++    ISE=1.831E-14 IKR=0.02 ISC=1.00E-08 NC=2 NR=1 BR=5 RC=0.4 CJC=2.50E-11
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=3.00E-11 MJE=0.33 VJE=0.75 TF=5.30E-10
++    ITF=5 VTF=10 XTF=8 RE=0.2 TR=1.06E-07)
+
+
+* From Philips data. Capacitance from NS Discrete 1978.
+.model BD136 pnp ( IS=1.52E-13 VAF=50.0 BF=200 IKF=0.2510 NE=1.1236
++    ISE=1.461E-14 IKR=0.02 ISC=1.00E-08 NC=2 NR=1 BR=10 RC=0.5 CJC=5.00E-11
++    FC=0.5 MJC=0.5 VJC=0.75 CJE=4.00E-11 MJE=0.33 VJE=0.75 TF=2.00E-09
++    ITF=5 VTF=5 XTF=10 RE=0.2 TR=4.00E-07)
+
+
+* From Motorola DL111 Rev 5. FT from NS Discretes 1978
+.model TIP31C npn ( IS=2.48E-13 VAF=100.0 BF=300 IKF=0.2889 NE=1.6246
++    ISE=1.300E-11 IKR=0.1 ISC=1.50E-08 NC=1.9 NR=1 BR=10 RC=0.05 CJC=3.00E-10
++    FC=0.5 MJC=0.45 VJC=0.75 CJE=3.15E-10 MJE=0.51 VJE=0.6 TF=2.30E-08
++    ITF=25 VTF=10 XTF=0.5 RE=0.12 TR=2.00E-07)
+
+
+* From Motorola DL111 Rev 5. FT from NS Discretes 1978
+.model TIP32C pnp ( IS=3.58E-13 VAF=100.0 BF=240 IKF=0.2889 NE=1.6245
++    ISE=2.032E-11 IKR=0.1 ISC=1.50E-08 NC=1.9 NR=1 BR=10 RC=0.05 CJC=3.00E-10
++    FC=0.5 MJC=0.45 VJC=0.75 CJE=3.15E-10 MJE=0.51 VJE=0.6 TF=2.30E-08
++    ITF=25 VTF=10 XTF=0.5 RE=0.12 TR=2.00E-07)
+
+
+* From Motorola DL111 Rev 5. FT from NS Discretes 1978
+.model Q2N5192 npn ( IS=3.66E-12 VAF=100.0 BF=300 IKF=0.3836 NE=2.1170
++    ISE=1.196E-09 IKR=0.1 ISC=5.00E-08 NC=1.9 NR=1 BR=10 RC=0.01 CJC=3.00E-10
++    FC=0.5 MJC=0.45 VJC=0.75 CJE=3.15E-10 MJE=0.51 VJE=0.6 TF=2.00E-08
++    ITF=20 VTF=10 XTF=1 RE=0.15 TR=2.00E-07)
+
+
+* From Motorola DL111 Rev 5. FT from NS Discretes 1978
+.model Q2N5195 pnp ( IS=1.14E-12 VAF=100.0 BF=300 IKF=0.4015 NE=1.5386
++    ISE=1.226E-11 IKR=0.1 ISC=5.00E-08 NC=1.9 NR=1 BR=10 RC=0 CJC=4.00E-10
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=3.00E-10 MJE=0.33 VJE=0.75 TF=2.00E-08
++    ITF=20 VTF=10 XTF=1 RE=0.12 TR=3.00E-07)
+
+
+* Motorola
+.model MJ15023 pnp ( IS=2.37E-13 VAF=100.0 BF=300 IKF=1.6701 NE=1.2242
++    ISE=3.148E-13 IKR=0.1 ISC=1.00E-11 NC=2 NR=1 BR=10 RC=0 CJC=1.00E-09
++    FC=0.5 MJC=0.38 VJC=0.7 CJE=3.50E-09 MJE=0.37 VJE=0.4 TF=2.10E-08
++    ITF=5 VTF=5 XTF=7 RE=0.08 TR=4.20E-06)
+
+
+* Motorola
+.model TIP41A npn ( IS=3.42E-14 VAF=100.0 BF=150 IKF=0.8884 NE=2.8884
++    ISE=1.302E-08 IKR=0.1 ISC=1.00E-09 NC=2 NR=1 BR=10 RC=0.02 CJC=1.10E-10
++    FC=0.5 MJC=0.25 VJC=0.8 CJE=9.00E-11 MJE=0.33 VJE=0.2 TF=3.20E-08
++    ITF=50 VTF=5 XTF=10 RE=0.08 TR=1.30E-07)
+
+
+* Motorola
+.model MJE340 npn ( IS=1.65E-13 VAF=100.0 BF=150 IKF=0.4288 NE=1.5840
++    ISE=1.981E-11 IKR=0.1 ISC=1.00E-09 NC=1.7 NR=1 BR=5 RC=2.5 CJC=3.00E-11
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=1.20E-10 MJE=0.33 VJE=0.75 TF=1.60E-09
++    ITF=0.2 VTF=5 XTF=10 RE=0.5 TR=1.50E-06)
+
+
+* Motorola
+.model TIP42A pnp ( IS=7.42E-14 VAF=100.0 BF=150 IKF=0.8884 NE=2.8884
++    ISE=1.302E-08 IKR=0.1 ISC=1.00E-09 NC=2 NR=1 BR=10 RC=0.02 CJC=1.10E-10
++    FC=0.5 MJC=0.25 VJC=0.8 CJE=9.00E-11 MJE=0.33 VJE=0.2 TF=3.20E-08
++    ITF=50 VTF=5 XTF=10 RE=0.08 TR=1.30E-07)
+
+
+* Motorola, capacitance estimated
+.model TIP47 npn ( IS=7.12E-14 VAF=200.0 BF=150 IKF=0.5144 NE=1.3024
++    ISE=9.924E-13 IKR=0.1 ISC=1.00E-09 NC=1.6 NR=1 BR=5 RC=0.23 CJC=2.00E-11
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=2.00E-10 MJE=0.33 VJE=0.75 TF=1.60E-08
++    ITF=2 VTF=5 XTF=10 RE=0.075 TR=5.50E-06)
+
+
+* Motorola
+.model MJ15022 npn ( IS=2.37E-13 VAF=200.0 BF=200 IKF=1.8495 NE=1.5319
++    ISE=2.876E-11 IKR=0.1 ISC=1.00E-09 NC=1.5 NR=1 BR=10 RC=0.05 CJC=6.00E-10
++    FC=0.5 MJC=0.33 VJC=0.5 CJE=3.50E-09 MJE=0.5 VJE=1.5 TF=2.20E-08
++    ITF=10 VTF=5 XTF=5 RE=0.03 TR=4.40E-06)
+
+
+* Motorola
+.model Q2N3715 npn ( IS=2.37E-14 VAF=100.0 BF=200 IKF=0.9864 NE=2.3646
++    ISE=1.785E-09 IKR=0.1 ISC=1.00E-09 NC=1.45 NR=1 BR=5 RC=0.8 CJC=1.00E-10
++    FC=0.5 MJC=0.2 VJC=0.75 CJE=9.50E-11 MJE=0.6 VJE=0.75 TF=2.30E-08
++    ITF=20 VTF=5 XTF=5 RB=1.1 RE=0.1 TR=3.50E-06)
+
+
+* Motorola
+.model Q2N3771 npn ( IS=2.37E-13 VAF=100.0 BF=200 IKF=2.9581 NE=4.7081
++    ISE=2.589E-06 IKR=0.1 ISC=1.00E-09 NC=2 NR=1 BR=5 RC=0.3 CJC=9.50E-10
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=8.00E-10 MJE=0.5 VJE=0.2 TF=5.00E-07
++    ITF=100 VTF=5 XTF=10 RE=0.05 TR=5.00E-07)
+
+
+* Motorola
+.model MJE243 npn ( IS=1.65E-13 VAF=100.0 BF=300 IKF=0.4758 NE=2.3243
++    ISE=1.267E-09 IKR=0.1 ISC=1.00E-09 NC=2 NR=1 BR=10 RC=0.1 CJC=7.00E-11
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=1.50E-10 MJE=0.37 VJE=0.75 TF=2.50E-09
++    ITF=5 VTF=5 XTF=10 RE=0.1 TR=2.00E-08)
+
+
+* Motorola
+.model MJE200 npn ( IS=2.28E-13 VAF=100.0 BF=300 IKF=1.9740 NE=1.6891
++    ISE=1.975E-11 IKR=0.1 ISC=1.00E-09 NC=2 NR=1 BR=15 RC=0.1 CJC=1.00E-10
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=5.80E-11 MJE=0.33 VJE=0.75 TF=2.50E-09
++    ITF=2 VTF=5 XTF=10 RE=0.08 TR=3.00E-08)
+
+
+* Motorola
+.model MJE253 pnp ( IS=1.65E-13 VAF=100.0 BF=300 IKF=0.3493 NE=1.3194
++    ISE=1.215E-12 IKR=0.1 ISC=1.00E-09 NC=2 NR=1 BR=10 RC=0.2 CJC=5.00E-11
++    FC=0.5 MJC=0.33 VJC=0.4 CJE=1.30E-10 MJE=0.33 VJE=0.75 TF=2.50E-09
++    ITF=10 VTF=5 XTF=10 RE=0.125 TR=3.50E-07)
+
+.alias BD137 BD135 npn
+.alias BD138 BD136 pnp
+.alias BD233 TIP31C npn
+.alias BD234 TIP32C pnp
+.alias BD433 Q2N5192 npn
+.alias BD242 Q2N5195 pnp
+.alias MJ15025 MJ15023 pnp
+.alias BD201 TIP41A npn
+.alias BD202 TIP42A pnp
+.alias MJE341 MJE340 npn
+.alias MJD47 TIP47 npn
+.alias MJ15024 MJ15022 npn
+.alias Q2N3716 Q2N3715 npn
+.alias Q2N3772 Q2N3771 npn
+.alias BD789 MJE243 npn
+.alias MJD200 MJE200 npn
+.alias BD790 MJE253 pnp
+.alias BD139 BD135 npn
+.alias BD140 BD136 pnp
+.alias BD235 TIP31C npn
+.alias BD236 TIP32C pnp
+.alias BD435 Q2N5192 npn
+.alias BD242A Q2N5195 pnp
+.alias BD203 TIP41A npn
+.alias BD204 TIP42A pnp
+.alias MJD340 MJE340 npn
+.alias MJD50 TIP47 npn
+.alias BD791 MJE243 npn
+.alias BD792 MJE253 pnp
+.alias BD371 BD135 npn
+.alias BD370 BD136 pnp
+.alias BD237 TIP31C npn
+.alias BD238 TIP32C pnp
+.alias BD437 Q2N5192 npn
+.alias BD242B Q2N5195 pnp
+.alias BD243 TIP41A npn
+.alias BDT96 TIP42A pnp
+.alias MJF47 TIP47 npn
+.alias MJD243 MJE243 npn
+.alias MJD253 MJE253 pnp
+.alias BD373 BD135 npn
+.alias BD372 BD136 pnp
+.alias BD239 TIP31C npn
+.alias BD240 TIP32C pnp
+.alias Q2N5190 Q2N5192 npn
+.alias BD242C Q2N5195 pnp
+.alias BD243A TIP41A npn
+.alias MJ2955 TIP42A pnp
+.alias TIP48 TIP47 npn
+.alias MJE220 MJE243 npn
+.alias MJE230 MJE253 pnp
+.alias BD375 BD135 npn
+.alias BD376 BD136 pnp
+.alias BD239A TIP31C npn
+.alias BD240A TIP32C pnp
+.alias Q2N5191 Q2N5192 npn
+.alias BD434 Q2N5195 pnp
+.alias BD243B TIP41A npn
+.alias MJD2955 TIP42A pnp
+.alias TIP49 TIP47 npn
+.alias MJE221 MJE243 npn
+.alias MJE231 MJE253 pnp
+.alias BD377 BD135 npn
+.alias BD378 BD136 pnp
+.alias BD239B TIP31C npn
+.alias BD240B TIP32C pnp
+.alias Q2N6121 Q2N5192 npn
+.alias BD436 Q2N5195 pnp
+.alias BD243C TIP41A npn
+.alias MJD2955T TIP42A pnp
+.alias TIP50 TIP47 npn
+.alias MJE222 MJE243 npn
+.alias MJE232 MJE253 pnp
+.alias BD379 BD135 npn
+.alias BD380 BD136 pnp
+.alias BD239C TIP31C npn
+.alias BD240C TIP32C pnp
+.alias Q2N6122 Q2N5192 npn
+.alias BD438 Q2N5195 pnp
+.alias BDT95 TIP41A npn
+.alias MJD42 TIP42A pnp
+.alias MJE223 MJE243 npn
+.alias MJE233 MJE253 pnp
+.alias MJE180 BD135 npn
+.alias MJE170 BD136 pnp
+.alias BD241A TIP31C npn
+.alias MJD32 TIP32C pnp
+.alias Q2N6123 Q2N5192 npn
+.alias MJE371 Q2N5195 pnp
+.alias MJD3055 TIP41A npn
+.alias MJD42C TIP42A pnp
+.alias MJE224 MJE243 npn
+.alias MJE234 MJE253 pnp
+.alias MJE181 BD135 npn
+.alias MJE171 BD136 pnp
+.alias BD241B TIP31C npn
+.alias MJD32C TIP32C pnp
+.alias Q2N6288 Q2N5192 npn
+.alias Q2N5193 Q2N5195 pnp
+.alias MJD3055T TIP41A npn
+.alias MJE2955 TIP42A pnp
+.alias MJE225 MJE243 npn
+.alias MJE235 MJE253 pnp
+.alias MJE182 BD135 npn
+.alias MJE172 BD136 pnp
+.alias BD241C TIP31C npn
+.alias Q2N4918 TIP32C pnp
+.alias Q2N6289 Q2N5192 npn
+.alias Q2N5194 Q2N5195 pnp
+.alias MJD41 TIP41A npn
+.alias Q2N6489 TIP42A pnp
+.alias MJE240 MJE243 npn
+.alias MJE250 MJE253 pnp
+.alias MJE720 BD135 npn
+.alias MJE710 BD136 pnp
+.alias MJD31 TIP31C npn
+.alias Q2N4919 TIP32C pnp
+.alias Q2N6290 Q2N5192 npn
+.alias Q2N6106 Q2N5195 pnp
+.alias MJD41C TIP41A npn
+.alias Q2N6490 TIP42A pnp
+.alias MJE241 MJE243 npn
+.alias MJE251 MJE253 pnp
+.alias MJE721 BD135 npn
+.alias MJE711 BD136 pnp
+.alias MJD31C TIP31C npn
+.alias Q2N4920 TIP32C pnp
+.alias Q2N6291 Q2N5192 npn
+.alias Q2N6107 Q2N5195 pnp
+.alias MJE3055T TIP41A npn
+.alias Q2N6491 TIP42A pnp
+.alias MJE242 MJE243 npn
+.alias MJE252 MJE253 pnp
+.alias MJE722 BD135 npn
+.alias MJE712 BD136 pnp
+.alias MJE521 TIP31C npn
+.alias TIP30 TIP32C pnp
+.alias Q2N6292 Q2N5192 npn
+.alias Q2N6108 Q2N5195 pnp
+.alias MJF3055 TIP41A npn
+.alias TIP2955 TIP42A pnp
+.alias Q2N4921 TIP31C npn
+.alias TIP30A TIP32C pnp
+.alias Q2N6293 Q2N5192 npn
+.alias Q2N6109 Q2N5195 pnp
+.alias Q2N3055 TIP41A npn
+.alias TIP34 TIP42A pnp
+.alias Q2N4922 TIP31C npn
+.alias TIP30B TIP32C pnp
+.alias Q2N6110 Q2N5195 pnp
+.alias Q2N6099 TIP41A npn
+.alias TIP34A TIP42A pnp
+.alias Q2N4923 TIP31C npn
+.alias TIP30C TIP32C pnp
+.alias Q2N6111 Q2N5195 pnp
+.alias Q2N6100 TIP41A npn
+.alias TIP34B TIP42A pnp
+.alias TIP29 TIP31C npn
+.alias TIP32 TIP32C pnp
+.alias Q2N6101 TIP41A npn
+.alias TIP34C TIP42A pnp
+.alias TIP29A TIP31C npn
+.alias TIP32A TIP32C pnp
+.alias Q2N6124 Q2N5195 pnp
+.alias Q2N6102 TIP41A npn
+.alias TIP42 TIP42A pnp
+.alias TIP29B TIP31C npn
+.alias TIP32B TIP32C pnp
+.alias Q2N6125 Q2N5195 pnp
+.alias Q2N6103 TIP41A npn
+.alias TIP42C TIP42A pnp
+.alias TIP29C TIP31C npn
+.alias Q2N6126 Q2N5195 pnp
+.alias Q2N6486 TIP41A npn
+.alias TIP31 TIP31C npn
+.alias Q2N6487 TIP41A npn
+.alias TIP31A TIP31C npn
+.alias Q2N6488 TIP41A npn
+.alias TIP31B TIP31C npn
+.alias TIP3055 TIP41A npn
+.alias TIP33 TIP41A npn
+.alias TIP33A TIP41A npn
+.alias TIP33B TIP41A npn
+.alias TIP33C TIP41A npn
+.alias TIP41B TIP41A npn
+.alias TIP41C TIP41A npn
+.alias TIP61 TIP31C npn
+.alias TIP61A TIP31C npn
+.alias TIP61B TIP31C npn
+.alias TIP61C TIP31C npn
+.alias TIPP31A TIP31C npn
+.alias TIPP31C TIP31C npn
+.alias BD633 TIP31C npn
+.alias BD635 TIP31C npn
+.alias BD637 TIP31C npn

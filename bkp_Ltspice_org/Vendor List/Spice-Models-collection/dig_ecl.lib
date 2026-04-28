@@ -1,0 +1,4315 @@
+* Library of digital logic: ECL 10K and 100K
+
+*  Copyright OrCAD, Inc. 1998 All Rights Reserved.
+
+* Release date: January 1994
+
+* $Revision:   1.14  $
+* $Author:   RPEREZ  $
+* $Date:   17 Apr 1998 11:11:12  $
+*
+*
+** ECL 10K LOGIC
+*
+*  Created 07/17/91 (jjr, tdn)
+*
+*$
+*-------------------------------------------------------------------------
+* ECL Output 50 ohm termination/load
+*
+* muw   07/16/91	Created
+
+.subckt ECL_10K_LOAD_50 A
++	optional: VTT =$G_ECL_10K_VTT  VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+X1 A VCC2 VTT PULLDOWN_50
+.ends
+
+*$
+*-------------------------------------------------------------------------
+* 10100 Quad 2-Input NOR Gate With Strobe
+*
+* Philips ECL Databook June 1990
+* jjr	07/18/91	Created
+
+.subckt 10100 ST D0 D1 D2 D3 D4 D5 D6 D7 Q0BAR Q1BAR Q2BAR Q3BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 NORA(3,4) VCC1 VEE 
++       D0 D1 STBUF D2 D3 STBUF D4 D5 STBUF D6 D7 STBUF
++       Q0B Q1B Q2B Q3B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 PULLDN(9) VCC1 VEE
++       ST D0 D1 D2 D3 D4 D5 D6 D7
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 BUF  VCC1 VEE
++       ST STBUF
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U4 BUFA(4) VCC2 VEE
++       Q0B   Q1B   Q2B   Q3B
++       Q0BAR Q1BAR Q2BAR Q3BAR
++       D_10100 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10100 ugate (
++       tplhmn=1.00ns  tplhty=2.00ns
++	tplhmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       tphlmn=1.00ns  tphlty=2.00ns
++	tphlmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10101 Quad 2-Input OR/NOR Gate With Strobe
+*
+* Philips ECL Databook June 1990
+* jjr   07/19/91	Created
+
+.subckt 10101 ST D0 D1 D2 D3 Q0BAR Q1 Q2BAR Q3 Q4BAR Q5 Q6BAR Q7
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 ORA(2,4) VCC1 VEE 
++       D0 STBUF D1 STBUF D2 STBUF D3 STBUF
++	Q1B Q3B Q5B Q7B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 PULLDN(5) VCC1 VEE
++       ST D0 D1 D2 D3
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 BUF  VCC1 VEE
++       ST STBUF
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U4 BUFA(4) VCC2 VEE
++	Q1B Q3B Q5B Q7B
++	Q1  Q3  Q5  Q7
++	D_10101 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U5 INVA(4) VCC2 VEE
++	Q1B   Q3B   Q5B   Q7B
++	Q0BAR Q2BAR Q4BAR Q6BAR
++	D_10101 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10101 ugate (
++       tplhmn=1.00ns  tplhty=2.00ns
++	tplhmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       tphlmn=1.00ns  tphlty=2.00ns
++	tphlmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10102 Quad 2-Input NOR Gate (3 NOR and 1 OR/NOR)
+*
+* Philips ECL Databook June 1990
+* jjr   07/19/91	Created
+
+.subckt 10102 D0 D1 D2 D3 D4 D5 D6 D7 Q0BAR Q1BAR Q2BAR Q3BAR Q4
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 ORA(2,4) VCC1 VEE 
++       D0 D1 D2 D3 D4 D5 D6 D7
++	Q0B Q1B Q2B Q3B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 PULLDN(8) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 BUF VCC2 VEE
++	Q3B  Q4
++	D_10102 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U4 INVA(4) VCC2 VEE
++	Q0B   Q1B   Q2B   Q3B
++	Q0BAR Q1BAR Q2BAR Q3BAR
++	D_10102 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10102 ugate (
++       tplhmn=1.00ns  tplhty=2.00ns
++	tplhmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       tphlmn=1.00ns  tphlty=2.00ns
++	tphlmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10103 Quad 2-Input OR Gate (3 OR and 1 OR/NOR)
+*
+* Philips ECL Databook June 1990
+* jjr   07/19/91	Created
+
+.subckt 10103 D0 D1 D2 D3 D4 D5 D6 D7 Q0 Q1 Q2 Q3 Q3BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 ORA(2,4) VCC1 VEE 
++       D0 D1 D2 D3 D4 D5 D6 D7
++	Q0B Q1B Q2B Q3B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 PULLDN(8) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 BUFA(4) VCC2 VEE
++	Q0B Q1B Q2B Q3B
++	Q0  Q1  Q2  Q3
++	D_10103 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U4 INV VCC2 VEE
++	Q3B  Q3BAR
++	D_10103 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10103 ugate (
++       tplhmn=1.00ns  tplhty=2.00ns
++	tplhmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       tphlmn=1.00ns  tphlty=2.00ns
++	tphlmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10104 Quad 2-Input AND Gate
+*
+* Philips ECL Databook June 1990
+* tdn   07/19/91	Created
+
+.subckt 10104 D0 D1 D2 D3 D4 D5 D6 D7 Q0 Q1 Q2 Q3 Q3BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 ANDA(2,4) VCC1 VEE 
++       D0 D1 D2 D3 D4 D5 D6 D7 
++       Q0B Q1B Q2B Q3B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 PULLDN(8) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7 
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 INV  VCC2 VEE
++       Q3B Q3BAR
++       D_10104 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U4 BUFA(4) VCC2 VEE
++       Q0B Q1B Q2B Q3B 
++       Q0  Q1  Q2  Q3     
++       D_10104 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10104 ugate (
++	tplhmn=1.00ns  tplhty=2.70ns  
++	tplhmx={table(temp, -30, 4.30ns, 25, 4.00ns, 85, 4.20ns)}
++	tphlmn=1.00ns  tphlty=2.70ns  
++	tphlmx={table(temp, -30, 4.30ns, 25, 4.00ns, 85, 4.20ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10105 Triple 2-3-2 Input OR/NOR Gate
+*
+* Philips ECL Databook June 1990
+* jjr   07/19/91	Created
+
+.subckt 10105 D0 D1 D2 D3 D4 D5 D6 Q0 Q1BAR Q2 Q3BAR Q4 Q5BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 ORA(3,3) VCC1 VEE 
++       D0 D1 $D_LO D2 D3 D4 D5 D6 $D_LO
++	Q0B Q2B Q4B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 PULLDN(7) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 BUFA(3) VCC2 VEE
++	Q0B Q2B Q4B
++	Q0  Q2  Q4
++	D_10105 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U4 INVA(3) VCC2 VEE
++	Q0B   Q2B   Q4B
++	Q1BAR Q3BAR Q5BAR
++	D_10105 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10105 ugate (
++       tplhmn=1.00ns  tplhty=2.00ns
++	tplhmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       tphlmn=1.00ns  tphlty=2.00ns
++	tphlmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10106 Triple 4-3-3 Input NOR Gate
+*
+* Philips ECL Databook June 1990
+* jjr   07/17/91	Created
+
+.subckt 10106 D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 Q0BAR Q1BAR Q2BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 NORA(4,3) VCC1 VEE 
++       D0 D1 D2 D3 D4 D5 D6 $D_LO D7 D8 D9 $D_LO
++	Q0B Q1B Q2B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 PULLDN(10) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7 D8 D9
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 BUFA(3) VCC2 VEE
++	Q0B   Q1B   Q2B
++	Q0BAR Q1BAR Q2BAR
++	D_10106 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10106 ugate (
++       tplhmn=1.00ns  tplhty=2.00ns
++	tplhmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       tphlmn=1.00ns  tphlty=2.00ns
++	tphlmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10107 Triple 2-Input Exclusive-OR/Exclusive-NOR Gate
+*
+* Philips ECL Databook June 1990
+* tdn   07/17/91	Created
+
+.subckt 10107 D0 D1 Q0BAR Q1
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 XOR  VCC1 VEE 
++       D0 D1 QB
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 PULLDN(2) VCC1 VEE
++       D0 D1  
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 INV  VCC2 VEE
++       QB Q0BAR
++       D_10107 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U4 BUF  VCC2 VEE
++       QB  Q1      
++       D_10107 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10107 ugate (
++	tplhmn=1.10ns  tplhty=2.80ns  
++	tplhmx={table(temp, -30, 3.80ns, 25, 3.70ns, 85, 4.00ns)}
++	tphlmn=1.10ns  tphlty=2.80ns  
++	tphlmx={table(temp, -30, 3.80ns, 25, 3.70ns, 85, 4.00ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10108 Dual 4-Input AND/NAND Gate
+*
+* Philips ECL Databook June 1990
+* tdn   07/18/91	Created
+
+.subckt 10108 D0 D1 D2 D3 Q0 Q1BAR 
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 AND (4) VCC1 VEE 
++       D0 D1 D2 D3 QB
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 PULLDN(4) VCC1 VEE
++       D0 D1 D2 D3 
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 INV  VCC2 VEE
++       QB Q1BAR
++       D_10108 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U4 BUF  VCC2 VEE
++       QB  Q0      
++       D_10108 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10108 ugate (
++	tplhmn=1.40ns  tplhty=2.30ns  
++       tplhmx={table(temp, -30, 4.10ns, 25, 3.70ns, 85, 4.10ns)}
++	tphlmn=1.40ns  tphlty=2.30ns  
++	tphlmx={table(temp, -30, 4.10ns, 25, 3.70ns, 85, 4.10ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10109 Dual 4-5 Input OR/NOR Gate
+*
+* Philips ECL Databook June 1990
+* jjr   07/18/91	Created
+
+.subckt 10109 D0 D1 D2 D3 D4 D5 D6 D7 D8 Q0BAR Q1 Q2BAR Q3
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 ORA(5,2) VCC1 VEE 
++       D0 D1 D2 D3 $D_LO D4 D5 D6 D7 D8
++	Q1B Q3B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 PULLDN(9) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7 D8
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 BUFA(2) VCC2 VEE
++	Q1B  Q3B
++	Q1   Q3
++	D_10109 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U4 INVA(2) VCC2 VEE
++	Q1B   Q3B
++	Q0BAR Q2BAR
++	D_10109 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10109 ugate (
++       tplhmn=1.00ns  tplhty=2.00ns
++	tplhmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       tphlmn=1.00ns  tphlty=2.00ns
++	tphlmx={table(temp, -30, 3.10ns,  25, 2.90ns,  85, 3.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10113 Quad Exclusive-OR Gate with Enable Input
+*
+* Philips ECL Databook June 1990
+* tdn   07/17/91	Created
+
+.subckt 10113 EBAR D0 D1 D2 D3 D4 D5 D6 D7 Q0 Q1 Q2 Q3 
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 XORA(4) VCC1 VEE 
++       D0 D1 D2 D3 D4 D5 D6 D7
++       D1B D2B D3B D4B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 INV  VCC1 VEE
++       EBAR EBUF
++       D_10113_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U3 PULLDN(9) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7 EBAR
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U4 ANDA(2,4) VCC2 VEE
++       D1B EBUF D2B EBUF D3B EBUF D4B EBUF
++       Q0 Q1 Q2 Q3
++       D_10113_2 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10113_1 ugate (
++       tplhmn={table(temp, -30, 0.10ns, 25, 0.20ns, 85, 0.20ns)}
++	tplhty=0.80ns  
++	tplhmx={table(temp, -30, 0.30ns, 25, 0.30ns, 85, 0.40ns)}
++	tphlmn={table(temp, -30, 0.10ns, 25, 0.20ns, 85, 0.20ns)}  
++	tphlty=0.80ns  
++	tphlmx={table(temp, -30, 0.30ns, 25, 0.30ns, 85, 0.40ns)}
++       )
+.model D_10113_2 ugate (
++       tplhmn={table(temp, -30, 1.20ns, 25, 1.30ns, 85, 1.30ns)}  
++	tplhty=2.60ns  
++	tplhmx={table(temp, -30, 3.80ns, 25, 3.70ns, 85, 4.20ns)}
++       tphlmn={table(temp, -30, 1.20ns, 25, 1.30ns, 85, 1.30ns)}  
++	tphlty=2.60ns  
++       tphlmx={table(temp, -30, 3.80ns, 25, 3.70ns, 85, 4.20ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10117 Dual 2-Wide 2-3 Input OR-AND/OR-AND-INVERT Gate
+*
+* Philips ECL Databook June 1990
+* tdn   07/19/91	Created
+
+.subckt 10117 D0 D1 D2 D3 D4 D5 D6 D7 D8 Q0BAR Q1 Q2BAR Q3 
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 OA  (3,2) VCC1 VEE 
++       D0 D1 $D_LO D2 D3 D4BUF 
++       Q0B 
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 OA  (3,2) VCC1 VEE 
++       D4BUF D5 D6 D7 D8 $D_LO
++       Q1B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 BUF  VCC1 VEE
++       D4  D4BUF     
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U4 PULLDN(9) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7 D8 
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U5 INVA(2) VCC2 VEE
++       Q0B   Q1B
++       Q0BAR Q2BAR
++       D_10117 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U6 BUFA(2) VCC2 VEE
++       Q0B Q1B  
++       Q1  Q3       
++       D_10117 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10117 ugate (
++       tplhmn=1.40ns  tplhty=2.30ns  
++	tplhmx={table(temp, -30, 3.90ns, 25, 3.40ns, 85, 3.80ns)}
++       tphlmn=1.40ns  tphlty=2.30ns  
++	tphlmx={table(temp, -30, 3.90ns, 25, 3.40ns, 85, 3.80ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10118 Dual 2-Wide 3-Input OR-AND Gate
+*
+* Philips ECL Databook June 1990
+* tdn   07/19/91	Created
+
+.subckt 10118 D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 Q0 Q1
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 OA  (3,2) VCC1 VEE 
++       D0 D1 D2 D3 D4 D5BUF 
++       Q0B 
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 OA  (3,2) VCC1 VEE 
++       D5BUF D6 D7 D8 D9 D10
++       Q1B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 BUF  VCC1 VEE
++       D5  D5BUF     
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U4 PULLDN(11) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U5 BUFA(2) VCC2 VEE 
++       Q0B Q1B Q0 Q1 
++       D_10118 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10118 ugate (
++	tplhmn=1.40ns  tplhty=2.30ns  
++	tplhmx={table(temp, -30, 3.90ns, 25, 3.40ns, 85, 3.80ns)}
++	tphlmn=1.40ns  tphlty=2.30ns  
++	tphlmx={table(temp, -30, 3.90ns, 25, 3.40ns, 85, 3.80ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10119 4-Wide 4-3-3-3-Input OR-AND Gate
+*
+* Philips ECL Databook June 1990
+* tdn   07/19/91	Created
+
+.subckt 10119 D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 Q
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 OA  (4,4) VCC1 VEE 
++       D0 D1 D2 D3 D4 D5 D6BUF $D_LO D6BUF D7 D8 $D_LO D9 D10 D11 $D_LO
++       QB
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUF  VCC1 VEE
++       D6  D6BUF     
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U3 PULLDN(12) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U4 BUF  VCC2 VEE 
++       QB Q
++       D_10119 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10119 ugate (
++	tplhmn=1.40ns  tplhty=2.30ns  
++	tplhmx={table(temp, -30, 3.90ns, 25, 3.40ns, 85, 3.80ns)}
++	tphlmn=1.40ns  tphlty=2.30ns  
++	tphlmx={table(temp, -30, 3.90ns, 25, 3.40ns, 85, 3.80ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10121 4-Wide OR-AND/OR-AND-INVERT Gate
+*
+* Philips ECL Databook June 1990
+* tdn   07/19/91	Created
+
+.subckt 10121 D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 Q0BAR Q1
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 OA  (3,4) VCC1 VEE 
++       D0 D1 D2 D3 D4 D5BUF D5BUF D6 D7 D8 D9 D10 
++       QB
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUF  VCC1 VEE
++       D5  D5BUF     
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U3 PULLDN(11) VCC1 VEE
++       D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10  
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U4 INV  VCC2 VEE
++       QB Q0BAR
++       D_10121 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U5 BUF  VCC2 VEE
++       QB  Q1       
++       D_10121 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10121 ugate (
++	tplhmn=1.40ns  tplhty=2.30ns  
++	tplhmx={table(temp, -30, 3.90ns, 25, 3.40ns, 85, 3.80ns)}
++	tphlmn=1.40ns  tphlty=2.30ns  
++	tphlmx={table(temp, -30, 3.90ns, 25, 3.40ns, 85, 3.80ns)}
++       )
+*$
+*-------------------------------------------------------------------------
+* 10124 TTL-to-ECL Translator
+
+* Philips ECL Databook June 1990
+
+.subckt 10124 D0 D1 D2 D3 S Q0bar Q1 Q2bar Q3 Q4bar Q5 Q6bar Q7
++ optional:  VEE=$G_ECL_10K_VEE  VCC=$G_DPWR  GND=$G_DGND
++ params:    MNTYMXDLY=0  IO_LEVEL=0
+
+U1  bufa(5)    VCC GND
++   D0   D1   D2   D3   S              ; TTL inputs
++   D0b  D1b  D2b  D3b  Sb
++   D0_GATE   IO_S   IO_LEVEL={IO_LEVEL}
+
+U2  nanda(2,4)  GND VEE
++   D0b Sb  D1b Sb  D2b Sb  D3b Sb
++   Q0bar   Q2bar   Q4bar   Q6bar      ; ECL outputs
++   D_10124 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+U3  anda(2,4)  GND VEE
++   D0b Sb  D1b Sb  D2b Sb  D3b Sb
++   Q1      Q3      Q5      Q7	       ; ECL outputs
++   D_10124 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.ends
+
+.model D_10124 ugate (
++       tplhmn=1.00ns    tplhty=3.50ns     tplhmx=6.50ns
++       tphlmn=1.00ns    tphlty=3.50ns     tphlmx=6.50ns
++       )
+
+*$
+*-------------------------------------------------------------------------
+
+* 10125 ECL-to-TTL Translator
+
+* The bias voltage generator is not modeled, although a pin is present.
+
+* Philips ECL Databook June 1990
+* imw     6/9/93    created
+
+.subckt 10125 D0bar D0 D1bar D1 D2bar D2 D3bar D3 Q0 Q1 Q2 Q3 VBB
++ optional:  VEE=$G_ECL_10K_VEE  VCC=$G_DPWR  GND=$G_DGND
++ params:    MNTYMXDLY=0  IO_LEVEL=0
+
+R1  VBB 0  100Meg
+R2  VBB 0  100Meg
+
+U1  bufa(4) GND VEE                       ; ECL inputs
++   D0  D1  D2  D3
++   Da0 Da1 Da2 Da3
++   D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+
+U2  inva(4) GND VEE                       ; ECL inputs
++   D0bar D1bar D2bar D3bar
++   Db0   Db1   Db2   Db3
++   D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+
+U3  ora(2,4)  VCC GND
++   Da0 Db0   Da1 Db1   Da2 Db2   Da3 Db3
++   Q0        Q1        Q2        Q3      ; TTL outputs
++   D_10125 IO_S     ; Schottky output
++   IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+
+.ends
+
+.model D_10125 ugate (
++       tplhmn=1.00ns    tplhty=4.50ns     tplhmx=6.00ns
++       tphlmn=1.00ns    tphlty=4.50ns     tphlmx=6.00ns
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10131 Dual D-Type Master-Slave Flip-Flop
+*
+* Philips ECL Databook June 1990
+* jjr	07/22/91	Created
+
+.subckt 10131 CE0BAR CE1BAR R0 S0 R1 S1 CP D0 D1 Q0 Q0BAR Q1 Q1BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Despite the Master-Slave description, this device behaves as a
+*	normal positive-edge-triggered D flip-flop.
+
+U1 BUFA(3) VCC1 VEE
++	CP    D0    D1
++	CPBUF D0BUF D1BUF
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 ORA(2,2) VCC1 VEE
++	CE0BAR CPBUF CE1BAR CPBUF
++	GATE0 GATE1
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 INVA(4) VCC1 VEE
++	S0    S1    R0    R1
++	S0BAR S1BAR R0BAR R1BAR
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U4 DFF(1) VCC2 VEE
++	S0BAR R0BAR GATE0
++	D0BUF Q0 Q0BAR
++	D_10131 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U5 DFF(1) VCC2 VEE
++	S1BAR R1BAR GATE1
++	D1BUF Q1 Q1BAR
++	D_10131 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10131 ueff (
++	tppcqlhmn={table(temp, -30, 1.70ns,  25, 1.80ns,  85, 1.80ns)}
++	tppcqlhty=2.80ns
++	tppcqlhmx={table(temp, -30, 4.40ns,  25, 4.30ns,  85, 4.80ns)}
++	tppcqhlmn={table(temp, -30, 1.70ns,  25, 1.80ns,  85, 1.80ns)}
++	tppcqhlty=2.80ns
++	tppcqhlmx={table(temp, -30, 4.40ns,  25, 4.30ns,  85, 4.80ns)}
++	tpclkqlhmn={table(temp, -30, 1.70ns,  25, 1.80ns,  85, 1.80ns)}
++	tpclkqlhty=3.00ns
++	tpclkqlhmx={table(temp, -30, 4.60ns,  25, 4.50ns,  85, 5.00ns)}
++	tpclkqhlmn={table(temp, -30, 1.70ns,  25, 1.80ns,  85, 1.80ns)}
++	tpclkqhlty=3.00ns
++	tpclkqhlmx={table(temp, -30, 4.60ns,  25, 4.50ns,  85, 5.00ns)}
++	tsudclkmn=2.50ns
++	thdclkmn=1.50ns
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10132 Dual 2-Input Multiplexer With Clocked D-Type Latches and Common
+*	  Reset
+*
+* Philips ECL Databook June 1990
+* jjr	07/26/91	Created
+
+.subckt 10132 CE0BAR CE1BAR R S CP D0 D1 D2 D3 Q0 Q0BAR Q1 Q1BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Setup and Hold times for S to CP have not been included in the
+*	model.
+
+U1 BUFA(5) VCC1 VEE
++	CE0BAR CE1BAR CP    R    S
++	CE0B   CE1B   CPBUF RBUF SB
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUF	VCC1 VEE
++	SB  SBUF
++	D_10132_1 IO_10K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U3 INV	VCC1 VEE
++	SB  SBAR
++	D_10132_1 IO_10K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U4 ORA(2,4) VCC1 VEE
++	D0 SBUF  D1 SBAR  D2 SBUF  D3 SBAR
++	D0A      D0B      D1A      D1B
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U5 ANDA(2,2) VCC1 VEE
++	D0A D0B  D1A D1B
++	D_0	 D_1
++	D0_GATE IO_10K_IN
+U6 NORA(2,2) VCC1 VEE
++	CE0B CPBUF  CE1B CPBUF
++	GATE0         GATE1
++	D0_GATE IO_10K_IN
+U7 AOI(2,2) VCC1 VEE
++	RBUF CPBUF RBUF CE0B  R0BAR
++	D0_GATE IO_10K_IN
+U8 AOI(2,2) VCC1 VEE
++	RBUF CPBUF RBUF CE1B  R1BAR
++	D0_GATE IO_10K_IN
+U9 DLTCH(1) VCC2 VEE
++	$D_HI R0BAR GATE0
++	D_0 Q0 Q0BAR
++	D_10132_2 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U10 DLTCH(1) VCC2 VEE
++	$D_HI R1BAR GATE1
++	D_1 Q1 Q1BAR
++	D_10132_2 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10132_1 ugate (
++	tplhmn=0.00ns
++       tplhmx={table(temp, -30, 1.20ns,  25, 1.30ns,  85, 1.30ns)}
++	tphlmn=0.00ns
++	tphlmx={table(temp, -30, 1.20ns,  25, 1.30ns,  85, 1.30ns)}
++	)
+
+.model D_10132_2 ugff (
++	tppcqlhmn=1.00ns
++	tppcqlhmx={table(temp, -30, 4.00ns,  25, 3.80ns,  85, 4.20ns)}
++	tppcqhlmn=1.00ns
++	tppcqhlmx={table(temp, -30, 4.00ns,  25, 3.80ns,  85, 4.20ns)}
++	tpgqlhmn=1.00ns
++	tpgqlhmx={table(temp, -30, 6.00ns,  25, 5.70ns,  85, 6.30ns)}
++	tpgqhlmn=1.00ns
++	tpgqhlmx={table(temp, -30, 6.00ns,  25, 5.70ns,  85, 6.30ns)}
++	tpdqlhmn=1.00ns    tpdqlhty=3.00ns
++	tpdqlhmx={table(temp, -30, 3.60ns,  25, 3.30ns,  85, 3.70ns)}
++	tpdqhlmn=1.00ns    tpdqhlty=3.00ns
++	tpdqhlmx={table(temp, -30, 3.60ns,  25, 3.30ns,  85, 3.70ns)}
++	tsudgmn=2.50ns
++	thdgmn=1.50ns
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10133 Quad Latch With D-Type Inputs and Enable Outputs
+*
+* Philips ECL Databook June 1990
+* jjr	07/29/91	Created
+
+.subckt 10133 CE0BAR CE1BAR OE0BAR OE1BAR CPBAR D0 D1 D2 D3
++	Q0BAR Q1BAR Q2BAR Q3BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+
+U1 BUFA(3) VCC1 VEE
++	CPBAR   OE0BAR OE1BAR
++	CPBAR_B	OE0B   OE1B
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 ORA(2,2) VCC1 VEE
++	CE0BAR CPBAR_B  CE1BAR CPBAR_B
++	GATE0           GATE1
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 DLTCH(1) VCC1 VEE
++	$D_HI $D_HI GATE0
++	D0  $D_NC Q0B
++	D_10133_1 IO_10K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U4 DLTCH(1) VCC1 VEE
++	$D_HI $D_HI GATE0
++	D1  $D_NC Q1B
++	D_10133_1 IO_10K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U5 DLTCH(1) VCC1 VEE
++	$D_HI $D_HI GATE1
++	D2  $D_NC Q2B
++	D_10133_1 IO_10K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U6 DLTCH(1) VCC1 VEE
++	$D_HI $D_HI GATE1
++	D3  $D_NC Q3B
++	D_10133_1 IO_10K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U7 NORA(2,4) VCC2 VEE
++	Q0B OE0B  Q1B OE0B  Q2B OE1B  Q3B OE1B
++	Q0BAR     Q1BAR     Q2BAR     Q3BAR
++	D_10133_2 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10133_1 ugff (
++	tpgqlhmn={table(temp, -30, 0.00ns,  25, 0.00ns,  85, 0.20ns)}
++	tpgqlhty=2.00ns	
++	tpgqlhmx={table(temp, -30, 2.20ns,  25, 2.30ns,  85, 2.60ns)}
++	tpgqhlmn={table(temp, -30, 0.00ns,  25, 0.00ns,  85, 0.20ns)}
++	tpgqhlty=2.00ns	
++	tpgqhlmx={table(temp, -30, 2.20ns,  25, 2.30ns,  85, 2.60ns)}
++	tpdqlhmn={table(temp, -30, 0.00ns,  25, 0.00ns,  85, 0.10ns)}
++	tpdqlhty=2.00ns
++	tpdqlhmx={table(temp, -30, 2.40ns,  25, 2.30ns,  85, 2.50ns)}
++	tpdqhlmn={table(temp, -30, 0.00ns,  25, 0.00ns,  85, 0.10ns)}
++	tpdqhlty=2.00ns
++	tpdqhlmx={table(temp, -30, 2.40ns,  25, 2.30ns,  85, 2.50ns)}
++	tsudgmn=2.50ns
++	thdgmn=1.50ns
++	)
+
+.model D_10133_2 ugate (
++	tplhmn=1.00ns      tplhty=2.00ns
++	tplhmx={table(temp, -30, 3.20ns,  25, 3.10ns,  85, 3.40ns)}
++	tphlmn=1.00ns      tphlty=2.00ns
++	tphlmx={table(temp, -30, 3.20ns,  25, 3.10ns,  85, 3.40ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10134 Dual 2-Input Multiplexer With Clocked D-Type Latches
+*
+* Philips ECL Databook June 1990
+* jjr	07/26/91	Created
+
+.subckt 10134 CE0BAR CE1BAR S0 S1 CPBAR D0 D1 D2 D3 Q0 Q0BAR Q1 Q1BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	The D-latches are positive-edge latched, despite the databook's
+*	labelling of the clock as CPBAR.
+*
+*	Setup and Hold times for Sn to CP have not been included in the
+*	model.
+
+U1 BUFA(3) VCC1 VEE
++	CPBAR   S0  S1
++	CPBAR_B	S0B S1B
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUFA(2) VCC1 VEE
++	S0B   S1B
++	S0BUF S1BUF
++	D_10134_1 IO_10K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U3 INVA(2) VCC1 VEE
++	S0B   S1B
++	S0BAR S1BAR
++	D_10134_1 IO_10K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U4 ORA(2,4) VCC1 VEE
++	D0 S0BUF  D1 S0BAR  D2 S1BUF  D3 S1BAR
++	D0A       D0B       D1A       D1B
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U5 ANDA(2,2) VCC1 VEE
++	D0A D0B  D1A D1B
++	D_0	 D_1
++	D0_GATE IO_10K_IN
+U6 NORA(2,2) VCC1 VEE
++	CE0BAR CPBAR_B  CE1BAR CPBAR_B
++	GATE0         GATE1
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U7 DLTCH(1) VCC2 VEE
++	$D_HI $D_HI GATE0
++	D_0 Q0 Q0BAR
++	D_10134_2 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U8 DLTCH(1) VCC2 VEE
++	$D_HI $D_HI GATE1
++	D_1 Q1 Q1BAR
++	D_10134_2 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10134_1 ugate (
++	tplhmn=0.00ns
++       tplhmx={table(temp, -30, 1.30ns,  25, 1.30ns,  85, 1.40ns)}
++	tphlmn=0.00ns
++	tphlmx={table(temp, -30, 1.30ns,  25, 1.30ns,  85, 1.40ns)}
++	)
+
+.model D_10134_2 ugff (
++	tpgqlhmn=1.00ns
++	tpgqlhmx={table(temp, -30, 6.00ns,  25, 5.70ns,  85, 6.30ns)}
++	tpgqhlmn=1.00ns
++	tpgqhlmx={table(temp, -30, 6.00ns,  25, 5.70ns,  85, 6.30ns)}
++	tpdqlhmn=1.00ns    tpdqlhty=3.00ns
++	tpdqlhmx={table(temp, -30, 3.50ns,  25, 3.30ns,  85, 3.60ns)}
++	tpdqhlmn=1.00ns    tpdqhlty=3.00ns
++	tpdqhlmx={table(temp, -30, 3.50ns,  25, 3.30ns,  85, 3.60ns)}
++	tsudgmn=2.50ns
++	thdgmn=1.50ns
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10135 Dual J-K Master-Slave Flip-Flop
+*
+* Philips ECL Databook June 1990
+* jjr	07/25/91	Created
+
+.subckt 10135 R0 S0 R1 S1 CP J0BAR K0BAR J1BAR K1BAR Q0 Q0BAR Q1 Q1BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Despite the Master-Slave description, this device behaves as a
+*	normal positive-edge-triggered J-K flip-flop.
+*
+*	The databook also gives a different value for 'typical' setup
+*	and hold times, which are not included in this model.
+
+U1 INVA(9) VCC1 VEE
++	CP    R0    S0    R1    S1    J0BAR K0BAR J1BAR K1BAR
++	CPBAR R0BAR S0BAR R1BAR S1BAR J0    K0    J1    K1
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 JKFF(1) VCC2 VEE
++	S0BAR R0BAR CPBAR
++	J0 K0  Q0 Q0BAR
++	D_10135 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U3 JKFF(1) VCC2 VEE
++	S1BAR R1BAR CPBAR
++	J1 K1  Q1 Q1BAR
++	D_10135 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10135 ueff (
++	tppcqlhmn=1.80ns   tppcqlhty=3.00ns
++	tppcqlhmx={table(temp, -30, 5.60ns,  25, 5.00ns,  85, 5.20ns)}
++	tppcqhlmn=1.80ns   tppcqhlty=3.00ns
++	tppcqhlmx={table(temp, -30, 5.60ns,  25, 5.00ns,  85, 5.20ns)}
++	tpclkqlhmn=1.80ns  tpclkqlhty=3.00ns
++	tpclkqlhmx={table(temp, -30, 5.00ns,  25, 4.50ns,  85, 4.60ns)}
++	tpclkqhlmn=1.80ns  tpclkqhlty=3.00ns
++	tpclkqhlmx={table(temp, -30, 5.00ns,  25, 4.50ns,  85, 4.60ns)}
++	tsudclkmn=2.50ns
++	thdclkmn=1.50ns
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10136 4-Bit Universal Hexadecimal Counter
+*
+* Philips ECL Databook June 1990
+* jjr	08/02/91	Created
+
+.subckt 10136 S0 S1 CP D0 D1 D2 D3 CINBAR Q0 Q1 Q2 Q3 COUTBAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Note that as this device uses T (toggle) type flip-flops, the
+*	device must be loaded before counting begins.  Failure to do this
+*	will result in unknown outputs (state X) until a load is done.
+*
+*	Setup and Hold times for Sn to CP, CinBAR to CP, and CP to CinBAR
+*	have not been included in the model.
+
+U1 BUFA(6) VCC1 VEE
++	S0    S1    D0  D1  D2  D3
++	S0BUF S1BUF D0B D1B D2B D3B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 NOR(2) VCC1 VEE
++	S0BUF S1BUF  LOAD
++       D0_GATE IO_10K_IN
+U3 INVA(6) VCC1 VEE
++	CP    LOAD    D0B   D1B   D2B   D3B
++	CPBAR LOADBAR D0BAR D1BAR D2BAR D3BAR
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U4 ORA(2,13) VCC1 VEE
++	S0BUF LOAD  LOAD Q0BAR  LOAD Q1BAR
++	 LOAD Q2BAR  LOAD Q3BAR
++	D0B LOADBAR  LOADBAR Q0BAR  D1B LOADBAR  LOADBAR Q1BAR
++	 D2B LOADBAR  LOADBAR Q2BAR  D3B LOADBAR  LOADBAR Q3BAR
++	TCOMX  TCOM123Y  TCOM23Y  TCOM3Y TCOMCY
++	T0BX  T0BY  T1BX  T1BY  T2BX  T2BY  T3BX  T3BY
++       D0_GATE IO_10K_IN
+U5 XORA(8) VCC1 VEE
++	TCOMX TCOM123Y  TCOMX TCOM23Y  TCOMX TCOM3Y  TCOMX TCOMCY
++	T0BX T0BY  T1BX T1BY  T2BX T2BY  T3BX T3BY
++	TCOM123  TCOM23  TCOM3  TCOMC
++	T0B  T1B  T2B  T3B
++       D0_GATE IO_10K_IN
+U6 AO(2,2) VCC1 VEE
++	S0BUF S1BUF  CINBAR LOADBAR   TCOM0123
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U7 NORA(5,4) VCC1 VEE
++	TCOM0123 T0B $D_LO $D_LO $D_LO
++	TCOM0123 T1B TCOM123 $D_LO $D_LO
++	TCOM0123 T2B TCOM123 TCOM23 $D_LO
++	TCOM0123 T3B TCOM123 TCOM23 TCOM3
++	T0  T1  T2  T3
++       D0_GATE IO_10K_IN
+U8 AO(2,2) VCC1 VEE
++	T0 LOADBAR D0B LOAD  J0
++	D0_GATE IO_10K_IN
+U9 AO(2,2) VCC1 VEE
++	T0 LOADBAR D0BAR LOAD  K0
++	D0_GATE IO_10K_IN
+U10 AO(2,2) VCC1 VEE
++	T1 LOADBAR D1B LOAD  J1
++	D0_GATE IO_10K_IN
+U11 AO(2,2) VCC1 VEE
++	T1 LOADBAR D1BAR LOAD  K1
++	D0_GATE IO_10K_IN
+U12 AO(2,2) VCC1 VEE
++	T2 LOADBAR D2B LOAD  J2
++	D0_GATE IO_10K_IN
+U13 AO(2,2) VCC1 VEE
++	T2 LOADBAR D2BAR LOAD  K2
++	D0_GATE IO_10K_IN
+U14 AO(2,2) VCC1 VEE
++	T3 LOADBAR D3B LOAD  J3
++	D0_GATE IO_10K_IN
+U15 AO(2,2) VCC1 VEE
++	T3 LOADBAR D3BAR LOAD  K3
++	D0_GATE IO_10K_IN
+U16 JKFF(4) VCC1 VEE
++	$D_HI $D_HI CPBAR
++	J0 J1 J2 J3  K0 K1 K2 K3
++	Q0B    Q1B    Q2B    Q3B 
++	Q0BARB Q1BARB Q2BARB Q3BARB
++	D_10136_1 IO_10K_IN  MNTYMXDLY={MNTYMXDLY}
+U17 BUFA(4) VCC1 VEE
++	Q0BARB Q1BARB Q2BARB Q3BARB
++	Q0BAR  Q1BAR  Q2BAR  Q3BAR
++	D_10136_2 IO_10K_IN  MNTYMXDLY={MNTYMXDLY}
+U18 BUFA(4) VCC2 VEE
++	Q0B Q1B Q2B Q3B
++	Q0  Q1  Q2  Q3
++	D_10136_2 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U19 BUF VCC1 VEE
++	TCOM0123 TCOM0123C
++	D_10136_3 IO_10K_IN  MNTYMXDLY={MNTYMXDLY}
+U20 OR(5) VCC2 VEE
++	TCOM0123C TCOM3 TCOM23 TCOM123 TCOMC  COUTBAR
++       D_10136_4 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10136_1 ueff (
++	tpclkqlhmn={table(temp, -30, 0.30ns,  25, 0.50ns,  85, 0.90ns)}
++	tpclkqlhty={table(temp, 25, 2.80ns)}
++	tpclkqlhmx={table(temp, -30, 4.30ns,  25, 4.00ns,  85, 4.50ns)}
++	tpclkqhlmn={table(temp, -30, 0.30ns,  25, 0.50ns,  85, 0.90ns)}
++	tpclkqhlty={table(temp, 25, 2.80ns)}
++	tpclkqhlmx={table(temp, -30, 4.30ns,  25, 4.00ns,  85, 4.50ns)}
++	tsudclkmn=3.50ns
++	)
+
+.model D_10136_2 ugate (
++	tplhmn=0.50ns		tplhty=0.50ns		tplhmx=0.50ns
++	tphlmn=0.50ns		tphlty=0.50ns		tphlmx=0.50ns
++	)
+
+.model D_10136_3 ugate (
++	tplhmn={table(temp, -30, 0.40ns,  25, 0.10ns,  85, 0.80ns)}
++	tplhty={table(temp, 25, 1.30ns)}
++	tplhmx={table(temp, -30, 1.30ns,  25, 0.90ns,  85, 1.00ns)}
++	tphlmn={table(temp, -30, 0.40ns,  25, 0.10ns,  85, 0.80ns)}
++	tphlty={table(temp, 25, 1.30ns)}
++	tphlmx={table(temp, -30, 1.30ns,  25, 0.90ns,  85, 1.00ns)}
++	)
+
+.model D_10136_4 ugate (
++	tplhmn={table(temp, -30, 1.20ns,  25, 1.50ns,  85, 1.10ns)}
++	tplhty={table(temp, 25, 3.70ns)}
++	tplhmx={table(temp, -30, 6.10ns,  25, 6.00ns,  85, 6.50ns)}
++	tphlmn={table(temp, -30, 1.20ns,  25, 1.50ns,  85, 1.10ns)}
++	tphlty={table(temp, 25, 3.70ns)}
++	tphlmx={table(temp, -30, 6.10ns,  25, 6.00ns,  85, 6.50ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10137 4-Bit Universal Decade Counter
+*
+* Philips ECL Databook June 1990
+* jjr	08/22/91	Created
+
+.subckt 10137 S0 S1 CP D0 D1 D2 D3 CINBAR Q0 Q1 Q2 Q3 COUTBAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Note that as this device uses T (toggle) type flip-flops, the
+*	device must be loaded before counting begins.  Failure to do this
+*	will result in unknown outputs (state X) until a load is done.
+*
+*	Setup and Hold times for Sn to CP, CinBAR to CP, and CP to CinBAR
+*	have not been included in the model.
+
+U1 BUFA(6) VCC1 VEE
++	S0    S1    D0  D1  D2  D3
++	S0BUF S1BUF D0B D1B D2B D3B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 NOR(2) VCC1 VEE
++	S0BUF S1BUF  LOAD
++       D0_GATE IO_10K_IN
+U3 INVA(10) VCC1 VEE
++	CP    S0BUF S1BUF LOAD    D0B   D1B   D2B   D3B   R1    R2
++	CPBAR S0BAR S1BAR LOADBAR D0BAR D1BAR D2BAR D3BAR R1BAR	R2BAR
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U4 ORA(2,13) VCC1 VEE
++	S0BUF LOAD  LOAD Q0BAR  LOAD Q1BAR
++	 LOAD Q2BAR  LOAD Q3BAR
++	D0B LOADBAR  LOADBAR Q0BAR  D1B LOADBAR  LOADBAR Q1BAR
++	 D2B LOADBAR  LOADBAR Q2BAR  D3B LOADBAR  LOADBAR Q3BAR
++	TCOMX  TCOM123Y  TCOM23Y  TCOM3Y TCOMCY
++	T0BX  T0BY  T1BX  T1BY  T2BX  T2BY  T3BX  T3BY
++       D0_GATE IO_10K_IN
+U5 XORA(8) VCC1 VEE
++	TCOMX TCOM123Y  TCOMX TCOM23Y  TCOMX TCOM3Y  TCOMX TCOMCY
++	T0BX T0BY  T1BX T1BY  T2BX T2BY  T3BX T3BY
++	TCOM123  TCOM23  TCOM3  TCOMC
++	T0B  T1B  T2B  T3B
++       D0_GATE IO_10K_IN
+U6 AO(2,2) VCC1 VEE
++	S0BUF S1BUF  CINBAR LOADBAR   TCOM0123
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U7 NORA(5,4) VCC1 VEE
++	TCOM0123 T0B $D_LO $D_LO $D_LO
++	TCOM0123 T1B TCOM123 $D_LO $D_LO
++	TCOM0123 T2B TCOM123 TCOM23 $D_LO
++	TCOM0123 T3B TCOM123 TCOM23 TCOM3
++	T0  T1  T2  T3
++       D0_GATE IO_10K_IN
+U8 ANDA(6,2) VCC1 VEE
++	S0BAR S1BUF Q3B Q0B $D_HI $D_HI
++	S0 S1BAR Q3BAR Q2BAR Q1BAR Q0BAR
++	R1   R2
++	D0_GATE IO_10K_IN
+U9 AO(2,2) VCC1 VEE
++	T0 LOADBAR D0B LOAD  J0
++	D0_GATE IO_10K_IN
+U10 AO(2,2) VCC1 VEE
++	T0 LOADBAR D0BAR LOAD  K0
++	D0_GATE IO_10K_IN
+U11 AO(2,2) VCC1 VEE
++	T1 LOADBAR D1B LOAD  J1EXT
++	D0_GATE IO_10K_IN
+U12 ANDA(3,3) VCC1 VEE
++	J1EXT R1BAR R2BAR  J2EXT R2BAR $D_HI  J3EXT R1BAR $D_HI
++	J1  J2  J3
++	D0_GATE IO_10K_IN
+U13 AO(2,4) VCC1 VEE
++	R1 $D_HI R2 $D_HI T1 LOADBAR D1BAR LOAD  K1
++	D0_GATE IO_10K_IN
+U14 AO(2,2) VCC1 VEE
++	T2 LOADBAR D2B LOAD  J2EXT
++	D0_GATE IO_10K_IN
+U15 AO(2,3) VCC1 VEE
++	R2 $D_HI T2 LOADBAR D2BAR LOAD  K2
++	D0_GATE IO_10K_IN
+U16 AO(2,2) VCC1 VEE
++	T3 LOADBAR D3B LOAD  J3EXT
++	D0_GATE IO_10K_IN
+U17 AO(2,3) VCC1 VEE
++	R1 $D_HI T3 LOADBAR D3BAR LOAD  K3
++	D0_GATE IO_10K_IN
+U18 JKFF(4) VCC1 VEE
++	$D_HI $D_HI CPBAR
++	J0 J1 J2 J3  K0 K1 K2 K3
++	Q0B    Q1B    Q2B    Q3B 
++	Q0BARB Q1BARB Q2BARB Q3BARB
++	D_10137_1 IO_10K_IN  MNTYMXDLY={MNTYMXDLY}
+U19 BUFA(4) VCC1 VEE
++	Q0BARB Q1BARB Q2BARB Q3BARB
++	Q0BAR  Q1BAR  Q2BAR  Q3BAR
++	D_10137_2 IO_10K_IN  MNTYMXDLY={MNTYMXDLY}
+U20 BUFA(4) VCC2 VEE
++	Q0B Q1B Q2B Q3B
++	Q0  Q1  Q2  Q3
++	D_10137_2 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U21 BUF VCC1 VEE
++	TCOM0123 TCOM0123C
++	D_10137_3 IO_10K_IN  MNTYMXDLY={MNTYMXDLY}
+U22 OR(5) VCC2 VEE
++	TCOM0123C Q1B Q2B TCOM123 TCOMC  COUTBAR
++       D_10137_4 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10137_1 ueff (
++	tpclkqlhmn=1.20ns
++	tpclkqlhty={table(temp, 25, 2.80ns)}
++	tpclkqlhmx={table(temp, -30, 4.30ns,  25, 4.00ns,  85, 4.50ns)}
++	tpclkqhlmn=1.20ns
++	tpclkqhlty={table(temp, 25, 2.80ns)}
++	tpclkqhlmx={table(temp, -30, 4.30ns,  25, 4.00ns,  85, 4.50ns)}
++	tsudclkmn=3.50ns
++	)
+
+.model D_10137_2 ugate (
++	tplhmn=0.50ns		tplhty=0.50ns		tplhmx=0.50ns
++	tphlmn=0.50ns		tphlty=0.50ns		tphlmx=0.50ns
++	)
+
+.model D_10137_3 ugate (
++	tplhmn={table(temp, -30, 1.30ns,  25, 0.80ns,  85, 1.10ns)}
++	tplhty={table(temp, 25, 1.30ns)}
++	tplhmx={table(temp, -30, 1.30ns,  25, 0.90ns,  85, 1.00ns)}
++	tphlmn={table(temp, -30, 1.30ns,  25, 0.80ns,  85, 1.10ns)}
++	tphlty={table(temp, 25, 1.30ns)}
++	tphlmx={table(temp, -30, 1.30ns,  25, 0.90ns,  85, 1.00ns)}
++	)
+
+.model D_10137_4 ugate (
++	tplhmn={table(temp, -30, 0.30ns,  25, 0.80ns,  85, 0.80ns)}
++	tplhty={table(temp, 25, 3.70ns)}
++	tplhmx={table(temp, -30, 6.10ns,  25, 6.00ns,  85, 6.50ns)}
++	tphlmn={table(temp, -30, 0.30ns,  25, 0.80ns,  85, 0.80ns)}
++	tphlty={table(temp, 25, 3.70ns)}
++	tphlmx={table(temp, -30, 6.10ns,  25, 6.00ns,  85, 6.50ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10141 4-Bit Universal Shift Register
+*
+* Philips ECL Databook June 1990
+* jjr	08/01/91	Created
+
+.subckt 10141 S0 S1 CP DR DL D0 D1 D2 D3 Q0 Q1 Q2 Q3
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Setup and Hold times for Sn to CP have not been included in the
+*	model.
+
+U1 BUFA(3) VCC1 VEE
++	S0    S1    CP
++	S0BUF S1BUF CPBUF
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U2 INVA(2) VCC1 VEE
++	S0    S1
++	S0BAR S1BAR
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL} 
+U3 ANDA(2,4) VCC1 VEE
++	S0BAR S1BAR  S0BAR S1BUF  S0BUF S1BAR  S0BUF S1BUF
++	PARALLEL     SHIFTRIGHT	  SHIFTLEFT    NOSHIFT
++       D0_GATE IO_10K_IN
+U4 AO(2,4) VCC1 VEE
++	PARALLEL D3  SHIFTRIGHT DR  SHIFTLEFT Q2B  NOSHIFT Q3B  GATE3
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U5 AO(2,4) VCC1 VEE
++	PARALLEL D2  SHIFTRIGHT Q3B  SHIFTLEFT Q1B  NOSHIFT Q2B  GATE2
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U6 AO(2,4) VCC1 VEE
++	PARALLEL D1  SHIFTRIGHT Q2B  SHIFTLEFT Q0B  NOSHIFT Q1B  GATE1
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U7 AO(2,4) VCC1 VEE
++	PARALLEL D0  SHIFTRIGHT Q1B  SHIFTLEFT DL  NOSHIFT Q0B  GATE0
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U8 DFF(4) VCC1 VEE
++	$D_HI $D_HI CPBUF
++	GATE0 GATE1 GATE2 GATE3
++	Q0BB  Q1BB  Q2BB  Q3BB  $D_NC $D_NC $D_NC $D_NC
++	D_10141_1 IO_10K_IN  MNTYMXDLY={MNTYMXDLY}
+U9 BUFA(4) VCC1	VEE
++	Q0BB Q1BB Q2BB Q3BB
++	Q0B  Q1B  Q2B  Q3B
++	D_10141_2 IO_10K_IN  MNTYMXDLY={MNTYMXDLY}
+U10 BUFA(4) VCC2 VEE
++	Q0BB Q1BB Q2BB Q3BB
++	Q0   Q1   Q2   Q3
++       D_10141_2 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10141_1 ueff (
++	tpclkqlhmn=1.50ns  tpclkqlhty=1.50ns  tpclkqlhmx=1.50ns
++	tpclkqhlmn=1.50ns  tpclkqhlty=1.50ns  tpclkqhlmx=1.50ns
++	tsudclkmn=2.50ns
++	thdclkmn=1.50ns
++	)
+
+.model D_10141_2 ugate (
++	tplhmn={table(temp, -30, 0.20ns,  25, 0.30ns,  85, 0.50ns)}
++	tplhty=1.40ns
++	tplhmx={table(temp, -30, 2.40ns,  25, 2.30ns,  85, 2.70ns)}
++	tphlmn={table(temp, -30, 0.20ns,  25, 0.30ns,  85, 0.50ns)}
++	tphlty=1.40ns
++	tphlmx={table(temp, -30, 2.40ns,  25, 2.30ns,  85, 2.70ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10158 Quad 2-to-1 Multiplexer, Non-Inverting
+*
+* Philips ECL Databook June 1990
+* tdn   07/22/91	Created
+
+.subckt 10158 S D0 D1 D2 D3 D4 D5 D6 D7 Q0 Q1 Q2 Q3
++	optional: VEE =$G_ECL_10K_VEE  VCC=$G_ECL_10K_VCC
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUF  VCC1 VEE 
++       S SB
++       D_10158_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 ANDA(2,8) VCC1 VEE 
++       D0 SBAR D1 SBUF D2 SBAR D3 SBUF D4 SBAR D5 SBUF D6 SBAR D7 SBUF
++       D0B D1B D2B D3B D4B D5B D6B D7B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 BUF  VCC1 VEE
++       SB SBUF     
++       D0_GATE IO_10K_IN 
+U4 INV  VCC1 VEE
++       SB SBAR
++       D0_GATE IO_10K_IN 
+U5 PULLDN(9) VCC1 VEE
++       S D0 D1 D2 D3 D4 D5 D6 D7  
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U6 ORA (2,4) VCC2 VEE 
++       D0B D1B D2B D3B D4B D5B D6B D7B
++       Q0 Q1 Q2 Q3 
++       D_10158_2 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10158_1 ugate (
++	tplhmn=1.20ns	tplhty=0.70ns  
++	tplhmx={table(temp, -30, 1.70ns, 25, 1.50ns, 85, 1.60ns)}
++	tphlmn=1.20ns	tphlty=0.70ns  
++	tphlmx={table(temp, -30, 1.70ns, 25, 1.50ns, 85, 1.60ns)}
++       )
+.model D_10158_2 ugate (
++	tplhmn={table(temp, -30, 1.30ns, 25, 1.20ns, 85, 1.30ns)}  
++	tplhty=2.50ns  
++	tplhmx={table(temp, -30, 3.10ns, 25, 3.00ns, 85, 3.20ns)}
++	tphlmn={table(temp, -30, 1.30ns, 25, 1.20ns, 85, 1.30ns)}  
++	tphlty=2.50ns  
++	tphlmx={table(temp, -30, 3.10ns, 25, 3.00ns, 85, 3.20ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10159 Quad 2-to-1 Multiplexer, Inverting
+*
+* Philips ECL Databook June 1990
+* tdn   07/22/91	Created
+
+.subckt 10159 S OEBAR D0 D1 D2 D3 D4 D5 D6 D7 Q0 Q1 Q2 Q3
++	optional: VEE =$G_ECL_10K_VEE  VCC=$G_ECL_10K_VCC
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUF  VCC1 VEE 
++       S SB
++       D_10159_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 ANDA(2,8) VCC1 VEE 
++       D0 SBAR D1 SBUF D2 SBAR D3 SBUF D4 SBAR D5 SBUF D6 SBAR D7 SBUF
++       D0B D1B D2B D3B D4B D5B D6B D7B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 BUF  VCC1 VEE
++       SB SBUF     
++       D0_GATE IO_10K_IN 
+U4 INV  VCC1 VEE
++       SB SBAR
++       D0_GATE IO_10K_IN 
+U5 BUF  VCC1 VEE
++       OEBAR  OEBUF     
++       D_10159_2 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U6 PULLDN(10) VCC1 VEE
++       S OEBAR D0 D1 D2 D3 D4 D5 D6 D7  
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U7 NORA(3,4) VCC2 VEE 
++       D0B OEBUF D1B D2B OEBUF D3B D4B OEBUF D5B D6B OEBUF D7B
++       Q0 Q1 Q2 Q3 
++       D_10159_3 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10159_1 ugate (
++	tplhmn={table(temp, -30, 0.40ns, 25, 0.30ns, 85, 0.40ns)}  
++	tplhty=0.70ns  
++	tplhmx={table(temp, -30, 1.50ns, 25, 1.70ns, 85, 1.50ns)}
++	tphlmn={table(temp, -30, 0.40ns, 25, 0.30ns, 85, 0.40ns)}  
++	tphlty=0.70ns  
++	tphlmx={table(temp, -30, 1.50ns, 25, 1.70ns, 85, 1.50ns)}
++       )
+.model D_10159_2 ugate (
++	tplhmn=0.30ns	tplhty=0.00ns  
++	tplhmx={table(temp, -30, 1.50ns, 25, 1.70ns, 85, 1.50ns)}
++	tphlmn=0.30ns	tphlty=0.00ns  
++	tphlmx={table(temp, -30, 1.50ns, 25, 1.70ns, 85, 1.50ns)}
++       )
+.model D_10159_3 ugate (
++	tplhmn={table(temp, -30, 1.10ns, 25, 1.20ns, 85, 1.10ns)}  
++	tplhty=2.50ns  
++	tplhmx={table(temp, -30, 3.80ns, 25, 3.30ns, 85, 3.80ns)}
++	tphlmn={table(temp, -30, 1.10ns, 25, 1.20ns, 85, 1.10ns)}
++	tphlty=2.50ns  
++	tphlmx={table(temp, -30, 3.80ns, 25, 3.30ns, 85, 3.80ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10161 1-of-8 Decoder with 2 Enable Inputs (Active-LOW Outputs)
+*
+* Philips ECL Databook June 1990
+* tdn   07/23/91	Created
+
+.subckt 10161 E0BAR E1BAR A0 A1 A2 Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1  OR (2) VCC1 VEE 
++       E0BAR E1BAR EBUF
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUFA (3) VCC1 VEE 
++       A0 A1 A2 A0B A1B A2B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 BUFA (3) VCC1 VEE
++       A0B A1B A2B A0BUF A1BUF A2BUF     
++       D0_GATE IO_10K_IN  
+U4 INVA (3) VCC1 VEE
++       A0B A1B A2B A0BAR A1BAR A2BAR
++       D0_GATE IO_10K_IN  
+U5 PULLDN(5) VCC1 VEE
++       E0BAR E1BAR A0 A1 A2   
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U6 ORA (4,8) VCC2 VEE 
++       EBUF A0BUF A1BUF A2BUF EBUF A0BAR A1BUF A2BUF EBUF A0BUF A1BAR A2BUF
++       EBUF A0BAR A1BAR A2BUF EBUF A0BUF A1BUF A2BAR EBUF A0BAR A1BUF A2BAR
++       EBUF A0BUF A1BAR A2BAR EBUF A0BAR A1BAR A2BAR
++       Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++       D_10161 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10161 ugate (
++	tplhmn=1.50ns  tplhty=4.00ns  
++	tplhmx={table(temp, -30, 6.20ns, 25, 6.00ns, 85, 6.40ns)}
++	tphlmn=1.50ns  tphlty=4.00ns  
++	tphlmx={table(temp, -30, 6.20ns, 25, 6.00ns, 85, 6.40ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10162 1-of-8 Decoder with 2 Enable Inputs (Active-HIGH Outputs)
+*
+* Philips ECL Databook June 1990
+* tdn   07/23/91	Created
+
+.subckt 10162 E0BAR E1BAR A0 A1 A2 Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1  OR (2) VCC1 VEE 
++       E0BAR E1BAR EBUF
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUFA (3) VCC1 VEE 
++       A0 A1 A2 A0B A1B A2B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 BUFA (3) VCC1 VEE
++       A0B A1B A2B A0BUF A1BUF A2BUF     
++       D0_GATE IO_10K_IN  
+U4 INVA (3) VCC1 VEE
++       A0B A1B A2B A0BAR A1BAR A2BAR
++       D0_GATE IO_10K_IN  
+U5 PULLDN(5) VCC1 VEE
++       E0BAR E1BAR A0 A1 A2   
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U6 NORA (4,8) VCC2 VEE 
++       EBUF A0BUF A1BUF A2BUF EBUF A0BAR A1BUF A2BUF EBUF A0BUF A1BAR A2BUF
++       EBUF A0BAR A1BAR A2BUF EBUF A0BUF A1BUF A2BAR EBUF A0BAR A1BUF A2BAR
++       EBUF A0BUF A1BAR A2BAR EBUF A0BAR A1BAR A2BAR
++       Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++       D_10162 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10162 ugate (
++	tplhmn=1.50ns  tplhty=4.00ns  
++	tplhmx={table(temp, -30, 6.20ns, 25, 6.00ns, 85, 6.40ns)}
++	tphlmn=1.50ns  tphlty=4.00ns  
++	tphlmx={table(temp, -30, 6.20ns, 25, 6.00ns, 85, 6.40ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10164 8-Input Multiplexer with Enable Input
+*
+* Philips ECL Databook June 1990
+* tdn   07/22/91	Created
+
+.subckt 10164 EBAR A0 A1 A2 D0 D1 D2 D3 D4 D5 D6 D7 Q
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA (3) VCC1 VEE 
++       A0 A1 A2 A0B A1B A2B
++       D_10164_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}  
+U2 NORA(4,8) VCC1 VEE 
++       A0BUF A1BUF A2BUF D0 A0BAR A1BUF A2BUF D1 A0BUF A1BAR A2BUF D2
++       A0BAR A1BAR A2BUF D3 A0BUF A1BUF A2BAR D4 A0BAR A1BUF A2BAR D5
++       A0BUF A1BAR A2BAR D6 A0BAR A1BAR A2BAR D7
++       D0B D1B D2B D3B D4B D5B D6B D7B
++       D_10164_2 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}  
+U3 BUFA (3) VCC1 VEE
++       A0B A1B A2B A0BUF A1BUF A2BUF     
++       D0_GATE IO_10K_IN 
+U4 INVA (3) VCC1 VEE
++       A0B A1B A2B A0BAR A1BAR A2BAR
++       D0_GATE IO_10K_IN 
+U5 BUF  VCC1 VEE
++       EBAR  EBUF     
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U6 PULLDN(12) VCC1 VEE
++       A0 A1 A2 EBAR D0 D1 D2 D3 D4 D5 D6 D7   
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U7 NOR (9) VCC2 VEE 
++       D0B D1B D2B D3B D4B D5B D6B D7B EBUF Q
++       D_10164_3 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10164_1 ugate (
++	tplhmn={table(temp, -30, 0.40ns, 25, 0.50ns, 85, 0.60ns)}  
++	tplhty=1.00ns  
++	tplhmx={table(temp, -30, 1.60ns, 25, 1.50ns, 85, 1.70ns)}
++	tphlmn={table(temp, -30, 0.40ns, 25, 0.50ns, 85, 0.60ns)}  
++	tphlty=1.00ns  
++	tphlmx={table(temp, -30, 1.60ns, 25, 1.50ns, 85, 1.70ns)}
++       )
+.model D_10164_2 ugate (
++	tplhmn={table(temp, -30, 0.60ns, 25, 0.50ns, 85, 0.60ns)}  
++	tplhty=1.00ns  
++	tplhmx={table(temp, -30, 1.40ns, 25, 1.60ns, 85, 1.70ns)}
++	tphlmn={table(temp, -30, 0.60ns, 25, 0.50ns, 85, 0.60ns)}  
++	tphlty=1.00ns  
++	tphlmx={table(temp, -30, 1.40ns, 25, 1.60ns, 85, 1.70ns)}
++       )
+.model D_10164_3 ugate (
++	tplhmn={table(temp, -30, 0.90ns, 25, 1.00ns, 85, 1.00ns)}  
++	tplhty=2.00ns  
++	tplhmx={table(temp, -30, 3.30ns, 25, 2.90ns, 85, 3.10ns)}
++	tphlmn={table(temp, -30, 0.90ns, 25, 1.00ns, 85, 1.00ns)}  
++	tphlty=2.00ns  
++	tphlmx={table(temp, -30, 3.30ns, 25, 2.90ns, 85, 3.10ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10165 Priority Encoder/Latch
+*
+* Philips ECL Databook June 1990
+* tdn   08/16/91	Created
+*
+* Note: In accordance with the Databook, all unused inputs must be tied
+*	low, pulldown resisters are not incorporated in this model.
+*
+
+.subckt 10165 CP D0 D1 D2 D3 D4 D5 D6 D7 Q0 Q1 Q2 Q3
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA(8) VCC1 VEE 
++       D0  D1  D2  D3  D4  D5  D6  D7
++	D0B D1B D2B D3B D4B D5B D6B D7B 
++       D_10165_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 INVA(7) VCC1 VEE 
++       D0B D1B D2B D3B D4B D5B D6B 
++       D0I D1I D2I D3I D4I D5I D6I 
++       D0_GATE IO_10K_IN
+U3 ORA (8,4) VCC1 VEE 
++       D2B D3B $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO
++	D4B D5B D6B D7B	$D_LO $D_LO $D_LO $D_LO
++	D6B D7B	$D_LO $D_LO $D_LO $D_LO $D_LO $D_LO
++	D0B D1B D2B D3B D4B D5B D6B D7B
++       D0IN    D1IN    D2IN    D3IN
++       D0_GATE IO_10K_IN  
+U4 AO  (5,4) VCC1 VEE
++       D0I D1B $D_HI $D_HI $D_HI
++	D0I D2I D3B $D_HI $D_HI
++	D0I D2I D4I D5B $D_HI
++	D0I D2I D4I D6I D7B	F1       
++       D0_GATE IO_10K_IN 
+U5 AO  (5,2) VCC1 VEE
++       D0I D1I D0IN $D_HI $D_HI
++	D0I D1I D4I D5I D2IN	F2
++       D0_GATE IO_10K_IN 
+U6 AND (5) VCC1 VEE
++       D0I D1I D2I D3I D1IN	F3
++       D0_GATE IO_10K_IN  
+U7 DLTCH(4) VCC2 VEE 
++       $D_HI $D_HI CP
++       F1 F2 F3 D3IN
++       Q0 Q1 Q2 Q3 $D_NC $D_NC $D_NC $D_NC
++       D_10165_2 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10165_1 ugate (
++       tplhmn={table(temp, -30, 0.50ns, 25, 1.00ns, 85, 0.50ns)}	
++	tplhty=0.00ns	
++	tplhmx={table(temp, -30, 2.50ns, 25, 3.00ns, 85, 3.50ns)}
++	tphlmn={table(temp, -30, 0.50ns, 25, 1.00ns, 85, 0.50ns)}		
++	tphlty=0.00ns
++	tphlmx={table(temp, -30, 2.50ns, 25, 3.00ns, 85, 3.50ns)}
++       )
+.model D_10165_2 ugff (
++	tpgqlhmn={table(temp, -30, 1.50ns, 25, 2.00ns, 85, 1.50ns)}		
++	tpgqlhty=4.50ns     
++	tpgqlhmx={table(temp, -30, 4.50ns, 25, 4.00ns, 85, 4.50ns)}
++	tpgqhlmn={table(temp, -30, 1.50ns, 25, 2.00ns, 85, 1.50ns)}	
++	tpgqhlty=4.50ns
++	tpgqhlmx={table(temp, -30, 4.50ns, 25, 4.00ns, 85, 4.50ns)}
++	tsudgmn =6.00ns		tsudgty =6.00ns		tsudgmx =6.00ns
++	thdgmn  =1.00ns		thdgty  =1.00ns		thdgmx  =1.00ns
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10171 Dual 1-of-4 Decoder with One Common and Two Individual Inputs 
+*       (Active-LOW Outputs)
+*
+* Philips ECL Databook June 1990
+* tdn   07/23/91	Created
+
+.subckt 10171 EBAR E0BAR E1BAR A0 A1 Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA (5) VCC1 VEE 
++       A0  A1  EBAR E0BAR E1BAR
++       A0B A1B EBUF E0BUF E1BUF
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 ORA (2,6) VCC1 VEE 
++       EBUF E0BUF EBUF E1BUF A0BUF A1BUF A0BUF A1BAR A0BAR A1BUF A0BAR A1BAR
++       E0B E1B A0I A1I A2I A3I
++       D0_GATE IO_10K_IN  
+U3 BUFA (2) VCC1 VEE
++       A0B A1B A0BUF A1BUF      
++       D0_GATE IO_10K_IN  
+U4 INVA (2) VCC1 VEE
++       A0B A1B A0BAR A1BAR 
++       D0_GATE IO_10K_IN  
+U5 PULLDN(5) VCC1 VEE
++       EBAR E0BAR E1BAR A0 A1    
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U6 ORA (2,8) VCC2 VEE 
++       E0B A0I E0B A1I E0B A2I E0B A3I E1B A0I E1B A1I E1B A2I E1B A3I  
++       Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++       D_10171 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10171 ugate (
++	tplhmn=1.50ns  tplhty=4.00ns  
++	tplhmx={table(temp, -30, 6.20ns, 25, 6.00ns, 85, 6.40ns)}
++	tphlmn=1.50ns  tphlty=4.00ns  
++	tphlmx={table(temp, -30, 6.20ns, 25, 6.00ns, 85, 6.40ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10172 Dual 1-of-4 Decoder with One Common and Two Individual Inputs 
+*       (Active-HIGH Outputs)
+*
+* Philips ECL Databook June 1990
+* tdn   07/24/91	Created
+
+.subckt 10172 EBAR E0 E1 A0 A1 Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA (3) VCC1 VEE 
++       EBAR A0 A1 EBUF A0B A1B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 ORA (2,6) VCC1 VEE 
++       EBUF E0BAR EBUF E1BAR A0BUF A1BUF A0BUF A1BAR A0BAR A1BUF A0BAR A1BAR
++       E0B E1B A0I A1I A2I A3I
++       D0_GATE IO_10K_IN  
+U3 INVA (4) VCC1 VEE
++       E0 E1 A0B A1B E0BAR E1BAR A0BAR A1BAR 
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U4 BUFA (2) VCC1 VEE
++       A0B A1B A0BUF A1BUF      
++       D0_GATE IO_10K_IN  
+U5 PULLDN(5) VCC1 VEE
++       EBAR E0 E1 A0 A1    
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U6 NORA (2,8) VCC2 VEE 
++       E0B A0I E0B A1I E0B A2I E0B A3I E1B A0I E1B A1I E1B A2I E1B A3I  
++       Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++       D_10172 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10172 ugate (
++	tplhmn=1.50ns  tplhty=4.00ns  
++	tplhmx={table(temp, -30, 6.20ns, 25, 6.00ns, 85, 6.40ns)}
++       tphlmn=1.50ns  tphlty=4.00ns  
++	tphlmx={table(temp, -30, 6.20ns, 25, 6.00ns, 85, 6.40ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10173 Quad 2-Input Multiplexer with Latched Outputs 
+*
+* Philips ECL Databook June 1990
+* tdn   07/26/91	Created
+*
+* Note: In accordance with the Databook, all unused inputs must be tied
+*	low, pulldown resisters are not incorporated in this model.
+*
+
+.subckt 10173 S CP D0 D1 D2 D3 D4 D5 D6 D7 Q0 Q1 Q2 Q3
++	optional: VEE =$G_ECL_10K_VEE  VCC=$G_ECL_10K_VCC
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUF  VCC1 VEE 
++       S SB 
++       D_10173_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 ORA (2,8) VCC1 VEE 
++       D0 SBAR D1 SBUF D2 SBAR D3 SBUF D4 SBAR D5 SBUF D6 SBAR D7 SBUF
++       D0I D1I D2I D3I D4I D5I D6I D7I
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 ANDA (2,4) VCC1 VEE 
++       D0I D1I D2I D3I D4I D5I D6I D7I
++       D0IN    D1IN    D2IN    D3IN
++       D0_GATE IO_10K_IN  
+U4 BUF  VCC1 VEE
++       SB SBUF       
++       D0_GATE IO_10K_IN 
+U5 INVA(2) VCC1 VEE
++       CP SB CPBUF SBAR 
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}  
+U6 DLTCH(4) VCC2 VEE 
++       $D_HI $D_HI CPBUF
++       D0IN D1IN D2IN D3IN
++       Q0 Q1 Q2 Q3 $D_NC $D_NC $D_NC $D_NC
++       D_10173_2 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10173_1 ugate (
++       tplhmn={table(temp, -30, 0.30ns, 25, 0.30ns, 85, 0.10ns)}	
++	tplhty=1.00ns	
++	tplhmx={table(temp, -30, 2.50ns, 25, 2.20ns, 85, 1.40ns)}
++	tphlmn={table(temp, -30, 0.30ns, 25, 0.30ns, 85, 0.10ns)}		
++	tphlty=1.00ns
++	tphlmx={table(temp, -30, 2.50ns, 25, 2.20ns, 85, 1.40ns)}
++       )
+.model D_10173_2 ugff (
++	tpdqlhmn={table(temp, -30, 0.80ns, 25, 1.00ns, 85, 1.10ns)}		
++	tpdqlhty=2.50ns     
++	tpdqlhmx={table(temp, -30, 3.70ns, 25, 3.50ns, 85, 5.30ns)}
++	tpdqhlmn={table(temp, -30, 0.80ns, 25, 1.00ns, 85, 1.10ns)}	
++	tpdqhlty=2.50ns
++	tpdqhlmx={table(temp, -30, 3.70ns, 25, 3.50ns, 85, 5.30ns)}
++	tpgqlhmn={table(temp, -30, 0.80ns, 25, 0.60ns, 85, 0.30ns)}		
++	tpgqlhty=2.00ns     
++	tpgqlhmx={table(temp, -30, 3.50ns, 25, 3.30ns, 85, 1.50ns)}
++	tpgqhlmn={table(temp, -30, 0.80ns, 25, 0.60ns, 85, 0.30ns)}		
++	tpgqhlty=2.00ns     
++	tpgqhlmx={table(temp, -30, 3.50ns, 25, 3.30ns, 85, 1.50ns)}
++	tsudgmn =2.00ns		tsudgty =2.00ns     tsudgmx =2.00ns
++	thdgmn  =2.50ns		thdgty  =2.50ns     thdgmx  =2.50ns
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10174 Dual 4-to-1 Multiplexer (with Output Enable)
+*
+* Philips ECL Databook June 1990
+* tdn   07/24/91	Created
+
+.subckt 10174 OEBAR S0 S1 D0 D1 D2 D3 D4 D5 D6 D7 Q0 Q1
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA (2) VCC1 VEE 
++       S0 S1 S0B S1B 
++       D_10174_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}  
+U2 ORA (2,4) VCC1 VEE 
++       S0BUF S1BUF S0BAR S1BUF S0BUF S1BAR S0BAR S1BAR
++       S0I S1I S2I S3I
++       D0_GATE IO_10K_IN  
+U3 NORA(2,8) VCC1 VEE 
++       D0 S0I D1 S1I D2 S2I D3 S3I D4 S0I D5 S1I D6 S2I D7 S3I
++       D0B D1B D2B D3B D4B D5B D6B D7B
++       D_10174_2 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}  
+U4 BUFA (2) VCC1 VEE
++       S0B S1B S0BUF S1BUF      
++       D0_GATE IO_10K_IN 
+U5 INVA (2) VCC1 VEE
++       S0B S1B S0BAR S1BAR 
++       D0_GATE IO_10K_IN 
+U6 BUF  VCC1 VEE
++       OEBAR  OEBUF     
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U7 PULLDN(11) VCC1 VEE
++       OEBAR S0 S1 D0 D1 D2 D3 D4 D5 D6 D7   
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U8 NORA (5,2) VCC2 VEE 
++       OEBUF D0B D1B D2B D3B OEBUF D4B D5B D6B D7B Q0 Q1
++       D_10174_3 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10174_1 ugate (
++       tplhmn={table(temp, -30, 0.50ns, 25, 0.50ns, 85, 0.70ns)}
++	tplhty=1.50ns  
++	tplhmx={table(temp, -30, 1.60ns, 25, 1.50ns, 85, 1.60ns)}
++	tphlmn={table(temp, -30, 0.50ns, 25, 0.50ns, 85, 0.70ns)}  
++	tphlty=1.50ns  
++	tphlmx={table(temp, -30, 1.60ns, 25, 1.50ns, 85, 1.60ns)}
++       )
+.model D_10174_2 ugate (
++       tplhmn={table(temp, -30, 0.40ns, 25, 0.50ns, 85, 0.50ns)}
++	tplhty=1.50ns  
++	tplhmx={table(temp, -30, 1.70ns, 25, 1.60ns, 85, 1.60ns)}
++	tphlmn={table(temp, -30, 0.40ns, 25, 0.50ns, 85, 0.50ns)}  
++	tphlty=1.50ns  
++	tphlmx={table(temp, -30, 1.70ns, 25, 1.60ns, 85, 1.60ns)}
++       )
+.model D_10174_3 ugate (
++	tplhmn={table(temp, -30, 1.00ns, 25, 1.00ns, 85, 0.90ns)}  
++	tplhty=2.00ns  
++	tplhmx={table(temp, -30, 3.10ns, 25, 2.90ns, 85, 3.20ns)}
++	tphlmn={table(temp, -30, 1.00ns, 25, 1.00ns, 85, 0.90ns)} 
++	tphlty=2.00ns  
++	tphlmx={table(temp, -30, 3.10ns, 25, 2.90ns, 85, 3.20ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10175 Quint D-Latch With Common Reset and 2 Common Clock Inputs
+*
+* Philips ECL Databook June 1990
+* jjr	08/01/91	Created
+
+.subckt 10175 R CP0BAR CP1BAR D0 D1 D2 D3 D4 Q0 Q1 Q2 Q3 Q4
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	The D-latches are positive-edge latched, despite the databook's
+*	labelling of the clocks as CP0BAR and CP1BAR.
+
+U1 OR(2) VCC1 VEE
++	CP0BAR CP1BAR  GATE
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 INV	VCC1 VEE
++	GATE  GATEBAR
++	D0_GATE IO_10K_IN
+U3 NAND(2) VCC1 VEE
++	GATE R  RBAR
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U4 BUFA(5) VCC1 VEE
++	D0  D1  D2  D3  D4
++	D0B D1B D2B D3B D4B
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U5 DLTCH(5) VCC2 VEE
++	$D_HI RBAR GATEBAR
++	D0B D1B D2B D3B D4B
++	Q0  Q1  Q2  Q3  Q4  $D_NC $D_NC $D_NC $D_NC $D_NC
++	D_10175 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10175 ugff (
++	tppcqlhmn=1.00ns
++	tppcqlhmx={table(temp, -30, 4.00ns,  25, 3.90ns,  85, 4.20ns)}
++	tppcqhlmn=1.00ns
++	tppcqhlmx={table(temp, -30, 4.00ns,  25, 3.90ns,  85, 4.20ns)}
++	tpgqlhmn=1.00ns
++	tpgqlhmx={table(temp, -30, 4.70ns,  25, 4.30ns,  85, 4.40ns)}
++	tpgqhlmn=1.00ns
++	tpgqhlmx={table(temp, -30, 4.70ns,  25, 4.30ns,  85, 4.40ns)}
++	tpdqlhmn=1.00ns    tpdqlhty=2.50ns
++	tpdqlhmx={table(temp, -30, 3.60ns,  25, 3.50ns,  85, 3.60ns)}
++	tpdqhlmn=1.00ns    tpdqhlty=2.50ns
++	tpdqhlmx={table(temp, -30, 3.60ns,  25, 3.50ns,  85, 3.60ns)}
++	tsudgmn=2.50ns
++	thdgmn=1.50ns
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10176 Hex D-Type Master-Slave Flip-Flop
+*
+* Philips ECL Databook June 1990
+* jjr	07/25/91	Created
+
+.subckt 10176 CP D0 D1 D2 D3 D4 D5 Q0 Q1 Q2 Q3 Q4 Q5
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Despite the Master-Slave description, this device behaves as a
+*	normal positive-edge-triggered D flip-flop.
+
+U1 BUFA(7) VCC1 VEE
++	CP    D0  D1  D2  D3  D4  D5
++       CPBUF D0B D1B D2B D3B D4B D5B
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 DFF(6) VCC2 VEE
++	$D_HI $D_HI CPBUF
++	D0B D1B D2B D3B D4B D5B
++	Q0  Q1  Q2  Q3  Q4  Q5  $D_NC $D_NC $D_NC $D_NC $D_NC $D_NC
++	D_10176 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10176 ueff (
++	tpclkqlhmn=1.60ns
++	tpclkqlhmx={table(temp, -30, 4.60ns,  25, 4.50ns,  85, 5.00ns)}
++	tpclkqhlmn=1.60ns
++	tpclkqhlmx={table(temp, -30, 4.60ns,  25, 4.50ns,  85, 5.00ns)}
++	tsudclkmn=2.50ns
++	thdclkmn=1.50ns
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 10179 Look-Ahead Carry Block
+*
+* Philips ECL Databook June 1990
+* tdn   08/07/91	Created
+*
+* Note: There is an error on the Logic Diagram for this device. The
+* 	four input P0-P4 should be connected to the OR Gate instead of 
+*	the NOR Gate for the output PG. 
+
+.subckt 10179 Cn G0 G1 G2 G3 P0 P1 P2 P3 Cn+2 Cn+4 GG PG
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 INVA (2) VCC1 VEE
++       G1 G3 G1I G3I
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U2 BUFA (7) VCC1 VEE
++       G0  G1  P0  P1  P2  P3  Cn
++	G0B G1B P0B P1B P2B P3B CB
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U3 NORA(5,6) VCC1 VEE 
++       $D_LO $D_LO CB P0B P1B 	  $D_LO $D_LO $D_LO P1B G0B 
++	CB P0B P1B P2B P3B 	  $D_LO P1B P2B P3B G0B 
++	$D_LO $D_LO P2B P3B G1B   $D_LO $D_LO $D_LO P3B G2
++       Q1 Q2 Q3 Q4 Q5 Q6 
++       D0_GATE IO_10K_IN  
+U4 PULLDN(9) VCC1 VEE
++       Cn G0 G1 G2 G3 P0 P1 P2 P3
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U5 NORA(5,2) VCC2 VEE
++       Q1 Q2 G1I $D_LO $D_LO    Q3 Q4 Q5 Q6 G3I 
++	Cn+2   			 Cn+4   
++       D_10179_1 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U6 OR (4) VCC2 VEE
++       P0B P1B P2B P3B   PG 
++       D_10179_2 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U7 NOR (4) VCC2 VEE
++       Q4 Q5 Q6 G3I 	  GG 
++       D_10179_3 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10179_1 ugate (
++	tplhmn=1.00ns  tplhty=3.00ns  
++	tplhmx={table(temp, -30, 5.80ns, 25, 4.50ns, 85, 6.10ns)}
++	tphlmn=1.00ns  tphlty=3.00ns  
++	tphlmx={table(temp, -30, 5.80ns, 25, 4.50ns, 85, 6.10ns)}
++       )
+.model D_10179_2 ugate (
++	tplhmn=1.00ns  tplhty=2.30ns  
++	tplhmx={table(temp, -30, 3.70ns, 25, 3.50ns, 85, 3.90ns)}
++	tphlmn=1.00ns  tphlty=1.80ns  
++	tphlmx={table(temp, -30, 3.70ns, 25, 3.50ns, 85, 3.90ns)}
++       )
+.model D_10179_3 ugate (
++	tplhmn=1.00ns  tplhty=3.20ns  
++	tplhmx={table(temp, -30, 5.80ns, 25, 5.50ns, 85, 6.10ns)}
++	tphlmn=1.00ns  tphlty=3.20ns  
++	tphlmx={table(temp, -30, 5.80ns, 25, 5.50ns, 85, 6.10ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10180 Adder/Subtractor
+*
+* Philips ECL Databook June 1990
+* tdn   08/07/91	Created
+*
+
+.subckt 10180 S0 S1 Cin A B F FBAR Cout 
++	optional: VEE =$G_ECL_10K_VEE  VCC=$G_ECL_10K_VCC
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 NXORA(2) VCC1 VEE 
++       S0 A S1 B ABAR BBAR
++       D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}  
+U2 XOR  VCC1 VEE 
++       ABAR BBAR    Q
++       D0_GATE IO_10K_IN
+U3 BUF  VCC1 VEE
++	Cin  CBUF
++	D0_GATE IO_10K_IN IO_LEVEL={IO_LEVEL}
+U4 INVA(2) VCC1 VEE
++	Q CBUF   QBAR CBAR
++	D0_GATE IO_10K_IN 
+U5 PULLDN(5) VCC1 VEE
++       S0 S1 A B Cin
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U6 AO  (2,2) VCC2 VEE
++       QBAR CBUF Q CBAR    F  
++       D_10180_1 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U7 AOI (2,2) VCC2 VEE
++       QBAR CBUF Q CBAR    FBAR  
++       D_10180_1 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U8 AO  (2,3) VCC2 VEE
++       BBAR CBUF ABAR CBUF ABAR BBAR  	 Cout
++       D_10180_2 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10180_1 ugate (
++	tplhmn={table(temp, -30, 1.30ns, 25, 1.30ns, 85, 1.10ns)}  
++	tplhty=4.50ns  
++	tplhmx={table(temp, -30, 5.80ns, 25, 5.40ns, 85, 5.80ns)}
++	tphlmn={table(temp, -30, 1.30ns, 25, 1.30ns, 85, 1.10ns)}
++	tphlty=4.50ns  
++	tphlmx={table(temp, -30, 5.80ns, 25, 5.40ns, 85, 5.80ns)}
++       )
+.model D_10180_2 ugate (
++	tplhmn={table(temp, -30, 1.00ns, 25, 1.00ns, 85, 0.90ns)}  
++	tplhty=2.20ns  
++	tplhmx={table(temp, -30, 3.40ns, 25, 3.30ns, 85, 3.60ns)}
++	tphlmn={table(temp, -30, 1.00ns, 25, 1.00ns, 85, 0.90ns)}   
++	tphlty=2.20ns  
++	tphlmx={table(temp, -30, 3.40ns, 25, 3.30ns, 85, 3.60ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10181 4-Bit Arithmetic Logic Unit/Function Generator
+*
+* Philips ECL Databook June 1990
+* tdn   08/13/91	Created
+*
+* Note: The Logic function for this model is Okay, but it is very difficult
+*	to get the exact progation delay characteristics for this model
+*	( Reference see the Electrical characteristics in the databook ). 
+
+.subckt 10181 M Cn S0 S1 S2 S3 A0 A1 A2 A3 B0 B1 B2 B3 F0 F1 F2 F3 Cn+4 GG PG
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA(4) VCC1 VEE
++       A0  A1  A2  A3 
++	A0B A1B A2B A3B
++       D_10181_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 BUFA(4) VCC1 VEE
++       B0  B1  B2  B3   
++	B0B B1B B2B B3B 
++       D_10181_2 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U3 INVA (8) VCC1 VEE
++       B0B B1B B2B B3B A0B A1B A2B A3 
++	B0I B1I B2I B3I	A0I A1I A2I A3I
++       D0_GATE IO_10K_IN
+U4 BUFA(4) VCC1 VEE
++       S0  S1  S2  S3 
++	S0B S1B S2B S3B
++       D_10181_3 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U5 BUF  VCC1 VEE
++       M MB
++       D_10181_4 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U6 NORA(3,16) VCC1 VEE 
++       S3B A0B B0B S2B A0B B0I S1B B0I $D_LO S0B B0B $D_LO 
++	S3B A1B B1B S2B A1B B1I S1B B1I $D_LO S0B B1B $D_LO
++	S3B A2B B2B S2B A2B B2I S1B B2I $D_LO S0B B2B $D_LO
++	S3B A3B B3B S2B A3B B3I S1B B3I $D_LO S0B B3B $D_LO
++       I1 I2 I3 I4 I5 I6 I7 I8 I9 I10 I11 I12 I13 I14 I15 I16 	
++       D0_GATE IO_10K_IN  
+U7 NORA(3,8) VCC1 VEE 
++       I1 I2  $D_LO I3  I4  A0I I5  I6  $D_LO I7  I8  A1I 
++	I9 I10 $D_LO I11 I12 A2I I13 I14 $D_LO I15 I16 A3I
++       D0 D1 D2 D3 D4 D5 D6 D7 	
++       D0_GATE IO_10K_IN  
+U8 XORA(4) VCC1 VEE 
++       D0 D1 D2 D3 D4 D5 D6 D7
++       O1 O2 O3 O4 	
++       D_10181_5 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U9 NORA(5,14) VCC1 VEE 
++       MB Cn $D_LO $D_LO $D_LO MB D0 $D_LO $D_LO $D_LO 
++	MB Cn D1 $D_LO $D_LO 	MB D2 $D_LO $D_LO $D_LO  
++	MB D0 D3 $D_LO $D_LO	MB Cn D1 D3 $D_LO
++	MB D4 $D_LO $D_LO $D_LO MB D2 D5 $D_LO $D_LO
++	MB D0 D3 D5 $D_LO	MB Cn D1 D3 D5
++	D4 D7 $D_LO $D_LO $D_LO D2 D5 D7 $D_LO $D_LO
++	D0 D3 D5 D7 $D_LO	Cn D1 D3 D5 D7
++       P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 P11 P12 P13 P14 	
++       D0_GATE IO_10K_IN
+U10 INV VCC1 VEE
++       D6  D6I
++       D_10181_6 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U11 ORA (4,3) VCC1 VEE
++       P2 P3 $D_LO $D_LO  P4 P5 P6 $D_LO  P7 P8 P9 P10  
++	Q1 Q2 Q3 
++       D0_GATE IO_10K_IN  
+U12 OR (4) VCC1 VEE
++       D6I P11 P12 P13    Q4
++       D_10181_7 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U13 PULLDN(14) VCC1 VEE
++	M Cn S0 S1 S2 S3 A0 A1 A2 A3 B0 B1 B2 B3
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U14 NOR (4) VCC2 VEE
++       D1 D3 D5 D7	  PG
++       D_10181_8 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U15 NOR (4) VCC2 VEE
++       D6I P11 P12 P13	  GG
++       D_10181_9 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U16 NXORA (4) VCC2 VEE
++       P1 O1 Q1 O2 Q2 O3 Q3 O4
++	F0 F1 F2 F3 
++       D_10181_10 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U17 NOR (2) VCC2 VEE
++       Q4 P14  Cn+4
++       D_10181_11 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10181_1 ugate (
++	tplhmn={table(temp, -30, 0.90ns, 25, 1.00ns, 85, 1.00ns)}	
++	tplhty=2.00ns
++	tplhmx={table(temp, -30, 3.20ns, 25, 3.00ns, 85, 3.30ns)}
++	tphlmn={table(temp, -30, 0.90ns, 25, 1.00ns, 85, 1.00ns)}		
++	tplhty=2.00ns
++	tphlmx={table(temp, -30, 3.20ns, 25, 3.00ns, 85, 3.30ns)}
++       )
+.model D_10181_2 ugate (
++	tplhmn=1.00ns	     tplhty=3.50n		
++	tplhmx={table(temp, -30, 4.10ns, 25, 4.00ns, 85, 4.40ns)}
++	tphlmn=1.00ns	     tplhty=3.50ns
++	tphlmx={table(temp, -30, 4.10ns, 25, 4.00ns, 85, 4.40ns)}
++       )
+.model D_10181_3 ugate (
++	tplhmn={table(temp, -30, 0.10ns, 25, 0.00ns, 85, 0.00ns)}
++	tplhty=1.00ns
++	tplhmx={table(temp, -30, 1.30ns, 25, 1.50ns, 85, 1.40ns)}
++	tphlmn={table(temp, -30, 0.10ns, 25, 0.00ns, 85, 0.00ns)}
++	tplhty=1.00ns
++	tphlmx={table(temp, -30, 1.30ns, 25, 1.50ns, 85, 1.40ns)}
++       )
+.model D_10181_4 ugate (
++	tplhmn={table(temp, -30, 0.70ns, 25, 1.00ns, 85, 1.00ns)} 
++	tplhty=2.00ns  
++	tplhmx={table(temp, -30, 3.10ns, 25, 3.00ns, 85, 3.30ns)}
++	tphlmn={table(temp, -30, 0.70ns, 25, 1.00ns, 85, 1.00ns)}  
++	tphlty=2.00ns  
++	tphlmx={table(temp, -30, 3.10ns, 25, 3.00ns, 85, 3.30ns)}
++       )
+.model D_10181_5 ugate (
++	tplhmn={table(temp, -30, 0.70ns, 25, 1.00ns, 85, 1.00ns)} 
++	tplhty=1.00ns  
++	tplhmx={table(temp, -30, 2.20ns, 25, 1.50ns, 85, 1.90ns)}
++	tphlmn={table(temp, -30, 0.70ns, 25, 1.00ns, 85, 1.00ns)}  
++	tphlty=1.00ns  
++	tphlmx={table(temp, -30, 2.20ns, 25, 1.50ns, 85, 1.90ns)}
++       )
+.model D_10181_6 ugate (
++	tplhmn={table(temp, -30, 0.30ns, 25, 0.00ns, 85, 0.60ns)} 
++	tplhty=0.50ns  
++	tplhmx={table(temp, -30, 0.90ns, 25, 0.50ns, 85, 0.60ns)}
++	tphlmn={table(temp, -30, 0.30ns, 25, 0.00ns, 85, 0.60ns)}  
++	tphlty=0.50ns  
++	tphlmx={table(temp, -30, 0.90ns, 25, 0.50ns, 85, 0.60ns)}
++       )
+.model D_10181_7 ugate (
++	tplhmn={table(temp, -30, 0.20ns, 25, 0.90ns, 85, 0.30ns)} 
++	tplhty=1.40ns  
++	tplhmx={table(temp, -30, 2.00ns, 25, 2.00ns, 85, 2.50ns)}
++	tphlmn={table(temp, -30, 0.20ns, 25, 0.90ns, 85, 0.30ns)}  
++	tphlty=1.40ns  
++	tphlmx={table(temp, -30, 2.00ns, 25, 2.00ns, 85, 2.50ns)}
++       )
+.model D_10181_8 ugate (
++	tplhmn={table(temp, -30, 1.60ns, 25, 2.00ns, 85, 2.00ns)}
++	tplhty=5.00ns  
++	tplhmx={table(temp, -30, 7.00ns, 25, 6.50ns, 85, 7.00ns)}
++	tphlmn={table(temp, -30, 1.60ns, 25, 2.00ns, 85, 2.00ns)}  
++	tphlty=5.00ns  
++	tphlmx={table(temp, -30, 7.00ns, 25, 6.50ns, 85, 7.00ns)}
++       )
+.model D_10181_9 ugate (
++	tplhmn={table(temp, -30, 1.10ns, 25, 2.00ns, 85, 1.30ns)}
++	tplhty=4.50ns  
++	tplhmx={table(temp, -30, 7.40ns, 25, 7.00ns, 85, 7.70ns)}
++	tphlmn={table(temp, -30, 1.10ns, 25, 2.00ns, 85, 1.30ns)}
++	tphlty=4.50ns  
++	tphlmx={table(temp, -30, 7.40ns, 25, 7.00ns, 85, 7.70ns)}
++       )
+.model D_10181_10 ugate (
++	tplhmn={table(temp, -30, 1.70ns, 25, 2.00ns, 85, 2.00ns)}
++	tplhty=4.50ns  
++	tplhmx={table(temp, -30, 7.20ns, 25, 7.00ns, 85, 7.50ns)}
++	tphlmn={table(temp, -30, 1.70ns, 25, 2.00ns, 85, 2.00ns)}
++	tphlty=4.50ns  
++	tphlmx={table(temp, -30, 7.20ns, 25, 7.00ns, 85, 7.50ns)}
++       )
+.model D_10181_11 ugate (
++	tplhmn={table(temp, -30, 1.00ns, 25, 1.10ns, 85, 1.10ns)}
++	tplhty=3.10ns  
++	tplhmx={table(temp, -30, 5.10ns, 25, 5.00ns, 85, 5.40ns)}
++	tphlmn={table(temp, -30, 1.00ns, 25, 1.10ns, 85, 1.10ns)}
++	tphlty=3.10ns  
++	tphlmx={table(temp, -30, 5.10ns, 25, 5.00ns, 85, 5.40ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10188 Hex Buffer with Enable (Non-Inverting)
+*
+* Philips ECL Databook June 1990
+* tdn   07/25/91	Created
+
+.subckt 10188 EBAR D0 D1 D2 D3 D4 D5 Q0 Q1 Q2 Q3 Q4 Q5
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 ANDA(2,6) VCC1 VEE 
++       D0 EBUF D1 EBUF D2 EBUF D3 EBUF D4 EBUF D5 EBUF 
++       Q0B Q1B Q2B Q3B Q4B Q5B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 PULLDN(7) VCC1 VEE
++       EBAR D0 D1 D2 D3 D4 D5 
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 INV  VCC1 VEE
++       EBAR EBUF
++       D_10188_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U4 BUFA(6) VCC2 VEE
++       Q0B Q1B Q2B Q3B Q4B Q5B 
++       Q0  Q1  Q2  Q3  Q4  Q5   
++       D_10188_2 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10188_1 ugate (
++	tplhmn=0.10ns  tplhty=0.50ns  tplhmx=0.60ns
++	tphlmn=0.10ns  tphlty=0.50ns  tphlmx=0.60ns
++       )
+.model D_10188_2 ugate (
++	tplhmn=1.00ns  tplhty=2.00ns  
++	tplhmx={table(temp, -30, 3.30ns, 25, 2.90ns, 85, 3.30ns)}
++	tphlmn=1.00ns  tphlty=2.00ns  
++	tphlmx={table(temp, -30, 3.30ns, 25, 2.90ns, 85, 3.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10189 Hex Inverter with Enable
+*
+* Philips ECL Databook June 1990
+* tdn   07/25/91	Created
+
+.subckt 10189 EBAR D0 D1 D2 D3 D4 D5 Q0BAR Q1BAR Q2BAR Q3BAR Q4BAR Q5BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 NORA(2,6) VCC1 VEE 
++       D0 EBUF D1 EBUF D2 EBUF D3 EBUF D4 EBUF D5 EBUF 
++       Q0B Q1B Q2B Q3B Q4B Q5B
++       D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 PULLDN(7) VCC1 VEE
++       EBAR D0 D1 D2 D3 D4 D5 
++       IO_10K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 BUF  VCC1 VEE
++       EBAR EBUF
++       D_10189_1 IO_10K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U4 BUFA(6) VCC2 VEE
++       Q0B   Q1B   Q2B   Q3B   Q4B   Q5B 
++       Q0BAR Q1BAR Q2BAR Q3BAR Q4BAR Q5BAR    
++       D_10189_2 IO_10K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_10189_1 ugate (
++	tplhmn=0.10ns  tplhty=0.50ns  tplhmx=0.60ns
++	tphlmn=0.10ns  tphlty=0.50ns  tphlmx=0.60ns
++       )
+.model D_10189_2 ugate (
++	tplhmn=1.00ns  tplhty=2.00ns  
++	tplhmx={table(temp, -30, 3.30ns, 25, 2.90ns, 85, 3.30ns)}
++	tphlmn=1.00ns  tphlty=2.00ns  
++	tphlmx={table(temp, -30, 3.30ns, 25, 2.90ns, 85, 3.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10231 Dual D-Type Master-Slave Flip-Flop (High-Speed)
+*
+* Philips ECL Databook June 1990
+* jjr	07/25/91	Created
+
+.subckt 10231 CE0BAR CE1BAR R0 S0 R1 S1 CP D0 D1 Q0 Q0BAR Q1 Q1BAR
++	optional: VEE =$G_ECL_10K_VEE  VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Despite the Master-Slave description, this device behaves as a
+*	normal positive-edge-triggered D flip-flop.
+
+U1 BUFA(3) VCC1 VEE
++	CP    D0    D1
++	CPBUF D0BUF D1BUF
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U2 ORA(2,2) VCC1 VEE
++	CE0BAR CPBUF CE1BAR CPBUF
++	GATE0 GATE1
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U3 INVA(4) VCC1 VEE
++	S0    S1    R0    R1
++	S0BAR S1BAR R0BAR R1BAR
++	D0_GATE IO_10K_IN  IO_LEVEL={IO_LEVEL}
+U4 DFF(1) VCC2 VEE
++	S0BAR R0BAR GATE0
++	D0BUF Q0 Q0BAR
++	D_10231 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U5 DFF(1) VCC2 VEE
++	S1BAR R1BAR GATE1
++	D1BUF Q1 Q1BAR
++	D_10231 IO_10K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_10231 ueff (
++	tppcqlhmn={table(temp, -30, 1.10ns,  25, 1.10ns,  85, 1.20ns)}
++	tppcqlhty=2.00ns
++	tppcqlhmx={table(temp, -30, 3.40ns,  25, 3.30ns,  85, 3.70ns)}
++	tppcqhlmn={table(temp, -30, 1.10ns,  25, 1.10ns,  85, 1.20ns)}
++	tppcqhlty=2.00ns
++	tppcqhlmx={table(temp, -30, 3.40ns,  25, 3.30ns,  85, 3.70ns)}
++	tpclkqlhmn={table(temp, -30, 1.50ns,  25, 1.50ns,  85, 1.60ns)}
++	tpclkqlhty=2.00ns
++	tpclkqlhmx={table(temp, -30, 3.40ns,  25, 3.30ns,  85, 3.70ns)}
++	tpclkqhlmn={table(temp, -30, 1.50ns,  25, 1.50ns,  85, 1.60ns)}
++	tpclkqhlty=2.00ns
++	tpclkqhlmx={table(temp, -30, 3.40ns,  25, 3.30ns,  85, 3.70ns)}
++	tsudclkmn={table(temp, -30, 1.50ns,  25, 1.00ns,  85, 1.50ns)}
++	thdclkmn={table(temp, -30, 0.90ns,  25, 0.75ns,  85, 0.90ns)}
++	)
+
+*** Library of 100K ECL
+*
+* Created by TDN and JJR   08/01/91
+*
+*$
+*-------------------------------------------------------------------------
+* ECL Output 50 ohm termination/load
+*
+* muw   07/17/91	Created
+
+.subckt ECL_100K_LOAD_50 A
++	optional: VTT =$G_ECL_100K_VTT  VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+X1 A VCC2 VTT PULLDOWN_50
+.ends
+
+*$
+*-------------------------------------------------------------------------
+* 100101 Triple 5-Input OR/NOR Gate
+*
+* Philips ECL Databook June 1990
+* jjr   08/05/91	Created
+
+.subckt 100101 D0 D1 D2 D3 D4 Q QBAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 OR(5) VCC1 VEE 
++       D0 D1 D2 D3 D4  QBUF
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL} 
+U2 PULLDN(5) VCC1 VEE
++       D0 D1 D2 D3 D4
++       IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 BUF	VCC2 VEE
++	QBUF  Q
++	D_100101 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U4 INV	VCC2 VEE
++	QBUF  QBAR
++	D_100101 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100101 ugate (
++       tplhmn={table(temp, 0, 0.50ns,  25, 0.50ns,  85, 0.55ns)}
++	tplhmx={table(temp, 0, 1.15ns,  25, 1.15ns,  85, 1.30ns)}
++       tphlmn={table(temp, 0, 0.50ns,  25, 0.50ns,  85, 0.55ns)}
++	tphlmx={table(temp, 0, 1.15ns,  25, 1.15ns,  85, 1.30ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 100102 Quint 2-Input OR/NOR Gate With Common Enable
+*
+* Philips ECL Databook June 1990
+* jjr   08/05/91	Created
+
+.subckt 100102 EBAR A0 B0 A1 B1 A2 B2 A3 B3 A4 B4
++	Q0 Q0BAR Q1 Q1BAR Q2 Q2BAR Q3 Q3BAR Q4 Q4BAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 PULLDN(11) VCC1 VEE
++       EBAR A0 B0 A1 B1 A2 B2 A3 B3 A4 B4
++       IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U2 BUF	VCC1 VEE
++	EBAR  EBUF
++	D_100102_1 IO_100K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U3 ORA(3,5) VCC1 VEE
++	A0 B0 EBUF  A1 B1 EBUF  A2 B2 EBUF  A3 B3 EBUF  A4 B4 EBUF
++	Q0BUF       Q1BUF       Q2BUF       Q3BUF       Q4BUF
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U4 BUFA(5) VCC2 VEE
++	Q0BUF Q1BUF Q2BUF Q3BUF Q4BUF
++	Q0    Q1    Q2    Q3    Q4
++	D_100102_2 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U5 INVA(5) VCC2 VEE
++	Q0BUF Q1BUF Q2BUF Q3BUF Q4BUF
++	Q0BAR Q1BAR Q2BAR Q3BAR Q4BAR
++	D_100102_2 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100102_1 ugate (
++	tplhmn={table(temp, 0, 0.45ns,  25, 0.50ns,  85, 0.50ns)}
++	tplhmx={table(temp, 0, 0.80ns,  25, 1.00ns,  85, 0.80ns)}
++	tphlmn={table(temp, 0, 0.45ns,  25, 0.50ns,  85, 0.50ns)}
++	tphlmx={table(temp, 0, 0.80ns,  25, 1.00ns,  85, 0.80ns)}
++	)
+
+.model D_100102_2 ugate (
++       tplhmn=0.45ns
++	tplhmx={table(temp, 0, 1.35ns,  25, 1.15ns,  85, 1.40ns)}
++       tphlmn=0.45ns
++	tphlmx={table(temp, 0, 1.35ns,  25, 1.15ns,  85, 1.40ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100107 Quint Exclusive-OR/Exclusive-NOR Gate With Compare Output
+*
+* Philips ECL Databook June 1990
+* tdn   07/31/91	Created
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100107 A0 A1 A2 A3 A4 B0 B1 B2 B3 B4 Q0 Q0BAR Q1 Q1BAR Q2 Q2BAR
++	       Q3 Q3BAR Q4 Q4BAR F
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++		  VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 XORA(10) VCC1 VEE 
++	A0 B0BUF A1 B1BUF A2 B2BUF A3 B3BUF A4 B4BUF 
++	A0 B0 A1 B1 A2 B2 A3 B3 A4 B4 
++	Q0B Q1B Q2B Q3B Q4B I1 I2 I3 I4 I5
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUFA(5) VCC1 VEE
++	B0    B1    B2    B3    B4 
++	B0BUF B1BUF B2BUF B3BUF	B4BUF
++	D_100107_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U3 PULLDN(10) VCC1 VEE
++	A0 A1 A2 A3 A4 B0 B1 B2 B3 B4  
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U4 INVA(5) VCC2 VEE
++	Q0B   Q1B   Q2B   Q3B   Q4B 
++	Q0BAR Q1BAR Q2BAR Q3BAR Q4BAR
++	D_100107_2 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U5 BUFA(5) VCC2 VEE
++	Q0B Q1B Q2B Q3B Q4B 
++	Q0  Q1  Q2  Q3  Q4
++	D_100107_2 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U6 OR  (5) VCC2 VEE
++	I1 I2 I3 I4 I5 F      
++	D_100107_3 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100107_1 ugate (
++	tplhmn=0.00ns	tplhmx=0.20ns  
++	tphlmn=0.00ns   tphlmx=0.20ns
++       )
+.model D_100107_2 ugate (
++	tplhmn=0.55ns  
++	tplhmx={table(temp, 0, 1.70ns, 25, 1.60ns, 85, 1.70ns)}
++	tphlmn=0.55ns   
++	tphlmx={table(temp, 0, 1.70ns, 25, 1.60ns, 85, 1.70ns)}
++       )
+.model D_100107_3 ugate (
++	tplhmn=1.15ns  
++	tplhmx={table(temp, 0, 2.75ns, 25, 2.75ns, 85, 3.00ns)}
++	tphlmn=1.15ns   
++	tphlmx={table(temp, 0, 2.75ns, 25, 2.75ns, 85, 3.00ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100117 Triple 1-2-2 Input OR-AND/OR-AND-INVERT Gate
+*
+* Philips ECL Databook June 1990
+* tdn   07/31/91	Created
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100117 E DA DB DC DD  Q QBAR 
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 ORA (2,2) VCC1 VEE 
++	DA DB DC DD I1 I2 
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUF  VCC1 VEE
++	E EBUF
++	D_100117_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U3 AND (3) VCC1 VEE 
++	EBUF I1 I2 QB 
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U4 PULLDN(5) VCC1 VEE
++	E DA DB DC DD 
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U5 INV  VCC2 VEE
++	QB QBAR
++	D_100117_2 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U6 BUF  VCC2 VEE
++	QB Q 
++	D_100117_2 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100117_1 ugate (
++	tplhmn=0.45ns  	tphlmx=1.20ns
++	tphlmn=0.45ns	tphlmx=1.20ns
++       )
+.model D_100117_2 ugate (
++	tplhmn=0.45ns  
++	tplhmx={table(temp, 0, 1.40ns, 25, 1.30ns, 85, 1.40ns)}
++	tphlmn=0.45ns
++	tphlmx={table(temp, 0, 1.40ns, 25, 1.30ns, 85, 1.40ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100118 Quint 2-4-4-4-5 Input OR-AND Gate
+*
+* Philips ECL Databook June 1990
+* tdn   07/31/91	Created 
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100118 D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 D12 D13 D14 D15 D16
++	       D17 D18 Q QBAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 OA  (5,5) VCC1 VEE 
++	D0 D1 D2 D3 D4 D5 D6 D7 D8 $D_LO D9 D10 D11 D12 $D_LO
++	D13 D14 D15 D16 $D_LO D17 D18 $D_LO $D_LO $D_LO
++	QB
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U2 PULLDN(19) VCC1 VEE
++	D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 D12 D13 D14 D15 D16 D17 D18
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U3 INV  VCC2 VEE
++	QB QBAR
++       D_100118 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U4 BUF  VCC2 VEE
++	QB Q
++	D_100118 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100118 ugate (
++	tplhmn=0.85ns    
++	tplhmx={table(temp, 0, 3.20ns, 25, 3.20ns, 85, 3.40ns)}
++	tphlmn=0.85ns    
++	tphlmx={table(temp, 0, 3.20ns, 25, 3.20ns, 85, 3.40ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100122  9-Bit Buffer
+*
+* Philips ECL Databook June 1990
+* tdn   08/05/91	Created 
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100122 D Q
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUF  VCC1 VEE
++	D  DBUF
++	D0_GATE IO_100K_IN IO_LEVEL={IO_LEVEL}
+U2 PULLDN(1) VCC1 VEE
++	D 
++	IO_100K_PULLDN IO_LEVEL={IO_LEVEL}
+U3 BUF  VCC2 VEE
++	DBUF   Q
++	D_100122 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100122 ugate (
++	tplhmn=0.45ns    
++	tplhmx={table(temp, 0, 1.60ns, 25, 1.45ns, 85, 1.60ns)}
++	tphlmn=0.45ns    
++	tphlmx={table(temp, 0, 1.60ns, 25, 1.45ns, 85, 1.60ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 10024 Hex TTL-to-ECL Translator
+*
+* Philips ECL Databook June 1990
+* imw     6/21/93    created
+
+.subckt 100124 D0 D1 D2 D3 D4 D5 E
++ Q0bar Q0 Q1bar Q1 Q2bar Q2 Q3bar Q3 Q4bar Q4 Q5bar Q5
++ optional:  VTTL=$G_DPWR VEE=$G_ECL_100K_VEE GND1=$G_DGND GND2=$G_ECL_100K_VCC2
++ params:    MNTYMXDLY=0  IO_LEVEL=0
+
+Ubuf bufa(7)   VTTL GND1
++   D0  D1  D2  D3  D4  D5  E	       ; TTL inputs
++   D0b D1b D2b D3b D4b D5b Eb
++   D0_GATE   IO_STD   IO_LEVEL={IO_LEVEL}
+
+Uouti nanda(2,6)  GND2 VEE
++   D0b Eb  D1b Eb  D2b Eb  D3b Eb  D4b Eb  D5b Eb
++   Q0bar   Q1bar   Q2bar   Q3bar   Q4bar   Q5bar
++   D_100124 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+Uoutb anda(2,6)  GND2 VEE
++   D0b Eb  D1b Eb  D2b Eb  D3b Eb  D4b Eb  D5b Eb
++   Q0      Q1      Q2      Q3      Q4      Q5   
++   D_100124 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.ends 100124
+
+.model D_100124 ugate (
++       tplhmn=0.50ns    tplhmx=3.00ns
++       tphlmn=0.50ns    tphlmx=3.00ns
++       )
+
+*$
+
+*-------------------------------------------------------------------------
+* 100125 Hex ECL-to-TTL Translator
+*
+* Philips ECL Databook June 1990
+* imw     6/21/93    created
+* jgt     3/16/94    changed U3's reference to VCC to use VTTL.
+*
+* Note: the bias voltage generator is not modeled, although a pin is present.
+
+.subckt 100125 D0bar D0 D1bar D1 D2bar D2 D3bar D3 D4bar D4 D5bar D5
++ VBB Q0 Q1 Q2 Q3 Q4 Q5
++ optional:  VTTL=$G_DPWR VEE=$G_ECL_100K_VEE  GND=$G_DGND
++ params:    MNTYMXDLY=0  IO_LEVEL=0
+
+R1  VBB 0  100Meg
+R2  VBB 0  100Meg
+
+Uires  pulldn(12) GND2 VEE
++   D0bar D0  D1bar D1  D2bar D2  D3bar D3  D4bar D4  D5bar D5
++   IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+
+U1  bufa(6) GND VEE                       ; ECL inputs
++   D0  D1  D2  D3  D4  D5
++   Da0 Da1 Da2 Da3 Da4 Da5
++   D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+
+U2  inva(6) GND VEE                       ; ECL inputs
++   D0bar D1bar D2bar D3bar D4bar D5bar
++   Db0   Db1   Db2   Db3   Db4   Db5
++   D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+
+U3  ora(2,6)  VTTL GND
++   Da0 Db0   Da1 Db1   Da2 Db2   Da3 Db3   Da4 Db4   Da5 Db5
++   Q0        Q1        Q2        Q3        Q4        Q5      ; TTL outputs
++   D_100125 IO_S
++   IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+
+.model D_100125 ugate (
++       tplhmn=0.80ns    tplhmx=4.00ns
++       tphlmn=0.80ns    tphlmx=4.00ns
++       )
+
+.ends 100125
+*$
+
+*-------------------------------------------------------------------------
+* 100130 Triple D-Type Latch
+*
+* Fairchild F100K ECL Databook, 1985
+* jjr	08/07/91	Created
+
+.subckt 100130 MS MR SD0 SD1 SD2 CD0 CD1 CD2 ECBAR E0BAR E1BAR E2BAR
++	 D0 D1 D2 Q0 Q0BAR Q1 Q1BAR Q2 Q2BAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note:	This part is not included in the Philips/Signetics databook, note
+*	the source of device information above.
+*
+*	For consistency with the other 100K-series ECL latch, pulldown
+*	resistors have not been incorporated in this model.  There is
+*	no mention of any internal pulldown resistors (or lack of) in
+*	the Fairchild databook.
+*
+*	The release times (tsupcgh) were derived from MS,MR to ECBAR
+*	setup times such that all possible release time violations will
+*	be caught.  However, this results in pessimistic setup requirements
+*	for other set/reset-to-gate combinations.
+
+U1 BUFA(2) VCC1 VEE
++	MS    MR
++	MSBUF MRBUF
++	D_100130_2 IO_100K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U2 BUF	VCC1 VEE
++	ECBAR  ECBUF
++	D_100130_3 IO_100K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U3 BUFA(3) VCC1 VEE
++	D0  D1  D2
++	D0B D1B D2B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U4 NORA(2,9) VCC1 VEE
++	E0BAR ECBUF  E1BAR ECBUF  E2BAR ECBUF
++	SD0 MSBUF    SD1 MSBUF    SD2 MSBUF
++	CD0 MRBUF    CD1 MRBUF    CD2 MRBUF
++	G0 G1 G2  S0 S1 S2  R0 R1 R2
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U5 DLTCH(1) VCC2 VEE
++	S0 R0 G0
++	D0B Q0 Q0BAR
++	D_100130_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U6 DLTCH(1) VCC2 VEE
++	S1 R1 G1
++	D1B Q1 Q1BAR
++	D_100130_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U7 DLTCH(1) VCC2 VEE
++	S2 R2 G2
++	D2B Q2 Q2BAR
++	D_100130_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100130_1 ugff (
++	tpdqlhmn=0.50ns
++	tpdqlhmx={table(temp, 0, 1.80ns,  25, 1.70ns,  85, 1.90ns)}
++	tpdqhlmn=0.50ns
++	tpdqhlmx={table(temp, 0, 1.80ns,  25, 1.70ns,  85, 1.90ns)}
++	tpgqlhmn={table(temp, 0, 0.50ns,  25, 0.60ns,  85, 0.60ns)}
++	tpgqlhmx={table(temp, 0, 2.00ns,  25, 1.75ns,  85, 2.00ns)}
++	tpgqhlmn={table(temp, 0, 0.50ns,  25, 0.60ns,  85, 0.60ns)}
++	tpgqhlmx={table(temp, 0, 2.00ns,  25, 1.75ns,  85, 2.00ns)}
++	tppcqlhmn={table(temp, 0, 0.50ns,  25, 0.60ns,  85, 0.60ns)}
++	tppcqlhmx={table(temp, 0, 2.00ns,  25, 1.75ns,  85, 2.00ns)}
++	tppcqhlmn={table(temp, 0, 0.50ns,  25, 0.60ns,  85, 0.60ns)}
++	tppcqhlmx={table(temp, 0, 2.00ns,  25, 1.75ns,  85, 2.00ns)}
++	tsudgmn={table(temp, 0, 1.05ns,  25, 0.85ns,  85, 1.05ns)}
++	tsupcghmn={table(temp, 0, 1.50ns,  25, 1.55ns,  85, 1.65ns)}
++	thdgmn={table(temp, 0, 0.60ns,  25, 0.60ns,  85, 0.80ns)}
++	twpclmn=2.00ns
++	twghmn=2.00ns
++	)
+
+.model D_100130_2 ugate (
++	tplhmn={table(temp, 0, 0.60ns,  25, 0.50ns,  85, 0.50ns)}
++	tplhmx={table(temp, 0, 0.50ns,  25, 0.65ns,  85, 0.60ns)}
++	tphlmn={table(temp, 0, 0.60ns,  25, 0.50ns,  85, 0.50ns)}
++	tphlmx={table(temp, 0, 0.50ns,  25, 0.65ns,  85, 0.60ns)}
++	)
+
+.model D_100130_3 ugate (
++	tplhmn=0.15ns
++	tplhmx={table(temp, 0, 0.10ns,  25, 0.25ns,  85, 0.10ns)}
++	tphlmn=0.15ns
++	tphlmx={table(temp, 0, 0.10ns,  25, 0.25ns,  85, 0.10ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 100131 Triple D-Type Master-Slave Flip-Flop
+*
+* Philips ECL Databook June 1990
+* jjr	08/06/91	Created
+
+.subckt 100131 MS MR S0 S1 S2 R0 R1 R2 MCP CP0 CP1 CP2 D0 D1 D2
++	Q0 Q0BAR Q1 Q1BAR Q2 Q2BAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Despite the Master-Slave description, this device behaves as a
+*	normal positive-edge-triggered D flip-flop.
+*
+*	To keep the number of gates to a minimum for this model, the
+*	prop. delay times for MS, MR, Rn, and Sn have not been made
+*	dependent on the state of the clock, rather the longer prop.
+*	delay times have been used.
+*
+*	The release times (tsupcclkh) were derived from MS,MR to MCP
+*	setup times such that all possible release time violations will
+*	be caught.  However, this results in pessimistic setup requirements
+*	for other set/reset-to-clock combinations.
+
+U1 BUFA(2) VCC1 VEE
++	MS    MR
++	MSBUF MRBUF
++	D_100131_2 IO_100K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U2 BUF	VCC1 VEE
++	MCP  MCPBUF
++	D_100131_3 IO_100K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U3 BUFA(3) VCC1 VEE
++	D0  D1  D2
++	D0B D1B D2B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U4 NORA(2,6) VCC1 VEE
++	MSBUF S0  MRBUF R0  MSBUF S1  MRBUF R1  MSBUF S2  MRBUF R2
++	SIN0B     RIN0B     SIN1B     RIN1B     SIN2B     RIN2B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U5 ORA(2,3) VCC1 VEE
++	MCPBUF CP0  MCPBUF CP1  MCPBUF CP2
++	CPIN0       CPIN1       CPIN2
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U6 DFF(1) VCC2 VEE
++	SIN0B RIN0B CPIN0
++	D0B Q0 Q0BAR
++	D_100131_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U7 DFF(1) VCC2 VEE
++	SIN1B RIN1B CPIN1
++	D1B Q1 Q1BAR
++	D_100131_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U8 DFF(1) VCC2 VEE
++	SIN2B RIN2B CPIN2
++	D2B Q2 Q2BAR
++	D_100131_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100131_1 ueff (
++	tpclkqlhmn=0.70ns
++	tpclkqlhmx={table(temp, 0, 2.20ns,  25, 2.00ns,  85, 2.20ns)}
++	tpclkqhlmn=0.70ns
++	tpclkqhlmx={table(temp, 0, 2.20ns,  25, 2.00ns,  85, 2.20ns)}
++	tppcqlhmn=0.70ns
++	tppcqlhmx={table(temp, 0, 2.10ns,  25, 2.00ns,  85, 2.20ns)}
++	tppcqhlmn=0.70ns
++	tppcqhlmx={table(temp, 0, 2.10ns,  25, 2.00ns,  85, 2.20ns)}
++	tsudclkmn={table(temp, 0, 1.10ns,  25, 0.85ns,  85, 1.00ns)}
++	tsupcclkhmn={table(temp, 0, 2.15ns,  25, 1.95ns,  85, 2.10ns)}
++	thdclkmn={table(temp, 0, 0.60ns,  25, 0.60ns,  85, 0.80ns)}
++	twpclmn=2.50ns
++	twclkhmn=2.50ns
++	)
+
+.model D_100131_2 ugate (
++	tplhmn=0.40ns
++	tplhmx={table(temp, 0, 0.95ns,  25, 0.95ns,  85, 0.85ns)}
++	tphlmn=0.40ns
++	tphlmx={table(temp, 0, 0.95ns,  25, 0.95ns,  85, 0.85ns)}
++	)
+
+.model D_100131_3 ugate (
++	tplhmn={table(temp, 0, .05ns,  25, 0.05ns,  85, 0.00ns)}
++	tplhmx={table(temp, 0, .20ns,  25, 0.15ns,  85, 0.10ns)}
++	tphlmn={table(temp, 0, .05ns,  25, 0.05ns,  85, 0.00ns)}
++	tphlmx={table(temp, 0, .20ns,  25, 0.15ns,  85, 0.10ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 100136 4-Bit Counter/Shift Register
+*
+* Philips ECL Databook June 1990
+* jjr	08/28/91	Created
+
+.subckt 100136 MR S0 S1 S2 CEPBAR CP D0CETBAR D3 P0 P1 P2 P3
++	Q0 Q1 Q2 Q3 Q0BAR Q1BAR Q2BAR Q3BAR TCBAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Note that as this device uses T (toggle) type flip-flops, the
+*	device must initially be loaded or reset (via MR).  Failure to
+*	do this will result in unknown outputs (state X) until a load
+*	or reset is done.
+*
+*	Setup and Hold times for D0CETBAR, CEPBAR to CP were used, as
+*	were the longest of those listed.  Therefore, these values may
+*	be slightly pessimistic for D3 to CP and Pn to CP combinations.
+*
+*	Setup and Hold times for Sn to CP have not been included in the
+*	model.
+
+U1 BUFA(8) VCC1 VEE
++	S0    S1    S2    D0CETBAR  P0    P1    P2    P3
++	S0BUF S1BUF S2BUF D0CETBUF  P0BUF P1BUF P2BUF P3BUF
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U2 INVA(10) VCC1 VEE
++	S0BUF S1BUF S2BUF MR    CP    LOADBAR P0BUF P1BUF P2BUF P3BUF
++	S0BAR S1BAR S2BAR MRBAR CPBAR LOAD    P0BAR P1BAR P2BAR P3BAR
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U3 ORA(3,2) VCC1 VEE
++	S0BUF S1BUF S2BAR  S0BUF S1BAR S2BAR
++	NOTDOWN            NOTUP
++	D_100136_4 IO_100K_IN  MNTYMXDLY={MNTYMXDLY}
+U4 ORA(3,5) VCC1 VEE
++	S2BAR S0BUF Q0BARB  S2BAR S0BUF Q1BARB  S2BAR S0BUF Q2BARB
++	 S0BUF S1BUF S2BUF  D0CETBUF CEPBAR $D_LO
++	TCOM123Y            TCOM23Y             TCOM3Y
++	 LOADBAR            COUNTBAR
++	D0_GATE IO_100K_IN
+U5 AO(3,2) VCC1 VEE
++	S0BAR S2BUF COUNTBAR S1BUF S2BUF S0BUF  TCOM0123
++	D0_GATE IO_100K_IN
+U6 NORA(4,5) VCC1 VEE
++	S0BAR S1BUF S2BAR Q0B  S0BAR S1BUF S2BAR Q1B
++	 S0BAR S1BUF S2BAR Q2B  S0BAR S1BUF S2BAR Q3B
++	  S1BAR S2BUF $D_LO $D_LO
++	CLRQ0BAR  CLRQ1BAR  CLRQ2BAR  CLRQ3BAR  LEFTUP
++	D0_GATE IO_100K_IN
+U7 ORA(2,13) VCC1 VEE
++	P0BUF LOADBAR  LOADBAR Q0BARB  P1BUF LOADBAR  LOADBAR Q1BARB
++	 P2BUF LOADBAR  LOADBAR Q2BARB  P3BUF LOADBAR  LOADBAR Q3BARB
++	  CLRQ0BAR PL0  CLRQ1BAR PL1  CLRQ2BAR PL2  CLRQ3BAR PL3
++	   TCCOMPX TCCOMPY
++	PL0X  PL0Y  PL1X  PL1Y  PL2X  PL2Y  PL3X  PL3Y
++	  T0B  T1B  T2B  T3B  TCCOMP
++	D0_GATE IO_100K_IN
+U8 XORA(7) VCC1 VEE
++	PL0X PL0Y  PL1X PL1Y  PL2X PL2Y  PL3X PL3Y
++	 NOTUP TCOM123Y	 NOTUP TCOM23Y  NOTUP TCOM3Y
++	PL0        PL1        PL2        PL3
++	 TCOM123         TCOM23         TCOM3
++	D0_GATE IO_100K_IN
+U9 NXORA(8) VCC1 VEE
++	Q0B Q1B  Q0B D0CETBUF  Q1B Q2B  Q1B Q0B
++	 Q2B Q3B  Q2B Q1B  Q3B D3  Q3B Q2B
++	TX0X  TX0Y  TX1X  TX1Y  TX2X  TX2Y  TX3X  TX3Y
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U10 AO(2,2) VCC1 VEE
++	TX0X S0BAR TX0Y S0BUF  T0AX
++	D0_GATE IO_100K_IN
+U11 AO(2,2) VCC1 VEE
++	TX1X S0BAR TX1Y S0BUF  T1AX
++	D0_GATE IO_100K_IN
+U12 AO(2,2) VCC1 VEE
++	TX2X S0BAR TX2Y S0BUF  T2AX
++	D0_GATE IO_100K_IN
+U13 AO(2,2) VCC1 VEE
++	TX3X S0BAR TX3Y S0BUF  T3AX
++	D0_GATE IO_100K_IN
+U14 ANDA(2,4) VCC1 VEE
++	T0AX LEFTUP  T1AX LEFTUP  T2AX LEFTUP  T3AX LEFTUP
++	T0A          T1A          T2A          T3A
++	D0_GATE IO_100K_IN
+U15 BUFA(8) VCC1 VEE
++	Q0B  Q1B  Q2B  Q3B  Q0BARB  Q1BARB  Q2BARB  Q3BARB
++	Q0BD Q1BD Q2BD Q3BD Q0BARBD Q1BARBD Q2BARBD Q3BARBD
++	D_100136_3 IO_100K_IN  MNTYMXDLY={MNTYMXDLY}
+U16 BUF VCC1 VEE
++	D0CETBUF  D0CETBUF2
++	D_100136_5 IO_100K_IN  MNTYMXDLY={MNTYMXDLY}
+U17 NORA(6,6) VCC1 VEE
++	T0A TCOM0123 T0B $D_LO $D_LO $D_LO
++	T1A TCOM123 TCOM0123 T1B $D_LO $D_LO
++	T2A TCOM23 TCOM123 TCOM0123 T2B $D_LO
++	T3A TCOM3 TCOM123 TCOM23 TCOM0123 T3B
++	  D0CETBUF2 NOTDOWN Q0BD Q1BD Q2BD Q3BD
++	   D0CETBUF2 NOTUP Q0BARBD Q1BARBD Q2BARBD Q3BARBD
++	T0  T1  T2  T3
++	  TCCOMPX  TCCOMPY
++       D0_GATE IO_100K_IN
+U18 BUFA(4) VCC1 VEE
++	S2BAR  S2BUF  S1BAR  Q3BARB
++	S2BAR2 S2BUF2 S1BAR2 Q3BARB2
++	D_100136_4 IO_100K_IN  MNTYMXDLY={MNTYMXDLY}
+U19 OAI(3,2) VCC2 VEE
++	S2BAR2 TCCOMP $D_LO S2BUF2 S1BAR2 Q3BARB2  TCBAR
++	D_100136_2 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U20 AO(2,2) VCC1 VEE
++	T0 LOADBAR P0BUF LOAD  J0
++	D0_GATE IO_100K_IN
+U21 AO(2,2) VCC1 VEE
++	T0 LOADBAR P0BAR LOAD  K0
++	D0_GATE IO_100K_IN
+U22 AO(2,2) VCC1 VEE
++	T1 LOADBAR P1BUF LOAD  J1
++	D0_GATE IO_100K_IN
+U23 AO(2,2) VCC1 VEE
++	T1 LOADBAR P1BAR LOAD  K1
++	D0_GATE IO_100K_IN
+U24 AO(2,2) VCC1 VEE
++	T2 LOADBAR P2BUF LOAD  J2
++	D0_GATE IO_100K_IN
+U25 AO(2,2) VCC1 VEE
++	T2 LOADBAR P2BAR LOAD  K2
++	D0_GATE IO_100K_IN
+U26 AO(2,2) VCC1 VEE
++	T3 LOADBAR P3BUF LOAD  J3
++	D0_GATE IO_100K_IN
+U27 AO(2,2) VCC1 VEE
++	T3 LOADBAR P3BAR LOAD  K3
++	D0_GATE IO_100K_IN
+U28 JKFF(4) VCC1 VEE
++	$D_HI MRBAR CPBAR
++	J0 J1 J2 J3  K0 K1 K2 K3
++	Q0BB    Q1BB    Q2BB    Q3BB 
++	Q0BARBB Q1BARBB Q2BARBB Q3BARBB
++	D_100136_1 IO_100K_IN  MNTYMXDLY={MNTYMXDLY}
+U29 BUFA(8) VCC1 VEE
++	Q0BB Q1BB Q2BB Q3BB  Q0BARBB Q1BARBB Q2BARBB Q3BARBB
++	Q0B  Q1B  Q2B  Q3B   Q0BARB  Q1BARB  Q2BARB  Q3BARB
++	D_100136_2 IO_100K_IN  MNTYMXDLY={MNTYMXDLY}
+U30 BUFA(8) VCC2 VEE
++	Q0BB Q1BB Q2BB Q3BB  Q0BARBB Q1BARBB Q2BARBB Q3BARBB
++	Q0   Q1   Q2   Q3    Q0BAR   Q1BAR   Q2BAR   Q3BAR
++	D_100136_2 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100136_1 ueff (
++	tpclkqlhmn=0.35ns
++	tpclkqlhmx={table(temp, 0, 1.60ns,  25, 1.60ns,  85, 1.75ns)}
++	tpclkqhlmn=0.35ns
++	tpclkqhlmx={table(temp, 0, 1.60ns,  25, 1.60ns,  85, 1.75ns)}
++	tppcqlhmn={table(temp, 0, 0.70ns,  25, 0.85ns,  85, 0.70ns)}
++	tppcqlhmx={table(temp, 0, 2.45ns,  25, 2.45ns,  85, 2.60ns)}
++	tppcqhlmn={table(temp, 0, 0.70ns,  25, 0.85ns,  85, 0.70ns)}
++	tppcqhlmx={table(temp, 0, 2.45ns,  25, 2.45ns,  85, 2.60ns)}
++	tsudclkmn=1.80ns
++	tsupcclkhmn=2.50ns
++	thdclkmn=0.20ns
++	twclklmn=2.00ns
++	twpclmn=2.00ns
++	)
+
+.model D_100136_2 ugate (
++	tplhmn=0.50ns		tplhty=0.50ns		tplhmx=0.50ns
++	tphlmn=0.50ns		tphlty=0.50ns		tphlmx=0.50ns
++	)
+
+.model D_100136_3 ugate (
++	tplhmn=0.45ns
++	tplhmx={table(temp, 0, 2.20ns,  25, 2.00ns,  85, 2.45ns)}
++	tphlmn=0.45ns
++	tphlmx={table(temp, 0, 2.20ns,  25, 2.00ns,  85, 2.45ns)}
++	)
+
+.model D_100136_4 ugate (
++	tplhmn={table(temp, 0, 0.90ns,  25, 1.10ns,  85, 1.10ns)}
++	tplhmx={table(temp, 0, 4.10ns,  25, 4.10ns,  85, 4.30ns)}
++	tphlmn={table(temp, 0, 0.90ns,  25, 1.10ns,  85, 1.10ns)}
++	tphlmx={table(temp, 0, 4.10ns,  25, 4.10ns,  85, 4.30ns)}
++	)
+
+.model D_100136_5 ugate (
++	tplhmn=0.90ns
++	tplhmx={table(temp, 0, 2.70ns,  25, 2.70ns,  85, 3.00ns)}
++	tphlmn=0.90ns
++	tphlmx={table(temp, 0, 2.70ns,  25, 2.70ns,  85, 3.00ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 100141 8-Bit Universal Shift Register
+*
+* Philips ECL Databook June 1990
+* jjr	08/09/91	Created
+
+.subckt 100141 S0 S1 CP D0 D7 P0 P1 P2 P3 P4 P5 P6 P7 Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Setup and hold times for Select inputs to/from CP are not
+*	included in this model.
+
+U1 BUFA(3) VCC1 VEE
++	S0    S1    CP
++	S0BUF S1BUF CPBUF
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL} 
+U2 INVA(2) VCC1 VEE
++	S0    S1
++	S0BAR S1BAR
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL} 
+U3 ANDA(2,4) VCC1 VEE
++	S0BAR S1BAR  S0BAR S1BUF  S0BUF S1BAR  S0BUF S1BUF
++	LOAD         RIGHT        LEFT         HOLD
++       D0_GATE IO_100K_IN
+U4 AO(2,4) VCC1 VEE
++	LEFT D0  RIGHT Q1B  HOLD Q0B  LOAD P0   GATE0
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U5 AO(2,4) VCC1 VEE
++	LEFT Q0B  RIGHT Q2B  HOLD Q1B  LOAD P1   GATE1
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U6 AO(2,4) VCC1 VEE
++	LEFT Q1B  RIGHT Q3B  HOLD Q2B  LOAD P2   GATE2
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U7 AO(2,4) VCC1 VEE				
++	LEFT Q2B  RIGHT Q4B  HOLD Q3B  LOAD P3   GATE3
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U8 AO(2,4) VCC1 VEE
++	LEFT Q3B  RIGHT Q5B  HOLD Q4B  LOAD P4   GATE4
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U9 AO(2,4) VCC1 VEE
++	LEFT Q4B  RIGHT Q6B  HOLD Q5B  LOAD P5   GATE5
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U10 AO(2,4) VCC1 VEE
++	LEFT Q5B  RIGHT Q7B  HOLD Q6B  LOAD P6   GATE6
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U11 AO(2,4) VCC1 VEE
++	LEFT Q6B  RIGHT D7  HOLD Q7B  LOAD P7   GATE7
++       D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U12 DFF(8) VCC1 VEE
++	$D_HI $D_HI CPBUF
++	GATE0 GATE1 GATE2 GATE3 GATE4 GATE5 GATE6 GATE7
++	Q0BB  Q1BB  Q2BB  Q3BB  Q4BB  Q5BB  Q6BB  Q7BB
++	$D_NC $D_NC $D_NC $D_NC $D_NC $D_NC $D_NC $D_NC
++	D_100141_1 IO_100K_IN  MNTYMXDLY={MNTYMXDLY}
+U13 BUFA(8) VCC1 VEE
++	Q0BB Q1BB Q2BB Q3BB Q4BB Q5BB Q6BB Q7BB
++	Q0B  Q1B  Q2B  Q3B  Q4B  Q5B  Q6B  Q7B
++	D_100141_2 IO_100K_IN  MNTYMXDLY={MNTYMXDLY}
+U14 BUFA(8) VCC2 VEE
++	Q0BB Q1BB Q2BB Q3BB Q4BB Q5BB Q6BB Q7BB
++	Q0   Q1   Q2   Q3   Q4   Q5   Q6   Q7
++       D_100141_2 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100141_1 ueff (
++	tsudclkmn={table(temp, 0, 1.40ns,  25, 1.40ns,  85, 1.70ns)}
++	thdclkmn=0.60ns
++	twclkhmn=2.50ns
++	)
+
+.model D_100141_2 ugate (
++	tplhmn={table(temp, 0, 0.90ns,  25, 1.10ns,  85, 1.10ns)}
++	tplhmx={table(temp, 0, 2.40ns,  25, 2.40ns,  85, 2.55ns)}
++	tphlmn={table(temp, 0, 0.90ns,  25, 1.10ns,  85, 1.10ns)}
++	tphlmx={table(temp, 0, 2.40ns,  25, 2.40ns,  85, 2.55ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 100150 Hex D-Type Latch
+*
+* Philips ECL Databook June 1990
+* jjr	08/08/91	Created
+
+.subckt 100150 MR E0BAR E1BAR D0 D1 D2 D3 D4 D5 Q0 Q0BAR Q1 Q1BAR
++	 Q2 Q2BAR Q3 Q3BAR Q4 Q4BAR Q5 Q5BAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+
+U1 INV	VCC1 VEE
++	MR
++	MRBAR
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUFA(6) VCC1 VEE
++	D0  D1  D2  D3  D4  D5
++	D0B D1B D2B D3B D4B D5B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U3 NOR(2) VCC1 VEE
++	E0BAR E1BAR  E
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U4 DLTCH(6) VCC2 VEE
++	$D_HI MRBAR E
++	D0B D1B D2B D3B D4B D5B
++	Q0  Q1  Q2  Q3  Q4  Q5  Q0BAR Q1BAR Q2BAR Q3BAR Q4BAR Q5BAR
++	D_100150 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100150 ugff (
++	tpdqlhmn={table(temp, 0, 0.45ns,  25, 0.50ns,  85, 0.50ns)}
++	tpdqlhmx={table(temp, 0, 1.50ns,  25, 1.40ns,  85, 1.50ns)}
++	tpdqhlmn={table(temp, 0, 0.45ns,  25, 0.50ns,  85, 0.50ns)}
++	tpdqhlmx={table(temp, 0, 1.50ns,  25, 1.40ns,  85, 1.50ns)}
++	tpgqlhmn=0.75ns
++	tpgqlhmx={table(temp, 0, 2.05ns,  25, 1.85ns,  85, 2.05ns)}
++	tpgqhlmn=0.75ns
++	tpgqhlmx={table(temp, 0, 2.05ns,  25, 1.85ns,  85, 2.05ns)}
++	tppcqlhmn={table(temp, 0, 0.80ns,  25, 0.90ns,  85, 0.90ns)}
++	tppcqlhmx={table(temp, 0, 2.40ns,  25, 2.40ns,  85, 2.60ns)}
++	tppcqhlmn={table(temp, 0, 0.80ns,  25, 0.90ns,  85, 0.90ns)}
++	tppcqhlmx={table(temp, 0, 2.40ns,  25, 2.40ns,  85, 2.60ns)}
++	tsudgmn=0.70ns
++	tsupcghmn=2.50ns
++	thdgmn=0.70ns
++	twghmn=2.50ns
++	twpclmn=2.50ns
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 100151 Hex D-Type Master-Slave Flip-Flop
+*
+* Philips ECL Databook June 1990
+* jjr	08/07/91	Created
+
+.subckt 100151 MR CP0 CP1 D0 D1 D2 D3 D4 D5 Q0 Q0BAR Q1 Q1BAR Q2 Q2BAR
++	Q3 Q3BAR Q4 Q4BAR Q5 Q5BAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Despite the Master-Slave description, this device behaves as a
+*	normal positive-edge-triggered D flip-flop.
+
+U1 INV	VCC1 VEE
++	MR
++	MRBAR
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U2 BUFA(6) VCC1 VEE
++	D0  D1  D2  D3  D4  D5
++	D0B D1B D2B D3B	D4B D5B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U3 OR(2) VCC1 VEE
++	CP0 CP1  CP
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U4 DFF(6) VCC2 VEE
++	$D_HI MRBAR CP
++	D0B D1B D2B D3B D4B D5
++	Q0  Q1  Q2  Q3  Q4  Q5  Q0BAR Q1BAR Q2BAR Q3BAR Q4BAR Q5BAR
++	D_100151 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100151 ueff (
++	tpclkqlhmn={table(temp, 0, 0.80ns,  25, 0.80ns,  85, 0.90ns)}
++	tpclkqlhmx={table(temp, 0, 2.20ns,  25, 2.20ns,  85, 2.40ns)}
++	tpclkqhlmn={table(temp, 0, 0.80ns,  25, 0.80ns,  85, 0.90ns)}
++	tpclkqhlmx={table(temp, 0, 2.20ns,  25, 2.20ns,  85, 2.40ns)}
++	tppcqlhmn={table(temp, 0, 0.80ns,  25, 0.80ns,  85, 0.90ns)}
++	tppcqlhmx={table(temp, 0, 2.90ns,  25, 3.00ns,  85, 3.10ns)}
++	tppcqhlmn={table(temp, 0, 0.80ns,  25, 0.80ns,  85, 0.90ns)}
++	tppcqhlmx={table(temp, 0, 2.90ns,  25, 3.00ns,  85, 3.10ns)}
++	tsudclkmn=0.70ns
++	tsupcclkhmn=2.30ns
++	thdclkmn=0.70ns
++	twclkhmn=2.00ns
++	twpclmn=2.00ns
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 100155 Quad 2-Way Multiplexer-Latch
+*
+* Philips ECL Databook June 1990
+* tdn   08/05/91	Created
+*
+* Note: In accordance with the Databook, all Unused Inputs must be tied
+*	low, Pulldown resisters are not incorporated in this model.
+*
+*	Also, The Ceramic Dip device is used in this Model.
+
+
+.subckt 100155 MR E0BAR E1BAR S0BAR S1 A0 B0 A1 B1 A2 B2 A3 B3 
++	       Q0 Q0BAR Q1 Q1BAR Q2 Q2BAR Q3 Q3BAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA(2) VCC1 VEE 
++	S0BAR S1 S0B S1B
++	D_100155_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 INVA(4) VCC1 VEE
++	MR E0BAR E1BAR S0B MRI E0I E1I S0I
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}  
+U3 AND (3) VCC1 VEE 
++	MRI E0I E1I E
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U4 AO  (2,2) VCC1 VEE 
++	S0I A0 S1B B0 Q0B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U5 AO  (2,2) VCC1 VEE 
++	S0I A1 S1B B1 Q1B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U6 AO  (2,2) VCC1 VEE 
++	S0I A2 S1B B2 Q2B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U7 AO  (2,2) VCC1 VEE 
++	S0I A3 S1B B3 Q3B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U8 DLTCH(4) VCC2 VEE 
++	$D_HI MRI E
++	Q0B Q1B Q2B Q3B
++	Q0 Q1 Q2 Q3 Q0BAR Q1BAR Q2BAR Q3BAR
++	D_100155_2 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100155_1 ugate (
++       tplhmn={table(temp, 0, 1.00ns, 25, 0.90ns, 85, 1.00ns)}	
++	tplhmx={table(temp, 0, 1.60ns, 25, 1.55ns, 85, 1.60ns)}
++	tphlmn={table(temp, 0, 1.00ns, 25, 0.90ns, 85, 1.00ns)}		
++	tphlmx={table(temp, 0, 1.60ns, 25, 1.55ns, 85, 1.60ns)}
++       )
+.model D_100155_2 ugff (
++       tppcqlhmn={table(temp, 0, 0.40ns, 25, 0.30ns, 85, 0.40ns)}
++       tppcqlhmx={table(temp, 0, 1.10ns, 25, 1.05ns, 85, 1.10ns)}
++       tppcqhlmn={table(temp, 0, 0.40ns, 25, 0.30ns, 85, 0.40ns)}
++       tppcqhlmx={table(temp, 0, 1.10ns, 25, 1.05ns, 85, 1.10ns)}
++	twpclmn =2.50ns		twpclty =2.50ns	    twpclty =2.50ns
++	tpgqlhmn={table(temp, 0, 0.40ns, 25, 0.40ns, 85, 0.50ns)}
++	tpgqlhmx={table(temp, 0, 0.60ns, 25, 0.55ns, 85, 0.60ns)}
++	tpgqhlmn={table(temp, 0, 0.40ns, 25, 0.40ns, 85, 0.50ns)}
++	tpgqhlmx={table(temp, 0, 0.60ns, 25, 0.55ns, 85, 0.60ns)}
++	twghmn =2.50ns		twghty =2.50ns	    twghmx =2.50ns
++	tpdqlhmn={table(temp, 0, 0.50ns, 25, 0.60ns, 85, 0.50ns)}
++	tpdqlhmx={table(temp, 0, 1.90ns, 25, 1.85ns, 85, 1.90ns)}
++	tpdqhlmn={table(temp, 0, 0.50ns, 25, 0.60ns, 85, 0.50ns)}	
++	tpdqhlmx={table(temp, 0, 1.90ns, 25, 1.85ns, 85, 1.90ns)}
++	tsudgmn =0.90ns
++	thdgmn  =0.40ns
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100158 8-Bit Shift Matrix
+*
+* Philips ECL Databook June 1990
+* jjr	08/13/91	Created
+
+.subckt 100158 M S0 S1 S2 D0 D1 D2 D3 D4 D5 D6 D7 Q0 Q1 Q2 Q3 Q4 Q5 Q6 Q7
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 PULLDN(12) VCC1 VEE
++       M S0 S1 S2 D0 D1 D2 D3 D4 D5 D6 D7
++       IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U2 BUF	VCC1 VEE
++	M  MBUF
++	D_100158_2 IO_100K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U3 BUFA(3) VCC1 VEE
++	S0  S1  S2
++	S0B S1B S2B
++	D_100158_3 IO_100K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U4 BUFA(8) VCC1 VEE
++	D0  D1  D2  D3  D4  D5  D6  D7
++	D0B D1B D2B D3B D4B D5B D6B D7B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U5 INVA(3) VCC1 VEE
++	S0B   S1B   S2B
++	S0BAR S1BAR S2BAR
++	D0_GATE IO_100K_IN
+U6 OR(2) VCC1 VEE
++	S1B S2B  X
++	D0_GATE IO_100K_IN
+U7 ANDA(2,2) VCC1 VEE
++	S2B S1BAR  S2B S1B
++	Y          Z
++	D0_GATE IO_100K_IN
+U8 INVA(3) VCC1 VEE
++	X Y Z  XBAR YBAR ZBAR
++	D0_GATE IO_100K_IN
+U9 AND(2) VCC1 VEE
++	S1B S2BAR  W
++	D0_GATE IO_100K_IN
+U10 AO(3,2) VCC1 VEE
++	MBUF D0B S0B  D7B S0BAR $D_HI  H
++	D0_GATE IO_100K_IN
+U11 AO(2,2) VCC1 VEE
++	D7B S0B  D6B S0BAR  G
++	D0_GATE IO_100K_IN
+U12 AO(2,2) VCC1 VEE
++	D6B S0B  D5B S0BAR  F
++	D0_GATE IO_100K_IN
+U13 AO(2,2) VCC1 VEE
++	D5B S0B  D4B S0BAR  E
++	D0_GATE IO_100K_IN
+U14 AO(2,2) VCC1 VEE
++	D4B S0B  D3B S0BAR  D
++	D0_GATE IO_100K_IN
+U15 AO(2,2) VCC1 VEE
++	D3B S0B  D2B S0BAR  C
++	D0_GATE IO_100K_IN
+U16 AO(2,2) VCC1 VEE
++	D2B S0B  D1B S0BAR  B
++	D0_GATE IO_100K_IN
+U17 AO(2,2) VCC1 VEE
++	D1B S0B  D0B S0BAR  A
++	D0_GATE IO_100K_IN
+U18 AO(3,4) VCC2 VEE
++	MBUF F Z  MBUF D Y  MBUF B W  H XBAR $D_HI   Q7
++	D_100158_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U19 AO(3,4) VCC2 VEE
++	MBUF D Z  MBUF B Y  H W $D_HI  F XBAR $D_HI   Q5
++	D_100158_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U20 AO(3,4) VCC2 VEE
++	MBUF B Z  H Y $D_HI  F W $D_HI  D XBAR $D_HI   Q3
++	D_100158_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U21 AO(2,4) VCC2 VEE
++	H Z  F Y  D W  B XBAR   Q1
++	D_100158_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U22 AO(3,4) VCC2 VEE
++	MBUF E Z  MBUF C Y  MBUF A W  G XBAR $D_HI   Q6
++	D_100158_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U23 AO(3,4) VCC2 VEE
++	MBUF C Z  A Y MBUF  G W $D_HI  E XBAR $D_HI   Q4
++	D_100158_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U24 AO(3,4) VCC2 VEE
++	MBUF A Z  G Y $D_HI  E W $D_HI  C XBAR $D_HI   Q2
++	D_100158_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U25 AO(2,4) VCC2 VEE
++	G Z  E Y  C W  A XBAR   Q0
++	D_100158_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100158_1 ugate (
++	tplhmn=1.10ns
++	tplhmx={table(temp, 0, 3.00ns,  25, 2.90ns,  85, 3.10ns)}
++	tphlmn=1.10ns
++	tphlmx={table(temp, 0, 3.00ns,  25, 2.90ns,  85, 3.10ns)}
++	)
+
+.model D_100158_2 ugate (
++	tplhmn={table(temp, 0, 0.05ns,  25, 0.15ns,  85, 0.05ns)}
++	tplhmx={table(temp, 0, 1.40ns,  25, 1.50ns,  85, 1.60ns)}
++	tphlmn={table(temp, 0, 0.05ns,  25, 0.15ns,  85, 0.05ns)}
++	tphlmx={table(temp, 0, 1.40ns,  25, 1.50ns,  85, 1.60ns)}
++	)
+
+.model D_100158_3 ugate (
++	tplhmn=0.60ns
++	tplhmx={table(temp, 0, 1.50ns,  25, 1.60ns,  85, 1.70ns)}
++	tphlmn=0.60ns
++	tphlmx={table(temp, 0, 1.50ns,  25, 1.60ns,  85, 1.70ns)}
++	)
+
+*$
+*-------------------------------------------------------------------------
+* 100160 Dual Parity Generator/8-Bit Comparator
+*
+* Philips ECL Databook June 1990
+* tdn   08/06/91	Created
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100160 DA0 DA1 DA2 DA3 DA4 DA5 DA6 DA7 DB0 DB1 DB2 DB3 DB4
++	       DB5 DB6 DB7 XA XB QA QB CBAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++		  VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 XORA(8) VCC1 VEE 
++	DA0 DA1 DA2 DA3 DA4 DA5 DA6 DA7 DB0 DB1 DB2 DB3 DB4 DB5 DB6 DB7 
++	DA1I DA2I DA3I DA4I DB1I DB2I DB3I DB4I
++	D_100160_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 XORA(4) VCC1 VEE 
++	DA1I DA2I DA3I DA4I DB1I DB2I DB3I DB4I
++	D1I D2I D3I D4I
++	D0_GATE IO_100K_IN 
+U3 XORA(2) VCC1 VEE
++	D1I D2I D3I D4I
++       Q1 Q2
++	D0_GATE IO_100K_IN 
+U4 PULLDN(18) VCC1 VEE
++	DA0 DA1 DA2 DA3 DA4 DA5 DA6 DA7 DB0 DB1 DB2 DB3 DB4 DB5 DB6 DB7 XA XB 
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U5 OR  (8) VCC2 VEE
++	DA1I DA2I DB3I DB4I DA3I DA4I DB1I DB2I  CBAR      
++	D_100160_2 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U6 NXORA(2) VCC2 VEE
++	Q1 XA Q2 XB QA QB
++	D_100160_3 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100160_1 ugate (
++	tplhmn=0.10ns	tplhmx=1.00ns  
++	tphlmn=0.10ns   tphlmx=1.00ns
++       )
+.model D_100160_2 ugate (
++	tplhmn=0.70ns  
++	tplhmx={table(temp, 0, 1.70ns, 25, 1.50ns, 85, 1.70ns)}
++	tphlmn=0.70ns   
++	tphlmx={table(temp, 0, 1.70ns, 25, 1.50ns, 85, 1.70ns)}
++       )
+.model D_100160_3 ugate (
++	tplhmn=0.50ns	tplhmx=1.60ns
++	tphlmn=0.50ns	tphlmx=1.60ns
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100163 Dual 8-Input Multiplexer
+*
+* Philips ECL Databook June 1990
+* tdn   08/02/91	Created 
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100163 S0 S1 S2 A0 A1 A2 A3 A4 A5 A6 A7 B0 B1 B2 B3 B4 B5 B6 B7
++	       QA QB
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA(3) VCC1 VEE 
++	S0 S1 S2 S0B S1B S2B
++	D_100163_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 NORA(4,16) VCC1 VEE
++	S0BUF S1BUF S2BUF A0 S0BAR S1BUF S2BUF A1 S0BUF S1BAR S2BUF A2
++	S0BAR S1BAR S2BUF A3 S0BUF S1BUF S2BAR A4 S0BAR S1BUF S2BAR A5
++	S0BUF S1BAR S2BAR A6 S0BAR S1BAR S2BAR A7
++	S0BUF S1BUF S2BUF B0 S0BAR S1BUF S2BUF B1 S0BUF S1BAR S2BUF B2
++	S0BAR S1BAR S2BUF B3 S0BUF S1BUF S2BAR B4 S0BAR S1BUF S2BAR B5
++	S0BUF S1BAR S2BAR B6 S0BAR S1BAR S2BAR B7
++	A0I A1I A2I A3I A4I A5I A6I A7I B0I B1I B2I B3I B4I B5I B6I B7I
++	D0_GATE IO_100K_IN IO_LEVEL={IO_LEVEL}       
+U3 INVA(3) VCC1 VEE
++	S0B S1B S2B S0BAR S1BAR S2BAR
++	D0_GATE IO_100K_IN
+U4 BUFA(3) VCC1 VEE
++	S0B S1B S2B S0BUF S1BUF S2BUF
++	D0_GATE IO_100K_IN
+U5 PULLDN(19) VCC1 VEE
++	S0 S1 S2 A0 A1 A2 A3 A4 A5 A6 A7 B0 B1 B2 B3 B4 B5 B6 B7
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U6 NORA(8,2) VCC2 VEE
++	A0I A1I A2I A3I A4I A5I A6I A7I B0I B1I B2I B3I B4I B5I B6I B7I
++	QA  QB
++	D_100163_2 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100163_1 ugate (
++	tplhmn={table(temp, 0, 0.55ns, 25, 0.50ns, 85, 0.55ns)}   
++	tplhmx={table(temp, 0, 0.90ns, 25, 0.90ns, 85, 1.10ns)}
++	tphlmn={table(temp, 0, 0.55ns, 25, 0.50ns, 85, 0.55ns)} 
++	tphlmx={table(temp, 0, 0.90ns, 25, 0.90ns, 85, 1.10ns)}
++       )
+.model D_100163_2 ugate (
++	tplhmn={table(temp, 0, 0.55ns, 25, 0.60ns, 85, 0.65ns)}   
++	tplhmx={table(temp, 0, 1.90ns, 25, 1.90ns, 85, 2.00ns)}
++	tphlmn={table(temp, 0, 0.55ns, 25, 0.60ns, 85, 0.65ns)} 
++	tphlmx={table(temp, 0, 1.90ns, 25, 1.90ns, 85, 2.00ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100164 16-Input Multiplexer
+*
+* Philips ECL Databook June 1990
+* tdn   08/02/91	Created 
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100164 S0 S1 S2 S3 D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 
++	       D12 D13 D14 D15 Q
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++		  VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA(2) VCC1 VEE 
++	S0 S1 S0B S1B 
++	D_100164_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 BUFA(2) VCC1 VEE 
++	S2 S3 S2B S3B 
++       D_100164_2 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U3 NORA(5,16) VCC1 VEE
++	S0BUF S1BUF S2BUF S3BUF D0  S0BAR S1BUF S2BUF S3BUF D1 
++	S0BUF S1BAR S2BUF S3BUF D2  S0BAR S1BAR S2BUF S3BUF D3
++	S0BUF S1BUF S2BAR S3BUF D4  S0BAR S1BUF S2BAR S3BUF D5
++	S0BUF S1BAR S2BAR S3BUF D6  S0BAR S1BAR S2BAR S3BUF D7
++	S0BUF S1BUF S2BUF S3BAR D8  S0BAR S1BUF S2BUF S3BAR D9
++	S0BUF S1BAR S2BUF S3BAR D10 S0BAR S1BAR S2BUF S3BAR D11
++	S0BUF S1BUF S2BAR S3BAR D12 S0BAR S1BUF S2BAR S3BAR D13
++	S0BUF S1BAR S2BAR S3BAR D14 S0BAR S1BAR S2BAR S3BAR D15
++	D0I D1I D2I D3I D4I D5I D6I D7I D8I D9I D10I D11I D12I D13I D14I D15I
++	D0_GATE IO_100K_IN IO_LEVEL={IO_LEVEL}       
+U4 INVA(4) VCC1 VEE
++	S0B S1B S2B S3B S0BAR S1BAR S2BAR S3BAR
++	D0_GATE IO_100K_IN
+U5 BUFA(4) VCC1 VEE
++	S0B S1B S2B S3B S0BUF S1BUF S2BUF S3BUF
++	D0_GATE IO_100K_IN
+U6 PULLDN(20) VCC1 VEE
++	S0 S1 S2 S3 D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 D12 D13 D14 D15 
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U7 NOR (16) VCC2 VEE
++	D0I D1I D2I D3I D4I D5I D6I D7I D8I 
++	D9I D10I D11I D12I D13I D14I D15I      Q
++	D_100164_3 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100164_1 ugate (
++	tplhmn={table(temp, 0, 0.65ns, 25, 0.55ns, 85, 0.55ns)}   
++	tplhmx={table(temp, 0, 1.00ns, 25, 0.85ns, 85, 1.05ns)}
++	tphlmn={table(temp, 0, 0.65ns, 25, 0.55ns, 85, 0.55ns)} 
++	tphlmx={table(temp, 0, 1.00ns, 25, 0.85ns, 85, 1.05ns)}
++       )
+.model D_100164_2 ugate (
++	tplhmn={table(temp, 0, 0.30ns, 25, 0.20ns, 85, 0.20ns)}   
++	tplhmx={table(temp, 0, 0.30ns, 25, 0.15ns, 85, 0.25ns)}
++	tphlmn={table(temp, 0, 0.30ns, 25, 0.20ns, 85, 0.20ns)} 
++	tphlmx={table(temp, 0, 0.30ns, 25, 0.15ns, 85, 0.25ns)}
++       )
+.model D_100164_3 ugate (
++	tplhmn={table(temp, 0, 0.80ns, 25, 0.90ns, 85, 0.90ns)}   
++	tplhmx={table(temp, 0, 2.00ns, 25, 2.15ns, 85, 2.35ns)}
++	tphlmn={table(temp, 0, 0.80ns, 25, 0.90ns, 85, 0.90ns)} 
++	tphlmx={table(temp, 0, 2.00ns, 25, 2.15ns, 85, 2.35ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100165 Universal Priority Encoder
+*
+* Philips ECL Databook June 1990
+* tdn   08/16/91	Created
+*
+* Note: In accordance with the Databook, all Unused Inputs must be tied
+*	low, Pulldown resisters are not incorporated in this model.
+*
+*	Also, The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100165 M EBAR OEBAR D0 D1 D2 D3 D4 D5 D6 D7
++	       GS0 GS1 Q0 Q0BAR Q1 Q1BAR Q2 Q2BAR Q3 Q3BAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 INV  VCC1 VEE 
++	EBAR EI 
++	D0_GATE IO_100K_IN IO_LEVEL={IO_LEVEL}       
+U2 BUF  VCC1 VEE
++	M MBUF
++	D_100165_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}  
+U3 BUF  VCC1 VEE 
++	OEBAR OEBUF
++	D_100165_2 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U4 DLTCH(8) VCC1 VEE 
++	$D_HI $D_HI EI
++	D0 D1 D2 D3 D4 D5 D6 D7
++	O0 O1 O2 O3 O4 O5 O6 O7 
++	$D_NC O1BAR $D_NC O3BAR $D_NC O5BAR $D_NC O7BAR
++	D_100165_3 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U5 OA  (3,2) VCC1 VEE 
++	O0 O1BAR $D_LO 
++	O0 O2 O3BAR	B1
++	D0_GATE IO_100K_IN  
+U6 OA  (3,2) VCC1 VEE 
++	O4 O5BAR $D_LO 
++	O4 O6 O7BAR	B2
++	D0_GATE IO_100K_IN  
+U7 NORA(4,5) VCC1 VEE
++	O0 O1 $D_LO $D_LO  
++	O2 O3 $D_LO $D_LO 
++	O4 O5 O6 O7	   
++	O4 O5 $D_LO $D_LO
++	O6 O7 $D_LO $D_LO 
++	A1 A2 A3 A4 A5 
++	D0_GATE IO_100K_IN        
+U8 INVA(3) VCC1 VEE 
++	A2 A5 MBUF A2I A5I MBAR 
++	D0_GATE IO_100K_IN 
+U9 NANDA(2,4) VCC1 VEE
++	A1 A2I A1 A2 A4 A5 A4 A5I
++	B3 B4 B5 B6
++	D0_GATE IO_100K_IN        
+U10 ORA (3,3) VCC1 VEE
++	B4 MBAR OEBUF MBAR A3 $D_LO MBUF OEBUF $D_LO
++	C1 C2 C3
++	D0_GATE IO_100K_IN        
+U11 NOR (2) VCC1 VEE
++	B4 OEBUF    C4
++	D0_GATE IO_100K_IN        
+U12 OAI(2,2) VCC2 VEE 
++	B1 OEBUF C1 B2	  Q0	 
++	D_100165_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U13 OA (2,2) VCC2 VEE 
++	B1 OEBUF C1 B2	  Q0BAR	 
++	D_100165_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U14 OAI(2,2) VCC2 VEE 
++	B3 OEBUF C1 B6	  Q1	 
++	D_100165_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U15 OA (2,2) VCC2 VEE 
++	B3 OEBUF C1 B6	  Q1BAR	 
++	D_100165_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U16 OAI(2,2) VCC2 VEE 
++	C1 C2 B2 C3	  Q2	 
++	D_100165_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U17 OA (2,2) VCC2 VEE 
++	C1 C2 B2 C3	  Q2BAR	 
++	D_100165_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U18 NOR(2) VCC2 VEE 
++	B6 C3		  Q3	 
++	D_100165_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U19 NAND(2) VCC2 VEE 
++	C2 C4 		  GS0 
++	D_100165_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U20 ORA(2,2) VCC2 VEE 
++	B6 C3 B5 C3	Q3BAR GS1
++	D_100165_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100165_1 ugate (
++       tplhmn=0.00ns	
++	tplhmx={table(temp, 0, 0.30ns, 25, 0.30ns, 85, 0.40ns)}
++	tphlmn=0.00ns		
++	tphlmx={table(temp, 0, 0.30ns, 25, 0.30ns, 85, 0.40ns)}
++       )
+.model D_100165_2 ugate (
++       tplhmn={table(temp, 0, 0.10ns, 25, 0.00ns, 85, 0.00ns)}	
++	tplhmx=0.00ns
++	tphlmn={table(temp, 0, 0.10ns, 25, 0.00ns, 85, 0.00ns)}		
++	tphlmx=0.00ns
++       )
+.model D_100165_3 ugff (
++	tpgqlhmn={table(temp, 0, 0.50ns, 25, 0.40ns, 85, 0.40ns)}	
++	tpgqlhmx={table(temp, 0, 1.40ns, 25, 1.30ns, 85, 1.60ns)}
++	tpgqhlmn={table(temp, 0, 0.50ns, 25, 0.40ns, 85, 0.40ns)}		
++	tpgqhlmx={table(temp, 0, 1.40ns, 25, 1.30ns, 85, 1.60ns)}
++	tpdqlhmn={table(temp, 0, 0.20ns, 25, 0.10ns, 85, 0.10ns)}
++	tpdqlhmx={table(temp, 0, 0.80ns, 25, 0.80ns, 85, 1.20ns)}
++	tpdqhlmn={table(temp, 0, 0.20ns, 25, 0.10ns, 85, 0.10ns)}	
++	tpdqhlmx={table(temp, 0, 0.80ns, 25, 0.80ns, 85, 1.20ns)}
++	tsudgmn ={table(temp, 0, 1.10ns, 25, 1.00ns, 85, 1.10ns)}
++	thdgmn  =1.30ns
++       )
+.model D_100165_4 ugate (
++       tplhmn={table(temp, 0, 0.90ns, 25, 1.00ns, 85, 1.00ns)}	
++	tplhmx={table(temp, 0, 3.30ns, 25, 3.30ns, 85, 3.40ns)}
++	tphlmn={table(temp, 0, 0.90ns, 25, 1.00ns, 85, 1.00ns)}		
++	tphlmx={table(temp, 0, 3.30ns, 25, 3.30ns, 85, 3.40ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100166  9-Bit Comparator
+*
+* Philips ECL Databook June 1990
+* tdn   08/06/91	Created
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+*	Also, The Three Ouputs Pins are renamed as A>B => Q1,  B>A => Q2, 
+* 				        and (A = B)BAR => Q3
+*
+
+.subckt 100166 A0 A1 A2 A3 A4 A5 A6 A7 A8 B0 B1 B2 B3 B4 B5 B6 B7 B8
++	       Q1 Q2 Q3
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++		  VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA(18) VCC1 VEE 
++	A0  A1  A2  A3  A4  A5  A6  A7  A8  
++	B0  B1  B2  B3  B4  B5  B6  B7  B8 
++	A0B A1B A2B A3B A4B A5B A6B A7B A8B 
++	B0B B1B B2B B3B B4B B5B B6B B7B B8B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U2 INVA(18) VCC1 VEE 
++	A0B A1B A2B A3B A4B A5B A6B A7B A8B 
++	B0B B1B B2B B3B B4B B5B B6B B7B B8B 
++	A0I A1I A2I A3I A4I A5I A6I A7I A8I 
++	B0I B1I B2I B3I B4I B5I B6I B7I B8I
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U3 ANDA(2,18) VCC1 VEE
++	A0B B0I   A0I B0B   A1B B1I   A1I B1B   A2B B2I   A2I B2B    
++	A3B B3I   A3I B3B   A4B B4I   A4I B4B   A5B B5I   A5I B5B   
++	A6B B6I   A6I B6B   A7B B7I   A7I B7B   A8B B8I   A8I B8B
++	D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 D12 D13 D14 D15 D16 D17 D18
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U4 ORA (8,8) VCC1 VEE
++       D4 D6 D8 D10 D12 D14 D16 D18 $D_LO D6 D8 D10 D12 D14 D16 D18 $D_LO 
++	$D_LO D8 D10 D12 D14 D16 D18 $D_LO $D_LO $D_LO D10 D12 D14 D16 D18
++	$D_LO $D_LO $D_LO $D_LO D12 D14 D16 D18 $D_LO $D_LO $D_LO $D_LO $D_LO
++	D14 D16 D18 $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO D16 D18 $D_LO $D_LO
++	$D_LO $D_LO $D_LO $D_LO $D_LO D18  O1 O2 O3 O4 O5 O6 O7 O8
++	D0_GATE IO_100K_IN  
+U5 INVA(9) VCC1 VEE
++	O1  O2  O3  O4  O5  O6  O7  O8  Q 
++	O1I O2I O3I O4I O5I O6I O7I O8I QI
++	D0_GATE IO_100K_IN  
+U6 ANDA(2,8) VCC1 VEE
++	D1 O1I D3 O2I D5 O3I D7 O4I D9 O5I D11 O6I D13 O7I D15 O8I
++       Q1B Q2B Q3B Q4B Q5B Q6B Q7B Q8B
++	D0_GATE IO_100K_IN  
+U7 OR  (18) VCC2 VEE
++	D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D11 D12 D13 D14 D15 D16 D17 D18  Q
++	D0_GATE IO_100K_IN
+U8 PULLDN(18) VCC1 VEE
++	A0 A1 A2 A3 A4 A5 A6 A7 A8 B0 B1 B2 B3 B4 B5 B6 B7 B8  
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U9 BUF  VCC2 VEE
++	Q Q3
++	D_100166 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U10 OR  (9) VCC2 VEE
++	Q1B Q2B Q3B Q4B Q5B Q6B Q7B Q8B D17	Q1      
++	D_100166 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U11 NOR (10) VCC2 VEE
++	Q1B Q2B Q3B Q4B Q5B Q6B Q7B Q8B QI D17  Q2      
++	D_100166 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100166 ugate (
++	tplhmn=1.40ns  
++	tplhmx={table(temp, 0, 3.50ns, 25, 3.50ns, 85, 3.90ns)}
++	tphlmn=1.40ns   
++	tphlmx={table(temp, 0, 3.50ns, 25, 3.50ns, 85, 3.90ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100170  Demultiplexer/Decoder
+*
+* Philips ECL Databook June 1990
+* tdn   08/07/91	Created
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+*
+
+.subckt 100170 EA0BAR EA1BAR EB0BAR EB1BAR M HA HB HC AA0 AA1 AA2 AB0 AB1
++	       QA0 QA1 QA2 QA3 QB0 QB1 QB2 QB3
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++		  VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA(5) VCC1 VEE 
++	AA0 AA1 AA2 AB0 AB1
++	A0B A1B A2B B0B B1B
++	D_100170_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 BUFA(3) VCC1 VEE 
++	HA HB HC HAB HBB HCB
++	D_100170_2 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U3 BUF  VCC1 VEE 
++	M MB
++	D_100170_3 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U4 INVA(6) VCC1 VEE
++	A0B A1B A2B MB O2  O3
++	A0I A1I A2I MI O2I O3I
++	D0_GATE IO_100K_IN  
+U5 ANDA(2,5) VCC1 VEE
++	MB A2I A0B MB B0B MI A1B MB B1B MI
++       D1 D2 D3 D4 D5
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U6 ORA (3,6) VCC1 VEE
++       EA0BAR EA1BAR A2B $D_LO D2 D3 $D_LO D4 D5 D1 EB0BAR EB1BAR
++	$D_LO HAB HCB $D_LO HBB HCB
++	O1 O2 O3 O4 O5 O6
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}  
+U7 ORA (3,8) VCC1 VEE
++	A0B A1I O1 A0B O1 A1B O1 A0I A1B A1I O1 A0I O3I O2 O4 O2 O3 O4
++	O3 O2I O4 O3I O2I O4  Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8
++	D0_GATE IO_100K_IN  
+U8 PULLDN(13) VCC1 VEE
++	EA0BAR EA1BAR EB0BAR EB1BAR M HA HB HC AA0 AA1 AA2 AB0 AB1  
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U9 XORA(8) VCC2 VEE
++	Q1 O5 Q2 O5 Q3 O5 Q4 O5 Q5 O6 Q6 O6 Q7 O6 Q8 O6
++	QA2 QA0 QA1 QA3 QB2 QB0 QB1 QB3      
++	D_100170_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100170_1 ugate (
++	tplhmn={table(temp, 0, 0.15ns, 25, 0.15ns, 85, 0.20ns)}  
++	tplhmx={table(temp, 0, 0.50ns, 25, 0.50ns, 85, 0.60ns)}
++	tphlmn={table(temp, 0, 0.20ns, 25, 0.15ns, 85, 0.20ns)} 
++	tphlmx={table(temp, 0, 0.50ns, 25, 0.50ns, 85, 0.60ns)}
++       )
+.model D_100170_2 ugate (
++	tplhmn=0.20ns	tplhmx=0.70ns
++	tphlmn=0.20ns 	tphlmx=0.70ns
++       )
+.model D_100170_3 ugate (
++	tplhmn={table(temp, 0, 0.70ns, 25, 0.80ns, 85, 0.80ns)}  
++	tplhmx=1.60ns
++	tphlmn={table(temp, 0, 0.70ns, 25, 0.80ns, 85, 0.80ns)} 
++	tphlmx=1.60ns
++       )
+.model D_100170_4 ugate (
++	tplhmn=0.80ns  
++	tplhmx={table(temp, 0, 2.30ns, 25, 2.20ns, 85, 2.30ns)}
++	tphlmn=0.80ns 
++	tphlmx={table(temp, 0, 2.30ns, 25, 2.20ns, 85, 2.30ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100171 Triple 4-Input Multiplexer
+*
+* Philips ECL Databook June 1990
+* tdn   08/02/91	Created 
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100171 EBAR S0 S1 DA0 DA1 DA2 DA3 DB0 DB1 DB2 DB3 DC0 DC1 DC2 DC3 
++	       QA QABAR QB QBBAR QC QCBAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++		  VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA(2) VCC1 VEE 
++	S0 S1 S0B S1B 
++	D_100171_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U2 BUF  VCC1 VEE 
++	EBAR EBUF 
++       D_100171_2 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U3 NORA(3,12) VCC1 VEE
++	S0BUF S1BUF DA0 S0BAR S1BUF DA1 S0BUF S1BAR DA2 S0BAR S1BAR DA3
++	S0BUF S1BUF DB0 S0BAR S1BUF DB1 S0BUF S1BAR DB2 S0BAR S1BAR DB3
++	S0BUF S1BUF DC0 S0BAR S1BUF DC1 S0BUF S1BAR DC2 S0BAR S1BAR DC3
++	DA0I DA1I DA2I DA3I DB0I DB1I DB2I DB3I DC0I DC1I DC2I DC3I
++	D0_GATE IO_100K_IN IO_LEVEL={IO_LEVEL}       
+U4 INVA(2) VCC1 VEE
++	S0B S1B S0BAR S1BAR 
++	D0_GATE IO_100K_IN
+U5 BUFA(2) VCC1 VEE
++	S0B S1B S0BUF S1BUF 
++	D0_GATE IO_100K_IN
+U6 PULLDN(15) VCC1 VEE
++	EBAR S0 S1 DA0 DA1 DA2 DA3 DB0 DB1 DB2 DB3 DC0 DC1 DC2 DC3  
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U7 NORA (5,3) VCC2 VEE
++	DA0I DA1I DA2I DA3I EBUF DB0I DB1I DB2I DB3I EBUF 
++	DC0I DC1I DC2I DC3I EBUF  QA  QB  QC
++	D_100171_3 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U8 ORA (5,3) VCC2 VEE
++	DA0I DA1I DA2I DA3I EBUF DB0I DB1I DB2I DB3I EBUF 
++	DC0I DC1I DC2I DC3I EBUF  QABAR  QBBAR  QCBAR
++	D_100171_3 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100171_1 ugate (
++	tplhmn={table(temp, 0, 0.45ns, 25, 0.45ns, 85, 0.50ns)}
++	tplhmx={table(temp, 0, 0.70ns, 25, 1.00ns, 85, 1.30ns)}
++	tphlmn={table(temp, 0, 0.45ns, 25, 0.45ns, 85, 0.50ns)}
++	tphlmx={table(temp, 0, 0.70ns, 25, 1.00ns, 85, 1.30ns)}
++       )
+.model D_100171_2 ugate (
++	tplhmn={table(temp, 0, 0.20ns, 25, 0.20ns, 85, 0.25ns)}
++	tplhmx=0.70ns
++	tphlmn={table(temp, 0, 0.20ns, 25, 0.20ns, 85, 0.25ns)}
++	tphlmx=0.70ns
++       )
+.model D_100171_3 ugate (
++	tplhmn={table(temp, 0, 0.45ns, 25, 0.45ns, 85, 0.50ns)}
++	tplhmx={table(temp, 0, 1.70ns, 25, 1.60ns, 85, 1.70ns)}
++	tphlmn={table(temp, 0, 0.45ns, 25, 0.45ns, 85, 0.50ns)}
++	tphlmx={table(temp, 0, 1.70ns, 25, 1.60ns, 85, 1.70ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100179 Carry Look-Ahead Generator
+*
+* Philips ECL Databook June 1990
+* tdn   08/09/91	Created 
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100179 CBAR G0BAR G1BAR G2BAR G3BAR G4BAR G5BAR G6BAR G7BAR 
++	       P0BAR P1BAR P2BAR P3BAR P4BAR P5BAR P6BAR P7BAR
++	       C2BAR C4BAR C6BAR C8BAR 
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++		  VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 BUFA(17) VCC1 VEE
++	CBAR  G0BAR G1BAR G2BAR G3BAR G4BAR G5BAR G6BAR G7BAR
++	P0BAR P1BAR P2BAR P3BAR P4BAR P5BAR P6BAR P7BAR
++	CBUF  G0BUF G1BUF G2BUF G3BUF G4BUF G5BUF G6BUF G7BUF
++	P0BUF P1BUF P2BUF P3BUF P4BUF P5BUF P6BUF P7BUF 
++	D0_GATE IO_100K_IN IO_LEVEL={IO_LEVEL}
+U2 INVA(4) VCC1 VEE
++	G1BUF G3BUF G5BUF G7BUF G1I G3I G5I G7I
++	D0_GATE IO_100K_IN 
+U3 NORA(9,20) VCC1 VEE
++	G0BUF P1BUF $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P0BUF CBUF  P1BUF $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P3BUF G2BUF $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P2BUF P3BUF G1BUF $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P1BUF P2BUF P3BUF G0BUF $D_LO $D_LO $D_LO $D_LO $D_LO
++	P0BUF P1BUF P2BUF P3BUF CBUF  $D_LO $D_LO $D_LO $D_LO 
++	P5BUF G4BUF $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P4BUF P5BUF G3BUF $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P3BUF P4BUF P5BUF G2BUF $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P2BUF P3BUF P4BUF P5BUF G1BUF $D_LO $D_LO $D_LO $D_LO 
++	P1BUF P2BUF P3BUF P4BUF P5BUF G0BUF $D_LO $D_LO $D_LO
++	P0BUF P1BUF P2BUF P3BUF P4BUF P5BUF CBUF  $D_LO $D_LO 
++	P7BUF G6BUF $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P6BUF P7BUF G5BUF $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P5BUF P6BUF P7BUF G4BUF $D_LO $D_LO $D_LO $D_LO $D_LO 
++	P4BUF P5BUF P6BUF P7BUF G3BUF $D_LO $D_LO $D_LO $D_LO 
++	P3BUF P4BUF P5BUF P6BUF P7BUF G2BUF $D_LO $D_LO $D_LO 
++	P2BUF P3BUF P4BUF P5BUF P6BUF P7BUF G1BUF $D_LO $D_LO 
++	P1BUF P2BUF P3BUF P4BUF P5BUF P6BUF P7BUF G0BUF $D_LO 
++	P0BUF P1BUF P2BUF P3BUF P4BUF P5BUF P6BUF P7BUF CBUF  
++	Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10 Q11 Q12 Q13 Q14 Q15 
++	Q16 Q17 Q18 Q19 Q20   
++	D0_GATE IO_100K_IN IO_LEVEL={IO_LEVEL}       
+U4 PULLDN(17) VCC1 VEE
++	CBAR  G0BAR G1BAR G2BAR G3BAR G4BAR G5BAR G6BAR G7BAR 
++	P0BAR P1BAR P2BAR P3BAR P4BAR P5BAR P6BAR P7BAR
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U5 NORA (9,4) VCC2 VEE
++	Q1 Q2 G1I $D_LO $D_LO $D_LO $D_LO $D_LO $D_LO 
++	Q3 Q4 G3I Q5 Q6 $D_LO $D_LO $D_LO $D_LO
++	Q7 G5I Q8 Q9 Q10 Q11 Q12 $D_LO $D_LO 
++	Q13 G7I Q14 Q15 Q16 Q17 Q18 Q19 Q20
++	C2BAR  C4BAR  C6BAR  C8BAR
++	D_100179 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100179 ugate (
++	tplhmn=1.10ns   
++	tplhmx={table(temp, 0, 2.90ns, 25, 2.90ns, 85, 3.00ns)}
++	tphlmn=1.10ns 
++	tphlmx={table(temp, 0, 2.90ns, 25, 2.90ns, 85, 3.00ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100180 High Speed 8-Bit Adder
+*
+* Philips ECL Databook June 1990
+* tdn   08/14/91	Created 
+*
+* Note: The Ceramic Dip device is used in this Model.
+*
+
+.subckt 100180 CBAR A0 A1 A2 A3 A4 A5 B0 B1 B2 B3 B4 B5
++	       F0 F1 F2 F3 F4 F5 GBAR PBAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++		  VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+U1 INV  VCC1 VEE
++	CBAR Cinv
++	D0_GATE IO_100K_IN IO_LEVEL={IO_LEVEL}
+U2 BUFA(12) VCC1 VEE
++	A0  A1  A2  A3  A4  A5  B0  B1  B2  B3  B4  B5
++	A0B A1B A2B A3B A4B A5B B0B B1B B2B B3B B4B B5B
++	D_100180_1 IO_100K_IN MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U3 XORA(6) VCC1 VEE
++	A0B B0B  A1B B1B  A2B B2B  A3B B3B  A4B B4B  A5B B5B
++	P0 P1 P2 P3 P4 P5
++	D0_GATE IO_100K_IN 
+U4 ANDA(2,6) VCC1 VEE
++	A0B B0B  A1B B1B  A2B B2B  A3B B3B  A4B B4B  A5B B5B
++	G0 G1 G2 G3 G4 G5
++	D0_GATE IO_100K_IN
+U5 AO (2,2) VCC1 VEE
++	P0 Cinv 
++	G0 $D_HI    Q1 
++	D0_GATE IO_100K_IN
+U6 AO (3,3) VCC1 VEE
++	P0 P1 Cinv 
++	G0 P1 $D_HI 
++	G1 $D_HI $D_HI	   Q2 
++	D0_GATE IO_100K_IN
+U7 AO (4,4) VCC1 VEE
++	P0 P1 P2 Cinv 
++	G0 P1 P2 $D_HI 
++	G1 P2 $D_HI $D_HI 
++	G2 $D_HI $D_HI $D_HI    Q3
++	D0_GATE IO_100K_IN
+U8 AO (5,5) VCC1 VEE
++	P0 P1 P2 P3 Cinv 
++	G0 P1 P2 P3 $D_HI 
++	G1 P2 P3 $D_HI $D_HI 
++	G2 P3 $D_HI $D_HI $D_HI 
++	G3 $D_HI $D_HI $D_HI $D_HI    Q4   
++	D0_GATE IO_100K_IN
+U9 AO (6,6) VCC1 VEE
++	P0 P1 P2 P3 P4 Cinv 
++	G0 P1 P2 P3 P4 $D_HI 
++	G1 P2 P3 P4 $D_HI $D_HI 
++	G2 P3 P4 $D_HI $D_HI $D_HI 
++	G3 P4 $D_HI $D_HI $D_HI $D_HI   
++	G4 $D_HI $D_HI $D_HI $D_HI $D_HI    Q5   
++	D0_GATE IO_100K_IN
+U10 PULLDN(13) VCC1 VEE
++	CBAR A0 A1 A2 A3 A4 A5 B0 B1 B2 B3 B4 B5
++	IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+U11 AOI (6,6) VCC2 VEE
++	G0 P1 P2 P3 P4 P5 
++	G1 P2 P3 P4 P5 $D_HI
++	G2 P3 P4 P5 $D_HI $D_HI
++	G3 P4 P5 $D_HI $D_HI $D_HI
++	G4 P5 $D_HI $D_HI $D_HI $D_HI
++	G5 $D_HI $D_HI $D_HI $D_HI $D_HI    GBAR
++	D_100180_2 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U12 NAND(6) VCC2 VEE
++	P0 P1 P2 P3 P4 P5    PBAR
++	D_100180_3 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+U13 XORA(6) VCC2 VEE
++	P0 Cinv	  P1 Q1	  P2 Q2	  P3 Q3	  P4 Q4	  P5 Q5
++	F0 F1 F2 F3 F4 F5
++	D_100180_4 IO_100K_OUT MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+.ends
+
+.model D_100180_1 ugate (
++	tplhmn=0.20ns	 tplhmx=0.70ns   
++	tphlmn=0.20ns	 tphlmx=0.70ns  
++       )
+.model D_100180_2 ugate (
++	tplhmn={table(temp, 0, 0.90ns, 25, 1.00ns, 85, 1.00ns)}
++	tplhmx={table(temp, 0, 3.20ns, 25, 3.10ns, 85, 3.20ns)}
++	tphlmn={table(temp, 0, 0.90ns, 25, 1.00ns, 85, 1.00ns)}
++	tplhmx={table(temp, 0, 3.20ns, 25, 3.10ns, 85, 3.20ns)}
++       )
+.model D_100180_3 ugate (
++	tplhmn=0.80ns
++	tplhmx={table(temp, 0, 2.30ns, 25, 2.30ns, 85, 2.60ns)}
++	tphlmn=0.80ns 
++	tphlmx={table(temp, 0, 2.30ns, 25, 2.30ns, 85, 2.60ns)}
++       )
+.model D_100180_4 ugate (
++	tplhmn=0.90ns
++	tplhmx={table(temp, 0, 4.00ns, 25, 3.90ns, 85, 4.00ns)}
++	tphlmn=0.90ns 
++	tphlmx={table(temp, 0, 4.00ns, 25, 3.90ns, 85, 4.00ns)}
++       )
+
+*$
+*-------------------------------------------------------------------------
+* 100231 Triple D-Type Master-Slave Flip-Flop (High-Speed)
+*
+* Philips ECL Databook June 1990
+* 	08/15/91	Created
+
+.subckt 100231 MS MR S0 S1 S2 R0 R1 R2 MCP CP0 CP1 CP2 D0 D1 D2
++	Q0 Q0BAR Q1 Q1BAR Q2 Q2BAR
++	optional: VEE =$G_ECL_100K_VEE  VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++	params: MNTYMXDLY=0 IO_LEVEL=0
+
+* Note: In accordance with the databook, all unused inputs must be tied
+*	low, pulldown resistors are not incorporated in this model.
+*
+*	Despite the Master-Slave description, this device behaves as a
+*	normal positive-edge-triggered D flip-flop.
+*
+*	To keep the number of gates to a minimum for this model, the
+*	prop. delay times for MS, MR, Rn, and Sn have not been made
+*	dependent on the state of the clock, rather the longer prop.
+*	delay times have been used.
+*
+*	The release times (tsupcclkh) were derived from MS,MR to MCP
+*	setup times such that all possible release time violations will
+*	be caught.  However, this results in pessimistic setup requirements
+*	for other set/reset-to-clock combinations.
+
+U1 BUFA(2) VCC1 VEE
++	MS    MR
++	MSBUF MRBUF
++	D_100231_2 IO_100K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U2 BUF	VCC1 VEE
++	MCP  MCPBUF
++	D_100231_3 IO_100K_IN  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U3 BUFA(3) VCC1 VEE
++	D0  D1  D2
++	D0B D1B D2B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U4 NORA(2,6) VCC1 VEE
++	MSBUF S0  MRBUF R0  MSBUF S1  MRBUF R1  MSBUF S2  MRBUF R2
++	SIN0B     RIN0B     SIN1B     RIN1B     SIN2B     RIN2B
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U5 ORA(2,3) VCC1 VEE
++	MCPBUF CP0  MCPBUF CP1  MCPBUF CP2
++	CPIN0       CPIN1       CPIN2
++	D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+U6 DFF(1) VCC2 VEE
++	SIN0B RIN0B CPIN0
++	D0B Q0 Q0BAR
++	D_100231_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U7 DFF(1) VCC2 VEE
++	SIN1B RIN1B CPIN1
++	D1B Q1 Q1BAR
++	D_100231_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+U8 DFF(1) VCC2 VEE
++	SIN2B RIN2B CPIN2
++	D2B Q2 Q2BAR
++	D_100231_1 IO_100K_OUT  IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+.ends
+
+.model D_100231_1 ueff (
++	tpclkqlhmn=0.70ns
++	tpclkqlhmx=1.80ns
++	tpclkqhlmn=0.70ns
++	tpclkqhlmx=1.80ns
++	tppcqlhmn=0.70ns
++	tppcqlhmx={table(temp, 0, 2.00ns,  25, 1.90ns,  85, 2.20ns)}
++	tppcqhlmn=0.70ns
++	tppcqhlmx={table(temp, 0, 2.00ns,  25, 1.90ns,  85, 2.20ns)}
++	tsudclkmn={table(temp, 0, 1.10ns,  25, 0.90ns,  85, 1.15ns)}
++	tsupcclkhmn={table(temp, 0, 2.15ns,  25, 1.95ns,  85, 2.15ns)}
++	thdclkmn={table(temp, 0, 0.60ns,  25, 0.60ns,  85, 0.80ns)}
++	twpclmn=2.50ns
++	twclkhmn=2.50ns
++	)
+
+.model D_100231_2 ugate (
++	tplhmn=0.40ns
++	tplhmx={table(temp, 0, 0.80ns,  25, 0.90ns,  85, 0.60ns)}
++	tphlmn=0.40ns
++	tphlmx={table(temp, 0, 0.80ns,  25, 0.90ns,  85, 0.60ns)}
++	)
+
+.model D_100231_3 ugate (
++	tplhmn={table(temp, 0, .05ns,  25, 0.05ns,  85, 0.00ns)}
++	tplhmx={table(temp, 0, .20ns,  25, 0.20ns,  85, 0.25ns)}
++	tphlmn={table(temp, 0, .05ns,  25, 0.05ns,  85, 0.00ns)}
++	tphlmx={table(temp, 0, .20ns,  25, 0.20ns,  85, 0.25ns)}
++	)
+*$
+*-------------------------------------------------------------------------
+* 100255 Quint ECL 100k/TTL Bidirectional Transceiver
+*
+* Philips ECL Databook June 1990
+*  imw	06/21/93	Created
+
+.subckt 100255 A0 A1 A2 A3 A4 DIR B0 B1 B2 B3 B4 CE
++ optional: VEE=$G_ECL_100K_VEE    GND1=$G_DGND
++           GND2=$G_ECL_100K_VCC2  VTTL=$G_DPWR
++ params:    MNTYMXDLY=0  IO_LEVEL=0
+
+Uires  pulldn(7) GND2 VEE
++   A0   A1   A2   A3   A4   DIR   CE
++   IO_100K_PULLDN  IO_LEVEL={IO_LEVEL}
+
+UinvA  inva(6)   GND1  VEE
++   A0   A1   A2   A3   A4     Db          ; 5 ECL inputs, 1 internal signal
++   A0i  A1i  A2i  A3i  A4i    Dbn
++   D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+
+UoutB  buf3a(5)  VTTL  GND1
++   A0i  A1i  A2i  A3i  A4i
++   ENoutB
++   B0   B1   B2   B3   B4                 ; TTL outputs
++   D_100255_T IO_STD
++   IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+
+UenAB  anda(2,2) GND1  VEE
++   Ceb  Db	 Ceb  Dbn
++   ENoutB                      ; enables A=>B
++   ENoutA                      ; enables B=>A
++   D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+
+Ubuf   bufa(2)  GND1  VEE
++   CE   DIR				   ; ECL inputs
++   Ceb  Db
++   D0_GATE IO_100K_IN  IO_LEVEL={IO_LEVEL}
+
+UinvB  inva(5)   VTTL  GND1
++   B0   B1   B2   B3   B4                 ; 5 TTL inputs
++   B0i  B1i  B2i  B3i  B4i
++   D0_GATE   IO_STD   IO_LEVEL={IO_LEVEL}
+
+UoutA  buf3a(5)  GND2  VEE
++   B0i  B1i  B2i  B3i  B4i
++   ENoutA
++   A0   A1   A2   A3   A4                 ; ECL outputs
++   D_100255_E IO_STD
++   IO_LEVEL={IO_LEVEL} MNTYMXDLY={MNTYMXDLY}
+
+.ends
+
+.model D_100255_T utgate (       ; TTL tri-state outputs
++       tplhmx=4.50ns
++       tphlmx=4.50ns
++       tplzmx=3.00ns
++       tphzmx=3.00ns
++       tpzhmx=7.00ns
++       tpzlmx=7.00ns
++ )
+
+.model D_100255_E utgate (       ; ECL tri-state outputs
++       tplhmn=1.00ns  tplhmx=4.00ns
++       tphlmn=1.00ns  tphlmx=4.00ns
++       tplzmn=1.50ns  tplzmx=4.00ns
++       tphzmn=1.50ns  tphzmx=4.00ns
++       tpzhmn=4.00ns  tpzhmx=8.00ns
++       tpzlmn=4.00ns  tpzlmx=8.00ns
++ )
+*$

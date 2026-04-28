@@ -1,0 +1,60 @@
+*EL5210C/EL5410C spice model. This spice model modes the single amplifier for EL5210C and EL5410C
+*
+* connections:        +input
+*                       |  -input
+*                       |    | +Vsupply
+*                       |    |    | -Vsupply
+*                       |    |    |    |  output
+*                       |    |    |    |    |
+.subckt EL5210C         3    2    8    4    1
+*
+*Input stage
+m1 10 5 9 9 mod2 L=1e-6 W=95e-6
+m2 11 2 9 9 mod2 L=1e-6 W=95e-6
+m3 12 5 14 14 mod1 L=1e-6 W=95e-6
+m4 13 2 14 14 mod1 L=1e-6 W=95e-6
+r1 10 4 4k
+r2 11 4 4k
+r3 12 8 4k
+r4 13 8 4k
+ca 10 11 0.1p
+cb 12 13 0.1p
+is1 8 9 66u
+is2 14 4 66u
+vos 5 6 3mV
+*
+*voltage noise
+idn 500 25 3.121mA
+cdn 25 26 1GF
+vdn 26 500 0V
+dn  25 500 den
+h1 6 3 vdn 0
+*
+*G1,G2 stage
+g1 500 15 10 11 2.0e-4
+g2 500 15 12 13 2.0e-4 
+rt 15 500 2.25e7
+ct 15 1 2.6pF
+d1 15 20 dx
+d2 21 15 dx
+*v3 8 20 0.1V
+*v4 21 4 0.1V
+*
+*output stage
+m5 1 17 8 8 mod2 L=1e-6 W=1000e-6
+m6 1 18 4 4 mod1 L=1e-6 W=1000e-6
+e1 8 17 poly(1) (500, 15) 0.9 1
+e2 18 4 poly(1) (15, 500) 0.9 1
+*
+*Reference voltage
+Eref 500 0 poly(2) (8,0) (4,0) 0 0.5 0.5
+esp 20 500 poly(1) (8,4) -0.1 0.5
+esn 21 500 poly(1) (4,8) 0.1 0.5
+Iss 8 4 2.31mA
+*
+.model mod1 nmos (kp=10e-6,VTO=0.8V, lambda=0.01)
+.model mod2 pmos (kp=10e-6,VTO=-0.8V, lambda=0.01)
+.model dx d(N=0.01)
+.model den d(kf=3.2e-13 af=1)
+.ends EL5210C
+*$

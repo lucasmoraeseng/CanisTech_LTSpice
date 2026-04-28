@@ -1,0 +1,43 @@
+BYV26					
+* comparison measured simulated data for static behavior					.include byv26.mod
+					.dc v1 .1 2.5 .05
+v1 1 0 dc 1					.probe
+d1 1 0 byv26					.temp 0 25 75
+
+* measured data for t=25°C		* measured data for t=0°C		* measured data for t=75°C
+g25C 10 0 table {v(1)} =		g0C 20 0 table {v(1)} =		g75C 30 0 table {v(1)} =
++ 0.397 100u		+ 0.461 100u		+ 0.283 100u
++ 0.418 200u		+ 0.467 200u		+ 0.308 200u
++ 0.449 500u		+ 0.495 500u		+ 0.341 500u
++ 0.476 1m		+ 0.522 1m		+ 0.370 1m
++ 0.507 2m		+ 0.553 2m		+ 0.401 2m
++ 0.560 5m		+ 0.607 5m		+ 0.451 5m
++ 0.612 10MA 		+ 0.661 10MA 		+ 0.497 10MA 
++ 0.680 20MA		+ 0.732 20MA		+ 0.554 20MA
++ 0.797 50MA		+ 0.858 50MA		+ 0.652 50MA
++ 0.916 100mA		+ 0.985 100mA		+ 0.751 100mA
++ 1.067 200mA		+ 1.147 200mA		+ 0.878 200mA
++ 1.335 500mA		+ 1.429 500mA		+ 1.108 500mA
++ 1.609 1.0A		+ 1.722 1.0A		+ 1.356 1.0A
++ 1.965 2.0A		+ 2.090 2.0A		+ 1.672 2.0A		
++ 2.624 5.0A		+ 2.775 5.0A		+ 2.276 5.0A		
+r_g25C 10 0 1		r_g0C 20 0 1		r_g75C 30 0 1		
+ 	 	 	 	 	 	 
+.end						
+.model byv26    
++ Is=437.1n 
++ N=2.406 
++ Rs=.3711 
++ Ikf=13.54m 
++ Xti=1.2 
++ Eg=1.11						
++ Cjo=38.36p 
++ M=.3906 
++ Vj=.3905 
++ Fc=.5 
++ Isr=10.04E-21 
++ Nr=4.506 
+Bv=break down voltage*						
++ Ibv=100u Tt=128.2n)						
+* D=800						
+* E=1000						

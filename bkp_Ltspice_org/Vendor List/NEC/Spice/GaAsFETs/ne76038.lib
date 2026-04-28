@@ -1,0 +1,15 @@
+ ! Manufacturer: NEC
+ ! Non-linear model
+ ! File name: NE76038.Lib
+ ! TOM-1 model provided by NEC
+ 
+ .MODEL NE76038 NMF (LEVEL=3
+ + VT0=-0.73     ALFA=4           BETA=0.063       GAMA=0.06
+ + Q=2.2         DELT=0.7         VBI=0.626        IS=1.98e-11
+ + N=1.4         T=3.2e-12        CDS=0.11e-12     RDSD=480
+ + CDSD=100e-12  CGS0=0.4e-12     CGD0=0.04e-12    VMAX=0.313
+ + RG=1.5        RD=2.0           RS=4.6           LG=0.14e-9
+ + LD=0.06e-9    LS=0.02e-9       CGSB=0.06e-12    CDSB=0.06e-12
+ + LGB=0.64e-9   LDB=0.53e-9      LSB=0.18e-9      CGDP=0.01e-12
+ + CDSP=0.02e-12 CGSP=0.003e-12   KF=0             AF=1
+ + XTI=3         EG=1.43          FCP=1            VDMX=4 )

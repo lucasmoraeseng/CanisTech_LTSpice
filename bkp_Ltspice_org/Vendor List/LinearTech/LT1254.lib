@@ -1,0 +1,75 @@
+* 
+* Linear Technology LT1254 op amp model  
+* Written: 07-24-1992. Type: Current Feedback Amplifier
+*
+* Connections: + - V+V-O
+.SUBCKT LT1254 3 2 7 4 6
+*
+Q2A 4 3 10 QP 0.5
+Q3A 11 10 200 QN
+Q4A 11 11 7 QP
+RIB 11 7 35K
+Q5A 9 11 7 QP
+Q6A 12 11 7 QP
+Q7A 4 9 12 QP
+Q8A 7 12 13 QN 10
+RSCA 13 6 10
+IBA 7 10 DC 300U
+*
+Q2B 7 3 110 QN 0.5
+Q3B 111 110 200 QP
+Q4B 111 111 4 QN
+*
+Q5B 9 111 4 QN
+Q6B 112 111 4 QN
+Q7B 7 9 112 QN
+Q8B 4 112 113 QP 10
+RSCB 6 113  10
+IBB 110 4 DC 300U
+*
+RC 2 200 20
+R9 9 0 201600
+D1 9 6 DC
+D2 6 9 DC
+*
+.MODEL DC D
+*
+.MODEL QN NPN (IS=200E-18 BF=150 ISC=40E-18 NC=1 RB=250 RE=8 RC=100
++CJE=0.37P VJE=0.65 MJE=0.33 FC=0.7 CJC=0.8P VJC=0.62 MJC=0.44
++TF=300P
+*
+*
+.MODEL QP PNP (IS=170E-18 BF=150 ISC=113E-18 NC=1 RB=250 RE=8 RC=100
++CJE=0.34P VJE=0.75 MJE=0.40 FC=0.7 CJC=0.8P VJC=0.5 MJC=0.36
++TF=300P
+*
+.ENDS LT1254
+***
+*         (C) COPYRIGHT LINEAR TECHNOLOGY CORPORATION 1993
+*                       All rights reserved.
+* 
+*   Linear Technology Corporation hereby grants the users of this
+* macromodel a non-exclusive, nontransferrable license to use this
+*            macromodel under the following conditions:
+* 
+* The user agrees that this macromodel is licensed from Linear
+* Technology and agrees that the macromodel may be used, loaned,
+* given away or included in other model libraries as long as this
+* notice and the model in its entirety and unchanged is included.
+* No right to make derivative works or modifications to the
+* macromodel is granted hereby.  All such rights are reserved.
+* 
+* This model is provided as is.  Linear Technology makes no
+* warranty, either expressed or implied about the suitability or
+* fitness of this model for any particular purpose.  In no event
+* will Linear Technology be liable for special, collateral,
+* incidental or consequential damages in connection with or arising
+* out of the use of this macromodel.  It should be remembered that
+* models are a simplification of the actual circuit.
+* 
+* Linear Technology reserves the right to change these macromodels
+* without prior notice.  Contact Linear Technology at 1630 McCarthy
+* Blvd., Milpitas, CA, 95035-7487 or telephone 408/432-1900 for
+* datasheets on the actual amplifiers or the latest macromodels.
+* 
+* ----------------------------------------------------------------------- *

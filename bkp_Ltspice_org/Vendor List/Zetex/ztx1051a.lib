@@ -1,0 +1,23 @@
+
+*ZETEX  ZTX1051A Spice model   Last revision 16/12/94
+*
+.MODEL ZTX1051A  NPN IS=1.35E-12  NF=1.0  BF=600  IKF=5.0  VAF=120
++               ISE=0.6E-13  NE=1.25  NR=1.0  BR=150  IKR=3  VAR=15
++               ISC=1.0E-10  NC=1.7  RB=0.1  RE=0.023  RC=0.010 
++               CJC=90.36E-12  CJE=547.5E-12  MJC=0.385  MJE=0.357
++               VJC=0.5 VJE=0.741  TF=600E-12  TR=8E-9
+*
+*
+*                          (C)  1994 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

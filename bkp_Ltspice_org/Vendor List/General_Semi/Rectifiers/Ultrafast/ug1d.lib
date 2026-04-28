@@ -1,0 +1,23 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+.MODEL UG1D D (
++   N=2.72192
++  IS=1.8496E-006
++  RS=0.00447134
++  EG=1.62036
++ XTI=3.12371
++ CJO=1.12328E-011
++  VJ=0.5
++   M=0.176182
++  FC=0.5
++  TT=3.69946E-008
++  BV=200
++ IBV=0.1
++  KF=0
++  AF=1 )

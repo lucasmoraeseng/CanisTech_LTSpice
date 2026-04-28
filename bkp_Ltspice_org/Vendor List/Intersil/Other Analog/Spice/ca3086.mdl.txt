@@ -1,0 +1,25 @@
+* CA3086/CA3018 NPN model
+* created using Parts release 6.3a on 02/15/97 at 16:18
+* Parts is a MicroSim product.
+.MODEL CA3086 NPN
++ IS=10.000E-15
++ BF=156.66
++ VAF=100
++ IKF=36.783E-3
++ ISE=114.82E-15
++ NE=1.4743
++ BR=.1001
++ VAR=100
++ IKR=10.010E-3
++ ISC=10.000E-15
++ RC=10
++ CJE=1.0260E-12
++ MJE=.33333
++ CJC=991.79E-15
++ MJC=.33333
++ TF=278.55E-12
++ XTF=91.905
++ VTF=18.899
++ ITF=.77631
++ TR=10.000E-9
+*$

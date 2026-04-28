@@ -1,0 +1,52 @@
+* FILENAME:        NE680M03.CIR
+* NEC PART NUMBER: NE680M03
+* LAST MODIFIED:   11/98
+* BIAS CONDITIONS: Vce=0.5V to 6V, Ic=0.5mA to 15mA
+* FREQ RANGE:      0.1GHz to 3GHz
+*
+*
+*                            CCBpkg
+*                   ,--------||-----------.
+*                   |                     |
+*                   |        CCB          |
+*                   |    .---||---.       |
+*  BASE             |    |        |       |   COLLECTOR
+*                   |    |   /----o-------o--Lcx------o
+*  o-------Lbx------o-LB-o--|Q1   |       |
+*                        B   \   --       |
+*                            |   -- CCE  --
+*                          E o----'      -- CCEpkg
+*                            |            |
+*                           LE            |
+*                            o------------'
+*                            |
+*                            |
+*                           Lex
+*                            | 
+*                            o EMITTER
+*
+*       CCB    = 0.08pF           LB  = 0.4nH
+*       CCE    = 0.08pF           LE  = 0.8nH
+*       CCBpkg = 0.08pF           Lbx = 0.12nH
+*       CCEpkg = 0.08pF           Lcx = 0.10nH
+*                                 Lex = 0.12nH
+*
+Q1  5 7 8 NE68000
+CCB 7 5 0.08E-12
+CCE 5 8 0.08E-12
+LE  8 6 0.8E-9
+LB  4 7 0.4E-9
+CCBPKG 4 5 0.08E-12
+CCEPKG 5 6 0.08E-12
+LBX 1 4 0.12E-9
+LCX 5 2 0.10E-9
+LEX 6 3 0.12E-9
+.MODEL NE68000 NPN 
++( IS=5.98e-16   BF=179           NF=1.04        VAF=17           IKF=0.02 
++ ISE=1.0e-6     NE=30            BR=16          NR=1.04          VAR=100
++ IKR=6.85e-3    ISC=1.5e-9       NC=20          RE=0.50          RB=8.54
++ RBM=2          IRB=4e-4         RC=10          CJE=0.358e-12    VJE=0.86
++ MJE=0.50       CJC=0.162e-12    VJC=0.52       MJC=0.15         XCJC=1
++ CJS=0.0        VJS=0.750        MJS=0.0        FC=0.50          TF=8.70e-12         
++ XTF=20.0       VTF=0.3          ITF=0.04       PTF=120          TR=0.635e-9                
++ EG=1.11        XTB=0.0          XTI=3.0        KF=0.0           AF=1.0 )

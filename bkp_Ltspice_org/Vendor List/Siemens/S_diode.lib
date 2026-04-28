@@ -1,0 +1,609 @@
+*******************************************************************
+* SIEMENS Discrete & RF Semiconductors                            *
+* DIODE SPICE LIBRARY                                             *
+*                                                                 *
+* Filename: s-diode.lib                                           *
+* Version:  4.3                                                   *
+* Date:     September 1998                                        *
+*******************************************************************
+* This library contains the following SIEMENS Diodes:             *
+*                                                                 *
+* BA582      BA592      BA595      BAL74      BAL99      BAR64    *
+* BAR74      BAR99      BAS116     BAS125     BAS240A    BAS16    *
+* BAS21      BAS28      BAS40      BAS70      BAT14-098  BAT15-03W*
+* BAT15-04   BAT15-098  BAT15-099  BAT15-099R BAT18      BAT60A   *
+* BAT62      BAT63      BAT64      BAT65      BAT66      BAT68    *
+* BAT165     BAV70      BAV74      BAV99      BAW100     BAW101   *
+* BAW56      BAW78D     BB515      BB535      BB545      BB639    *
+* BB804      BB814      BB833      BB914      SMBD2835   SMBD2836 *
+* SMBD2837   SMBD2838   SMBD6050   SMBD6100   SMBD7000   SMBD914  *
+*                                                                 *
+*******************************************************************
+*****************************************************************
+* BAT240A Diode Chip Model
+.MODEL D364/SIE D(IS=146N RS=2.18 N=1.07 XTI=4.25 EG=.650 
++ CJO=57.0P M=.495 VJ=.390 FC=.500 BV=240 IBV=5.00U TT=120P)
+* Extracted By: 
+* SIEMENS Semiconductors 
+* HL HF PE SIL
+* J.P. Schaffer
+* Date:
+* 6. May 1998 
+*****************************************************************
+* BAT60A Diode Model
+.MODEL BAT60A/SIE D(IS=121U RS=0.158 N=1.04 XTI=2.06 EG=.500
++ CJO=52.5P M=.250 VJ=.280 FC=.500 BV=8.0 IBV=1.00M TT=10P)
+***************************************************************** 
+* Attention! Model works for Temp < 110°C only                  *
+*****************************************************************
+* Extracted By: 
+* SIEMENS Semiconductors 
+* HL HF PE SIL
+* J.P. Schaffer
+* Date:
+* 9. September 1998 
+*****************************************************************
+* BAT165 Diode Model
+.MODEL BAT165/SIE D(IS=51.5N RS=0.257 N=1.03 XTI=3.0 EG=.680
++ CJO=39.0P M=.475 VJ=.410 FC=.500 BV=40 IBV=10.00U TT=10P)
+* Extracted By: 
+* SIEMENS Semiconductors 
+* HL HF PE SIL
+* J.P. Schaffer
+* Date:
+* 3. September 1998 
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAS16 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAS16C/SIE 1 2
+D    3 4 BAS16/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAS16/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAR99 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAR99C/SIE 1 2
+D    3 4 BAR99/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAR99/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAV70 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAV70C/SIE 1 2
+D    3 4 BAV70/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAV70/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAV74 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAV74C/SIE 1 2
+D    3 4 BAV74/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAV74/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAV99 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAV99C/SIE 1 2
+D    3 4 BAV99/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAV99/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAW56 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAW56C/SIE 1 2
+D    3 4 BAW56/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAW56/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAW100 (SOT-23)                   *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAW100C/SIE 1 2
+D    3 4 BAW100/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAW100/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAL74 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAL74C/SIE 1 2
+D    3 4 BAL74/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAL74/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAL99 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAL99C/SIE 1 2
+D    3 4 BAL99/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAL99/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAR74 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAR74C/SIE 1 2
+D    3 4 BAR74/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAR74/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAS28 (SOT-23)                    *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAS28C/SIE 1 2
+D    3 4 BAS28/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAS28/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE SMBD914 (SOT-23)                  *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT SMBD914C/SIE 1 2
+D    3 4 SMBD914/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL SMBD914/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE SMBD2835 (SOT-23)                 *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT SMBD2835C/SIE 1 2
+D    3 4 SMBD2835/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL SMBD2835/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE SMBD2836 (SOT-23)                 *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT SMBD2836C/SIE 1 2
+D    3 4 SMBD2836/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL SMBD2836/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE SMBD2837 (SOT-23)                 *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT SMBD2837C/SIE 1 2
+D    3 4 SMBD2837/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL SMBD2837/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE SMBD2838 (SOT-23)                 *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT SMBD2838C/SIE 1 2
+D    3 4 SMBD2838/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL SMBD2838/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE SMBD6050 (SOT-23)                 *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT SMBD6050C/SIE 1 2
+D    3 4 SMBD6050/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL SMBD6050/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE SMBD6100 (SOT-23)                 *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT SMBD6100C/SIE 1 2
+D    3 4 SMBD6100/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL SMBD6100/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE SMBD7000 (SOT-23)                 *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT SMBD7000C/SIE 1 2
+D    3 4 SMBD7000/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL SMBD7000/SIE D
++ IS  =  2.7838E-09
++ N   =  1.8703
++ RS  =  1.3548
++ EG  =  1.0637
++ XTI =  1.5000
++ CJO =  0.6000E-12
++ VJ  =  0.2000
++ M   =  0.1000
+*****************************************************************
+* SPICE2G6 MODEL OF THE DIODE BAW101  (SOT-23)                  *
+* REV: 98.1                  DANALYSE GMBH BERLIN (27.07.1998)  *
+*****************************************************************
+.SUBCKT BAW101C/SIE 1 2
+D    3 4 BAW101/SIE
+L1   1 3 0.350N
+L2   4 2 0.350N
+.ENDS
+.MODEL BAW101/SIE D
++ IS  =  0.2583E-12
++ N   =  1.1790
++ RS  =  3.0000
++ EG  =  1.1073
++ XTI =  4.4349
++ CJO =  6.2000E-12
++ VJ  =  0.7000
++ M   =  0.5000
+*****************************************************************
+.MODEL BA582/SIE D(IS=185F RS=.30 N=1.305 BV=70 IBV=.1N
++ CJO=1.17P VJ=.12 M=.096 TT=125N)
+* SIEMENS 40 Volt 125ns  Si-PIN-Switch  17-03-1996 Moschovis
+*****************************************************************
+.MODEL BA592/SIE D(IS=185F RS=.30 N=1.305 BV=70 IBV=.1N
++ CJO=1.17P VJ=.12 M=.096 TT=125n)
+* SIEMENS 40 Volt 125ns  Si-PIN-Switch  17-03-1996 Moschovis
+*****************************************************************
+.MODEL BA595/SIE D(IS=1.355n RS=2.6 N=2.04 BV=50 IBV=5u
++ CJO=0.35P VJ=.8 M=1.2 TT=1.6u)
+* SIEMENS 50 Volt 1.6us  Si-PIN-Switch  17-03-1997 Moschovis
+*****************************************************************
+.MODEL BAR64/SIE D(IS=880p RS=.9 N=1.305 BV=70 IBV=.1N
++ CJO=0.33P VJ=.8 M=.2 TT=1.25u)
+* SIEMENS 40 Volt 125ns  Si-PIN-Switch  17-03-1996 Moschovis
+*****************************************************************
+.MODEL BAS116/SIE D(
++       AF= 1.00E+00    BV= 7.50E+01   CJO= 1.83E-12    EG= 1.11E+00
++       FC= 5.00E-01   IBV= 1.00E-04    IS= 1.48E-13    KF= 0.00E+00
++        M= 2.62E-01     N= 1.33E+00    RS= 8.48E-01    TT= 8.66E-09
++       VJ= 3.44E-01   XTI= 3.00E+00) 
+*****************************************************************
+.MODEL BAS125/SIE D(IS=1.45N RS=12 N=1.03 XTI=1.6 EG=.68
++ CJO=.95P M=.2 VJ=.24 FC=.5 BV=25 IBV=100n TT=25P)
+* ISR=15n NR=4k IKF=10m
+* for 27C reverse current simulation use GMIN=1e-9
+* 17.12.1993 SIEMENS PD1 KURTH
+*****************************************************************
+.MODEL BAS21/SIE D(
++       AF= 1.00E+00    BV= 2.50E+02   CJO= 6.64E-13    EG= 1.11E+00
++       FC= 5.00E-01   IBV= 1.00E-04    IS= 6.42E-09    KF= 0.00E+00
++        M= 1.00E-01     N= 1.98E+00    RS= 9.12E-01    TT= 7.21E-08
++       VJ= 2.00E+00   XTI= 3.00E+00)
+*****************************************************************
+.MODEL BAS40/SIE D(IS=8N RS=7.8 N=1.04 XTI=1.8 EG=.68 
++ CJO=3P M=.42 VJ=.4 FC=.5 BV=40 IBV=100n TT=25P)
+* ISR=5n NR=1k IKF=10m
+* for 27C reverse current simulation use: GMIN=1e-9
+* 17.12.1993 SIEMENS PD1 KURTH
+*****************************************************************
+.MODEL BAS70/SIE D(IS=3N N=1.06 RS=29 XTI=1.8 EG=.68 
++ CJO=1.55P M=.29 VJ=.36 FC=.5 BV=70 IBV=100n TT=25P)
+* ISR=2.5n NR=1k IKF=5m
+* for 27C reverse current simulation use: GMIN=.5e-9
+* 17.12.1993 SIEMENS PD1 KURTH
+*****************************************************************
+.MODEL BAT14-098/SIE D(Is=77p N=1.027 Rs=4 Xti=1.8 Eg=.68 Cjo=270f M=.078
++ Vj=.25 Fc=.5 Bv=4 Ibv=5u Tt=25p)
+* Case SOD123, single diode 
+* Add R=3.3MEG parallel for better IR and R0 simulation
+* 29.11.1994 SIEMENS HL EH PD1 Kurth
+*****************************************************************
+.MODEL BAT15-099R/SIE D(Is=150n N=1.04 Rs=2.6 Xti=1.8 Eg=.68 Cjo=365f M=.061
++ Vj=.12 Fc=.5 Bv=4 Ibv=10u Tt=25p)
+* Case SOT143, 4-diode-chip-ring 1-3-2-4-1, I/O connection 1-2 / 4-3 
+* Data for each diode, add R=1.5MEG parallel to each diode for better IR and
+* R0 simulation
+* 28.10.1994 SIEMENS HL EH PD1 Kurth
+*****************************************************************
+.MODEL BAT15-03W/SIE D(Is=130n N=1.08 Rs=4.5 Xti=1.8 Eg=.68 Cjo=260f M=.047
++ Vj=.11 Fc=.5 Bv=4 Ibv=10u Tt=25p)
+* Case SOD323, single diode
+* Add R=3.3MEG parallel for better IR and R0 simulation
+* 10.11.1994 SIEMENS HL EH PD1 Kurth
+*****************************************************************
+.MODEL BAT15-099/SIE D(Is=130n N=1.08 Rs=4.5 Xti=1.8 Eg=.68 Cjo=285f M=.043
++ Vj=.11 Fc=.5 Bv=4 Ibv=10u Tt=25p)
+* Case SOT143, 2 diodes, connection pins 4-1 / 2-3
+* Data for each diode, add R=3.3MEG parallel to each diode for better IR and
+* R0 simulation
+* 10.11.1994 SIEMENS HL EH PD1 Kurth
+*****************************************************************
+.MODEL BAT15-098/SIE D(Is=130n N=1.08 Rs=4.5 Xti=1.8 Eg=.68 Cjo=285f M=.043
++ Vj=.11 Fc=.5 Bv=4 Ibv=10u Tt=25p)
+* Case SOD123, single diode 
+* Add R=3.3MEG parallel for better IR and R0 simulation
+* 10.11.1994 SIEMENS HL EH PD1 Kurth
+*****************************************************************
+.MODEL BAT15-04/SIE D(Is=130n N=1.08 Rs=4.5 Xti=1.8 Eg=.68 Cjo=260f M=.047
++ Vj=.11 Fc=.5 Bv=4 Ibv=10u Tt=25p)
+* Case SOT23, 2 diodes, connection pins 1-3 / 3-2
+* Data for each diode, add R=3.3MEG parallel to each diode for better IR and
+* R0 simulation
+* 10.11.1994 SIEMENS HL EH PD1 Kurth
+*****************************************************************
+* BAT18 Diode Model
+.MODEL BAT18/SIE D(IS=185F RS=.30 N=1.305 BV=70 IBV=.1N
++ CJO=1.17P VJ=.12 M=.096 TT=125N)
+* SIEMENS 40 Volt 125ns  Si-PIN-Switch  17-03-1996 Moschovis
+*****************************************************************
+* BAT62 Diode Model
+.MODEL BAT62/SIE D(IS=120N RS=200 N=1.04 XTI=1.8 EG=.68
++ CJO=.35P M=.14 VJ=.4 FC=.5 BV=40 IBV=5U TT=25P)
+* for 27C reverse current simulation use: GMIN=3e-8
+* 20.12.1993 SIEMENS PD1 KURTH
+*****************************************************************
+* BAT63 Diode Model
+.MODEL BAT63/SIE D(IS=656N RS=1.1 N=1.041 XTI=2.8 EG=1.1
++ CJO=.4814P M=.10 VJ=1.249 FC=.5 BV=4 IBV=5U TT=25P)
+* 20.03.1997 SIEMENS PD1 Moschovis
+*****************************************************************
+.MODEL BAT64/SIE D(
++       AF= 1.00E+00    BV= 3.00E+01   CJO= 6.59E-12    EG= 1.11E+00
++       FC= 5.00E-01   IBV= 1.00E-04    IS= 6.97E-09    KF= 0.00E+00
++        M= 3.96E-01     N= 1.01E+00    RS= 1.84E+00    TT= 1.00E-10
++       VJ= 3.42E-01   XTI= 3.00E+00)
+*****************************************************************
+* BAT65 Diode Model
+.MODEL BAT65/SIE D(Is=80n N=1.02 Rs=0.2152 Xti=5 Eg=1.11 Cjo=31.4p M=0.6196
++ Vj=.8 Fc=.5 Bv=40 Ibv=100u TT=60p)
+* Case SOT223, single diode
+* 26.09.1996 SIEMENS HL EH PD 1 Moschovis
+*****************************************************************
+* BAT66 Diode Model
+.MODEL BAT66/SIE D(Is=243.5n N=1.001 Rs=0.1401 Xti=3 Eg=1.11 Cjo=170.5p M=0.548
++ Vj=.4803 Fc=.5 Bv=30 Ibv=100u TT=30p)
+* Case SOT223, single diode
+* 26.09.1996 SIEMENS HL EH PD 1 Moschovis
+*****************************************************************
+* BAT68 Diode Model
+.MODEL BAT68/SIE D(IS=8N RS=2 N=1.05 XTI=1.8 EG=.68
++ CJO=.77P M=.075 VJ=.1 FC=.5 BV=8 IBV=1U TT=25P)
+* 23.12.1993 SIEMENS PD1 KURTH
+*****************************************************************
+.MODEL BAW78D/SIE D(
++       AF= 1.00E+00    BV= 4.00E+02   CJO= 5.40E-12    EG= 1.11E+00
++       FC= 5.00E-01   IBV= 1.00E-04    IS= 3.08E-11    KF= 0.00E+00
++        M= 4.62E-01     N= 1.51E+00    RS= 4.04E-01    TT= 1.44E-06
++       VJ= 8.00E-01   XTI= 3.00E+00)
+*****************************************************************
+* BB515 Diode Model
+.MODEL BB515/SIE D(IS=2F RS=.05 N=1.045 BV=32 IBV=100N XTI=3 EG=1.11
++ CJO=25.5P VJ=2.5 M=1 TT=14.4N)
+* Hyperabrupt Diode, M = f(VR)! Above approximation for Capacitance in 
+* VR-range 1..28V
+* VR-range 0..6V: CJO=25.82P VJ=1.59 M=0.722
+* VR-range 0..5V: CJO=25.86P VJ=1.38 M=0.66
+* VR-range 0..3V: CJO=25.87P VJ=1.167 M=0.59
+* Reverse current simulation: ISR=4.1p NR=2
+* For Capacitance Q-factor add RS=0.5 externally or (degrades VF/IF) 
+* internally
+* chip D190. 25.08.1994 SIEMENS HL EH PD1 Kurth
+*****************************************************************
+* BB535 Diode Model
+.MODEL BB535/SIE D(IS=1.75E-15 N=1.043 RS=60E-3 XTI=3 EG=1.11 CJO=25.31E-12
++ M=1.064 VJ=3.022 FC=.5 BV=32 IBV=100E-9 TT=120E-9)
+* hyperabrupt Diode, M=f(VR)! C-curve approximated between VR=1..28V
+* VR range 0..6V: CJO=26.65pF VJ=1.51 M=0.69
+* VR range 0..4V: CJO=26.7pF VJ=1.28 M=0.62
+* Model includes Case capacitance Cc=0.11pF
+* 07.09.96 SIEMENS PD1 Moschovis
+*****************************************************************
+* BB545 Diode Model
+.MODEL BB545/SIE D(IS=110.11E-15 RS=0.24545 N=1.2034 XTI=3 EG=1.11
++CJo=38.264P M=0.87698 Vj=0.91294 FC=0 BV=30 IBV=5E-6 TT=80N)
+* Model includes Case capacitance Cc=0.11pF
+* 23.10.96 SIMENS HL EH PD 1 Moschovis
+*****************************************************************
+* BB639 Diode Model
+.MODEL BB639/SIE D(IS=4E-15 N=1.035 RS=.12 XTI=3 EG=1.11 CJO=55.88E-12
++ M=1.286 VJ=2.922 FC=.5 BV=32 IBV=100E-9 TT=160E-9)
+* hyperabrupt Diode, M=f(VR)! C-curve approximated between VR=1..28V
+* VR range 0..6V: CJO=55.9pF VJ=2.08 M=0.94
+* VR range 0..4V: CJO=55.9pF VJ=1.71 M=0.81
+* 07.09.95 SIEMENS PD1
+* Model includes Case capacitance Cc=0.11pF
+*****************************************************************
+* BB804 Diode Model
+.MODEL BB804/SIE D(IS=48F N=1.13 RS=.18 XTI=3 EG=1.11 CJO=80.6P M=.47 
++ VJ=.8 FC=.5 BV=20 IBV=.1U TT=137N)
+* T=27C 
+* BB804-typical (group 2), SIEMENS HL EH PD1 KTH 25.07.94
+*****************************************************************
+* BB814 Diode Model
+.MODEL BB814/SIE D(IS=7f N=1.012 RS=.18 XTI=3 EG=1.11 CJO=83.9p M=.775
++ VJ=1.6 FC=.5 BV=20 IBV=100n TT=137n)
+*  IKF=1 ISR=10p NR=1K
+* hyperabrupt Diode, M=f(VR)! C-curve approximated between VR=1..9V
+* BB814-typical, SIEMENS HL EH PD1 KTH 
+*****************************************************************
+* BB833 Diode Model
+.MODEL BB833/SIE D (IS=42.156E-15 N=1.1718 RS=.10785 XTI=3 EG=1.11 CJO=29.033E-12
++ M=0.90022 VJ=.39089 FC=.5 BV=32 IBV=5E-6 TT=120E-9)
+* created using Parts release 6.3 on 02/19/97 at 09:16
+* Parts is a MicroSim product.
+*****************************************************************
+* BB914 Diode Model 
+.MODEL BB914/SIE D(IS=10.00E-15 N=1.020 RS=.28 IKF=0 XTI=3 EG=1.11
++ CJO=75.54E-12 M=1.161 VJ=3.445 FC=.5 ISR=100E-12 NR=2 BV=20 IBV=100E-9
++ TT=137.0E-9)
+* created using Parts release 6.1 on 06/20/95 at 17:40
+* Parts is a MicroSim product.
+* BB914 - typical , SIEMENS HL EH PD 1 MOSCHOVIS
+*****************************************************************

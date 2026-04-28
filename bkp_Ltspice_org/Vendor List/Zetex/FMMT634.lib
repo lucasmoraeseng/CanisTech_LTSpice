@@ -1,0 +1,28 @@
+*ZETEX  FMMT634 Darlington Spice Subcircuit   Last revision  17/10/97 
+*
+.SUBCKT FMMT634 1 2 3
+*               C B E
+Q1 5 2 4 SUB634
+Q2 5 4 3 SUB634 4.45
+R1 1 5 .27
+*
+.MODEL SUB634 NPN IS=4.5E-14 ISE=1E-14 NF =1 NE =1.45 BF =250 IKF=.16 
++RE=.09 RB=1 BR =12 IKR=.15  VAF=240 CJE=65E-12 CJC=7E-12
++VJC=.85 MJC=.45 TF =.95E-9 TR =300E-9 
+.ENDS FMMT634
+*
+*
+*                          (C)  1991 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP
+

@@ -1,0 +1,13 @@
+GP10Q-Y
+.MODEL GP10Q_Y D
+ + is=0.00000001456
+ + n=1.977
+ + rs=0.05748
+ + cjo=0.000999
+ + m=.1
+ + vj=9.990
+ + isr=0.0000000001
+ + bv=reverse voltage
+ + ibv=0.00000006
+ + tt=0.000003818
+*look datasheet ( e.g. 1300V for GP10T)

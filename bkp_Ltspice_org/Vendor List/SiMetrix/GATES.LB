@@ -1,0 +1,108 @@
+* SIMetrix model library
+
+* Copyright (C) 1998 Newbury Technology Ltd. All rights reserved.
+* 
+* These models are believed to be accurate but Newbury Technology Ltd.
+* offers no guarantee as to their fitness for any purpose nor do they
+* accept any responsibility for damage caused directly or indirectly
+* by their use.
+*
+*
+* 2.10.98
+
+
+
+
+.subckt NOT 2 1
+B1 0 1 i=~v(2)
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+
+.subckt AND_2_HC 2 3 1
+B1 0 1 i=v(2) & v(3)
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+.subckt NAND_2_HC 2 3 1
+B1 0 1 i= ~(v(2) & v(3))
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+.subckt NOR_2_HC 2 3 1
+B1 0 1 i= ~(v(2) | v(3))
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+.subckt OR_2_HC 2 3 1
+B1 0 1 i= v(2) | v(3)
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+.subckt AND_3_HC 2 3 4 1
+B1 0 1 i = v(2) & v(3) & v(4)
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+.subckt NAND_3_HC 2 3 4 1
+B1 0 1 i = ~(v(2) & v(3) & v(4))
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+.subckt NOR_3_HC 2 3 4 1
+B1 0 1 i= ~(v(2) | v(3) | v(4))
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+.subckt OR_3_HC 2 3 4 1
+B1 0 1 i= v(2) | v(3) | v(4)
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+.subckt XOR_2_HC 2 3 1
+B1 0 1 i= v(2)&~v(3) | ~v(2)&v(3)
+Rdel 1 0 1
+Cdel 1 0 12n
+.ends
+
+
+.alias AND2  AND_2_HC  SUBCKT
+.alias NAND2 NAND_2_HC SUBCKT
+.alias NOR2  NOR_2_HC  SUBCKT
+.alias OR2   OR_2_HC   SUBCKT
+.alias AND3  AND_3_HC  SUBCKT
+.alias NAND3 NAND_3_HC SUBCKT
+.alias NOR3  NOR_3_HC  SUBCKT
+.alias OR3   OR_3_HC   SUBCKT
+.alias XOR2  XOR_2_HC  SUBCKT
+
+.alias HC08  AND_2_HC  SUBCKT
+.alias HC00  NAND_2_HC SUBCKT
+.alias HC02  NOR_2_HC  SUBCKT
+.alias HC32  OR_2_HC   SUBCKT
+.alias HC11  AND_3_HC  SUBCKT
+.alias HC10  NAND_3_HC SUBCKT
+.alias HC27  NOR_3_HC  SUBCKT
+.alias HC86  XOR_2_HC  SUBCKT
+.alias HC04  NOT       SUBCKT
+
+.alias D74HC04  NOT       SUBCKT
+.alias D74HC08  AND_2_HC  SUBCKT
+.alias D74HC00  NAND_2_HC SUBCKT
+.alias D74HC02  NOR_2_HC  SUBCKT
+.alias D74HC32  OR_2_HC   SUBCKT
+.alias D74HC11  AND_3_HC  SUBCKT
+.alias D74HC10  NAND_3_HC SUBCKT
+.alias D74HC27  NOR_3_HC  SUBCKT
+
+
+.alias NAND3_DTYPE NAND_3_HC SUBCKT

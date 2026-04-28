@@ -1,0 +1,52 @@
+###############################################################################
+#                                                                             #
+#                                                                             #
+#                                                                             #
+#        #############################################################        #
+#        #                                                           #        #
+#        #                         xbr0520l                          #        # 
+#        #                                                           #        #
+#        #                                                           #        #
+#        #                  Motorola Power Rectifier                 #        # 
+#        #                        0.5 AMPERES                        #        #
+#        #                         20 VOLTS                          #        #
+#        #                                                           #        #
+#        #               This model was developed by                 #        #
+#        #                      Analogy, Inc.                        #        #
+#        #                    9205 SW Gemini Dr.                     #        #
+#        #                   Beaverton, OR  97005                    #        #
+#        #               Copyright 1994 Analogy, Inc.                #        #
+#        #                  All Rights Reserved                      #        #
+#        #                                                           #        #
+#        #    The content of this model is subject to change         #        #
+#        #    without notice and may not be modified or altered      #        #
+#        #    without permission from Motorola, Inc.  This model     #        #
+#        #    has been carefully checked and is believed to be       #        #
+#        #    accurate, however neither Analogy nor Motorola         #        #
+#        #    assume liability for the use of this model or the      #        #
+#        #    results obtained from using it.                        #        #
+#        #                                                           #        #
+#        #    For more information regarding modeling services,      #        #
+#        #    model libraries or simulation products, please         #        #
+#        #    call Analogy, Inc. (503) 626-9700.                     #        #
+#        #                                                           #        #
+#        #############################################################        #
+#                                                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+.model xbr0520l d
++ is= 4.365e-06
++ rs= 0.07868
++ n= 1.024
++ tt= 1e-12
++ cjo= 1.71e-10
++ vj= 0.5608
++ m= 0.4558
++ eg= 0.6
++ xti= 2.867
++ fc= 0.5
++ bv= 36
++ ibv= 0.1
++ kf= 0
++ af= 1

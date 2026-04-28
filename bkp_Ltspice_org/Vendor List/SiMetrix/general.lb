@@ -1,0 +1,26 @@
+* SIMetrix model library
+
+* Copyright (C) 1998 Newbury Technology Ltd. All rights reserved.
+* 
+* These models are believed to be accurate but Newbury Technology Ltd.
+* offers no guarantee as to their fitness for any purpose nor do they
+* accept any responsibility for damage caused directly or indirectly
+* by their use.
+*
+*
+* 2.10.98
+
+
+
+* these models are used by the standard switch and transformer symbols
+
+.subckt gen_switch 1 2 3 4
+S1 1 2 3 4 SW
+.model SW VSWITCH RON={ron} ROFF={roff} VON={von} VOFF={voff}
+.ends
+
+.subckt gen_tx 1 2 3 4
+L1 1 2 {IND}
+L2 3 4 { IND * TURNS * TURNS }
+K1 L1 L2 {K}
+.ends

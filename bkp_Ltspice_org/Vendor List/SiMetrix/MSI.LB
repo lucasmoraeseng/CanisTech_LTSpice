@@ -1,0 +1,28 @@
+* SIMetrix model library
+
+* Copyright (C) 1998 Newbury Technology Ltd. All rights reserved.
+* 
+* These models are believed to be accurate but Newbury Technology Ltd.
+* offers no guarantee as to their fitness for any purpose nor do they
+* accept any responsibility for damage caused directly or indirectly
+* by their use.
+*
+*
+* 2.10.98
+
+
+
+.subckt DTYPE D CLOCK SET RESET OUT NOUT
+X1 SET 3 NOUT OUT NAND3_DTYPE
+X2 4 RESET D 1 NAND3_DTYPE
+X3 2 RESET CLOCK 3 NAND3_DTYPE
+X4 SET 1 3 2 NAND3_DTYPE
+X5 3 CLOCK 1 4 NAND3_DTYPE
+X6 OUT RESET 4 NOUT NAND3_DTYPE
+
+.nodeset v(out)=5 v(4)=5 v(2)=5
+
+.ends
+
+.alias HC74 DTYPE SUBCKT
+.alias D74HC74 DTYPE SUBCKT

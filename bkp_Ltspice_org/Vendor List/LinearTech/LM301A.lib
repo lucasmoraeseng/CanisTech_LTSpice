@@ -1,0 +1,80 @@
+* 
+* Linear Technology LM301A op amp model
+* Written: 08-23-1989 15:55:44 Type: Bipolar npn input, external comp.
+* LM301A updated from original model on 05-21-1990
+* Typical specs: 
+* Vos=2.0E-03, Ib=7.0E-08, Ios=3.0E-09, GBP=9.0E+05Hz, Phase mar.= 70 deg,
+* SR(+)=5.0E-01V/us, SR(-)=4.8E-01V/us, Av= 104 dB, CMMR= 96 dB, 
+* Vsat(+)=1.00V, Vsat(-)=1.00V, Isc=+/-30.0mA, Iq= 1800uA
+* 
+* Connections: + - V+V-O CaCb 
+.SUBCKT LM301A 3 2 7 4 6 1 8 
+* USE C=30 PF IN MAIN CIRCUIT (CA TO CB).
+* INPUT
+RC1 7 80 5.895E+03
+RC2 7 90 5.895E+03
+Q1 80 2 10 QM1 
+Q2 90 3 11 QM2 
+C1 80 90 5.460E-12
+RE1 10 12 2.438E+03
+RE2 11 12 2.438E+03
+IEE 12 4 1.506E-05
+RE 12 0 1.328E+07
+CE 12 0 1.579E-12
+* INTERMEDIATE 
+GCM 0 8 12 0 2.689E-09
+GA 8 0 80 90 1.696E-04
+R2 8 0 1.000E+05
+* EXTERNAL COMP CAP USED FOR C2 (SEE NOTE ABOVE).
+GB 1 0 8 0 1.401E+02
+* OUTPUT 
+RO1 1 6 3.333E+01
+RO2 1 0 6.667E+01
+RC 17 0 4.758E-05
+GC 0 17 6 0 2.102E+04
+D1 1 17 DM1 
+D2 17 1 DM1 
+D3 6 13 DM2 
+D4 14 6 DM2 
+VC 7 13 1.808E+00
+VE 14 4 1.808E+00
+IP 7 4 1.785E-03
+DSUB 4 7 DM2 
+* MODELS 
+.MODEL QM1 NPN (IS=8.000E-16 BF=1.049E+02)
+.MODEL QM2 NPN (IS=8.647E-16 BF=1.095E+02)
+.MODEL DM1 D (IS=3.337E-15)
+.MODEL DM2 D (IS=8.000E-16)
+.ENDS LM301A
+* 
+* - - - - - * FINI LM301A * - - - - - * [OAMM VN1 8/89]
+***
+*         (C) COPYRIGHT LINEAR TECHNOLOGY CORPORATION 1990
+*                       All rights reserved.
+* 
+*   Linear Technology Corporation hereby grants the users of this
+* macromodel a non-exclusive, nontransferrable license to use this
+*            macromodel under the following conditions:
+* 
+* The user agrees that this macromodel is licensed from Linear
+* Technology and agrees that the macromodel may be used, loaned,
+* given away or included in other model libraries as long as this
+* notice and the model in its entirety and unchanged is included.
+* No right to make derivative works or modifications to the
+* macromodel is granted hereby.  All such rights are reserved.
+* 
+* This model is provided as is.  Linear Technology makes no
+* warranty, either expressed or implied about the suitability or
+* fitness of this model for any particular purpose.  In no event
+* will Linear Technology be liable for special, collateral,
+* incidental or consequential damages in connection with or arising
+* out of the use of this macromodel.  It should be remembered that
+* models are a simplification of the actual circuit.
+* 
+* Linear Technology reserves the right to change these macromodels
+* without prior notice.  Contact Linear Technology at 1630 McCarthy
+* Blvd., Milpitas, CA, 95035-7487 or telephone 408/432-1900 for
+* datasheets on the actual amplifiers or the latest macromodels.
+* 
+* ----------------------------------------------------------------------- *
+

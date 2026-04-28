@@ -1,0 +1,23 @@
+*ZETEX ZTX752 Spice model   Last Revision 23/3/00
+*
+.MODEL ZTX752 PNP IS =3.2007E-13 NF =1.0041 BF =200 IKF=1.6 VAF=76
++             ISE=8E-14 NE =1.57 NR =1.0008 BR =33 IKR=0.45 VAR=51 
++             ISC=6E-14 NC =1.079 RB =0.087 RE =0.08 RC =0.07 
++             CJC=80E-12 MJC=0.4896 VJC=0.7676 CJE=350E-12 
++             TF =0.86E-9 TR =24E-9
+*
+*$
+*
+*                          (C)  1991 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

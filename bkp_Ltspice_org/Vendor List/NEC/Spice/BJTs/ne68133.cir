@@ -1,0 +1,58 @@
+* FILENAME:         NE68133.CIR
+* NEC PART NUMBER:  NE68133
+* LAST MODIFIED:    7/97
+* BIAS CONDITIONS:  Vce=1V to 8V, Ic=1mA to 30mA
+* FREQ RANGE:       0.1GHz to 8GHz
+*
+*                            CCBpkg
+*                    .-------||--------.  
+*                    |          CCB    |   
+*                    |      .--||---.  |       COLLECTOR
+* BASE               |      |        | |             
+*                    |      |   /----o-o-----o--Lcx--o  
+*            o--Lbx--o-LB---o--|Q1   |       |       
+*                    |      B   \   --       --      
+*                    |          |   -- CCE   -- CCEpkg
+*                    --CBEpkg E o----'       |           
+*                    --         |            |      
+*                    |         LE            |       
+*                    `----------o------------'       
+*                               |                   
+*                               Lex            
+*                               |  
+*                               o EMITTER
+*                                
+*       CCB    = 0.07pF          LB  = 0.9nH             
+*       CCE    = 0.01pF          LE  = 1.2nH           
+*       CCBpkg = 0.2pF           Lbx = 0.3nH          
+*       CCEpkg = 0.2pF           Lcx = 0.6nH             
+*       CBEpkg = 0.01pF          Lex = 0.3nH          
+*
+*                   c b e
+.SUBCKT NE68133/CEL 2 1 3
+Q1  5 7 8 NE68100
+CCB 7 5 0.07E-12
+CCE 5 8 0.01E-12
+LE  8 6 1.2E-9
+LB  4 7 0.9E-9
+CCBPKG 4 5 0.2E-12
+CCEPKG 5 6 0.2E-12
+CBEPKG 4 6 0.01E-12
+LBX 1 4 0.3E-9
+LCX 5 2 0.6E-9
+LEX 6 3 0.3E-9
+.MODEL NE68100 NPN 
++( IS=2.7e-16    BF=185           NF=1.02        VAF=15           IKF=0.055
++ ISE=1.77e-11   NE=2.1           BR=1           NR=1             VAR=0  
++ IKR=0          ISC=0            NC=2           RE=0.6           RB=12  
++ RBM=3.7        IRB=1.2e-5       RC=8           CJE=1.2e-12      VJE=0.77 
++ MJE=0.5        CJC=0.8e-12      VJC=0.27       MJC=0.56         XCJC=0  
++ CJS=0          VJS=0.75         MJS=0          FC=0.5           TF=14e-12
++ XTF=3          VTF=25           ITF=0.1        PTF=0            TR=0.3e-9
++ EG=1.11        XTB=0            XTI=3          KF=0             AF=1 )
+*
+* NOTE:  CEL develops models using the Libra simulator.  For this simulator, 
+*        a value of 0 for VAR and IKR is interpreted as infinity.
+.ENDS
+*$
+

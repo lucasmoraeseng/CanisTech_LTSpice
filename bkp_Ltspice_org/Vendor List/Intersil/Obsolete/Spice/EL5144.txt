@@ -1,0 +1,55 @@
+*EL5144C spice model. 
+*This spice model modes the single amplifier for EL5144/6C, EL5244/6C and EL5444C
+*
+* connections:        +input
+*                       |  -input
+*                       |    | +Vsupply
+*                       |    |    | -Vsupply
+*                       |    |    |    |  output
+*                       |    |    |    |    |
+.subckt EL5144C         3    2    8    4    1
+*
+*Input stage
+m1 10 5 9 9 mod2 L=1e-6 W=48e-6
+m2 11 2 9 9 mod2 L=1e-6 W=48e-6
+r1 10 4 4k
+r2 11 4 4k
+ca 10 11 0.25p
+is1 8 9 133uA
+vos 5 6 4mV
+*
+*voltage noise
+idn 0 25 3.121mA
+cdn 25 26 1GF
+vdn 26 0 0V
+dn  25 0 den
+h1 6 3 vdn 800
+*
+*G1 stage
+g1 500 15 10 11 2.5e-4
+rt 15 500 1.12e6
+ct 15 1 0.5pF
+d1 15 22 dx
+d2 21 15 dx
+*
+*output stage
+m5 1 17 8 8 mod2 L=1e-6 W=5000e-6
+m6 1 18 4 4 mod1 L=1e-6 W=5000e-6
+e1 19 17 500 15 1
+e2 18 20 15 500 1
+v1 8 19 0.9V
+v2 20 4 0.9V
+rco1 1 0 750
+*
+*Reference voltage
+Eref 500 0 poly(2) (8,0) (4,0) 0 0.5 0.5
+esp 22 500 poly(1) (8,4) 0 0.5
+esn 21 500 poly(1) (4,8) 0 0.5
+Iss 8 4 6.61mA
+*
+.model mod1 nmos (kp=10e-6,VTO=0.8V, lambda=0.01)
+.model mod2 pmos (kp=10e-6,VTO=-0.8V, lambda=0.01)
+.model dx d(Is=1e-18)
+.model den d(kf=6.4e-15 af=1)
+.ends EL5144C
+*$

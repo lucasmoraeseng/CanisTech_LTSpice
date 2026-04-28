@@ -1,0 +1,19 @@
+S1A-J
+.MODEL S1A-J D
+ + is=0.000000004355
+ + n=1.808
+ + rs=0.03253
+ + cjo=0.00000000003176
+ + m=.6712
+ + vj=.75
+ + isr=0.0000000001
+ + bv=reverse voltage*
+ + ibv=0.00005
+ + tt=0.000001048
+
+* 50 for S1A
+* 100 for S1B
+* 200 for S1D
+
+* 400 for S1G
+* 600 for S1J

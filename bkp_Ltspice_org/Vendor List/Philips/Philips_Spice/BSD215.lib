@@ -1,0 +1,7 @@
+* bsd215 model created using Parts version 4.04 on 04/29/94 at 15:14
+*
+.model bsd215   NMOS(Level=3 Gamma=0 Delta=0 Eta=0 Theta=0 Kappa=0 Vmax=0
++               Xj=0 Tox=100n Uo=600 Phi=.6 Kp=20.85u W=540u L=2u Rs=20m
++               Vto=.95 Rd=25 Rds=20n Cbd=5.352p Pb=.8 Mj=.5 Fc=.5 Cgso=1.2p
++               Cgdo=1.2p Rg=0 Is=124.9p N=1.189 Rb=366.6)
+

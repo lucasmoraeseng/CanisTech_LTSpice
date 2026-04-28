@@ -1,0 +1,53 @@
+* BFQ262A SPICE MODEL
+* PHILIPS SEMICONDUCTORS
+* Date : September 1995
+*
+* PACKAGE : SOT32B DIE MODEL : BFQ268
+* 1: COLLECTOR; 2: BASE; 3: EMITTER
+.SUBCKT BFQ262A 1 2 3
+Q1 6 5 7 7 BFQ268
+* SOT32B parasitic model
+               Lb  4 5 1.2n 
+               Le  7 8 5n
+               L1  2 4 .3n
+               L2  1 6 .3n
+               L3  3 8 .3n
+              Ccb  4 6 274f
+              Cbe  4 8 2f
+*
+* PHILIPS SEMICONDUCTORS                                     Version:   1.0
+* Filename:   BFQ268.PRM                                     Date: Feb 1992
+*
+.MODEL  BFQ268   NPN
++              IS = 2.21645E-015
++              BF = 4.53625E+001
++              NF = 9.86201E-001
++             VAF = 3.17445E+002
++             IKF = 4.17948E+001
++             ISE = 8.60781E-014
++              NE = 1.49379E+000
++              BR = 3.00000E+001
++              NR = 9.93580E-001
++             VAR = 2.59879E+000
++             IKR = 9.41398E+000
++             ISC = 6.10176E-013
++              NC = 1.21072E+000
++              RB = 2.00000E+000
++             IRB = 1.00000E-006
++             RBM = 2.00000E+000
++              RE = 1.92234E+000
++              RC = 4.00000E+000
++              EG = 1.11000E+000
++             XTI = 3.00000E+000
++             CJE = 2.53723E-011
++             VJE = 6.00000E-001
++             MJE = 3.09569E-001
++              TF = 6.51175E-011
++             XTF = 6.00000E+001
++             VTF = 4.00000E+000
++             ITF = 8.00000E-001
++             PTF = 6.00000E+001
++             CJC = 4.00000E-012
++             VJC = 4.85859E-001
+.ENDS
+

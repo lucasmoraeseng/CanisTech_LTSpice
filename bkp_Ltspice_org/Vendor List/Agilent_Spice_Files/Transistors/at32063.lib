@@ -1,0 +1,47 @@
+*SPICE model for AT-32063
+*Terminal connections: C1 B1 E1 C2 B2 E2
+.SUBCKT AT32063   40  10 20  30  60  50
+* "63" PACKAGE MODEL
+* Lead inductances
+L1     10      12     .70NH
+L2     20      22     .70NH
+L3     30      32     .70NH
+L4     40      42     .70NH
+L5     50      52     .70NH
+L6     60      62     .70NH
+*Parasitic capacitances
+C1     12      0      .03PF
+C2     22      0      .03PF
+C3     32      0      .03PF
+C4     42      0      .03PF
+C5     52      0      .03PF
+C6     62      0      .03PF
+* Bond wire / internal lead frame inductances
+LB1    12      13     .5NH
+LB2    22      23     .5NH
+LB3    32      33     .05NH
+LB4    42      43     .05NH
+LB5    52      53     .5NH
+LB6    62      63     .5NH
+*Coupling capacitances
+C12    12      22     .14PF
+C23    22      32     .14PF
+C45    42      52     .14PF
+C56    52      62     .14PF
+* INSERT DIE MODELS
+XAT320 43  13   23  AT320
+XAT320 33  63   53  AT320
+.ENDS
+
+** DIE MODEL (excludes bond wires)
+.SUBCKT AT320   75      20      85
+CBBP    20      75      .03PF; BASE BOND PAD CAPACITANCE
+CEBP    85      75      .03PF; EMITTER BOND PAD CAPACITANCE
+QINT    75      20      85      Q320     
+.ENDS
+*
+.MODEL  Q320    NPN (BF=100, BR=2.5, IS=3.1E-16, VA=20, TF=12PS, 
++               CJE=4.6E-13, VJE=1.01, MJE=0.6, PTF=25, XTB=1.818,
++               VTF=6, ITF=5.7E-2, IKF=2.5E-2, XTF=4, NF=1.03, ISE=9.5E-13,
++               NE=2.5, RB=9.78, RE=0.61, RC=35.97, CJC=1.8E-13, CJS=1.7E-13,
++               XCJC=0.20, PS=0.8, MS=0.5, PC=0.76, MC=0.53)

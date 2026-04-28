@@ -1,0 +1,22 @@
+*
+*COPYRIGHT (c) 2001 INTERSIL CORPORATION
+*ALL RIGHTS RESERVED
+*
+*HFA3134 PSpice MODEL
+*REV: 07-26-01 Only Changed Copyright Line
+*
+***** UHF1XN - LE = 1.3 WE = 64*****
+*
+*      -----  BJT MODEL -----
+*
+.model HFA3134 NPN 
++     	(IS =	1.98E - 16	VAF = 	2.00E + 01	BF   =	1.20E + 02	IKF =	2.10E + 00
++ 	ISE =	7.70E - 15	NE  =	2.00E + 00	VAR  =	2.64E + 00	BR  =	1.78E + 01
++ 	IKR =	6.10E - 03	ISC =	2.26E - 16	NC   =	1.57E + 00	NK  =	3.00E + 00
++ 	CJC =	6.00E - 13	MJC =	3.80E - 01	VJC  =	6.00E - 01	CJE =	7.00E - 13
++ 	MJE =	5.10E - 01	VJE =	8.72E - 01	XCJC =	9.00E - 01	CJS =	1.39E - 13
++ 	VJS =	7.50E - 01	MJS =	0.00E + 00 	FC   =	5.00E - 01	TR  =	2.50E - 09
++ 	TF  =	1.30E - 11	ITF =	2.80E - 01	XTF  =	2.01E + 01	VTF = 	2.37E + 00
++ 	PTF =	3.70E + 01	RC  =	5.25E + 00 	RE   =	8.70E - 01	RB  =	1.29E + 01
++ 	RBM =	6.47E + 00	KF  =	0.00E + 00	AF   =	1.00E + 00)       
+*

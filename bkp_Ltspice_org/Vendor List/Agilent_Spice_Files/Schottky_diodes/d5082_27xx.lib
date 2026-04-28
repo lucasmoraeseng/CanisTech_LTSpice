@@ -1,0 +1,10 @@
+*SPICE model for 5082-27xx
+*The parameters are for a single diode. Parameters also apply 
+*to the individual diodes within multiple diode configurations. 
+*5082-2765, 5082-2774, 5082-2785, 5082-2794
+.SUBCKT d5082_27xx 1 2
+DCD1    1     2      DMOD    
+.MODEL  DMOD	D(IS=4E-10, CJO=0.20E-12, VJ=.5, BV=5, IBV=1E-5
++		EG=0.69, N=1.08, RS=6, XTI=2, M=0.5)
+.ENDS
+

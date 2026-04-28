@@ -1,0 +1,83 @@
+*SPICE model for iNA10386
+* "86" PACKAGE MODEL
+.SUBCKT INA10386   OUT   IN   GND
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T1
+C1T1    11      0       .059PF
+LT1     11      12      .493NH
+C2T1    12      0       .059PF
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T2
+C1T2    14      0       .042PF
+LT2     14      15      .076NH
+C2T2    15      0       .042PF
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T3
+C1T3    13      0       .039PF
+LT3     13      16     .330NH
+C2T3    16      0       .039PF
+* Bond wire inductance
+LIN         12      DIEIN     .35NH
+LOUT     16      DIEOUT  .35NH
+LGND     15      DIEGND  .1NH
+* Contact inductance
+LL1     IN      11      .55NH
+LL2     GND     14      .06NH
+LL3     OUT     13      .25NH
+*Parasitic capacitances
+CCEB    12      15      .02PF
+CCEC    15      DIEOUT  .03PF
+CCBC    12      DIEOUT  .03PF
+* INSERT DIE MODEL
+XNA10DIE DIEOUT  DIEIN   DIEGND  INA10
+.ENDS
+*
+.SUBCKT INA10   DIEOUT  DIEIN   DIEGND
+RE1          Q1E     11        6       
+RE2          Q4E     15      40       
+RBIAS1   DIEIN  11   1150      
+RBIAS2   Q2E     15     600      
+RBIAS3   Q3E     15     200      
+RF1      DIEIN     Q3E      1200 
+RF2      Q1C      DIEOUT  500 
+LP1      11          DIEGND   0.15NH
+LP2      15          DIEGND   0.15NH
+CP1      11          DIEGND   0.35PF
+CP2      15          DIEGND   0.35PF
+COUT  DIEOUT  DIEGND   0.15PF
+CIN      DIEIN      DIEGND    0.15PF
+XNA10Q1  Q1C       DIEIN   Q1E     Q405
+XNA10Q2  DIEOUT  Q1C    Q2E     Q406
+XNA10Q3  DIEOUT  Q2E    Q3E     Q410
+XNA10Q4  DIEOUT  Q3E    Q4E     Q420
+.ENDS
+* transistor models
+.MODEL  q405    NPN (BF=100, IS=2.0E-16, VA=20,
++    BR=2.5,     ME=0.6,     NF=1.03,    PTF=25,
++    TF=1.2E-11,    CJE= 2.9E-13,   XTF=4,     IK=1.6E-02,
++    PE=1.01,    ISE=6.0E-13,     NE=2.5,    VTF=6,
++   XTB=1.818,    ITF=3.6E-02,     RB=24.15,     RE=0.83,
++    RC=25.22,    CJC=1.2E-13,    CJS=1.5E-13,   XCJC=0.20,
++    PS=0.80,     MS=0.5,     PC=0.76,     MC=0.53)
+
+.MODEL  q406    NPN (BF=100,    IS=2.4E-16,     VA=20,
++    BR=2.5,     ME=0.6,     NF=1.03,    PTF=25,
++    TF=1.2E-11,    CJE=3.5E-13,    XTF=4,    IK=1.9E-02,
++    PE=1.01,    ISE=7.2E-13,     NE=2.5,    VTF=6,
++   XTB=1.818,   ITF=4.3E-02,     RB=20.15,     RE=0.69,
++    RC=22.80,    CJC=1.5E-13,    CJS=1.6E-13,   XCJC=0.20,
++    PS=0.80,     MS=0.5,     PC=0.76,     MC=0.53)
+
+.MODEL  q410    NPN (BF=100,     IS=4.0E-16,     VA=20,
++    BR=2.5,     ME=0.6,     NF=1.03,    PTF=25,
++    TF=1.2E-11,    CJE=5.8E-13,    XTF=4,     IK=3.2E-02,
++    PE=1.01,    ISE=1.2E-12,     NE=2.5,    VTF=6,
++   XTB=1.818,    ITF=7.2E-02,    RB=12.13,    RE=0.42,
++    RC=10.10,    CJC=2.3E-13,    CJS=2.1E-13,   XCJC=0.21,
++    PS=0.80,     MS=0.5,     PC=0.76,     MC=0.53)
+
+.MODEL  q420    NPN (BF=100,    IS=9.9E-16,     VA=20,
++    BR=2.5,     ME=0.6,     NF=1.03,    PTF=25,
++    TF=1.2E-11,    CJE=1.4E-12,    XTF=4,     IK=8.0E-02,
++    PE=1.01,    ISE=3.0E-12,     NE=2.5,   VTF=6,
++   XTB=1.818,    ITF=1.8E-01,    RB=4.86,     RE=0.17,
++    RC=13.15,    CJC=5.5E-13,    CJS=4.0E-13,   XCJC=0.22,
++    PS=0.80,     MS=0.5,     PC=0.76,     MC=0.53)
+

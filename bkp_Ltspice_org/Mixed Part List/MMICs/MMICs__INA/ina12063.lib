@@ -1,0 +1,56 @@
+*INA-12063 Macromodel
+*Version 1.0, March 1997
+*Connections:   IBias
+*               |  Gnd2
+*               |  |  In
+*               |  |  |  Vd
+*               |  |  |  |  Gnd1
+*               |  |  |  |  |  Out & Vd
+*               |  |  |  |  |  |
+.subckt INA12   1  2  3  4  5  6
+LB1 3 10 1.5n
+LB2 6 8 1.5n
+LE 11 12 1.2n
+C1 10 8 75f
+C2 6 5 0.4p
+C3 13 5 1n
+R1 4 9 4.7k
+R2 9 10 2k
+RE 12 13 2.5
+D1 9 2 bias_diode 1
+D2 1 14 bias_diode 200
+Vsense 14 2 DC 0
+F1 13 2 VSENSE 10.0
+Q1 8 10 11 A2_31020
+
+.model A2_31020 npn(is=4.04E-16 ise=1.43E-12 isc=2.74E-12
++iss=4.6E-13 ne=2.0 nc=2.0 nf=1.03 nr=1.0 ns=1.0 vaf=2.2E1
++ikf=3.43E-2 ikr=1.05E-1 bf=1.29E2 br=5.14 rb=1.615E1
++rbm=5 re=9.5E-1 rc=3.1 cje=3.65E-13 mje=4E-1 vje=8.5E-1
++fc=8E-1 cjc=1.42E-13 mjc=5E-1 vjc=7.5E-1 xcjc=4.04E-1
++cjs=1.53E-13 mjs=5E-1 vjs=7E-1 tf=9.5E-12 tr=1.6E-9
++itf=6.87E-2 xtf=3.15 ptf=1.8E1 xti=8 xtb=2.2)
+.model bias_diode d(is=1E-14)
+.ends
+
+*example use
+* This PSPICE deck provides an example of how to use the INA-12 macro model
+* The application is a 900MHz LNA as shown in Figure 32 of the datasheet
+* Agilent Technologies, March 1997
+*
+Vsupply Vcc 0 3.0
+Vin 2 0 DC 0 AC 2 SIN(0 14.1E-3 900E6)
+X1 1 0 5 Vcc 0 6 INA12
+Rbias Vcc 1 5.6k
+RS 2 3 50
+RL 7 0 50
+R1 Vcc 6 470
+L1 4 5 8.2n
+L2 Vcc 6 8.2n
+C1 3 4 100p
+C2 6 7 2.2p
+.OP
+.AC LIN 501 0.1G 5.1G
+*.TRAN 1n 20n 0n 10p
+.include d:\pspice\ckt\hp_rfic.lib
+.END

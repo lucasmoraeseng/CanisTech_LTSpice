@@ -1,0 +1,50 @@
+*
+* Trace Elliot Velocette 12R Mains Transformer
+* Part no. 73 TRAN 15W VG2
+*
+* [1] Brown ---. || .--- Purple		 [5]
+*              ) || (
+*        120V  ) || (  28V
+*              ) || .--- Purple          [6]
+* [2] Blue  ---. || .--- Red		 [7]
+*                || (
+* [3] Brown ---. || (
+*              ) || (  313V
+*        120V  ) || (
+*              ) || .--- Black           [8]
+* [4] Blue  ---. ||
+*		 || .--- Grey		 [9]
+*		 || (
+*		 || .--- Green	6.3V CT	 [10]
+*		 || (
+*		 || .--- Grey		 [11]
+*
+.SUBCKT tracevg2 1 2 3 4 5 6 7 8 9 10 11
+*
+* Primary
+*
+Lleak1  1       20      10mH
+Lpri1   20      21      120H
+Rpri1   21      2       13.0
+Lleak2  3       22      10mH
+Lpri2   22      23      120H
+Rpri2   23      4       11.7
+*
+* Secondary (28V off load)
+*
+Lsec28	5	25	6.5H
+Rsec28  25      6	2.6
+*
+* Secondary (313V off load)
+*
+Lsec313	7	26	816.4H
+Rsec313 26	8	75.5
+*
+* Secondary (7.3V off load, centre tapped)
+*
+Lsec73a	9	27	111mH
+Rsec73a 27	10	0.15
+Rsec73b	10	28	0.15
+Lsec73b	28	11	111mh
+Kcoup   Lpri1 LPri2 Lsec28 Lsec313 Lsec73a Lsec73b 1.0
+.ENDS 

@@ -1,0 +1,20 @@
+* SIMetrix model library
+
+* Copyright (C) 1998 Newbury Technology Ltd. All rights reserved.
+* 
+* These models are believed to be accurate but Newbury Technology Ltd.
+* offers no guarantee as to their fitness for any purpose nor do they
+* accept any responsibility for damage caused directly or indirectly
+* by their use.
+*
+*
+* 2.10.98
+
+.model J2N3819 NJF BETA=1.57m LAMBDA=4m VTO=-1.954
++ CGD=1.5p M=.3821 PB=1 FC=.5 CGS=1.5p IS=173.3f N=1 XTI=3 KF=37.24E-18 AF=1
+
+.model J175 PJF BETA=1.57m LAMBDA=30m VTO=-4
++ CGD=6.5p M=.3224 PB=1 FC=.5 CGS=6.5p IS=1.023p N=1 XTI=3 KF=247.5E-18 AF=1
+
+.model U404 NJF BETA=1.518m BETATCE=-.5 RD=1 Rs=1 LAMBDA=7.5m VTO=-1.968
++ CGD=5.5p M=.4586 PB=1 Fc=.5 CGS=4.5p IS=36.51f N=1 XTI=3 KF=14.9E-18 AF=1

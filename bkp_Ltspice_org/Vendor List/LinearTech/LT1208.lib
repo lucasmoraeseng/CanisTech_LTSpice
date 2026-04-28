@@ -1,0 +1,127 @@
+* 
+* Linear Technology LT1208 op amp model  
+* Written: 12-09-1992 09:06:32 Type: Bipolar NPN input, internal comp.
+* Modified by G.F. to add Cload compensation network and freq. shaping
+* Typical specs: 
+* Vos=5.0E-04, Ib=4.0E-06, Ios=1.0E-07, GBP=4.5E+07Hz, Phase mar.= 50 deg, 
+* SR(-)=4.0E+02V/us, SR(+)=4.0E+02V/us, Av= 77.0dB, CMRR=100.0dB, 
+* Vsat(+)=1.300V, Vsat(-)=1.700V, Isc=+40/-40mA, Rout=50ohms, Iq=7.00mA.
+* 
+* Connections: + - V+V-O 
+.SUBCKT LT1208 3 2 7 4 6 
+* INPUT
+RC1 7  80 9.9909E+02
+RC2 7  90 9.9909E+02
+Q1  80 2  10 QM1 
+Q2  90 3  11 QM2 
+CIN 2  3  2.0000E-12
+C1  80 90 0.265E-12
+*INPUT POLE AT 300MHZ
+RE1 10 12 +9.5717E+02
+RE2 11 12 +9.5717E+02
+IEE 12 4  1.4240E-03
+RE  12 0  1.4045E+05
+* INTERMEDIATE
+*MODS: GA DEPENDENCE INVERTED (POLARITY SWAPPED)
+*      R2 INCREASED TO 7MOHM (ALL GAIN IN ONE STAGE)
+*      C2 TIED TO GROUND (WAS NODE 1), REDUCED TO 3.11PF FROM 3.54PF 
+*      GB POLARITY REVERSED, GB=1/R02 FOR GAIN OF 1 
+*      RF, CF ADDED FOR CLOAD NETWORK (REDUCES VALUE OF C2)
+*      REVERSE POLARITY OF GNL,GPL,GCL,GCM FOR LIMITING BECAUSE OF GA REVERSAL
+*      ADD MULTIPLE POLES AND A ZERO BETWEEN GA STAGE AND GB STAGE
+GCM 8  0  12 0  1.0009E-08
+GA  8  0  90 80 1.0009E-03
+R2  8  0  7.35E+06
+C2  8  0  3.11E-12
+*POLE AT 300MHZ
+GX1 0  28 8  0  1E-06
+RX1 28 0  1E+06
+CX1 28 0  0.53E-15
+*POLE AT 300MHZ
+GX2 0  38 28 0  1E-06
+RX2 38 0  1E+06
+CX2 38 0  0.53E-15
+*POLE AT 300MHZ
+GX3 0  48 38 0  1E-06
+RX3 48 0  1E+06
+CX3 48 0  0.53E-15  
+*ZERO AT 60MHZ
+GX4 0  58 48 0  1E-06
+RX4 58 59 1E+06
+LX4 59 0  2.65E-03
+*POLE AT 120MHZ
+GX5 0  68 58 0  1E-06
+RX5 68 0 1E+06
+CX5 68 0 1.33E-15
+*POLE AT 300MHZ
+GX6 0  78 68 0  1E-06
+RX6 78 0  1E+06
+CX6 78 0  0.53E-15
+*
+GB  0  1  78 0  20.4E-03
+RO2 1  0  49
+RF  8  99 2400
+CF  99 6  5E-12
+* OUTPUT 
+RSO 1  6  1.0000E+00
+ECL 18 0  1  6  2.3987E+01
+GCL 8  0  20 0  1.0000E+00
+RCL 20 0  1.0000E+01
+D1  18 19 DM1  
+VOD1 19 20 5.9605E-08
+D2  20 21 DM1  
+VOD2 21 18 5.9605E-08
+* 
+D3A 131 70 DM3 
+D3B 13 131 DM3 
+GPL 8  0  70 7  1.0000E+00
+VC  13 6  2.7909E+00
+RPLA 7  70 1.0000E+01
+RPLB 7  131 1.0000E+03
+D4A 60 141 DM3 
+D4B 141 14  DM3 
+GNL 8  0  60 4  1.0000E+00
+VE  6  14 3.1909E+00
+RNLA 60 4  1.0000E+01
+RNLB 141 4  1.0000E+03
+* 
+IP  7  4  5.5760E-03
+DSUB 4  7  DM2  
+* MODELS 
+.MODEL QM1 NPN (IS=8.0000E-16 BF=1.7481E+02)
+.MODEL QM2 NPN (IS=8.1240E-16 BF=1.7924E+02)
+.MODEL DM1  D   (IS=1.0000E-20)
+.MODEL DM2  D   (IS=8.0000E-16 BV=4.3200E+01)
+.MODEL DM3  D   (IS=1.0000E-16)
+.ENDS LT1208
+* 
+* - - - - - * FINI LT1208 * - - - - - * [OAMM VN02 10/29/90]
+***
+*         (C) COPYRIGHT LINEAR TECHNOLOGY CORPORATION 1993
+*                       All rights reserved.
+* 
+*   Linear Technology Corporation hereby grants the users of this
+* macromodel a non-exclusive, nontransferrable license to use this
+*            macromodel under the following conditions:
+* 
+* The user agrees that this macromodel is licensed from Linear
+* Technology and agrees that the macromodel may be used, loaned,
+* given away or included in other model libraries as long as this
+* notice and the model in its entirety and unchanged is included.
+* No right to make derivative works or modifications to the
+* macromodel is granted hereby.  All such rights are reserved.
+* 
+* This model is provided as is.  Linear Technology makes no
+* warranty, either expressed or implied about the suitability or
+* fitness of this model for any particular purpose.  In no event
+* will Linear Technology be liable for special, collateral,
+* incidental or consequential damages in connection with or arising
+* out of the use of this macromodel.  It should be remembered that
+* models are a simplification of the actual circuit.
+* 
+* Linear Technology reserves the right to change these macromodels
+* without prior notice.  Contact Linear Technology at 1630 McCarthy
+* Blvd., Milpitas, CA, 95035-7487 or telephone 408/432-1900 for
+* datasheets on the actual amplifiers or the latest macromodels.
+* 
+* ----------------------------------------------------------------------- *

@@ -1,0 +1,10 @@
+*SPICE model for HSMS-281x
+*The parameters are for a single diode (HSMS-2810). Parameters also apply 
+*to the individual diodes within multiple diode configurations. 
+*
+.SUBCKT hsms281x 1 2
+DCD1    1     2      DMOD    
+.MODEL  DMOD	D(IS=4.8E-9, CJO=1.1E-12, VJ=.65, BV=25, IBV=10E-5
++		EG=0.69, N=1.08, RS=10, XTI=2, M=0.5)
+.ENDS
+

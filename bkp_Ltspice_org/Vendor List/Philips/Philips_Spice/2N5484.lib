@@ -1,0 +1,16 @@
+*PHILIPS SEMICONDUCTORS        Version: 1.0
+*Filename: 2N5484.PRM        Date: feb 1993
+*
+.MODEL  2N5484   NJF
++             VTO = -1.2796E+000
++            BETA = 1.71347E-003
++          LAMBDA = 1.93292E-002
++              RD = 4.41873E+000
++              RS = 4.41873E+000
++              IS = 1.25479E-016
++            CGS = 2.25000E-012
++            CGD = 2.34000E-012
++              PB = 1.14141E+000
++              FC = 5.00000E-001
+*Parameter with default value: FC
+

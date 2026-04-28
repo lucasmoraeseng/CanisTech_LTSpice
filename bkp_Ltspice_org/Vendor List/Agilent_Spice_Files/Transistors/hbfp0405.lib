@@ -1,0 +1,58 @@
+* PSPICE MODEL for HBFP-0405 in SOT343
+*
+.SUBCKT HBFP0405   60      20      40
+LL1     20      25      .22NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T1
+C1T1    25      0       .08PF
+LT1     25      30      .20NH
+C2T1    30      0       .05PF
+*
+LLB     30      35      .70NH
+CCEB    30      50      .04PF
+LL2     40      45      .15NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T2
+C1T2    45      0       .04PF
+LT2     45      50      .10NH
+C2T2    50      0       .10PF
+*
+LLE     50      55      .20NH
+CCEC    50      70      .01PF
+LL3     60      65      .20NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T3
+C1T3    65      0       .144PF
+LT3     65      70      .50NH
+C2T3    70      0       .10PF
+*
+LLC     70      75      .70PF   
+CCBC    30      70      .05PF
+* CALL DIE MODEL
+XDIE    75      35      55      H0405
+.ENDS
+
+.SUBCKT H0405   75      20      85
+RBX     20      130     3.74196
+RCX     140     75      6.5915
+RE      150     85      1.565       
+RSE     160     85      1
+CCOX    20      140     17.213E-15
+CEOX    130     85      6.227E-15
+DBC     20      140     DMOD1
+DBE     130     150     DMOD2
+DCS     160     140     DMOD3
+QINT    140     130     150     160     Q405     
+.ENDS
+
+.MODEL  DMOD1   D(IS=1.40507E-17,CJO=2.393E-14,VJ=.729,M=.44,TNOM=21,N=1,FC=0.8)
+.MODEL  DMOD2   D(IS=1E-24,CJO=2.593E-14,VJ=.8971,M=.2292,TNOM=21,N=1.0029,FC=0.8)
+.MODEL  DMOD3   D(IS=1E-24,CJO=8.974E-14,VJ=0.6,M=0.42 ,RS=2.17347E2,FC=0.8TNOM=21)
+
+** Note: high beta (BF) value compensates for current leakage through DBE
+.MODEL  Q405    NPN (BF=1E6, IS=4.4746E-18,  VA=44,
++    BR=1,     ME=0.5063,     NF=1,    PTF=22,
++    TF=5.3706E-12,    CJE= 7.474248E-14,   XTF=20,     IK=1.4737E-01,
++    PE=0.9907,    ISE=7.094E-20,     NE=1.006,    VTF=0.8,
++    XTB=0.7,    ITF=2.21805486E-1,  RB=9.30144818,
++    CJC=2.7056E-14,  XCJC=0.439790997,
++    PC=0.6775,     MC=0.3319,  FC=0.8,  IKR=1.1E-2, NC=2, VAR=3.37,
++    NR=1.005, TR=4E-9, TNOM=21, IRB=3.029562E-6, RBM=0.1, XTI=3
++    EG=1.17)

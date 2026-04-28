@@ -1,0 +1,17 @@
+*****************************************************************
+* INFINEON technologies                                         *
+* RF & Discrete Semiconductors                                  *
+* SCHOTTKY DIODE SPICE ( DIODE CHIP ONLY )                          *
+*                                                               *
+* Version:  1.1                                                 *
+* Date:     November 1999                                       *
+*****************************************************************
+.MODEL D364 D(IS=146N RS=2.18 N=1.07 XTI=4.25 EG=.650 
++ CJO=57.0P M=.495 VJ=.390 FC=.500 BV=240 IBV=5.00U TT=120P)
+* Extracted By: 
+* SIEMENS Semiconductors 
+* HL HF PE SIL
+* J.P. Schaffer
+* Date:
+* 6. May 1998 
+*****************************************************************

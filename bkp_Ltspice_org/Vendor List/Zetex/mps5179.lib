@@ -1,0 +1,22 @@
+*ZETEX  MPS5179 Spice model   Last revision 14/3/97
+*
+.MODEL MPS5179 NPN IS=5.6E-16  BF=133 IKF=2.5E-2 VAF=40
++              ISE=6.367E-15 NE=1.75 NR=0.99 BR=8 IKR=1E-2 VAR=6 
++              ISC=1E-15 NC=1.167 RB=5 RE=0.65 RC=1.8
++              CJC=1.197E-12 MJC=0.2588 VJC=0.5617 CJE=1.012E-12 
++              MJE=0.4496 VJE=1.195 RBM=0.5 IRB=5E-4
++              TF=6E-11 TR=40.5E-9 ITF=2.5 XTF=1000
+*
+*                          (C)  1993 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

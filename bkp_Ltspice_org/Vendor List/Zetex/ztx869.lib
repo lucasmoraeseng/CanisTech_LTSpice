@@ -1,0 +1,23 @@
+*ZETEX  ZTX869 Spice model   Last revision 15/12/93
+*
+.MODEL ZTX869 NPN IS =1.9E-12  BF =600 IKF=9 VAF=40
++             ISE=3.752E-13 NE =1.399 NR =1 BR =370 IKR=6 
++             VAR=18 ISC=4.135E-13 NC =1.384 RB =1 RBM =0.01  
++             IRB =1 RE = 0.01 RC =0.02 CJC=215E-12 MJC=0.3917  
++             VJC=0.5871 CJE=910.3E-12 MJE=0.3826 VJE=0.7686
++             TF =1.15E-9 TR =4.01E-9
+*
+*
+*                          (C)  1993 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

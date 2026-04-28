@@ -1,0 +1,11 @@
+*SPICE model for HSCH-9101
+*The parameters are for a single diode (HSCH-9101 or HSCH-9201). Parameters also apply 
+*to the individual diodes within multiple diode configurations.
+* 
+*
+.SUBCKT HSCH9101 1 2
+DCD1    1     2      DMOD    
+.MODEL  DMOD	D(IS=1.6E-13, CJO=0.04E-12, VJ=.65, BV=5, IBV=10E-5
++		EG=1.43, N=1.2, RS=5, XTI=2, M=0.5)
+.ENDS
+

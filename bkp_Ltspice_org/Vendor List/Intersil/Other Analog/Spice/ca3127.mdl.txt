@@ -1,0 +1,25 @@
+* CA3127 NPN model
+* created using Parts release 6.3a on 02/03/97 at 15:58
+* Parts is a MicroSim product.
+.MODEL CA3127 NPN
++ IS=3.2168E-12
++ BF=95.245
++ VAF=100
++ IKF=61.522E-3
++ ISE=20.480E-12
++ NE=1.9984
++ BR=.1001
++ VAR=100
++ IKR=10.010E-3
++ ISC=10.805E-9
++ RC=10
++ CJE=651.92E-15
++ MJE=.33697
++ CJC=281.16E-15
++ MJC=.13865
++ TF=122.68E-12
++ XTF=2.0529E3
++ VTF=307.73
++ ITF=1.6076
++ TR=10.000E-9
+*$

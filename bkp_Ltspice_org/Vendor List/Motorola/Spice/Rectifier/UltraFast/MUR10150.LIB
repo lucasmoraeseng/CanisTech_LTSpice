@@ -1,0 +1,52 @@
+###############################################################################
+#                                                                             #
+#                                                                             #
+#                                                                             #
+#        #############################################################        #
+#        #                                                           #        #
+#        #                         mur10150e                         #        # 
+#        #                                                           #        #
+#        #                                                           #        #
+#        #                  Motorola Power Rectifier                 #        # 
+#        #                         10 AMPERES                        #        #
+#        #                         1500 VOLTS                        #        #
+#        #                                                           #        #
+#        #               This model was developed by                 #        #
+#        #                      Analogy, Inc.                        #        #
+#        #                    9205 SW Gemini Dr.                     #        #
+#        #                   Beaverton, OR  97005                    #        #
+#        #               Copyright 1994 Analogy, Inc.                #        #
+#        #                  All Rights Reserved                      #        #
+#        #                                                           #        #
+#        #    The content of this model is subject to change         #        #
+#        #    without notice and may not be modified or altered      #        #
+#        #    without permission from Motorola, Inc.  This model     #        #
+#        #    has been carefully checked and is believed to be       #        #
+#        #    accurate, however neither Analogy nor Motorola         #        #
+#        #    assume liability for the use of this model or the      #        #
+#        #    results obtained from using it.                        #        #
+#        #                                                           #        #
+#        #    For more information regarding modeling services,      #        #
+#        #    model libraries or simulation products, please         #        #
+#        #    call Analogy, Inc. (503) 626-9700.                     #        #
+#        #                                                           #        #
+#        #############################################################        #
+#                                                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+.model mur10150e d
++ is= 5.949e-09
++ rs= 0.07678
++ n= 1.322
++ tt= 1.47e-07
++ cjo= 4.687e-10
++ vj= 0.4898
++ m= 0.465
++ eg= 1.11
++ xti= 0
++ fc= 0.5
++ bv= 1650
++ ibv= 0.01
++ kf= 0
++ af= 1

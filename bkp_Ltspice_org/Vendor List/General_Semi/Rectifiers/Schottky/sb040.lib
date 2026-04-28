@@ -1,0 +1,23 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+.MODEL SB040 D (
++   N=3.00905
++  IS=0.000876513
++  RS=0.0331322
++  EG=0.69
++ XTI=2
++ CJO=1.10349E-010
++  VJ=0.664822
++   M=0.502061
++  FC=0.5
++  TT=1.4427E-009
++  BV=40
++ IBV=2
++  KF=0
++  AF=1 )

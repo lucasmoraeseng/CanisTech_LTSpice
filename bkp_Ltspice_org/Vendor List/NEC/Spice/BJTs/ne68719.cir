@@ -1,0 +1,54 @@
+* FILENAME:        NE68719.CIR
+* NEC PART NUMBER: NE68719
+* LAST MODIFIED:   5/96
+* BIAS CONDITIONS: Vce=1V to 2V, Ic=1mA to 10mA
+* FREQ RANGE:      0.05GHZ to 3GHZ
+*
+*                     CCBpkg
+*             .-------||--------.
+*             |          CCB    |
+*             |      .--||---.  |     COLLECTOR
+* BASE        |      |        | |
+*             |      |   /----o-o-----o--Lcx--o
+*     o--Lbx--o-LB---o--|Q1   |       |
+*                    B   \   --       --
+*                        |   -- CCE   -- CCEpkg
+*                      E o----'       |
+*                        |            |
+*                       LE            |
+*                        o------------'
+*                        |
+*                        Lex
+*                        |
+*                        o EMITTER
+*
+*       CCB   = 0.26pF           LB  = 0.81nH
+*       CCE   = 0.19pF           LE  = 0.854nH
+*       CCBpkg= 0.17pF           Lbx = 0.19nH
+*       CCEpkg= 0.21pF           Lcx = 0.19nH
+*                                Lex = 0.19nH
+*
+*                   c b e
+.SUBCKT NE68719/CEL 2 1 3
+Q1  5 7 8 NE68700
+CCB 7 5 0.26E-12
+CCE 5 8 0.19E-12
+LE  8 6 0.854E-9
+LB  4 7 0.81E-9
+CCBPKG 4 5 0.17E-12
+CCEPKG 5 6 0.21E-12
+LBX 1 4 0.19E-9
+LCX 5 2 0.19E-9
+LEX 6 3 0.19E-9
+.MODEL NE68700 NPN 
++(IS=8.0e-17     BF=128           NF=1           VAF=17           IKF=0.18
++ ISE=3.3e-15    NE=1.48          BR=9.05        NR=1.05          VAR=4.3
++ IKR=0.009      ISC=4.0e-15      NC=1.5         RE=0.8           RB=11.1
++ RBM=2.46       IRB=0.017        RC=7.5         CJE=0.415e-12    VJE=0.68 
++ MJE=0.53       CJC=0.102e-12    VJC=0.29       MJC=0.53         XCJC=0.27
++ CJS=0          VJS=0.75         MJS=0          FC=0.37          TF=6.0e-12
++ XTF=11.9       VTF=9.55         ITF=1.78       PTF=69.1         TR=1.0e-9
++ EG=1.11        XTB=0            XTI=3          KF=0             AF=1 )
+.ENDS
+*$
+

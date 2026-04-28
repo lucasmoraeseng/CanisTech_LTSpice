@@ -1,0 +1,32 @@
+*
+*  ZETEX  ZVN4424A Mosfet Spice Subcircuit   Last revision  3/5/00
+*
+.SUBCKT ZVN4424A 3 4 5
+*                D G S
+M1 3 2 5 5 N4424AM
+RG 4 2 200
+RL 3 5 240E6
+C1 2 5 101E-12
+C2 3 2 4E-12 
+D1 5 3 N4424AD
+*
+.MODEL N4424AM NMOS VTO=1.25 RS=2.34 RD=1.634 IS=1E-15 KP=5.319
++CBD=66.2E-12 PB=1
+.MODEL N4424AD D IS=5.516E-13 RS=.2084 N=1.0078
+.ENDS ZVN4424A
+*
+*$
+*
+*                          (C)  1994 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

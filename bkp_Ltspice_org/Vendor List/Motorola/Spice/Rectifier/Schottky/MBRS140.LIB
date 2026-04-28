@@ -1,0 +1,52 @@
+###############################################################################
+#                                                                             #
+#                                                                             #
+#                                                                             #
+#        #############################################################        #
+#        #                                                           #        #
+#        #                         mbrs140t3                         #        # 
+#        #                                                           #        #
+#        #                                                           #        #
+#        #                  Motorola Power Rectifier                 #        # 
+#        #                         1.0 AMPERES                       #        #
+#        #                          40 VOLTS                         #        #
+#        #                                                           #        #
+#        #               This model was developed by                 #        #
+#        #                      Analogy, Inc.                        #        #
+#        #                    9205 SW Gemini Dr.                     #        #
+#        #                   Beaverton, OR  97005                    #        #
+#        #               Copyright 1994 Analogy, Inc.                #        #
+#        #                  All Rights Reserved                      #        #
+#        #                                                           #        #
+#        #    The content of this model is subject to change         #        #
+#        #    without notice and may not be modified or altered      #        #
+#        #    without permission from Motorola, Inc.  This model     #        #
+#        #    has been carefully checked and is believed to be       #        #
+#        #    accurate, however neither Analogy nor Motorola         #        #
+#        #    assume liability for the use of this model or the      #        #
+#        #    results obtained from using it.                        #        #
+#        #                                                           #        #
+#        #    For more information regarding modeling services,      #        #
+#        #    model libraries or simulation products, please         #        #
+#        #    call Analogy, Inc. (503) 626-9700.                     #        #
+#        #                                                           #        #
+#        #############################################################        #
+#                                                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+.model mbrs140t3 d
++ is= 4.41547e-06
++ rs= 0.103922
++ n= 1.03751
++ tt= 1e-12
++ cjo= 1.598e-10
++ vj= 0.4934
++ m= 0.4258
++ eg= 0.6
++ xti= 3.29768
++ fc= 0.5
++ bv= 48
++ ibv= 0.01
++ kf= 0
++ af= 1

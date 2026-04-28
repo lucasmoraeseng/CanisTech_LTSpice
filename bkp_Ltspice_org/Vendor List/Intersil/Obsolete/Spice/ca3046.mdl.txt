@@ -1,0 +1,25 @@
+* CA3046 NPN model
+* created using Parts release 6.3a on 02/03/97 at 15:57
+* Parts is a MicroSim product.
+.MODEL CA3046 NPN
++ IS=10.000E-15
++ BF=145.76
++ VAF=100
++ IKF=46.747E-3
++ ISE=114.23E-15
++ NE=1.4830
++ BR=.1001
++ VAR=100
++ IKR=10.010E-3
++ ISC=10.000E-15
++ RC=10
++ CJE=1.0260E-12
++ MJE=.33333
++ CJC=991.79E-15
++ MJC=.33333
++ TF=277.09E-12
++ XTF=309.38
++ VTF=16.364
++ ITF=1.7597
++ TR=10.000E-9
+*$

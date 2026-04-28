@@ -1,0 +1,25 @@
+***************************************************************
+* SIEMENS Small Signal Semiconductors
+* GUMMEL-POON MODEL CHIP PARAMETERS IN SPICE 2G6 SYNTAX
+* VALID UP TO 6 GHZ
+* >>> T341 <<< (CHIP)
+* Extracted on behalf of SIEMENS Small Signal Semiconductors by
+* Institut fuer Mobil- und Satellitenfunktechnik (IMST)
+* (C) 1996 SIEMENS AG
+* Version 1.1    July 1997
+***************************************************************
+.MODEL T341 NPN(
++ IS = 4.8499e-15     BF = 84.113       NF = 0.56639
++ VAF = 21.742        IKF = 0.14414     ISE = 8.4254e-15
++ NE = 0.91624        BR = 10.004       NR = 0.54818
++ VAR = 2.2595        IKR = 0.039478    ISC = 5.9438e-15
++ NC = 0.5641         RB = 3.4217       IRB = 7.1955e-05
++ RBM = 2.8263        RE = 2.1858       RC = 1.8159
++ CJE = 8.8619e-15    VJE = 1.0378      MJE = 0.40796
++ TF = 2.272e-11      XTF = 0.43147     VTF = 0.34608
++ ITF = 0.0065523     PTF = 0           CJC = 4.9025e-13
++ VJC = 1.0132        MJC = 0.31068     XCJC = 0.19281
++ TR = 1.7541e-09     CJS= 0            VJS = 0.75
++ MJS = 0             XTB = 0           EG = 1.11
++ XTI = 3             FC = 0.64175)
+***************************************************************

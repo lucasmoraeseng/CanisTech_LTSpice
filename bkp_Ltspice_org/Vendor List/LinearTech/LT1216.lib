@@ -1,0 +1,88 @@
+*
+* Increased gb by 10x on 2/10/93
+* Linear Technology LT1216 op amp model
+* Written: 01-25-1993 04:46:22 Type: Bipolar pnp input, internal comp.
+* Typical specs: 
+* Vos=1.5E-04, Ib=4.2E-07, Ios=3.5E-08, GBP=2.3E+07Hz, Phase mar.= 35 deg, 
+* SR(-)=3.0E+01V/us, SR(+)=2.9E+01V/us, Av= 116 dB, CMMR= 108 dB, 
+* Vsat(+)=0.60V, Vsat(-)=0.01V, Isc=+/-50.0mA, Iq=%4750 uA.
+* (input common mode clamp active)
+* 
+* Connections: + - V+V-O 
+.SUBCKT LT1216 3 2 7 4 6 
+* INPUT
+RC1 4  80 2.307E+02
+RC2 4  90 2.307E+02
+Q1  80 102 10 QM1 
+Q2  90 103 11 QM2 
+RB1  2   102 1.000E+02
+RB2  3   103 1.000E+02
+DCM1 105 102 DM2 
+DCM2 105 103 DM2 
+VCMC 105 4   4.000E-01
+C1  80 90 2.142E-11
+RE1 10 12 1.730E+02
+RE2 11 12 1.730E+02
+IEE 7  12 9.008E-04
+RE  12 0  2.220E+05
+CE  12 0  1.579E-12
+DCMR 12 112 DM2
+VCMR 7 112 2
+* INTERMEDIATE 
+GCM 0  8  12 0  1.726E-08
+GA  8  0  80 90 4.335E-03
+R2  8  0  1.000E+05
+C2  1  8  3.000E-11
+GB  1  0  8  0  1.617E+03
+* OUTPUT 
+RO1 1  110 5.000E+00
+RO2A 1  0  15.000E+00
+RO2B 6  110 23.000E+00
+EC  17 0  110 0  1   
+D1  1  17 DM1 
+D2  17 1  DM1 
+D3  110 13 DM2 
+D4  14 110 DM2 
+D5  6  110 DM2 
+D6  110 6  DM2 
+VC  7  13 1.421E+00
+VE  14 4  8.272E-01
+IP  7  4  3.849E-03
+DSUB 4  7  DM2 
+* MODELS 
+.MODEL QM1 PNP (IS=8.000E-16 BF=1.029E+03)
+.MODEL QM2 PNP (IS=8.047E-16 BF=1.118E+03)
+.MODEL DM1 D   (IS=9.187E-01)
+.MODEL DM2 D   (IS=8.000E-16 BV=3.9600E+01)
+.ENDS LT1216
+*
+* - - - - - * FINI LT1216 FAMILY * - - - - - * [OAMM VP02 6/26/90]
+***
+*         (C) COPYRIGHT LINEAR TECHNOLOGY CORPORATION 1993
+*                       All rights reserved.
+* 
+*   Linear Technology Corporation hereby grants the users of this
+* macromodel a non-exclusive, nontransferrable license to use this
+*            macromodel under the following conditions:
+* 
+* The user agrees that this macromodel is licensed from Linear
+* Technology and agrees that the macromodel may be used, loaned,
+* given away or included in other model libraries as long as this
+* notice and the model in its entirety and unchanged is included.
+* No right to make derivative works or modifications to the
+* macromodel is granted hereby.  All such rights are reserved.
+* 
+* This model is provided as is.  Linear Technology makes no
+* warranty, either expressed or implied about the suitability or
+* fitness of this model for any particular purpose.  In no event
+* will Linear Technology be liable for special, collateral,
+* incidental or consequential damages in connection with or arising
+* out of the use of this macromodel.  It should be remembered that
+* models are a simplification of the actual circuit.
+* 
+* Linear Technology reserves the right to change these macromodels
+* without prior notice.  Contact Linear Technology at 1630 McCarthy
+* Blvd., Milpitas, CA, 95035-7487 or telephone 408/432-1900 for
+* datasheets on the actual amplifiers or the latest macromodels.
+* 
+* ----------------------------------------------------------------------- *

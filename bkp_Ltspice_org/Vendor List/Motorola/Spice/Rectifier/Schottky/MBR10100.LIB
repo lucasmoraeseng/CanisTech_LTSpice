@@ -1,0 +1,52 @@
+###############################################################################
+#                                                                             #
+#                                                                             #
+#                                                                             #
+#        #############################################################        #
+#        #                                                           #        #
+#        #                        MBR10100                           #        # 
+#        #                                                           #        #
+#        #                                                           #        #
+#        #                 Motorola Power Rectifier                  #        # 
+#        #                       10 AMPERES                          #        #
+#        #                       100 VOLTS                           #        #
+#        #                                                           #        #
+#        #               This model was developed by                 #        #
+#        #                      Analogy, Inc.                        #        #
+#        #                    9205 SW Gemini Dr.                     #        #
+#        #                   Beaverton, OR  97005                    #        #
+#        #               Copyright 1994 Analogy, Inc.                #        #
+#        #                  All Rights Reserved                      #        #
+#        #                                                           #        #
+#        #    The content of this model is subject to change         #        #
+#        #    without notice and may not be modified or altered      #        #
+#        #    without permission from Motorola, Inc.  This model     #        #
+#        #    has been carefully checked and is believed to be       #        #
+#        #    accurate, however neither Analogy nor Motorola         #        #
+#        #    assume liability for the use of this model or the      #        #
+#        #    results obtained from using it.                        #        #
+#        #                                                           #        #
+#        #    For more information regarding modeling services,      #        #
+#        #    model libraries or simulation products, please         #        #
+#        #    call Analogy, Inc. (503) 626-9700.                     #        #
+#        #                                                           #        #
+#        #############################################################        #
+#                                                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+.model MBR10100 d
++ is= 1.567e-07
++ rs= 0.01853
++ n= 1.031
++ tt= 2e-08
++ cjo= 1.22e-09
++ vj= 0.5408
++ m= 0.4941
++ eg= 0.6
++ xti= 8
++ fc= 0.5
++ bv= 122
++ ibv= 0.001
++ kf= 0
++ af= 1

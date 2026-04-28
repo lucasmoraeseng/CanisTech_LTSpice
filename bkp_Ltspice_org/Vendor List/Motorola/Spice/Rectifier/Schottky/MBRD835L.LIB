@@ -1,0 +1,52 @@
+###############################################################################
+#                                                                             #
+#                                                                             #
+#                                                                             #
+#        #############################################################        #
+#        #                                                           #        #
+#        #                          mbrd835l                         #        # 
+#        #                                                           #        #
+#        #                                                           #        #
+#        #                  Motorola Power Rectifier                 #        # 
+#        #                         8 AMPERES                         #        #
+#        #                         35 VOLTS                          #        #
+#        #                                                           #        #
+#        #               This model was developed by                 #        #
+#        #                      Analogy, Inc.                        #        #
+#        #                    9205 SW Gemini Dr.                     #        #
+#        #                   Beaverton, OR  97005                    #        #
+#        #               Copyright 1994 Analogy, Inc.                #        #
+#        #                  All Rights Reserved                      #        #
+#        #                                                           #        #
+#        #    The content of this model is subject to change         #        #
+#        #    without notice and may not be modified or altered      #        #
+#        #    without permission from Motorola, Inc.  This model     #        #
+#        #    has been carefully checked and is believed to be       #        #
+#        #    accurate, however neither Analogy nor Motorola         #        #
+#        #    assume liability for the use of this model or the      #        #
+#        #    results obtained from using it.                        #        #
+#        #                                                           #        #
+#        #    For more information regarding modeling services,      #        #
+#        #    model libraries or simulation products, please         #        #
+#        #    call Analogy, Inc. (503) 626-9700.                     #        #
+#        #                                                           #        #
+#        #############################################################        #
+#                                                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+.model mbrd835 d
++ is= 6.084e-06
++ rs= 0.0095
++ n= 1.038
++ tt= 3e-07
++ cjo= 1.486e-09
++ vj= 0.4884
++ m= 0.4629
++ eg= 0.6
++ xti= 4.135
++ fc= 0.5
++ bv= 45
++ ibv= 0.1
++ kf= 0
++ af= 1

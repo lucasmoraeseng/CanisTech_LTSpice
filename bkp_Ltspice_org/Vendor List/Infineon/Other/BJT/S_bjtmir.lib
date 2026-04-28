@@ -1,0 +1,100 @@
+***************************************************************
+* Infineon Technologies  Discrete & RF Semiconductors         *
+* SPICE Library Version 1.0                 July 1999         *
+*                                                             *
+* This library contains the following Infineon Technologies   *
+* AF-Transistors (Chipdata):                                  *
+*                                                             *
+* BCV61A    BCV61B    BCV61C    BCV62A    BCV62B    BCV62C    *
+***************************************************************
+*
+***************************************************************
+* SPICE2G6 MODEL OF THE NPN BIPOLAR TRANSISTOR CHIP IN BCV61A *
+* REV: 1.0                                                    *
+***************************************************************
+.MODEL BCV61A NPN (IS=45.000F NF=1.010 BF=180 VAF=74.000 IKF=0.708
++ ISE=55.668F NE=2.567 NR=1.015 BR=7.745 VAR=14.000 IKR=1.000
++ ISC=1.084P NC=4.063
++ RB=9.000 IRB=0.100M RBM=4.500
++ RE=0.350 RC=1.445
++ CJE=13.050P VJE=0.690 MJE=0.375 FC=0.750
++ CJC=4.100P VJC=0.750 MJC=0.420 XCJC=0.650
++ TF=0.620N TR=2.5N PTF=1.000
++ XTF=68.000 VTF=1.000 ITF=0.720
++ XTB=1.400 EG=1.110 XTI=3.200
++ KF=10.000F AF=1.000)
+***************************************************************
+* SPICE2G6 MODEL OF THE NPN BIPOLAR TRANSISTOR CHIP IN BCV61B *
+* REV: 1.0                                                    *
+***************************************************************
+.MODEL BCV61B NPN (IS=45.000F NF=1.010 BF=280 VAF=74.000 IKF=0.708
++ ISE=55.668F NE=2.567 NR=1.015 BR=7.745 VAR=14.000 IKR=1.000
++ ISC=1.084P NC=4.063
++ RB=9.000 IRB=0.100M RBM=4.500
++ RE=0.350 RC=1.445
++ CJE=13.050P VJE=0.690 MJE=0.375 FC=0.750
++ CJC=4.100P VJC=0.750 MJC=0.420 XCJC=0.650
++ TF=0.620N TR=2.5N PTF=1.000
++ XTF=68.000 VTF=1.000 ITF=0.720
++ XTB=1.400 EG=1.110 XTI=3.200
++ KF=10.000F AF=1.000)
+***************************************************************
+* SPICE2G6 MODEL OF THE NPN BIPOLAR TRANSISTOR CHIP IN BCV61C *
+* REV: 1.0                                                    *
+***************************************************************
+.MODEL BCV61C NPN (IS=45.000F NF=1.010 BF=480 VAF=74.000 IKF=0.708
++ ISE=55.668F NE=2.567 NR=1.015 BR=7.745 VAR=14.000 IKR=1.000
++ ISC=1.084P NC=4.063
++ RB=9.000 IRB=0.100M RBM=4.500
++ RE=0.350 RC=1.445
++ CJE=13.050P VJE=0.690 MJE=0.375 FC=0.750
++ CJC=4.100P VJC=0.750 MJC=0.420 XCJC=0.650
++ TF=0.620N TR=2.5N PTF=1.000
++ XTF=68.000 VTF=1.000 ITF=0.720
++ XTB=1.400 EG=1.110 XTI=3.200
++ KF=10.000F AF=1.000)
+***************************************************************
+* SPICE2G6 MODEL OF THE NPN BIPOLAR TRANSISTOR CHIP IN BCV62A *
+* REV: 1.0                                                    *
+***************************************************************
+.MODEL BCV62A PNP (IS=28.000F NF=1.000 BF=160 VAF=43.000 IKF=0.380
++ ISE=24.903F NE=2.234 NR=1.005 BR=4.800 VAR=6.960 IKR=0.932
++ ISC=0.125P NC=2.074
++ RB=2.200 IRB=0.100M RBM=1.500
++ RE=0.300 RC=2.251
++ CJE=11.800P VJE=1.000 MJE=0.435 FC=0.750
++ CJC=8.700P VJC=0.900 MJC=0.600 XCJC=0.650
++ TF=0.600N TR=2.604N PTF=1.000
++ XTF=6.500 VTF=2.000 ITF=0.314
++ XTB=1.600 EG=1.110 XTI=3.300
++ KF=5.000F AF=1.000)
+***************************************************************
+* SPICE2G6 MODEL OF THE NPN BIPOLAR TRANSISTOR CHIP IN BCV62B *
+* REV: 1.0                                                    *
+***************************************************************
+.MODEL BCV62B PNP (IS=28.000F NF=1.000 BF=520 VAF=43.000 IKF=0.380
++ ISE=24.903F NE=2.234 NR=1.005 BR=4.800 VAR=6.960 IKR=0.932
++ ISC=0.125P NC=2.074
++ RB=2.200 IRB=0.100M RBM=1.500
++ RE=0.300 RC=2.251
++ CJE=11.800P VJE=1.000 MJE=0.435 FC=0.750
++ CJC=8.700P VJC=0.900 MJC=0.600 XCJC=0.650
++ TF=0.600N TR=2.604N PTF=1.000
++ XTF=6.500 VTF=2.000 ITF=0.314
++ XTB=1.600 EG=1.110 XTI=3.300
++ KF=5.000F AF=1.000)
+***************************************************************
+* SPICE2G6 MODEL OF THE NPN BIPOLAR TRANSISTOR CHIP IN BCV62C *
+* REV: 1.0                                                    *
+***************************************************************
+.MODEL BCV62C PNP (IS=28.000F NF=1.000 BF=520 VAF=43.000 IKF=0.380
++ ISE=24.903F NE=2.234 NR=1.005 BR=4.800 VAR=6.960 IKR=0.932
++ ISC=0.125P NC=2.074
++ RB=2.200 IRB=0.100M RBM=1.500
++ RE=0.300 RC=2.251
++ CJE=11.800P VJE=1.000 MJE=0.435 FC=0.750
++ CJC=8.700P VJC=0.900 MJC=0.600 XCJC=0.650
++ TF=0.600N TR=2.604N PTF=1.000
++ XTF=6.500 VTF=2.000 ITF=0.314
++ XTB=1.600 EG=1.110 XTI=3.300
++ KF=5.000F AF=1.000)

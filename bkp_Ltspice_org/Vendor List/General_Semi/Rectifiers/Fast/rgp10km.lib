@@ -1,0 +1,16 @@
+RGP10K,M
+.MODEL RGP10K,M D
+ + is=0.000005829
+ + n=3.369
+ + rs=0.04939
+ + xti=8.700
+ + cjo=0.00000000001456
+ + m=.3395
+ + vj=.3905
+ + isr=0.0000000001
+ + bv=reverse voltage*
+ + ibv=0.00007
+ + tt=0.0000005426
+
+* 1000 for RGP10M
+* 800  for RGP10K

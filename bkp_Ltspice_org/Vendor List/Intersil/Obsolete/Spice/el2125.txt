@@ -1,0 +1,93 @@
+*EL2125C  Model Rev.A 
+*SR, voltage noise and current noise are modeled.
+*Ultra low noise, low power, widebanc amplifier
+*
+* connections:        +input
+*                       |  -input
+*                       |    | +Vsupply
+*                       |    |    | -Vsupply
+*                       |    |    |    |  output
+*                       |    |    |    |    |
+.subckt EL2125C         3    2    7    4    6
+*
+* Input stage
+*
+vos 9 5 0.6mV
+ios 5 500 0.4uA
+iee 34 10 100mA
+e1 34 0 7 0 1
+e2 35 0 4 0 1
+r1 12 35 10
+r2 11 35 10
+q1 12 2 10 qp
+q2 11 9 10 qp
+
+* voltage noise generator
+ie 0 30 3.121mA
+ca 30 31 1GF
+v1 31 0 dc 0V
+de 30 0 den
+h1 5 3 v1 12
+
+* current noise generator
+iin 0 32 3.121mA
+di 32 0 din
+cb 32 33 1GF
+v2 33 0 dc 0V
+f1 2 9 v2 1
+
+*Gain stage
+g1 13 500 11 12 1.18e-3
+r3 13 500 1.11Meg
+c1 13 500 4pF
+
+*E3 and E4 stage
+e3 14 500 13 500 1
+r4 14 15 200
+r5 15 16 200
+c2 15 500 2pF
+c3 16 500 2pF
+e4 17 500 16 500 1
+r6 17 18 200
+r7 18 19 200
+c4 18 500 2pF
+c5 19 500 2pF
+* pole stage
+e5 20 500 19 500 3
+r14 20 21 796
+r8 21 500 398
+c6 20 21 2pF
+e6 22 500 21 500 2.65
+r9 22 23 704
+r10 23 500 426
+c7 22 23 2pF
+*E7 stage
+e7 24 500 23 500 1
+r11 24 25 150
+c8 25 500 2pF
+*
+* Output Stage
+*
+ios1 7 26 1.5mA
+ios2 27 4 1.5mA
+q3  4 25 26 qp
+q4  7 26 29 qn
+q5  7 25 27 qn
+q6  4 27 28 qp
+r12 28 6 25
+r13 6 29 25
+*
+* Power Supply Current
+*
+ips 7 4 7mA
+*
+*voltage reference
+eref 500 0 poly(2) (34,0) (35,0) 0 0.5 0.5
+* Models
+*
+.model qn  npn(bf=2.08e3)
+.model qp pnp(bf=2.08e3)
+.model din d(kf=1.922e-16 af=1)
+.model den d(kf=6.408e-17 af=1)
+.ends EL2125C
+*$

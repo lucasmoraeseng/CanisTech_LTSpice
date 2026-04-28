@@ -1,0 +1,10 @@
+*SPICE model for 5082-2811
+*The parameters are for a single diode. Parameters also apply 
+*to the individual diodes within multiple diode configurations. 
+
+.SUBCKT d5082_2811 1 2
+DCD1    1     2      DMOD    
+.MODEL  DMOD	D(IS=0.3E-8, CJO=1E-12, VJ=.6, BV=18, IBV=1E-5
++		EG=0.69, N=1.08, RS=10, XTI=2, M=0.5)
+.ENDS
+

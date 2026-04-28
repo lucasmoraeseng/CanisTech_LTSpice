@@ -1,0 +1,152 @@
+###############################################################################
+
+#                                                                             #
+
+#                                                                             #
+
+#                                                                             #
+
+#        #############################################################        #
+
+#        #                                                           #        #
+
+#        #                                                           #        #
+
+#        #               This model was developed by                 #        #
+
+#        #                      Analogy, Inc.                        #        #
+
+#        #                    9205 SW Gemini Dr.                     #        #
+
+#        #                   Beaverton, OR  97005                    #        #
+
+#        #               Copyright 1994 Analogy, Inc.                #        #
+
+#        #                  All Rights Reserved                      #        #
+
+#        #                                                           #        #
+
+#        #    The content of this model is subject to change         #        #
+
+#        #    without notice and may not be modified or altered      #        #
+
+#        #    without permission from Motorola, Inc.  This model     #        #
+
+#        #    has been carefully checked and is believed to be       #        #
+
+#        #    accurate, however neither Analogy nor Motorola         #        #
+
+#        #    assume liability for the use of this model or the      #        #
+
+#        #    results obtained from using it.                        #        #
+
+#        #                                                           #        #
+
+#        #    For more information regarding modeling services,      #        #
+
+#        #    model libraries or simulation products, please         #        #
+
+#        #    call Analogy, Inc. (503) 626-9700.                     #        #
+
+#        #                                                           #        #
+
+#        #############################################################        #
+
+#                                                                             #
+
+#                                                                             #
+
+#                                                                             #
+
+###############################################################################
+
+** MJE18204 Motorola NPN BJT 07/11/94
+
+** pdmax= 75W icmax= 10A vcemax= 600V vebmax= 10V case= to-220
+
+** betamax= 8 betaic= 2A betavc=1V 
+
+** ftmin= 13MHz ftic= .5A ftvc=10V
+
+** vcesatmax=1.25V vcesatic= 2A vcesatib= .4A
+
+** spice 2g6
+
+ .model MJE18204 npn 
+
+ + is= 3.04e-13
+
+ + bf= 29.61
+
+ + nf= 0.998
+
+ + vaf= 2353
+
+ + ikf= 0.755
+
+ + ise= 6.938e-12
+
+ + ne= 1.794
+
+ + br= 3.24
+
+ + nr= 1.007
+
+ + var= 2965
+
+ + ikr= 0.221
+
+ + isc= 4.122e-09
+
+ + nc= 1.739
+
+ + rb= 8.29
+
+ + irb= 0.0002927
+
+ + rbm= 0.0885
+
+ + re= 0.04106
+
+ + rc= 0.05501
+
+ + xtb= 0.77
+
+ + eg= 1.11
+
+ + xti= 5.219
+
+ + cje= 1.77e-09
+
+ + vje= 0.647
+
+ + mje= 0.3257
+
+ + tf = 9.5e-09
+
+ + xtf= 9
+
+ + vtf= 0.135
+
+ + itf= 0.12
+
+ + ptf= 1.4
+
+ + cjc= 1.682e-10
+
+ + vjc= 0.5183
+
+ + mjc= 0.4561
+
+ + xcjc= 1
+
+ + tr = 2.5e-06
+
+ + cjs= 0
+
+ + vjs= 0.75
+
+ + mjs= 0
+
+ + fc = 0.92
+

@@ -1,0 +1,42 @@
+* Library of Vendor Supplied Analog Models
+
+*  Copyright OrCAD, Inc. 1998 All Rights Reserved.
+
+* $Revision:   1.5  $
+* $Author:   rperez  $
+* $Date:   30 Nov 1998 07:45:30  $
+
+*****************************************************************************
+
+
+* This file references each of these vendor libraries.
+
+
+.lib "adv_lin.lib"              ; Advanced Linear Devices op-amps
+.lib "anlg_dev.lib"             ; Analog Devices/Precision Monolithics op-amps,
+                                ; voltage references, analog multipliers,
+                                ; transistor arrays
+.lib "apex.lib"                 ; Apex power op-amps
+.lib "burr_brn.lib"             ; Burr-Brown op-amps
+.lib "cel.lib"                  ; CEL RF devices
+.lib "comlinr.lib"              ; Comlinear op-amps
+.lib "elantec.lib"              ; Elantec op-amps, transistor arrays
+.lib "fwbell.lib"               ; F.W. Bell Hall effect models
+.lib "harris.lib"               ; Harris, Analog Division op-amps, transistor a
+.lib "lin_tech.lib"             ; Linear Technology op-amps
+.lib "maxim.lib"                ; Maxim op-amps, buffers
+.lib "motor_rf.lib"             ; Motorola RF BJTs
+.lib "motoramp.lib"             ; Motorola op-amps
+.lib "motormos.lib"             ; Motorola Power MOSFETs
+.lib "motorsen.lib"             ; Motorola Pressure Sensors
+.lib "nat_semi.lib"             ; National Semiconductors op-amps
+.lib "phil_bjt.lib"             ; Philips Semiconductors bipolar jfets
+.lib "phil_fet.lib"             ; Philips Semiconductors mosfets
+.lib "phil_rf.lib"              ; Philips Semiconductors rf transistors
+.lib "polyfet.lib"              ; Polyfet RF Devices RF MOSFETs
+.lib "siemens.lib"              ; Siemens small signal, bipolar transistors
+.lib "tex_inst.lib"             ; Texas Instruments op-amps, comparators
+.lib "zetex.lib"                ; Zetex power transistor, fets
+
+
+* end of library file

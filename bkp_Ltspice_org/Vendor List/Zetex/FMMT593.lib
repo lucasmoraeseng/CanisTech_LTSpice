@@ -1,0 +1,32 @@
+*ZETEX  FMMT593 Spice Model   Last revision 22/7/99
+*
+*   This model was prepared using MicroSim PSpice.
+*   Spice software which does not support RCO & GAMMA will 
+*   model the quasi-saturation region incorrectly.  The
+*   resulting model will return optimistic values for
+*   forward Vcesat, current gain and Tdon.  
+*   To improve simulation in a simplified model try 
+*   increasing RE and decreasing BF and IKF
+*
+.MODEL FMMT593 PNP IS =2E-13 NF =1 BF =300 IKF=0.8 
++VAF=44 ISE=1E-13 NE =1.4 RCO=4.5 GAMMA=5E-9 
++NR =1 BR =20 IKR=0.2 VAR=10 ISC=2e-13 NC =1.25 
++RB =0.15 RE =0.15 RC =0.2 
++CJC=36E-12 MJC=0.45 VJC=0.75 CJE=110E-12 
++TF =0.8E-9 TR =70e-9 
+*
+*
+*                          (C)  1991 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP
+

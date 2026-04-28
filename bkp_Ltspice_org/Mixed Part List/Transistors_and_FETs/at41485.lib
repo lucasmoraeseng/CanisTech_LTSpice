@@ -1,0 +1,50 @@
+*SPICE model for AT-41485
+*
+.SUBCKT AT41485 60      20      40
+LL1     20      25      .05NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T1
+C1T1    25      0       .06PF
+LT1     25      30      .48NH
+C2T1    30      0       .06PF
+*
+LLB     30      35      .55NH
+CCEB    30      50      .02PF
+LL2     40      45      .01NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T2
+C1T2    45      0       .04PF
+LT2     45      50      .08NH
+C2T2    50      0       .04PF
+*
+LLE     50      55      .1NH
+CCEC    50      70      .03PF
+LL3     60      65      .05NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T3
+C1T3    65      0       .04PF
+LT3     65      70      .30NH
+C2T3    70      0       .04PF
+*
+CCBC    30      70      .03PF
+* CALL DIE MODEL
+XDIE    70      35      55      AT414
+.ENDS
+
+* DIE MODEL (excludes bond wires)
+.SUBCKT AT414   75      20      85
+CCB     20      60      .032PF
+DCD1    20      60      DMOD    572
+RRB1    20      25      1.07
+DCD2    25      60      DMOD    680
+RRB2    25      30      3.2
+DCD3    30      60      DMOD    340
+RRB3    30      35      2.7
+RRC     60      75      5
+RRE     80      85      .24
+CCE     60      85      .032PF
+QINT    60      35      80      QDIS     420
+.ENDS
+*
+.MODEL  DMOD    D(IS=1E-25, CJO=2.45E-16, VJ=.76, M=.53, BV=45, IBV=1E-9)
+.MODEL  QDIS    NPN (BF=100, BR=2.5, IS=1.65E-18, VA=20, TF=12PS,
++               CJE=2.4E-15, VJE=1.01, MJE=0.6, PTF=25, XTB=1.818,
++               VTF=6, ITF=3E-4, IKF=1.3E-4, XTF=4, NF=1.03, ISE=5E-15,
++               NE=2.5)

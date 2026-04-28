@@ -1,0 +1,59 @@
+* FILENAME:         NE662M04.CIR
+* NEC PART NUMBER:  NE662M04
+* LAST MODIFIED:    6/11/98, Rev A
+* BIAS CONDITIONS:  Vce=.5V to 3V, Ic=.5mA to 30mA
+* FREQ RANGE:       0.1GHz to 6ghz
+* COMMENTS:         Correlated to measured noise figure at 2V, 5mA and 2V, 10mA and 2ghz to 12GHz
+*
+*                            CCBpkg
+*                   ,--------||-----------.
+*                   |                     |
+*                   |        CCB          |
+*                   |    .---||---.       |
+*  BASE             |    |        |       | COLLECTOR
+*                   |    |   /----o--LC---o---Lcx---o
+*  o-------Lbx------o-LB-o--|Q1   |       |    
+*                   |    B   \   --       |    
+*                   |        |   -- CCE  --    
+*            CBEpkg--      E o----'      -- CCEpkg
+*                  --        |            |     
+*                   |       LE            |     
+*                   '--------o------------'     
+*                            |
+*                           Lex
+*                            |
+*                            o EMITTER
+*
+*       CCB    = 0.1pF            LB  = 1.00nH
+*       CCE    = 0.1pF            LE  = 0.30nH
+*                                 LC  = 0.45nH
+*       CCBpkg = 0.003pF          Lbx = 0.100nH
+*       CCEpkg = 0.2pF            Lcx = 0.230nH
+*       CBEpkg = 0.2pF            Lex = 0.001nH
+*
+* SPICE node order:  Q1 collector (8)  base (7)  emitter (9)
+.SUBCKT NE662M04/CEL 2 1 3
+Q1  8 7 9 NE662
+CCB 7 8 0.1E-12
+CCE 8 9 0.1E-12
+LE  9 6 0.3E-9
+LB  4 7 1E-9
+LC  8 5 0.45E-9
+CBEPKG 4 6 0.2E-12
+CCBPKG 4 5 0.003E-12
+CCEPKG 5 6 0.2E-12
+LBX 1 4 1.0E-9
+LCX 5 2 0.23E-9
+LEX 6 3 0.001E-9
+.MODEL NE662 NPN 
++(IS=1e-16       BF=92            NF=0.993       VAF=14           IKF=0.15
++ ISE=4e-11      NE=2.5           BR=6.7         NR=1.20          VAR=13
++ IKR=0.008      ISC=1e-14        NC=1.21        RE=0.8           RB=3.05  
++ RBM=20         IRB=5e-5         RC=8.75        CJE=7e-13        VJE=0.5 
++ MJE=0.3        CJC=1.1e-13      VJC=0.85       MJC=0.33         XCJC=0.1
++ CJS=0          VJS=0.75         MJS=0          FC=0.4           TF=2e-12
++ XTF=.102       VTF=5            ITF=0.1        PTF=23.5         TR=1.0e-11
++ EG=1.11        XTB=0            XTI=3          KF=0             AF=1 )
+.ENDS
+*$
+

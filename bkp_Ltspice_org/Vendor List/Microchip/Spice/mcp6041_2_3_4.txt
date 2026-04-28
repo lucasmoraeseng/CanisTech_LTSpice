@@ -1,0 +1,128 @@
+.SUBCKT MCP6041 1 2 3 4 5
+*               | | | | |
+*               | | | | Output
+*               | | | Negative Supply
+*               | | Positive Supply
+*               | Inverting Input
+*               Non-inverting Input
+*
+* Macromodel for the MCP6041/2/3/4 op amp family:
+*   MCP6041 (single)
+*   MCP6042 (dual)
+*   MCP6043 (single w/ CS; chip select is not modeled)
+*   MCP6044 (quad)
+*
+********************************************************************************
+*                       Software License Agreement                             *
+* The software supplied herewith by Microchip Technology Incorporated (the     *
+* "Company") is intended and supplied to you, the Company's customer, for use  *
+* solely and exclusively on Microchip products.                                *
+*                                                                              *
+* The software is owned by the Company and/or its supplier, and is protected   *
+* under applicable copyright laws. All rights are reserved. Any use in         *
+* violation of the foregoing restrictions may subject the user to criminal     *
+* sanctions under applicable laws, as well as to civil liability for the       *
+* breach of the terms and conditions of this license.                          *
+*                                                                              *
+* THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES, WHETHER    *
+* EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED        *
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO  *
+* THIS SOFTWARE. THE COMPANY SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR    *
+* SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.     *
+********************************************************************************
+*
+* Revision History:
+*   REV A: 7-9-01 created KEB
+*
+* Recommendations:
+*   Use PSPICE (other simulators may require translation)
+*   For a quick, effective design, use a combination of: data sheet
+*     specs, bench testing, and simulations with this macromodel
+*   For high impedance circuits, set GMIN=100F in the .OPTIONS
+*     statement
+*
+* Supported:
+*   Typical performance at room temperature (25 degrees C)
+*   DC, AC, Transient, and Noise analyses.
+*   Most specs, including: offsets, PSRR, CMRR, input impedance,
+*     open loop gain, voltage ranges, supply current, ... , etc.
+*
+* Not Supported:
+*   Chip Select (MCP6043)
+*   Variation in specs vs. Power Supply Voltage
+*   Distortion (detailed non-linear behavior)
+*   Temperature analysis
+*   Process variation
+*   Behavior outside normal operating region
+*
+* Input Stage
+V10  3 10 -0.3
+R10 10 11 78K
+R11 10 12 78K
+C11 11 12 4.9P
+C12  1  0 6P
+E12  1 14 POLY(4) 20 0 21 0 26 0 27 0   1M 1 1 1 1
+G12 14  0 POLY(2) 22 0 23 0   1.5P 1U 1U
+M12 11 14 15 15 NMI
+C13 14  2 3P
+M14 12  2 15 15 NMI
+G14  2  0 POLY(2) 24 0 25 0   0.5P 1U 1U
+C14  2  0 6P
+I15 15  4 500N
+V16 16  4 0.18
+D16 16 15 DL
+V13  3 13 0.00
+D13 14 13 DL
+*
+* Noise Sources
+I20 21 20 17.2N
+D20 20  0 DN1
+D21  0 21 DN1
+I22 23 22 588U
+D22 22  0 DN23
+D23  0 23 DN23
+I24 25 24 588U
+D24 24  0 DN23
+D25  0 25 DN23
+*
+* PSRR and CMRR
+G26  0 26 POLY(1) 3 4   110U -20U
+R26 26  0 1
+G27  0 27 POLY(2) 1 3 2 4   -275U 50U 50U
+R27 27  0 1
+*
+* Open Loop Gain, Slew Rate
+G30  0 30 POLY(1) 12 11   0 1MEG
+R30 30  0 1
+C30 30  0 11.4
+G31  0 31 POLY(1) 30 0   0 1
+R31 31  0 1
+C31 31  0 775N
+*
+* Output Stage
+G40  0 40 POLY(1) 45 5   0 22.7M
+D41 40 41 DL
+R41 41  0 1K
+D42 42 40 DL
+R42 42  0 1K
+G43  3  0 POLY(1) 41 0   100N  1M
+G47  0  4 POLY(1) 42 0   100N -1M
+E43 43  0 POLY(1) 3 0   0 1
+E47 47  0 POLY(1) 4 0   0 1
+V44 43 44 1M
+D44 45 44 DLS
+D46 46 45 DLS
+V46 46 47 1M
+G45 47 45 POLY(2) 31 0 3 4   0 8U 4U
+R45 45 47 125K
+R48 45  5 44
+C48  5  0 2P
+*
+* Models
+.MODEL NMI NMOS L=2 W=42
+.MODEL DL   D N=1   IS=1F
+.MODEL DLS  D N=1M  IS=1F
+.MODEL DN1  D IS=1F KF=1.13E-18 AF=1
+.MODEL DN23 D IS=1F KF=3E-20    AF=1
+*
+.ENDS MCP6041

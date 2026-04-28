@@ -1,0 +1,53 @@
+* FILENAME:        UPA800T.CIR
+* NEC PART NUMBER: UPA800T
+* LAST MODIFIED:   10/98
+* BIAS CONDITIONS: Vce=0.5V to 5V, Ic=0.5mA to 10mA
+* FREQ RANGE:      0.1GHZ to 3GHZ
+*
+*  This model schematic is too complex to be put in this format.
+*  Please contact CEL at (408)988-3500 for the schematic and documentation or 
+*  download the model from our website, www.cel.com.
+*
+*                   c1 b1 e1 c2 b2 e2
+.SUBCKT UPA800T/CEL P6 P5 P4 P1 P2 P3 
+Q1      2 1  3 NE68000
+Q2      5 4  6 NE68000
+CCB1      2  1  0.12pF  
+C_E1B2    5  3  0.1pF  
+CCB2      4  5  0.12pF  
+CCE2      4  6  0.06pF  
+C_C2E2    4  7  0.1pF  
+C_C2B2    4  8  0.06pF  
+C_B1B2    8  9  0.05pF  
+C_C1B1    2  9  0.1pF  
+C_C1B2    2  8  0.07pF  
+CCE1      3  2  0.06pF  
+C_C1E1   10  2  0.05pF  
+LC_X1    P1  2  0.05nH  
+LE_X1    P2 10  0.05nH  
+LC_X2    P3  4  0.05nH  
+LE_X2     7 P4  0.05nH  
+LB_X2     8 P5  0.05nH  
+LB_X1     9 P6  0.05nH  
+LB1       1  9  0.4nH  
+LB2       5  8  0.5nH  
+LE2       6  7  1nH  
+LE1      10  3  1.05nH  
+C_E1C2    4 10  0.05pF  
+C_B2E2    7  8  0.05pF  
+.MODEL NE68000 NPN 
++(IS=3.84e-16    BF=124.9         NF=1.04        VAF=11.9         IKF=0.027
++ ISE=1.0e-14    NE=2.17          BR=1.0         NR=1.05          VAR=0.0
++ IKR=0.0        ISC=0.0          NC=2.0         RE=0.6           RB=17.9  
++ RBM=1.02       IRB=4.01e-4      RC=10.46       CJE=0.358e-12    VJE=0.711
++ MJE=0.5        CJC=0.21e-12     VJC=0.791      MJC=0.5          XCJC=0.0
++ CJS=0.0        VJS=0.750        MJS=0.0        FC=0.50          TF=10e-12    
++ XTF=18.0       VTF=19.1         ITF=.0818      PTF=0.0          TR=0.635e-9
++ EG=1.11        XTB=0.0          XTI=3.0        KF=0.0           AF=1.0 )
+*
+* NOTE:  CEL develops models using the Libra simulator.
+*        For this simulator, a value of 0 for VAR and
+*        IKR is interpreted as infinity.
+.ENDS
+*$
+

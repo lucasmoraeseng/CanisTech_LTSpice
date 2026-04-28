@@ -1,0 +1,39 @@
+* FILENAME:        NE68800.CIR
+* NEC PART NUMBER: NE68800
+* LAST MODIFIED:   6/96
+* BIAS CONDITIONS: Vce=1V to 3V, Ic=1mA to 10mA
+* FREQ RANGE:      0.1GHZ to 10GHZ
+*
+*                CCB
+*            .---||---.            CCB=0.24pF
+*            |        |C           CCE=0.27pF
+*            |   /----o---LC----o
+*  o----LB---o--|     |            LB=0.72nH
+*            B   \   --            LC=0.51nH
+*                |   -- CCE        LE=0.19nH
+*              E o----' 
+*                | 
+*               LE
+*                |
+*                o
+*
+*                   c b e
+.SUBCKT NE68800/CEL 2 1 3
+Q1  5 4 6 NE68800
+CCB 4 5 0.24E-12
+CCE 5 6 0.27E-12
+LE  6 3 0.19E-9
+LB  1 4 0.72E-9
+LC  5 2 0.51E-9
+.MODEL NE68800 NPN 
++(IS=3.80e-16  BF=135.7         NF=1         VAF=28         IKF=0.6
++ ISE=3.8e-15  NE=1.49          BR=12.3      NR=1.1         VAR=3.5
++ IKR=0.06     ISC=3.5e-16      NC=1.62      RE=0.4         RB=6.14
++ RBM=3.5      IRB=0.001        RC=4.2       CJE=0.796e-12  VJE=0.71
++ MJE=0.38     CJC=0.549e-12    VJC=0.65     MJC=0.48       XCJC=0.56
++ CJS=0        VJS=0.75         MJS=0        FC=0.75        TF=11.0e-12
++ XTF=0.36     VTF=0.65         ITF=0.61     PTF=50         TR=0.032e-9
++ EG=1.11      XTB=0            XTI=3        KF=1.5e-14     AF=1.22 )
+.ENDS
+*$
+

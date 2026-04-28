@@ -1,0 +1,558 @@
+* SIMetrix model library
+
+* Copyright (C) 1998 Newbury Technology Ltd. All rights reserved.
+* 
+* These models are believed to be accurate but Newbury Technology Ltd.
+* offers no guarantee as to their fitness for any purpose nor do they
+* accept any responsibility for damage caused directly or indirectly
+* by their use.
+*
+*
+* 2.10.98
+
+* idealised diodes
+.model IDEAL D (IS=1p)
+.model SCHOTTKY D (IS=6e-8 RS=1)
+.model opto d (is=1p N=2)
+
+
+
+**************************************************************************
+* jrw 17.2.94.
+* BAV70, BAV99
+* Data from Philips SC01 1992
+.model BAV70 D(IS=1.6f RS=1.0 IKF=22m CJO=1.0p M=0.3 VJ=0.75 ISR=2.6n 
++ BV=70 TT=8.7n)
+
+.model BAV99 D(IS=1.6f RS=1.0 IKF=22m CJO=1.0p M=0.3 VJ=0.75 ISR=2.6n 
++ BV=70 TT=8.7n)
+
+**************************************************************************
+* jrw 17.2.94.
+* BAW56
+* This device is almost identical to BAV70 but has higher quoted capacitance.
+* Guaranteed limits of reverse leakage are lower but typical values are same.
+
+.model BAW56 D(IS=1.6f RS=1.0 IKF=22m CJO=1.5p M=0.3 VJ=0.75 ISR=2.6n 
++ BV=70 TT=8.7n)
+
+**************************************************************************
+* jrw 17.2.94.
+* 1n4148
+* Data from Philips SC01 1992
+
+.model D1n4148 D(IS=1.6f RS=1.0 IKF=22m CJO=3p M=0.3 VJ=0.75 ISR=2.6n 
++ BV=70 TT=20n)
+
+**************************************************************************
+* jrw 17.2.94.
+* bav18, bav19, bav20, bav21 - DO-35
+* bas19, bas20, bas21 - SOT23
+* bav100, bav101, bav102, bav103 -SOD80C
+* Data from Philips SC01 1992
+
+.model bas19  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=120 IBV=100u TT=43n)
+
+.model bav19  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=120 IBV=100u TT=43n)
+
+.model bav101  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=120 IBV=100u TT=43n)
+
+.model bas20  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=200 IBV=100u TT=43n)
+
+.model bav20  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=200 IBV=100u TT=43n)
+
+.model bav102  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=200 IBV=100u TT=43n)
+
+.model bas21  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=250 IBV=100u TT=43n)
+
+.model bav21  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=250 IBV=100u TT=43n)
+
+.model bav103  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=250 IBV=100u TT=43n)
+
+.model bav18  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=60 IBV=100u TT=43n)
+
+.model bav100  D(IS=1.6f RS=0.51 IKF=20m CJO=1.5p M=0.1 VJ=0.75 ISR=10n 
++ BV=60 IBV=100u TT=43n)
+
+**************************************************************************
+* jrw 17.2.94.
+* Data from Philips 'Power Diodes' SC02 1990
+* BY229, BY229-200, BY229-400, BY229-600, BY229-800
+* Model for BY229 without specified voltage rating has no reverse 
+* breakdown parameters.
+
+.model by229 D(IS=1f RS=32m IKF=1 CJO=66.7p M=0.37 VJ=0.75 ISR=127.4n 
++ TT=300n)
+
+.model by229-200 D(IS=1f RS=32m IKF=1 CJO=66p M=0.37 VJ=0.75 ISR=130n 
++ BV=200 IBV=100u TT=300n)
+
+.model by229-400 D(IS=1f RS=32m IKF=1 CJO=66p M=0.37 VJ=0.75 ISR=130n 
++ BV=400 IBV=100u TT=300n)
+
+.model by229-600 D(IS=1f RS=32m IKF=1 CJO=66p M=0.37 VJ=0.75 ISR=130n 
++ BV=600 IBV=100u TT=300n)
+
+.model by229-800 D(IS=1f RS=32m IKF=1 CJO=66p M=0.37 VJ=0.75 ISR=130n 
++ BV=800 IBV=100u TT=300n)
+
+**************************************************************************
+* jrw 17.2.94.
+* Data from SGS-Thomson 'Zener Schottky & Rectifier Diodes' 1st Edition
+* BYT12P, BYT12P-600, BYT12P-800, BYT12P-1000
+* Model for BY12P without specified voltage rating has no reverse 
+* breakdown parameters.
+* Capacitance parameters are estimated as not quoted in data sheet.
+
+.model byt12p D(IS=10e-18 RS=16m CJO=500p M=0.4 VJ=0.75 ISR=720n 
++ TT=100n)
+
+.model byt12p-600 D(IS=10e-18 RS=16m CJO=500p M=0.4 VJ=0.75 ISR=720n 
++ BV=640 IBV=100u TT=100n)
+
+.model byt12p-800 D(IS=10e-18 RS=16m CJO=500p M=0.4 VJ=0.75 ISR=720n 
++ BV=850 IBV=100u TT=100n)
+
+.model byt12p-1000 D(IS=10e-18 RS=16m CJO=500p M=0.4 VJ=0.75 ISR=720n 
++ BV=1000 IBV=100u TT=130n)
+
+**************************************************************************
+* jrw 17.2.94.
+* Data from SGS-Thomson 'Zener Schottky & Rectifier Diodes' 1st Edition
+* BYT30P, BYT30P-600, BYT30P-800, BYT30P-1000
+* Model for BY30P without specified voltage rating has no reverse 
+* breakdown parameters.
+* Capacitance parameters are estimated as not quoted in data sheet.
+
+.model byt30p D(IS=3e-18 RS=5m CJO=970p M=0.4 VJ=0.75 ISR=790n 
++ TT=100n)
+
+.model byt30p-600 D(IS=3e-18 RS=5m CJO=970p M=0.4 VJ=0.75 ISR=790n 
++ BV=640 IBV=100u TT=100n)
+
+.model byt30p-800 D(IS=3e-18 RS=5m CJO=970p M=0.4 VJ=0.75 ISR=790n 
++ BV=850 IBV=100u TT=100n)
+
+.model byt30p-1000 D(IS=3e-18 RS=5m CJO=970p M=0.4 VJ=0.75 ISR=790n 
++ BV=1000 IBV=100u TT=130n)
+
+**************************************************************************
+* jrw 17.2.94.
+* Data from Motorola Rectifier device data DL151/D
+* D1N4001 to D1N4007
+
+.model d1n4001  D(IS=140f RS=39m IKF=7m CJO=52p M=0.27 VJ=0.75 ISR=16n 
++ BV=60 IBV=100u TT=5.0u)
+
+.model d1n4002  D(IS=140f RS=39m IKF=7m CJO=52p M=0.27 VJ=0.75 ISR=16n 
++ BV=120 IBV=100u TT=5.0u)
+
+.model d1n4003  D(IS=140f RS=39m IKF=7m CJO=52p M=0.27 VJ=0.75 ISR=16n 
++ BV=240 IBV=100u TT=5.0u)
+
+.model d1n4004  D(IS=140f RS=39m IKF=7m CJO=52p M=0.27 VJ=0.75 ISR=16n 
++ BV=480 IBV=100u TT=5.0u)
+
+.model d1n4005  D(IS=140f RS=39m IKF=7m CJO=52p M=0.27 VJ=0.75 ISR=16n 
++ BV=720 IBV=100u TT=5.0u)
+
+.model d1n4006  D(IS=140f RS=39m IKF=7m CJO=52p M=0.27 VJ=0.75 ISR=16n 
++ BV=1000 IBV=100u TT=7.0u)
+
+.model d1n4007  D(IS=140f RS=39m IKF=7m CJO=52p M=0.27 VJ=0.75 ISR=16n 
++ BV=1200 IBV=100u TT=7.0u)
+
+**************************************************************************
+* jrw 17.2.94.
+* Data from Motorola Rectifier device data DL151/D
+* D1N5400 to D1N5408
+* The data sheet on this range of diodes is scant despite their
+* ubiquitous nature. Capacitance is estimated and reverse recovery
+* has not been modelled.
+
+.model D1n5400  D(IS=15f RS=8m CJO=150p M=0.3 VJ=0.75 ISR=120n 
++ BV=100 Ibv=100u)
+
+.model D1n5401  D(IS=15f RS=8m CJO=150p M=0.3 VJ=0.75 ISR=120n 
++ BV=200 Ibv=100u)
+
+.model D1n5402  D(IS=15f RS=8m CJO=150p M=0.3 VJ=0.75 ISR=120n 
++ BV=300 Ibv=100u)
+
+.model D1n5404  D(IS=15f RS=8m CJO=150p M=0.3 VJ=0.75 ISR=120n 
++ BV=525 Ibv=100u)
+
+.model D1n5406  D(IS=15f RS=8m CJO=150p M=0.3 VJ=0.75 ISR=120n 
++ BV=800 Ibv=100u)
+
+.model D1n5407  D(IS=15f RS=8m CJO=150p M=0.3 VJ=0.75 ISR=120n 
++ BV=1000 Ibv=100u)
+
+.model D1n5408  D(IS=15f RS=8m CJO=150p M=0.3 VJ=0.75 ISR=120n 
++ BV=1200 Ibv=100u)
+
+**************************************************************************
+* jrw 17.2.94.
+* Data from Motorola Rectifier device data DL151/D
+* mr750 to mr760
+
+.model mr750    D(IS=850f RS=1.6m IKF=1 CJO=1.3n M=0.71 VJ=0.75 FC=0.5 ISR=51n 
++ BV=60 IBV=100u TT=11u)
+
+.model mr751    D(IS=850f RS=1.6m IKF=1 CJO=1.3n M=0.71 VJ=0.75 FC=0.5 ISR=51n 
++ BV=120 IBV=100u TT=11u)
+
+.model mr752    D(IS=850f RS=1.6m IKF=1 CJO=1.3n M=0.71 VJ=0.75 FC=0.5 ISR=51n 
++ BV=240 IBV=100u TT=11u)
+
+.model mr754    D(IS=850f RS=1.6m IKF=1 CJO=1.3n M=0.71 VJ=0.75 FC=0.5 ISR=51n 
++ BV=480 IBV=100u TT=11u)
+
+.model mr756    D(IS=850f RS=1.6m IKF=1 CJO=1.3n M=0.71 VJ=0.75 FC=0.5 ISR=51n 
++ BV=720 IBV=100u TT=11u)
+
+.model mr758    D(IS=850f RS=1.6m IKF=1 CJO=1.3n M=0.71 VJ=0.75 FC=0.5 ISR=51n 
++ BV=960 IBV=100u TT=11u)
+
+.model mr760    D(IS=850f RS=1.6m IKF=1 CJO=1.3n M=0.71 VJ=0.75 FC=0.5 ISR=51n 
++ BV=1200 IBV=100u TT=11u)
+
+
+
+**************************************************************************
+* jrw 17.2.94.
+* Data from Motorola Rectifier device data DL151/D
+* .mur105 to mur1100 ultrafast recovery rectifiers, 1A rating
+
+.model mur105 D(IS=9p RS=23m IKF=11m CJO=40p M=0.37 VJ=0.75 ISR=820p 
++ BV=50 IBV=100u tt=62n)
+
+.model mur110 D(IS=9p RS=23m IKF=11m CJO=40p M=0.37 VJ=0.75 ISR=820p 
++ BV=100 IBV=100u tt=62n)
+
+.model mur115 D(IS=9p RS=23m IKF=11m CJO=40p M=0.37 VJ=0.75 ISR=820p 
++ BV=150 IBV=100u tt=62n)
+
+.model mur120 D(IS=7.4f RS=50m CJO=17p M=0.50 vj=0.75 ISR=940p 
++ BV=200 ibv=100u tt=62n)
+
+.model mur130 D(IS=7.4f RS=50m CJO=17p M=0.50 vj=0.75 ISR=940p 
++ BV=300 ibv=100u tt=120n)
+
+.model mur140 D(IS=7.4f RS=50m CJO=17p M=0.50 vj=0.75 ISR=940p 
++ BV=400 ibv=100u tt=120n)
+
+.model mur150 D(IS=7.4f RS=50m CJO=17p M=0.50 vj=0.75 ISR=940p 
++ BV=500 ibv=100u tt=120n)
+
+.model mur160 D(IS=7.4f RS=50m CJO=17p M=0.50 vj=0.75 ISR=940p 
++ BV=600 ibv=100u tt=120n)
+
+.model mur170e D(IS=10e-18 RS=60m CJO=17p M=0.45 VJ=0.75 ISR=4.7n
++ BV=700 IBV=100u TT=185n)
+
+.model mur180e D(IS=10e-18 RS=60m CJO=17p M=0.45 VJ=0.75 ISR=4.7n
++ BV=800 IBV=100u TT=185n)
+
+.model mur190e D(IS=10e-18 RS=60m CJO=17p M=0.45 VJ=0.75 ISR=4.7n
++ BV=900 IBV=100u TT=185n)
+
+.model mur1100e D(IS=10e-18 RS=60m CJO=17p M=0.45 VJ=0.75 ISR=4.7n
++ BV=1000 IBV=100u TT=185n)
+
+**************************************************************************
+* jrw 18.2.94.
+* BYT01, BYT01-200, BYT01-300, BYT01-400
+* Data from SGS-Thomson 'Zener Schottky & Rectifier Diodes' 1st Edition
+* Capacitance parameters are estimated as not quoted in data sheet.
+ 
+.model byt01 d(IS=50e-21 RS=0.145 CJO=45p M=0.4 VJ=0.75 ISR=110n 
++ tt=51n)
+
+.model byt01-200 d(IS=50e-21 RS=0.145 CJO=45p M=0.4 VJ=0.75 ISR=110n 
++ BV=220 IBV=100u TT=51n)
+
+.model byt01-300 d(IS=50e-21 RS=0.145 CJO=45p M=0.4 VJ=0.75 isr=110n 
++ BV=330 IBV=100u TT=51n)
+
+.model byt01-400 d(IS=50e-21 RS=0.145 CJO=45p M=0.4 VJ=0.75 ISR=110n 
++ BV=440 IBV=100u TT=51n)
+
+**************************************************************************
+* jrw 18.2.94.
+* Data from Philips 'Power Diodes' SC02 1990
+* BYV29, BYV29-300, BYV29-400, BYV29-500
+* Capacitance parameters are estimated as not quoted in data sheet.
+ 
+.model byv29 D(IS=70f RS=25m CJO=120p M=0.45 VJ=0.75 ISR=16n 
++ TT=55n)
+
+.model byv29-300 D(IS=70f RS=25m CJO=240p M=0.45 VJ=0.75 ISR=16n 
++ BV=350 IBV=100u TT=55n)
+
+.model byv29-400 D(IS=70f RS=25m CJO=240p M=0.45 VJ=0.75 ISR=16n 
++ BV=450 IBV=100u TT=55n)
+
+.model byv29-500 D(IS=70f RS=25m CJO=240p M=0.45 VJ=0.75 ISR=16n 
++ BV=550 IBV=100u TT=55n)
+
+**************************************************************************
+* jrw 18.2.94.
+* Data from Motorola Rectifier device data DL151/D
+* .mur860 to mur1100 ultrafast recovery rectifiers, 1A rating
+
+.model mur805 d(is=960f rs=5m ikf=0.29 cjo=370p m=0.40 vj=0.75 isr=55n 
++ bv=50 ibv=100u tt=51n)
+
+.model mur810 d(is=960f rs=5m ikf=0.29 cjo=370p m=0.40 vj=0.75 isr=55n 
++ bv=100 ibv=100u tt=51n)
+
+.model mur815 d(is=960f rs=5m ikf=0.29 cjo=370p m=0.40 vj=0.75 isr=55n 
++ bv=150 ibv=100u tt=51n)
+
+.model mur820 d(is=4.1f rs=44m cjo=370p m=0.40 vj=0.75 isr=17n 
++ bv=200 ibv=100u tt=51n)
+
+.model mur830 d(is=4.1f rs=44m cjo=370p m=0.40 vj=0.75 isr=17n 
++ bv=300 ibv=100u tt=87n)
+
+.model mur840 d(is=4.1f rs=44m cjo=370p m=0.40 vj=0.75 isr=17n 
++ bv=400 ibv=100u tt=87n)
+
+.model mur850 d(is=600e-18 rs=44m cjo=370p m=0.40 vj=0.75 isr=26n 
++ bv=500 ibv=100u tt=87n)
+
+.model mur860 d(is=600e-18 rs=44m cjo=370p m=0.40 vj=0.75 isr=26n 
++ bv=600 ibv=100u tt=87n)
+
+**************************************************************************
+* jrw 18.2.94.
+* Data from Motorola Rectifier device data DL151/D
+* MURD305-320
+
+.model murd305 d(is=240f rs=22m cjo=130p m=0.35 vj=0.75 isr=3.5n 
++ bv=50 ibv=100u tt=55n)
+
+.model murd310 d(is=240f rs=22m cjo=130p m=0.35 vj=0.75 isr=3.5n 
++ bv=100 ibv=100u tt=55n)
+
+.model murd315 d(is=240f rs=22m cjo=130p m=0.35 vj=0.75 isr=3.5n 
++ bv=150 ibv=100u tt=55n)
+
+.model murd320 d(is=240f rs=22m cjo=130p m=0.35 vj=0.75 isr=3.5n 
++ bv=200 ibv=100u tt=55n)
+
+.model BAS16 D(
++	IS=6.23904e-13 ISR=2.29423e-09 RS=1.83558 TT=2.88539e-09 BV=82.5 CJO=1.5p )
+
+.model BAT54W D(
++	IS=3.74211e-07 ISR=3.06611e-07 RS=1.49079 
++	CJO=9.20835e-12 VJ=1.9 M=0.641799 BV=33 EG=0.7 )
+
+.model BAT81 D(
++	IS=3.94654e-09 ISR=2.20417e-08 RS=12.9177 
++	CJO=1.31085e-12 VJ=1.4 M=0.314488 BV=44 EG=0.7 )
+
+.model BAT82 D(
++	IS=3.94654e-09 ISR=2.20417e-08 RS=12.9177 
++	CJO=1.31085e-12 VJ=1.4 M=0.314488 BV=55 EG=0.7 )
+
+.model BAT83 D(
++	IS=3.94654e-09 ISR=2.20417e-08 RS=12.9177 
++	CJO=1.31085e-12 VJ=1.4 M=0.314488 BV=66 EG=0.7 )
+
+.model BAT85 D(
++	IS=2.55977e-07 ISR=2.08669e-07 RS=2.09863 
++	CJO=1.2e-11 VJ=1.5 M=0.589556 BV=33 EG=0.7 )
+
+.model BAV45 D(
++	IS=9.11684e-17 ISR=7.4928e-13 RS=4.25271 TT=8.65617e-07 
++	CJO=1.00679 VJ=1.7 M=0.113376 BV=22 )
+
+.model BAW62 D(
++	IS=7.31673e-14 ISR=1.46971e-08 RS=1.19392 TT=3.60674e-09 
++	CJO=1.0025e-12 VJ=1.5 M=0.0783575 BV=82.5 )
+
+.model BAR18 D(
++	IS=1.12991e-09 ISR=9.34652e-09 RS=31.0325 
++	CJO=1.40659e-12 VJ=1.9 M=0.224495 BV=77 EG=0.7 )
+
+.alias BAS70-04 BAR18 D
+.alias BAS70-05 BAR18 D
+.alias BAS70-06 BAR18 D
+
+.model BAR42 D(
++	IS=1.13853e-08 ISR=3.26235e-08 RS=0.99517 
++	CJO=9.26191e-12 VJ=1.6 M=0.411631 BV=33 EG=0.7 )
+
+.alias BAR43A BAR42 D
+.alias BAR43C BAR42 D
+.alias BAR43S BAR42 D
+.alias BAR43 BAR42 D
+
+.model BAT46 D(
++	IS=2.92958e-09 ISR=1.83844e-07 RS=0.986772 
++	CJO=8.35398e-12 VJ=1.7 M=0.389001 BV=110 EG=0.7 )
+
+.model BAT47 D(
++	IS=1.12597e-07 ISR=9.34685e-08 RS=0.972747 
++	CJO=2.076e-11 VJ=1.6 M=0.570502 BV=22 EG=0.7 )
+
+.model BAT48 D(
++	IS=1.12597e-07 ISR=7.9897e-08 RS=0.972747 
++	CJO=2.076e-11 VJ=1.6 M=0.570502 BV=44 EG=0.7 )
+
+.model BAT49 D(
++	IS=1.9892e-10 ISR=1.25461e-06 RS=0.084478 
++	CJO=1.32466e-10 VJ=1.7 M=0.640745 BV=88 EG=0.7 )
+
+.model BY233-200 D(
++	IS=7.46994e-15 ISR=1.69314e-07 RS=0.0105593 TT=5.75989e-08 
++	CJO=6.77516e-11 VJ=0.8 M=0.321422 BV=220 )
+
+.model BY233-400 D(
++	IS=7.46994e-15 ISR=1.35585e-07 RS=0.0105593 TT=5.75989e-08 
++	CJO=6.77516e-11 VJ=0.8 M=0.321422 BV=440 )
+
+.model BY233-600 D(
++	IS=7.46994e-15 ISR=1.19044e-07 RS=0.0105593 TT=5.75989e-08 
++	CJO=6.77516e-11 VJ=0.8 M=0.321422 BV=660 )
+
+.model BYT11-600 D(
++	IS=1.57E-19 ISR=4.3836e-07 RS=0.0368968 TT=1.23315e-07 
++	CJO=1.98082e-11 VJ=1.2 M=0.132663 BV=660 )
+
+.model BYT11-800 D(
++	IS=1.57E-19 ISR=4.21973e-07 RS=0.0368968 TT=1.23315e-07 
++	CJO=1.98082e-11 VJ=1.2 M=0.132663 BV=880 )
+
+.model BYT11-1000 D(
++	IS=1.57E-19 ISR=4.09681e-07 RS=0.0368968 TT=1.23315e-07 
++	CJO=1.98082e-11 VJ=1.2 M=0.132663 BV=1100 )
+
+.model BYT13-600 D(
++	IS=3.52756e-18 ISR=4.27803e-07 RS=0.029902 TT=2.4663e-07 
++	CJO=4.87522e-11 VJ=1.1 M=0.134703 BV=660 )
+
+.model BYT13-800 D(
++	IS=3.52756e-18 ISR=4.11568e-07 RS=0.029902 TT=2.4663e-07 
++	CJO=4.87522e-11 VJ=1.1 M=0.134703 BV=880 )
+
+.model BYT13-1000 D(
++	IS=3.52756e-18 ISR=3.99396e-07 RS=0.029902 TT=2.4663e-07 
++	CJO=4.87522e-11 VJ=1.1 M=0.134703 BV=1100 )
+
+.model BYW100-50 D(
++	IS=4.72847e-14 ISR=2.90878e-07 RS=0.0576031 TT=3.4133e-08 
++	CJO=1.964e-11 VJ=1.1 M=0.141125 BV=55 )
+
+.model BYW100-100 D(
++	IS=4.72847e-14 ISR=2.64174e-07 RS=0.0576031 TT=3.4133e-08 
++	CJO=1.964e-11 VJ=1.1 M=0.141125 BV=110 )
+
+.model BYW100-150 D(
++	IS=4.72847e-14 ISR=2.4961e-07 RS=0.0576031 TT=3.4133e-08 
++	CJO=1.964e-11 VJ=1.1 M=0.141125 BV=165 )
+
+.model BYW100-200 D(
++	IS=4.72847e-14 ISR=2.39741e-07 RS=0.0576031 TT=3.4133e-08 
++	CJO=1.964e-11 VJ=1.1 M=0.141125 BV=220 )
+
+.model BYW77-50 D(
++	IS=2E-12 ISR=1.331e-06 RS=0.01 TT=5.58932e-08 
++	CJO=2.0462e-10 VJ=0.8 M=0.0980998 BV=55 )
+
+.model BYW77-100 D(
++	IS=2E-12 ISR=1.24447e-06 RS=0.01 TT=5.58932e-08 
++	CJO=2.0462e-10 VJ=0.8 M=0.0980998 BV=110 )
+
+.model BYW77-150 D(
++	IS=2E-12 ISR=1.19625e-06 RS=0.01 TT=5.58932e-08 
++	CJO=2.0462e-10 VJ=0.8 M=0.0980998 BV=165 )
+
+.model BYW77-200 D(
++	IS=2E-12 ISR=1.16311e-06 RS=0.01 TT=5.58932e-08 
++	CJO=2.0462e-10 VJ=0.8 M=0.0980998 BV=220 )
+
+.model BYW80-50 D(
++	IS=2.11528e-09 ISR=3.76152e-07 RS=0.0173464 TT=3.69946e-08 
++	CJO=4.80801e-11 VJ=0.7 M=0.0674441 BV=55 )
+
+.model BYW80-100 D(
++	IS=2.11528e-09 ISR=3.5914e-07 RS=0.0173464 TT=3.69946e-08 
++	CJO=4.80801e-11 VJ=0.7 M=0.0674441 BV=110 )
+
+.model BYW80-150 D(
++	IS=2.11528e-09 ISR=3.49507e-07 RS=0.0173464 TT=3.69946e-08 
++	CJO=4.80801e-11 VJ=0.7 M=0.0674441 BV=165 )
+
+.model BYW80-200 D(
++	IS=2.11528e-09 ISR=3.42818e-07 RS=0.0173464 TT=3.69946e-08 
++	CJO=4.80801e-11 VJ=0.7 M=0.0674441 BV=220 )
+
+.alias BYW80F-50 BYW80-50 D
+.alias BYW80F-150 BYW80-150 D
+.alias BYW80F-100 BYW80-100 D
+.alias BYW80F-200 BYW80-200 D
+
+.model BYW81-50 D(
++	IS=1.57058e-13 ISR=6.93162e-07 RS=0.00570758 TT=2.50011e-08 
++	CJO=1.23285e-10 VJ=0.8 M=0.088289 BV=55 )
+
+.model BYW81-100 D(
++	IS=1.57058e-13 ISR=6.5247e-07 RS=0.00570758 TT=2.50011e-08 
++	CJO=1.23285e-10 VJ=0.8 M=0.088289 BV=110 )
+
+.model BYW81-150 D(
++	IS=1.57058e-13 ISR=6.29673e-07 RS=0.00570758 TT=2.50011e-08 
++	CJO=1.23285e-10 VJ=0.8 M=0.088289 BV=165 )
+
+.model BYW81-200 D(
++	IS=1.57058e-13 ISR=6.13953e-07 RS=0.00570758 TT=2.50011e-08 
++	CJO=1.23285e-10 VJ=0.8 M=0.088289 BV=220 )
+
+.alias BYW81P-50 BYW81-50 D
+.alias BYW81PI-50 BYW81-50 D
+.alias BYW81P-150 BYW81-50 D
+.alias BYW81PI-150 BYW81-50 D
+.alias BYW81P-100 BYW81-50 D
+.alias BYW81PI-100 BYW81-50 D
+.alias BYW81P-200 BYW81-50 D
+.alias BYW81PI-200 BYW81-50 D
+
+.model BYW98-50 D(
++	IS=8.52038e-14 ISR=2.98451e-07 RS=0.0180621 TT=2.50011e-08 
++	CJO=3.90063e-11 VJ=1.2 M=0.137475 BV=55 )
+
+.model BYW98-100 D(
++	IS=8.52038e-14 ISR=2.71764e-07 RS=0.0180621 TT=2.50011e-08 
++	CJO=3.90063e-11 VJ=1.2 M=0.137475 BV=110 )
+
+.model BYW98-150 D(
++	IS=8.52038e-14 ISR=2.5717e-07 RS=0.0180621 TT=2.50011e-08 
++	CJO=3.90063e-11 VJ=1.2 M=0.137475 BV=165 )
+
+.model BYW98-200 D(
++	IS=8.52038e-14 ISR=2.47265e-07 RS=0.0180621 TT=2.50011e-08 
++	CJO=3.90063e-11 VJ=1.2 M=0.137475 BV=220 )
+
+.model BB639 D(
++	ISR=4.02673e-10 
++	CJO=6.55614e-11 VJ=0.7 M=0.849582 BV=33 )
+
+.model bb545 D(
++	ISR=5.25985e-10 
++	CJO=3.53298e-11 VJ=1.1 M=0.881255 BV=33 )
+
+
+

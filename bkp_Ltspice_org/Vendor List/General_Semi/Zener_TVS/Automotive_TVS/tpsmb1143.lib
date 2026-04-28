@@ -1,0 +1,41 @@
+TPSMB11-43 
+* created by Andreas Bursian, THOMATRONIK, 83022 Rosenheim
+* Tel.: -8031-2175-13 ***** Fax.: -8031/2157-30
+* date: 31.07.94 18:27
+* Model was made for the PSpice Simulator
+.MODEL TPSMB11_43_P D
+ + IS=0.00000000000137
+ + N=1.172
+ + RS=0.6973
+ + IKF=0.1444
+ + RS=0.6973
+ + IKF=0.1444
+ + XTI=3
+ + EG=1.11
+ + CJO=0.0000000005174
+ + M=0.3325
+ + VJ=0.6603
+ + FC=0.5
+ + ISR=0.0000000001111
+ + NR=2
+ + BV=nominal breakdown voltage*
+ + IBV=1m
+ + TT=0.000000005
+*Vbrnom=(Vbrmin+Vbrmax)/2
+
+* Model was made for any SPICE 
+compatible Simulator
+.MODEL TPSMB11_43_S D
+ + IS=0.000000000003432
+ + N=1.24
+ + RS=0.09517
+ + XTI=3
+ + EG=1.11
+ + CJO=0.0000000005174
+ + M=0.3375
+ + VJ=0.6661
+ + FC=0.5
+ + ISR=0.0000000000000000001
+ + BV=nominal breakdown voltage*
+ + IBV=1m
+ + TT=0.000000005

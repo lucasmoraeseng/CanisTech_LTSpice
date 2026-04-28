@@ -1,0 +1,53 @@
+* BFQ166 SPICE MODEL
+* PHILIPS SEMICONDUCTORS
+* Date : September 1995
+*
+* PACKAGE : SOT223A DIE MODEL : BFQ168
+* 1: COLLECTOR; 2: BASE; 3: EMITTER;
+.SUBCKT BFQ166 1 2 3
+Q1 6 5 7 7 BFQ168
+* SOT223A parasitic model
+               Lb  4 5 1.5n 
+               Le  7 8 .5n
+               L1  2 4 .025n
+               L2  1 6 1.19n
+               L3  3 8 .6n
+              Ccb  4 6 16f
+              Cbe  4 8 182f
+*
+* PHILIPS SEMICONDUCTORS                                     Version:   1.0
+* Filename:   BFQ168.PRM                                     Date: Feb 1992
+*
+.MODEL  BFQ168   NPN
++              IS = 1.56960E-015
++              BF = 5.67649E+001
++              NF = 9.80718E-001
++             VAF = 3.09555E+001
++             IKF = 9.93475E+000
++             ISE = 2.27232E-013
++              NE = 1.85087E+000
++              BR = 8.91658E+001
++              NR = 9.84794E-001
++             VAR = 4.80825E+000
++             IKR = 6.99865E+000
++             ISC = 7.54672E-015
++              NC = 1.12261E+000
++              RB = 1.00000E+001
++             IRB = 1.00000E-006
++             RBM = 1.00000E+001
++              RE = 2.65455E-001
++              RC = 2.90000E-001
++              EG = 1.11000E+000
++             XTI = 3.00000E+000
++             CJE = 2.13600E-011
++             VJE = 8.21900E-001
++             MJE = 4.06200E-001
++              TF = 1.39273E-011
++             XTF = 6.00000E+000
++             VTF = 8.00153E+000
++             ITF = 3.45649E+000
++             CJC = 8.52200E-012
++             VJC = 6.67600E-001
++             MJC = 4.00800E-001
+.ENDS
+

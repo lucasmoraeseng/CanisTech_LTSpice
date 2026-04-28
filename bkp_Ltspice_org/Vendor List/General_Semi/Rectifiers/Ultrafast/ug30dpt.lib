@@ -1,0 +1,30 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+* Diode 1: nodes 1 and 2
+* Diode 2: nodes 3 and 2
+
+.SUBCKT UG30DPT 1 2 3
+D1 1 2 LEGD
+D2 3 2 LEGD
+.MODEL LEGD D (
++   N=2.66765
++  IS=2.27318E-005
++  RS=0.00231942
++  EG=1.11
++ XTI=3
++ CJO=7.82605E-011
++  VJ=5.63531
++   M=0.0414631
++  FC=0.5
++  TT=4.93261E-008
++  BV=200
++ IBV=0.2
++  KF=0
++  AF=1 )
+.ENDS

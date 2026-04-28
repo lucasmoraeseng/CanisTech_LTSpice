@@ -1,0 +1,38 @@
+*
+* Trace Elliot 15W output transformer, 8k primary, 16/8 ohm sec.
+* Part no. 73 TRAN 15W OP
+*
+* [1] Red   ---. ||
+*              ) || .--- Green (16 ohm)  [4]
+*              ) || (
+*              ) || (
+* [2] White ---. || .--- Yellow (8 ohm)  [5]
+*              ) || (
+*              ) || (
+*              ) || .--- Brown           [6]
+* [3] Blue  ---. ||
+*
+.SUBCKT trace15 1 2 3 4 5 6
+*
+* Primary
+*
+Lleak1  1       20      2mH
+Lpri1   20      21      150H
+Rpri1   21      2       186
+Cpri1   1       2       120p
+Lleak2  2       22      2mH
+Lpri2   22      23      150H
+Rpri2   23      3       201
+Cpri2   2       3       120p
+*
+* Secondary
+*
+Lleak3  5       24	10uH
+Lsec1   24      25      0.6H
+Rsec1   25      6       0.8
+Lleak4  4	    27	10uH
+Lsec2	  27      28	0.3H
+Rsec2	  28	    5	      0.4
+
+Kcoup   Lpri1 LPri2 Lsec1 Lsec2 1.0
+.ENDS 

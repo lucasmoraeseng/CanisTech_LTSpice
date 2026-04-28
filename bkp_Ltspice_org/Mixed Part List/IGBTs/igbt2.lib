@@ -1,0 +1,284 @@
+Intusoft IGBT Models
+Date: 2/95
+
+Copyright © Intusoft 1995
+Tel (310) 833-0710
+Fax (310) 833-9658
+e-mail:  info@intusoft.com
+World Wide Web site: http://www.intusoft.com
+
+SPICE Simulation Models
+These SPICE simulation models may be used and distributed freely, 
+provided they are not altered in any way, resold, or included in 
+any other package for resale. In addition, the Intusoft copyright
+notice MUST be maintained and included with any model distribution.
+
+As a service to our customers, we provide a free modeling service.  
+If you are interested in obtaining additional models, please contact 
+Intusoft technical support.
+
+ICAP/4 Windows Demonstration Software
+The demonstration version of ICAP/4 Windows including IsSpice4 may be 
+downloaded from our Web site at no charge.  
+Also available for download are additional models, product and 
+ordering information, technical articles, and Intusoft Newsletters.
+
+These models are part of the ICAP/4Windows Deluxe package which currently
+includes over 10,000 models and hundreds of different part types. With
+regard to the number of part types, it is the largest library available
+from ANY SPICE vendor!!
+
+SpiceMod Modeling Software
+SpiceMod is a CAE program that is used to create SPICE models from 
+data sheet values.  SPICEMOD is particularly useful in the circuit 
+design phase because it allows the designer to create SPICE models 
+based on electrical specifications before an actual device is selected.
+SpiceMod may be used to create models for diodes, Zener diodes, BJTs,
+power BJTs, Darlington BJTs, JFETs, MOSFETs, power MOSFETs, IGBTs, 
+SCRs, and TRIACS.
+
+***************
+Macromodels, simulation models, or other models provided by
+Intusoft, directly or indirectly, are not warranted by
+Intusoft as fully representing all of the specifications and
+operating characteristics of the semiconductor product to
+which the model relates. Moreover, these models are
+furnished on an "as is" basis without support or warranty of
+any kind, either expressed or implied, regarding the use
+thereof and Intusoft specifically disclaims all implied
+warranties of merchantability and fitness of the models for
+any purpose. Intusoft does not assume any liability arising
+out of the application or use of the models including
+infringement of patents and copyrights nor does Intusoft
+convey any license under its patents and copyrights or the
+rights of others. Intusoft reserves the right to make
+changes without notice to any model.
+
+Although the use of macromodels can be a useful tool in evaluating
+device performance in various applications, they cannot
+model exact device performance under all conditions, nor are
+they intended to replace breadboarding for final
+verification.
+
+
+**********
+Omnirel IGBT Models made with the SpiceMod Modeling Program
+**********
+*SRC=OM6502ST;OM6502ST;IGBTs;No Diode;500V 10A
+*SYM=IGBT
+.SUBCKT OM6502ST 71 72 74
+*     TERMINALS:  C  G  E
+*  500 Volt  10 Amp  375NS  N-Channel IGBT  11-27-1995
+Q1  83 81 85     QOUT
+M1  81 82 83 83  MFIN L=1U W=1U
+DSD 83 81  DO
+DBE 85 81  DE
+RC  85 71  .206
+RE  83 73  20.6M
+RG  72 82  15
+CGE 82 83  870P
+CGC 82 71  1P
+EGD 91  0 82 81  1
+VFB 93  0  0
+FFB 82 81  VFB  1
+CGD 92 93  13.4N
+R1  92  0  1
+D1  91 92  DLIM
+DHV 94 93  DR
+R2  91 94  1
+D2  94  0  DLIM
+LE  73 74  7.5N
+DLV 94 95  DR 13
+RLV 95  0  1
+ESD 96 93  POLY(1) 83 81  20  1
+MLV 95 96 93 93  SW
+.MODEL SW NMOS (LEVEL=3 VTO=0 KP=5)
+.MODEL QOUT PNP (IS=21.8F NF=1.2 BF=5.1 CJE=14.1N TF=375N XTB=1.3)
+.MODEL MFIN NMOS (LEVEL=3 VMAX=349K THETA=80M ETA=2.4M VTO=3 KP=.149)
+.MODEL DR D (IS=2.18F CJO=959P VJ=1 M=.82)
+.MODEL DO D (IS=2.18F BV=500 CJO=674P VJ=1 M=.7)
+.MODEL DE D (IS=2.18F BV=14.3 N=2)
+.MODEL DLIM D (IS=100N)
+.ENDS 
+**********
+*SRC=OM6507SA;OM6507SA;IGBTs;No Diode;1000V 8A
+*SYM=IGBT
+.SUBCKT OM6507SA 71 72 74
+*     TERMINALS:  C  G  E
+*  1000 Volt  8 Amp  55NS  N-Channel IGBT  11-27-1995
+Q1  83 81 85     QOUT
+M1  81 82 83 83  MFIN L=1U W=1U
+DSD 83 81  DO
+DBE 85 81  DE
+RC  85 71  .303
+RE  83 73  30.3M
+RG  72 82  18.7
+CGE 82 83  1.45N
+CGC 82 71  1P
+EGD 91  0 82 81  1
+VFB 93  0  0
+FFB 82 81  VFB  1
+CGD 92 93  9.92N
+R1  92  0  1
+D1  91 92  DLIM
+DHV 94 93  DR
+R2  91 94  1
+D2  94  0  DLIM
+LE  73 74  7.5N
+DLV 94 95  DR 13
+RLV 95  0  1
+ESD 96 93  POLY(1) 83 81  25  1
+MLV 95 96 93 93  SW
+.MODEL SW NMOS (LEVEL=3 VTO=0 KP=5)
+.MODEL QOUT PNP (IS=2.49F NF=1.2 BF=5.1 CJE=10.9N TF=55N XTB=1.3)
+.MODEL MFIN NMOS (LEVEL=3 VMAX=603K THETA=80M ETA=1.2M VTO=3 KP=.247)
+.MODEL DR D (IS=.249F CJO=709P VJ=1 M=.82)
+.MODEL DO D (IS=.249F BV=1K CJO=978P VJ=1 M=.7)
+.MODEL DE D (IS=.249F BV=14.3 N=2)
+.MODEL DLIM D (IS=100N)
+.ENDS 
+**********
+*SRC=OM6526SA;OM6526SA;IGBTs;No Diode;1000V 15A
+*SYM=IGBT
+.SUBCKT OM6526SA 71 72 74
+*     TERMINALS:  C  G  E
+*  1000 Volt  15 Amp  75NS  N-Channel IGBT  11-27-1995
+Q1  83 81 85     QOUT
+M1  81 82 83 83  MFIN L=1U W=1U
+DSD 83 81  DO
+DBE 85 81  DE
+RC  85 71  59.5M
+RE  83 73  5.95M
+RG  72 82  10
+CGE 82 83  1.25N
+CGC 82 71  1P
+EGD 91  0 82 81  1
+VFB 93  0  0
+FFB 82 81  VFB  1
+CGD 92 93  9.92N
+R1  92  0  1
+D1  91 92  DLIM
+DHV 94 93  DR
+R2  91 94  1
+D2  94  0  DLIM
+LE  73 74  7.5N
+DLV 94 95  DR 13
+RLV 95  0  1
+ESD 96 93  POLY(1) 83 81  25  1
+MLV 95 96 93 93  SW
+.MODEL SW NMOS (LEVEL=3 VTO=0 KP=5)
+.MODEL QOUT PNP (IS=32.8F NF=1.2 BF=5.1 CJE=10.4N TF=75N XTB=1.3)
+.MODEL MFIN NMOS (LEVEL=3 VMAX=603K THETA=43.6M ETA=1.2M VTO=5.5 KP=.165)
+.MODEL DR D (IS=3.28F CJO=709P VJ=1 M=.82)
+.MODEL DO D (IS=3.28F BV=1K CJO=489P VJ=1 M=.7)
+.MODEL DE D (IS=3.28F BV=14.3 N=2)
+.MODEL DLIM D (IS=100N)
+.ENDS 
+**********
+Toshiba IGBT Models made with the SpiceMod Modeling Program
+**********
+*SYM=IGBT
+*SRC=GT8J102;GT8J102;IGBTs;No Diode;TOSHIBA 600V 8A 37.5NS 
+.SUBCKT GT8J102  71 72 74
+*     TERMINALS:  C  G  E
+Q1  83 81 85     QOUT OFF
+M1  81 82 83 83  MFIN L=1U W=1U
+DSD 83 81  DO
+DBE 85 81  DE
+RC  85 71  0.184
+RE  83 73  18.4M
+RG  72 82  18.8
+CGE 82 83  620P
+EGD 91  0 82 81  1
+VFB 93  0  0
+FFB 82 81  VFB  1
+CGD 92 93  2.25N
+R1  92  0  1
+D1  91 92  DLIM
+DHV 94 93  DR
+R2  91 94  1
+D2  94  0  DLIM
+LE  73 74  7.5N
+DLV 94 95  DR 13
+RLV 95  0  1
+ESD 96 93  POLY(1) 83 81 19  1
+MLV 95 96 93 93  SW
+.MODEL SW NMOS (LEVEL=3 VTO=0 KP=5)
+.MODEL QOUT PNP (IS=17.5F NF=1.2 BF=5.1 CJE=2.91N TF=37.5N XTB=1.3)
+.MODEL MFIN NMOS (LEVEL=3 VMAX=400K THETA=46.2M ETA=2.01M VTO=5.2 KP=0.424)
+.MODEL DR D (IS=1.75F CJO=160P VJ=1 M=0.82)
+.MODEL DO D (IS=1.75F BV=599 CJO=668P VJ=1 M=0.7)
+.MODEL DE D (IS=1.75F BV=15 N=2)
+.MODEL DLIM D (IS=100N)
+.ENDS
+**********
+*SYM=IGBT
+*SRC=GT8Q101;GT8Q101;IGBTs;No Diode;TOSHIBA 1.2E+03V 8A 62.5NS 
+.SUBCKT GT8Q101  71 72 74
+*     TERMINALS:  C  G  E
+Q1  83 81 85     QOUT OFF
+M1  81 82 83 83  MFIN L=1U W=1U
+DSD 83 81  DO
+DBE 85 81  DE
+RC  85 71  0.106
+RE  83 73  10.6M
+RG  72 82  42.9
+CGE 82 83  620P
+EGD 91  0 82 81  1
+VFB 93  0  0
+FFB 82 81  VFB  1
+CGD 92 93  2.25N
+R1  92  0  1
+D1  91 92  DLIM
+DHV 94 93  DR
+R2  91 94  1
+D2  94  0  DLIM
+LE  73 74  7.5N
+DLV 94 95  DR 13
+RLV 95  0  1
+ESD 96 93  POLY(1) 83 81 19  1
+MLV 95 96 93 93  SW
+.MODEL SW NMOS (LEVEL=3 VTO=0 KP=5)
+.MODEL QOUT PNP (IS=75.5F NF=1.2 BF=5.1 CJE=2.91N TF=62.5N XTB=1.3)
+.MODEL MFIN NMOS (LEVEL=3 VMAX=705K THETA=46.2M ETA=1M VTO=5.2 KP=0.391)
+.MODEL DR D (IS=7.55F CJO=160P VJ=1 M=0.82)
+.MODEL DO D (IS=7.55F BV=1.2K CJO=668P VJ=1 M=0.7)
+.MODEL DE D (IS=7.55F BV=15 N=2)
+.MODEL DLIM D (IS=100N)
+.ENDS
+**********
+*SYM=IGBT
+*SRC=GT15J101;GT15J101;IGBTs;No Diode;TOSHIBA 600V 15A 62.5NS 
+.SUBCKT GT15J101 71 72 74
+*     TERMINALS:  C  G  E
+Q1  83 81 85     QOUT OFF
+M1  81 82 83 83  MFIN L=1U W=1U
+DSD 83 81  DO
+DBE 85 81  DE
+RC  85 71  56.5M
+RE  83 73  5.65M
+RG  72 82  10
+CGE 82 83  1.12N
+EGD 91  0 82 81  1
+VFB 93  0  0
+FFB 82 81  VFB  1
+CGD 92 93  6.08N
+R1  92  0  1
+D1  91 92  DLIM
+DHV 94 93  DR
+R2  91 94  1
+D2  94  0  DLIM
+LE  73 74  7.5N
+DLV 94 95  DR 13
+RLV 95  0  1
+ESD 96 93  POLY(1) 83 81 19  1
+MLV 95 96 93 93  SW
+.MODEL SW NMOS (LEVEL=3 VTO=0 KP=5)
+.MODEL QOUT PNP (IS=142F NF=1.2 BF=5.1 CJE=7.18N TF=62.5N XTB=1.3)
+.MODEL MFIN NMOS (LEVEL=3 VMAX=400K THETA=46.2M ETA=2.01M VTO=5.2 KP=0.796)
+.MODEL DR D (IS=14.2F CJO=434P VJ=1 M=0.82)
+.MODEL DO D (IS=14.2F BV=599 CJO=1.1N VJ=1 M=0.7)
+.MODEL DE D (IS=14.2F BV=15 N=2)
+.MODEL DLIM D (IS=100N)
+.ENDS
+**********

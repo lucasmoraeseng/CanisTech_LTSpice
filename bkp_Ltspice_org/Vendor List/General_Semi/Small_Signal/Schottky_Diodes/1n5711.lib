@@ -1,0 +1,33 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+.SUBCKT DN5711 1 2
+.MODEL SD D (
++   N=1.68359
++  IS=1.50122E-007
++  RS=31.3769
++  EG=0.69
++ XTI=2
++ CJO=2E-012
++  VJ=0.393705
++   M=0.196045
++  FC=0.5
++  TT=1.4427E-009
++  BV=70
++ IBV=0.001
++  KF=0
++  AF=1 )
+.MODEL PND D (
++   N=1.14222
++  IS=1.16495E-014
++  RS=1.06783
++  EG=1.11
++ XTI=3 )
+D1 1 2 SD
+D2 1 2 PND
+.ENDS

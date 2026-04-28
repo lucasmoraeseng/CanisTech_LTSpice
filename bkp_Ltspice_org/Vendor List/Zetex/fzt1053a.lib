@@ -1,0 +1,22 @@
+*ZETEX  FZT1053A Spice model   Last revision 18/3/97
+*
+.MODEL FZT1053A  NPN IS=2.1E-12  NF=1.0  BF=600  IKF=2.2  VAF=100
++               ISE=0.9E-13  NE=1.25  NR=0.99  BR=150  IKR=2.5  VAR=15
++               ISC=5.0E-10  NC=1.76  RB=0.1  RE=0.028  RC=0.016 
++               CJC=75.1E-12  CJE=520E-12  MJC=0.415  MJE=0.367
++               VJC=0.512  VJE=0.766  TF=550E-12  TR=22E-9
+*
+*
+*                          (C)  1997 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

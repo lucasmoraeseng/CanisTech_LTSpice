@@ -1,0 +1,30 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+* Diode 1: nodes 1 and 2
+* Diode 2: nodes 3 and 2
+
+.SUBCKT SBL4040PT 1 2 3
+D1 1 2 LEGD
+D2 3 2 LEGD
+.MODEL LEGD D (
++   N=1.37716
++  IS=0.000104271
++  RS=0.00440842
++  EG=0.733534
++ XTI=2.0271
++ CJO=2.97377E-009
++  VJ=0.454391
++   M=0.443073
++  FC=0.5
++  TT=1.4427E-009
++  BV=40
++ IBV=0.5
++  KF=0
++  AF=1 )
+.ENDS

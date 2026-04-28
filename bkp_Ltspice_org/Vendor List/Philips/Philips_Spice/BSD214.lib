@@ -1,0 +1,8 @@
+* bsd214 model created using Parts version 4.04 on 11/16/94 at 15:24
+*
+.model bsd214   NMOS(Level=3 Gamma=0 Delta=0 Eta=0 Theta=0 Kappa=0
++                    Vmax=0 Xj=0 Tox=100n Uo=600 Phi=.6 Kp=20.85u
++                    W=540u L=2u Rs=20m Vto=.95 Rd=10.33 Rds=20G
++                    Cbd=5.352p Pb=.8 Mj=.5 Fc=.5 Cgso=1.2p Cgdo=5.1p
++                    Rg=0 Is=1.186u N=3.443 Rb=232.8)
+

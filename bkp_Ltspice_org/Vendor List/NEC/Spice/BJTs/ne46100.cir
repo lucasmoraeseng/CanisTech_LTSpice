@@ -1,0 +1,39 @@
+* FILENAME:        NE46100.CIR
+* NEC PART NUMBER: NE46100
+* LAST MODIFIED:   9/95
+* BIAS CONDITIONS: Vce=5V to 12.5V, Ic=50mA to 100mA
+* FREQ RANGE:      0.1GHz TO 4.0GHz
+*
+*                    CCB
+*                .---||---.                 CCB=0.03pF
+*                |        |C                CCE=0.5pF
+*                |   /----o---LC----o       
+*      o----LB---o--|     |                 LB=0.66nH (QTY 1-25.9mil)
+*                B   \   --                 LC=0.38nH (QTY 1-18.2mil)
+*                    |   -- CCE             LE=0.18nH (QTY 2-22.4mil)
+*                  E o----'                 Bond wire: 0.7mil 
+*                    |                                 diameter gold
+*                   LE
+*                    |
+*                    o
+*
+*                   c b e
+.SUBCKT NE46100/CEL 2 1 3
+Q1  5 4 6 NE46100
+CCB 4 5 0.03E-12
+CCE 5 6 0.5E-12
+LE  6 3 0.18E-9
+LB  1 4 0.66E-9
+LC  5 2 0.38E-9
+.MODEL NE46100 NPN
++( IS=8.7e-16    BF=185.0         NF=0.959       VAF=30.0         IKF=0.20
++ ISE=5.70e-13   NE=1.80          BR=5.0         NR=1.0           VAR=12.4  
++ IKR=0.018      ISC=1.0e-14      NC=1.95        RE=0.630         RB=6.0
++ RBM=4.0        IRB=0.004        RC=3.0         CJE=4.9e-12      VJE=0.60
++ MJE=0.450      CJC=2.50e-12     VJC=0.830      MJC=0.330        XCJC=0.20
++ CJS=0.0        VJS=0.750        MJS=0.0        FC=0.50          TF=12.9e-12 
++ XTF=1.60       VTF=19.9         ITF=0.40       PTF=0.0          TR=1.70e-8 
++ EG=1.11        XTB=0.0          XTI=3.0        KF=0.0           AF=1.0 )
+.ENDS
+*$
+

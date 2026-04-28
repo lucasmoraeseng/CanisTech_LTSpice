@@ -1,0 +1,22 @@
+*   ZETEX   FMMT497   Spice model   Last Revision 1/10/96
+*
+.MODEL FMMT497 NPN IS=1.287E-13 NF=0.9975 IKF=6 RE=0.17 BF=220
++              ISE=3.931E-14 NE=1.443 RB=0.145 NR=1.02 IKR=0.6
++              RC=0.04 BR=146 ISC=3.45E-13 NC=1.16 VAF= 678 VAR=87 
++              CJC=8.39E-12 MJC=0.395 VJC=0.434 CJE=1.21E-10
++              MJE=0.342 VJE=0.762 TF=1.98E-9 TR=3.6E-7
+*
+*
+*                          (C)  1996 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

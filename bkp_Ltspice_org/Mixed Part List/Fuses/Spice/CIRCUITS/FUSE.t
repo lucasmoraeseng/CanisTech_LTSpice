@@ -1,0 +1,38 @@
+.SUBCKT FUSE 1 4
+*Connections Fuse+ Fuse-
+*Optional Fuse temperature can be examined by bringing out
+*node 59
+* For 8AG Fuses Use 
+* RCOLDE=-.3, HCTE=2.0, KS=5.3U, and TB=.5
+*Fuse Filament Circuit
+V1 1 8 
+H1 14 0 V1 1
+E10 8 37  POLY(2) 14 0 9 0 0 0 0 0 {.1*IB^(RCOLDE)}
+G8 0 59  POLY(2) 14 0 8 37 0 0 0 0 1
+R2 59 12 1MEG
+G2 59 12 59 12 0, {389*IB^(2+RCOLDE)*KS)}, {-884M*IB^(2+RCOLDE)*KS},
++ {1.76M*IB^(2+RCOLDE)*KS}, {-1.48U*IB^(2+RCOLDE)*KS}, {484P*IB^(2+RCOLDE)*KS} 
+C1 59 0 {.5M*IB^(HCTE)*TB}
+G3 11 12 11 12 0, {389*IB^(2+RCOLDE)*KS)}, {-884M*IB^(2+RCOLDE)*KS},
++ {1.76M*IB^(2+RCOLDE)*KS}, {-1.48U*IB^(2+RCOLDE)*KS}, {484P*IB^(2+RCOLDE)*KS} 
+C2 12 0 {.5M*IB^(HCTE)*TB}
+V3 11 0 300
+*V3's value is the Ambient Temperature in Degrees K
+E2 9 0 59 0 3.333M
+R3 8 37 1MEG
+R4 14 0 1E12
+R5 9 0 1E12
+R7 11 12 1MEG
+R6 11 59 1MEG
+*Fuse Opening Circuit
+E1 42 0 59 0 -1200 1
+R8 43 44 10K
+V4 43 0 1
+Q1 39 45 0 NPN OFF
+.MODEL NPN NPN(BR=100 CJC=10PF) 
+R9 42 45 100MEG
+R10 43 39 1MEG
+Q2 45 39 44 PNP OFF
+.MODEL PNP PNP(BR=100 CJC=10PF) 
+X1 37 4 39 LSWITCH2
+.END

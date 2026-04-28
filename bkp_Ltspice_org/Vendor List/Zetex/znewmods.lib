@@ -1,0 +1,478 @@
+*                    Zetex Spice New Model Library 2V1
+*                (Standard Version Last Revision March/97)
+*
+.MODEL BZX84C2V7 D IS=3.677E-15 N=1.059 RS=.12 IKF=1 XTI=3 EG=1.11
++                  CJO=312.1E-12 M=.2052 VJ=.3971 FC=.5 BV=2.766 
++                  IBV=64.76E-3 TBV1=-.56E-3 TT=57.71E-9
+*
+.MODEL BZX84C3V0 D IS=4.311E-15 N=1.057 RS=.12 IKF=1 XTI=3 EG=1.11
++                  CJO=291.5E-12 M=.2719 VJ=.5248 FC=.5 BV=3.066 
++                  IBV=64.76E-3 TBV1=-.5E-3 TT=64.92E-9
+*
+.MODEL BZX84C3V3 D IS=1.636E-15 N=1.028 RS=.13 IKF=1 XTI=3 EG=1.11
++                  CJO=283.5E-12 M=.2019 VJ=.3905 FC=.5 BV=3.366 
++                  IBV=64.77E-3 TBV1=-.46E-3 TT=57.71E-9
+*
+.MODEL BZX84C3V6 D IS=522.2E-18 N=1.004 RS=.13 IKF=1 XTI=3 EG=1.11
++                  CJO=256.6E-12 M=.2332 VJ=.4593 FC=.5 BV=3.666 
++                  IBV=64.77E-3 TBV1=-.42E-3 TT=389.5E-9
+*
+.MODEL BZX84C3V9 D IS=193.4E-15 N=1.219 RS=.1 IKF=1 XTI=3 EG=1.11
++                  CJO=239.5E-12 M=.3295 VJ=.7686 FC=.5 BV=3.966 
++                  IBV=64.74E-3 TBV1=-.4E-3 TT=360.7E-9
+*
+.MODEL BZX84C4V3 D IS=187E-15 N=1.218 RS=.09 IKF=1 XTI=3 EG=1.11
++                  CJO=221.2E-12 M=.3317 VJ=.7266 FC=.5 BV=4.367 
++                  IBV=69.05E-3 TBV1=-.35E-3 TT=331.8E-9
+*
+.MODEL BZX84C4V7 D IS=207.3E-15 N=1.224 RS=.14 IKF=1 XTI=3 EG=1.11
++                  CJO=210.7E-12 M=.2286 VJ=.411 FC=.5 BV=4.771 
++                  IBV=81.00E-3 TBV1=-.29E-3 TT=591.5E-9
+*
+.MODEL BZX84C5V1 D IS=163.3E-15 N=1.230 RS=.11 IKF=1 XTI=3 EG=1.11
++                  CJO=199.6E-12 M=.3281 VJ=.7908 FC=.5 BV=5.179 
++                  IBV=.108 TBV1=-.09E-3 TT=490.5E-9
+*
+.MODEL BZX84C5V6 D IS=89.48E-15 N=1.203 RS=.09 IKF=1 XTI=3 EG=1.11
++                  CJO=179.6E-12 M=.3067 VJ=.6563 FC=.5 BV=5.690 
++                  IBV=.1621 TBV1=.1E-3 TT=562.7E-9
+*
+.MODEL BZX84C6V2 D IS=180.4E-15 N=1.228 RS=.09 IKF=1 XTI=3 EG=1.11
++                  CJO=149.5E-12 M=.3207 VJ=.6676 FC=.5 BV=6.326 
++                  IBV=.654 TBV1=.38E-3 TT=418.4E-9
+*
+.MODEL BZX84C6V8 D IS=137.8E-15 N=1.225 RS=.13 IKF=1 XTI=3 EG=1.11
++                  CJO=129.3E-12 M=.3277 VJ=.735 FC=.5 BV=6.915 
++                  IBV=.4358 TBV1=.47E-3 TT=620.4E-9
+*
+.MODEL BZX84C7V5 D IS=398.3E-15 N=1.270 RS=.12 IKF=1 XTI=3 EG=1.11
++                  CJO=111.9E-12 M=.3294 VJ=.6802 FC=.5 BV=7.615 
++                  IBV=.4354 TBV1=.56E-3 TT=476.1E-9
+*
+.MODEL BZX84C8V2 D IS=390.6E-15 N=1.271 RS=.12 IKF=1 XTI=3 EG=1.11
++                  CJO=96.20E-12 M=.333 VJ=.7508 FC=.5 BV=8.315 
++                  IBV=.4354 TBV1=.61E-3 TT=519.4E-9
+*
+.MODEL BZX84C9V1 D IS=522.2E-18 N=1.004 RS=.12 IKF=1 XTI=3 EG=1.11
++                  CJO=96.83E-12 M=.3303 VJ=.7662 FC=.5 BV=9.215 
++                  IBV=.4354 TBV1=.63E-3 TT=93.78E-9
+*                   
+.MODEL BZX84C10 D IS=1.132E-15 N=1.030 RS=.11 IKF=1 XTI=3 EG=1.11
++                 CJO=90.62E-12 M=.33 VJ=.6975 FC=.5 BV=10.11 
++                 IBV=.3255 TBV1=.66E-3 TT=108.2E-9
+*
+.MODEL BZX84C11 D IS=544.3E-18 N=1.011 RS=.14 IKF=1 XTI=3 EG=1.11
++                 CJO=80.82E-12 M=.327 VJ=.7056 FC=.5 BV=11.11 
++                 IBV=.3262 TBV1=.68E-3 TT=122.6E-9
+*
+.MODEL BZX84C12 D IS=869.1E-18 N=1.02 RS=.12 IKF=1 XTI=3 EG=1.11
++                 CJO=73.83E-12 M=.3306 VJ=.7651 FC=.5 BV=12.1 
++                 IBV=.2602 TBV1=.69E-3 TT=144.3E-9
+*
+.MODEL BZX84C13 D IS=513.2E-18 N=1.001 RS=.1 IKF=1 XTI=3 EG=1.11
++                 CJO=62.95E-12 M=.3341 VJ=.8633 FC=.5 BV=13.1 
++                 IBV=.2164 TBV1=.71E-3 TT=173.1E-9
+*
+.MODEL BZX84C15 D IS=1.116E-15 N=1.027 RS=.11 IKF=1 XTI=3 EG=1.11
++                 CJO=56.98E-12 M=.3326 VJ=.803 FC=.5 BV=15.1 
++                 IBV=.2165 TBV1=.76E-3 TT=209.2E-9
+*
+.MODEL BZX84C16 D IS=556.3E-18 N=1.013 RS=.12 IKF=1 XTI=3 EG=1.11
++                 CJO=52.99E-12 M=.3286 VJ=.7205 FC=.5 BV=16.09 
++                 IBV=.1623 TBV1=.77E-3 TT=187.6E-9
+*
+.MODEL BZX84C18 D IS=723.9E-18 N=1.02 RS=.13 IKF=1 XTI=3 EG=1.11
++                 CJO=44.99E-12 M=.3353 VJ=.828 FC=.5 BV=18.09 
++                 IBV=.1442 TBV1=.8E-3 TT=281.3E-9
+*
+.MODEL BZX84C20 D IS=11.83E-15 N=1.08 RS=.09 IKF=1 XTI=3 EG=1.11
++                 CJO=42.64E-12 M=.2707 VJ=.3905 FC=.5 BV=20.08 
++                 IBV=.1178 TBV1=.84E-3 TT=295.8E-9
+*
+.MODEL BZX84C22 D IS=1.707E-15 N=1.042 RS=.14 IKF=1 XTI=3 EG=1.11
++                 CJO=37.64E-12 M=.3301 VJ=.7799 FC=.5 BV=22.08 
++                 IBV=.1179 TBV1=.84E-3 TT=310.2E-9
+*
+.MODEL BZX84C24 D IS=1.63E-15 N=1.039 RS=.13 IKF=1 XTI=3 EG=1.11
++                 CJO=35.39E-12 M=.3309 VJ=.7731 FC=.5 BV=24.07 
++                 IBV=92.59E-3 TBV1=.86E-3 TT=303.0E-9
+*
+.MODEL BZX84C27 D IS=53.96E-15 N=1.136 RS=.0987 IKF=1 XTI=3 EG=1.11
++                 CJO=33.38E-12 M=.3006 VJ=.4245 FC=.5 BV=27.12 
++                 IBV=.2024 TBV1=.88E-3 TT=346.2E-9
+*
+.MODEL BZX84C30 D IS=2.669E-15 N=1.055 RS=.11 IKF=1 XTI=3 EG=1.11
++                 CJO=30.05E-12 M=.3324 VJ=.7923 FC=.5 BV=30.12 
++                 IBV=.2024 TBV1=.91E-3 TT=461.7E-9
+*
+.MODEL BZX84C33 D IS=9.428E-15 N=1.099 RS=.12 IKF=1 XTI=3 EG=1.11
++                 CJO=27.62E-12 M=.3268 VJ=.7365 FC=.5 BV=33.12 
++                 IBV=.2024 TBV1=.93E-3 TT=404.0E-9
+*
+.MODEL BZX84C36 D IS=6.202E-15 N=1.081 RS=.1 IKF=1 XTI=3 EG=1.11
++                 CJO=25.70E-12 M=.3366 VJ=.7798 FC=.5 BV=36.12 
++                 IBV=.1799 TBV1=.95E-3 TT=418.4E-9
+*
+.MODEL BZX84C39 D IS=7.921E-15 N=1.1 RS=.12 IKF=1 XTI=3 EG=1.11
++                 CJO=23.83E-12 M=.3437 VJ=.7925 FC=.5 BV=39.11 
++                 IBV=.1245 TBV1=.96E-3 TT=634.8E-9
+*
+.MODEL BZX84C43 D IS=228.7E-15 N=1.22 RS=.11 IKF=1 XTI=3 EG=1.11
++                 CJO=21.92E-12 M=.3415 VJ=.7656 FC=.5 BV=43.1 
++                 IBV=.1079 TBV1=.99E-3 TT=274.1E-9
+*
+.MODEL BZX84C47 D IS=19.1E-15 N=1.131 RS=.1 IKF=1 XTI=3 EG=1.11
++                 CJO=21.05E-12 M=.35 VJ=.7818 FC=.5 BV=47.1 
++                 IBV=95.16E-3 TBV1=1E-3 TT=649.2E-9
+*
+*
+*   ZETEX   FMMT497   Spice model   Last Revision 1/10/96
+*
+.MODEL FMMT497 NPN IS=1.287E-13 NF=0.9975 IKF=6 RE=0.17 BF=220
++              ISE=3.931E-14 NE=1.443 RB=0.145 NR=1.02 IKR=0.6
++              RC=0.04 BR=146 ISC=3.45E-13 NC=1.16 VAF= 678 VAR=87 
++              CJC=8.39E-12 MJC=0.395 VJC=0.434 CJE=1.21E-10
++              MJE=0.342 VJE=0.762 TF=1.98E-9 TR=3.6E-7
+*
+*ZETEX  FZT1047A Spice model   Last revision 18/3/97
+*
+.MODEL FZT1047A  NPN IS=9.73E-13  NF=1.0  BF=550  IKF=8.0  VAF=120
++               ISE=2.6E-13  NE=1.38  NR=1.0  BR=400  IKR=5  VAR=15
++               ISC=8E-13  NC=1.4  RB=0.1  RE=0.017  RC=0.010 
++               CJC=195.4E-12  CJE=540.4E-12  MJC=0.257  MJE=0.359
++               VJC=0.390  VJE=0.753  TF=450E-12  TR=1.2E-9 
+*
+*ZETEX  FZT1048A Spice model   Last revision 14/3/97
+*
+.MODEL FZT1048A NPN IS=13.73E-13  NF=1.0  BF=550  IKF=8.0  VAF=120 
++               ISE=2.6E-13  NE=1.38  NR=1.0  BR=300  IKR=6  VAR=15
++               ISC=1.6E-12  NC=1.4  RB=0.1  RE=0.022  RC=0.010 
++               CJC=136E-12  CJE=559.1E-12  MJC=0.267  MJE=0.299 
++               VJC=0.420  VJE=0.533  TF=600E-12  TR=3E-9  
+*
+*ZETEX  FZT1049A Spice model   Last revision 18/3/97
+*
+.MODEL     FZT1049A  NPN IS=1.5E-12  NF=1.0  BF=600  IKF=7.5  VAF=100 
++               ISE=0.9E-13  NE=1.25  NR=1.0  BR=150  IKR=3  VAR=15
++               ISC=5.0E-13  NC=1.76  RB=0.1  RE=0.018  RC=0.007 
++               CJC=136E-12  CJE=550E-12  MJC=0.352  MJE=0.36
++               VJC=0.554   VJE=0.726  TF=400E-12  TR=6.9E-9
+*
+*ZETEX  FZT1051A Spice model   Last revision 18/3/97
+*
+.MODEL FZT1051A  NPN IS=1.35E-12  NF=1.0  BF=600  IKF=5.0  VAF=120
++               ISE=0.6E-13  NE=1.25  NR=1.0  BR=150  IKR=3  VAR=15
++               ISC=1.0E-10  NC=1.7  RB=0.1  RE=0.023  RC=0.010 
++               CJC=90.36E-12  CJE=547.5E-12  MJC=0.385  MJE=0.357
++               VJC=0.5 VJE=0.741  TF=600E-12  TR=8E-9
+*
+*ZETEX  FZT1053A Spice model   Last revision 18/3/97
+*
+.MODEL FZT1053A  NPN IS=2.1E-12  NF=1.0  BF=600  IKF=2.2  VAF=100
++               ISE=0.9E-13  NE=1.25  NR=0.99  BR=150  IKR=2.5  VAR=15
++               ISC=5.0E-10  NC=1.76  RB=0.1  RE=0.028  RC=0.016 
++               CJC=75.1E-12  CJE=520E-12  MJC=0.415  MJE=0.367
++               VJC=0.512  VJE=0.766  TF=550E-12  TR=22E-9
+*
+*   ZETEX   FZT1147A   Spice model   Last revision 10/12/96
+*
+.MODEL FZT1147A  PNP IS=1.272e-12 NF=0.989 ISE=2.5e-13 NE=1.65 BF=500 
++               VAF=14.59 IKF=8 NR=1 ISC=8e-14 NC= 1.6 BR=90 VAR=3.1
++               IKR=1.2 RE=15e-3 RB=145e-3 RC=13e-3 CJE=560e-12
++               CJC=255e-12 VJC=0.6288 MJC=0.4048 TF=1.2e-9 TR=13e-9
+*
+*   ZETEX   FZT1149A    Spice model   Last revision 10/1/97
+*
+.MODEL FZT1149A PNP IS=9.5e-13 NF=1.002 ISE=1.2e-13 NE=1.4 BF=520
++              VAF=24.97 IKF=5 NR=0.997 ISC=4.5E-13 NC=1.25 BR=40
++              VAR=2.51 IKR=0.7 RE=20e-3 RB=150e-3 RC=10e-3 
++              CJE=490e-12 CJC=150e-12 VJC=1.094 MJC=0.4739
++              TF=1e-9 TR=3.5e-9
+*
+*   ZETEX   FZT1151A   Spice model   Last revision 12/12/96
+*
+.MODEL FZT1151A PNP IS=1.7e-12 NF=1.004 ISE=1.02e-13 NE=1.55 BF=562
++              VAF=26.01 IKF=3.5 NR=.97 ISC=1.5e-13 NC=1.3 BR=38
++              VAR=2.41 IKR=0.3 RE=25.37e-3 RB=250e-3 RC=25e-3 
++              CJE=440e-12 CJC=160e-12 VJC=1.058 MJC=0.5678
++              TF=0.8e-9 TR=55.5e-9
+*
+*ZETEX  FZT653 Spice model   Last revision 18/3/97
+*
+.MODEL FZT653 NPN IS =3.8206E-13 NF =1.0025 BF =250 IKF=1.15 VAF=154
++             ISE=1.035E-13 NE =1.3642 NR =1.0012 BR =50 IKR=0.42 VAR=38 
++             ISC=7E-13 NC =1.19 RB =0.04 RE =0.0875 RC =0.06 
++             CJC=45.5E-12 MJC=0.4534 VJC=0.5774 CJE=278E-12 
++             TF =0.78E-9 TR =30E-9
+*
+*ZETEX  FZT753 Spice model   Last revision 18/3/97
+*
+.MODEL FZT753 PNP IS =3.2007E-13 NF =1.0041 BF =200 IKF=1.6 VAF=76
++             ISE=8E-14 NE =1.57 NR =1.0008 BR =33 IKR=0.45 VAR=51 
++             ISC=6E-14 NC =1.079 RB =0.087 RE =0.08 RC =0.07 
++             CJC=80E-12 MJC=0.4896 VJC=0.7676 CJE=350E-12 
++             TF =0.86E-9 TR =24E-9
+*
+*ZETEX   FZT795A  Spice model   Last revision 14/3/97
+*
+.MODEL FZT795A PNP IS=7.2932E-13 NF=1.003 BF=595 IKF=0.4 VAF=45
++ISE=8.77307E-14 NE=1.44784 NR=0.996 BR=65 IKR=0.42 VAR=41
++ISC=1.52968E-13 NC=1.01957 RB=0.056 RE=0.093 RC=0.143 CJC=65.5E-12
++MJC=0.52 VJC=0.74 CJE=275E-12 TF=0.83E-9 TR=307E-9
+*Note, Model may be inaccurate for collector currents above 0.45A.
+*
+*ZETEX   FZT796A  Spice model   Last revision 14/3/97
+*
+.MODEL FZT796A PNP IS=7.01378E-13 NF=1.00509 BF=500 IKF=0.43
++VAF=450 ISE=1.13932E-13 NE=1.47073 NR=1.025 BR=6.5 IKR=0.37 VAR=48
++ISC=4.10626E-13 NC=1.00707 RB=0.07 RE=0.2 RC=0.139 CJC=52E-12
++MJC=0.515 VJC=0.65 CJE=280E-12 TF=0.83E-9 TR=4500E-9
+*Note, Model may be inaccurate for collector currents above 0.2A.
+*
+*ZETEX  FZT849 Spice model   Last revision 14/3/97
+*
+.MODEL FZT849 NPN IS =5.8591E-13 NF =0.9919 BF =230 IKF=18 VAF=90
++             ISE=2.0067E-13 NE =1.4 NR =0.9908 BR =180 IKR=6.8 
++             VAR=20 ISC=5.3E-13 NC =1.46 RB =0.023 RE =0.0223 
++             RC =0.015 CJC=200E-12 MJC=0.3006 VJC=0.3532 
++             CJE=1.21E-9 TF =1.07E-9 TR =9.3E-9
+*
+*ZETEX  FZT851 Spice model   Last revision 14/3/97
+*
+.MODEL FZT851 NPN IS =1.0085E-12 NF =1.0001 BF =240 IKF=5.1 VAF=158
++             ISE=2E-13 NE =1.38 NR =0.9988 BR =110 IKR=5.5 VAR=46 
++             ISC=4.6515E-13 NC =1.334 RB =0.025 RE =0.018 RC =0.015 
++             CJC=155E-12 MJC=0.4348 VJC=0.6477 CJE=1.05E-9 
++             TF =0.79E-9 TR =24E-9
+*
+*   ZETEX   FZT857   Spice model   Last revision 16/1/97
+*
+.MODEL FZT857 NPN IS=2E-12 NF=1.006 BF=226 IKF=1 VAF=595 ISE=3.6114E-13 
++                 NE=1.4088 NR=1.01 BR=40 IKR=94m VAR=33.5 ISC=1.502E-12
++                 NC=1.067 RB=.0353 RE=.055 RC=.03 CJC=63E-12 MJC=.505
++                 VJC=.491 CJE=1.1E-9 TF=.61E-9 TR=1.75E-6 
+*
+*ZETEX  FZT869 Spice model   Last revision 14/3/97
+*
+.MODEL FZT869 NPN IS =1.9E-12  BF =600 IKF=9 VAF=40
++             ISE=3.752E-13 NE =1.399 NR =1 BR =370 IKR=6 
++             VAR=18 ISC=4.135E-13 NC =1.384 RB =1 RBM =0.01  
++             IRB =1 RE = 0.01 RC =0.02 CJC=215E-12 MJC=0.3917  
++             VJC=0.5871 CJE=910.3E-9 MJE=0.3826 VJE=0.7686
++             TF =1.15E-9 TR =4.01E-9
+*
+*   ZETEX   FZT948   Spice model   Last revision 14/3/97
+*
+.MODEL FZT948  PNP IS=1.5554E-12 NF=1.013 BF=208 IKF=14.7 VAF=22.4
++ISE=1.48E-13 NE=1.485 NR=1.004 BR=140 IKR=1.34 VAR=15.4 
++ISC=1.3946E-11 NC=1.702 RB=0.020 RE=0.0177 RC=0.015 CJC=440E-12  
++MJC=0.3604 VJC=0.685 CJE=1.23E-9 TF=1.38E-9 TR=4.8E-9
+*
+*   ZETEX   FZT949   Spice model   Last revision 14/3/97
+*
+.MODEL FZT949  PNP IS=1.5111E-12 NF=1.0127 BF=208 IKF=12.4 VAF=32.7
++ISE=1.335E-13 NE=1.42 NR=1.009 BR=145 IKR=1.25 VAR=26.5 
++ISC=1.392E-13 NC=1.14 RB=0.026 RE=0.019 RC=0.0175 CJC=362E-12  
++MJC=0.338 VJC=0.4294 CJE=1.17E-9 TF=1.01E-9 TR=7.5E-9
+*
+*   ZETEX   FZT951   Spice model   Last revision 14/3/97
+*
+.MODEL FZT951  PNP IS=1.3766E-12 NF=1.013 BF=187 IKF=5.0 VAF=66.3
++ISE=1.4E-13 NE=1.41 NR=1.0099 BR=56 IKR=0.9 VAR=33 ISC=1.7E-12
++NC=1.4 RB=0.029 RE=0.020 RC=0.0255 CJC=287E-12 MJC=0.4522 
++VJC=0.4956 CJE=1.15E-9 TF=0.83E-9 TR=20E-9
+*
+*   ZETEX   FZT953   Spice model   Last revision 14/3/97
+*
+.MODEL FZT953  PNP IS=1.6649E-12 NF=1.0139 BF=220 IKF=3.4 VAF=55
++ISE=6.2E-13 NE=1.62 NR=1.0107 BR=40 IKR=0.95 VAR=43 ISC=3E-12
++NC=1.4 RB=0.032 RE=0.0295 RC=0.034 CJC=265E-12 MJC=0.5286 VJC=0.76
++CJE=1.1E-9 TF=0.795E-9 TR=37.5E-9
+*
+*   ZETEX   FZT955   Spice model   Last revision 14/3/97
+*
+.MODEL FZT955  PNP IS=1.1029E-12 NF=1.0073 BF=195 IKF=4.2 VAF=70.0
++ISE=2.7169E-13 NE=1.4601 NR=1.0045 BR=30 IKR=0.55 VAR=54 ISC=3E-12
++NC=1.4 RB=0.033 RE=0.0325 RC=0.0525 CJC=226E-12 MJC=0.5325 
++VJC=0.7572 CJE=1.1E-9 TF=0.895E-9 TR=67.8E-9
+*
+*   ZETEX   FZT956   Spice model   Last revision 14/3/97
+*
+.MODEL FZT956  PNP IS=1.3713E-12 NF=1.0094 BF=215 IKF=2.5 VAF=86.0
++ISE=6.545E-13 NE=1.5845 NR=1.0075 BR=18 IKR=0.9 VAR=59 ISC=6E-12
++NC=1.6 RB=0.035 RE=0.0455 RC=0.0745 CJC=191E-12 MJC=0.5535
++VJC=0.8577 CJE=1.08E-9 TF=0.895E-9 TR=118E-9
+*
+*   ZETEX   FZT957   Spice model   Last revision 14/3/97
+*
+.MODEL FZT957  PNP IS=1.3152E-12 NF=1.0106 BF=215 IKF=1.05 VAF=325
++ISE=5.5E-13 NE=1.524 NR=1.0104 BR=8 IKR=0.63 VAR=110 ISC=6E-12
++NC=1.8 RB=0.037 RE=0.098 RC=0.177 CJC=140E-12 MJC=0.5432 
++VJC=0.7592 CJE=1.1E-9 TF=1.23E-9 TR=590E-9
+*
+*   ZETEX   FZT958   Spice model   Last revision 14/3/97
+*
+.MODEL FZT958 PNP IS=1.6073E-12 NF=1.013 BF=215 IKF=0.7 VAF=326
++ISE=1.75E-13 NE=1.46 NR=1.05 BR=3.5 IKR=0.85 VAR=78 ISC=5E-11
++NC=1.7 RB=0.05 RE=0.126 RC=0.123 CJC=113E-12 MJC=0.5069 VJC=0.5949
++CJE=1.05E-9 TF=1.26E-9 TR=1.28E-6
+*
+*   ZETEX   FZT968   Spice model   Last revision 14/3/97
+*
+.MODEL FZT968  PNP IS=3.58E-12 NF=1.015 BF=500 IKF=11 VAF=11.4
++ISE=1.576E-13 NE=1.42 NR=1.01 BR=245 IKR=1.4 VAR=8.4 ISC=1.48E-11
++NC=1.637 RB=0.024 RE=0.0164 RC=0.0235 CJC=438E-12 MJC=0.361 
++VJC=0.673 CJE=1.05E-9 TF=1.38E-9 TR=2.3E-9
+*
+*   ZETEX  ZHCS1000    Spice Model        Last revision 6/11/96
+*
+.MODEL ZHCS1000 D IS=1.6e-7 N=.59 RS=105e-3 IKF=2.5e-3 XTI=2 EG=.58 
++               Cjo=184.9p M=.5231 Vj=.3905 Fc=.5 BV=60 IBV=100E-6
++               ISR=4E-6 NR=1.8 
+*
+*   ZETEX  ZHCS750    Spice Model        Last revision 23/9/97
+*
+.MODEL ZHCS750 D IS=7E-6 N=.99 RS=130E-3 IKF=.15 XTI=2 EG=.58
++              Cjo=184.9p M=.523 Vj=.3905 Fc=.5 BV=60 IBV=300E-6
++              ISR=4E-6 NR=1.8  
+*
+*   ZETEX   ZTX1147A   Spice model   Last revision 10/12/96
+*
+.MODEL ZTX1147A  PNP IS=1.272e-12 NF=0.989 ISE=2.5e-13 NE=1.65 BF=500 
++               VAF=14.59 IKF=8 NR=1 ISC=8e-14 NC= 1.6 BR=90 VAR=3.1
++               IKR=1.2 RE=15e-3 RB=145e-3 RC=13e-3 CJE=560e-12
++               CJC=255e-12 VJC=0.6288 MJC=0.4048 TF=1.2e-9 TR=13e-9
+*
+*   ZETEX   ZTX1149A    Spice model   Last revision 10/1/97
+*
+.MODEL ZTX1149A PNP IS=9.5e-13 NF=1.002 ISE=1.2e-13 NE=1.4 BF=520
++              VAF=24.97 IKF=5 NR=0.997 ISC=4.5E-13 NC=1.25 BR=40
++              VAR=2.51 IKR=0.7 RE=20e-3 RB=150e-3 RC=10e-3 
++              CJE=490e-12 CJC=150e-12 VJC=1.094 MJC=0.4739
++              TF=1e-9 TR=3.5e-9
+*
+*   ZETEX   ZTX1151A   Spice model   Last revision 12/12/96
+*
+.MODEL ZTX1151A PNP IS=1.7e-12 NF=1.004 ISE=1.02e-13 NE=1.55 BF=562
++              VAF=26.01 IKF=3.5 NR=.97 ISC=1.5e-13 NC=1.3 BR=38
++              VAR=2.41 IKR=0.3 RE=25.37e-3 RB=250e-3 RC=25e-3 
++              CJE=440e-12 CJC=160e-12 VJC=1.058 MJC=0.5678
++              TF=0.8e-9 TR=55.5e-9
+*
+*   ZETEX   ZTX857   Spice model   Last revision 16/1/97
+*
+.MODEL ZTX857 NPN IS=2E-12 NF=1.006 BF=226 IKF=1 VAF=595 ISE=3.6114E-13 
++                 NE=1.4088 NR=1.01 BR=40 IKR=94m VAR=33.5 ISC=1.502E-12
++                 NC=1.067 RB=.0353 RE=.055 RC=.03 CJC=63E-12 MJC=.505
++                 VJC=.491 CJE=1.1E-9 TF=.61E-9 TR=1.75E-6 
+*
+*   ZVN3310F MODEL           Last revision  3/97
+*              
+.SUBCKT ZVN3310F 30 40 50
+* NODES: DRAIN GATE SOURCE
+M1 30 20 50 50 MOD1   
+RG 40 20 356
+RL 30 50 1E8
+D1 50 30 DIODE1
+.MODEL MOD1 NMOS VTO=1.736 RS=2.147 RD=1.682 IS=1E-15 KP=0.157
++CGSO=21.5P CGDO=2.5P CBD=25.5P PB=1
+.MODEL DIODE1 D IS=6.12E-13 RS=.629
+.ENDS ZVN3310F
+*
+*ZETEX  ZVN4210G  Spice Mosfet Subcircuit   Last revision 3/97
+*
+.SUBCKT ZVN4210G 3 4 5
+* Nodes          D G S
+M1 3 2 5 5 MOD1
+RG 4 2 401.5
+RL 3 5 1E7
+D1 5 3 DIODE1
+.MODEL MOD1 NMOS VTO=1.922 RS=0.858 RD=0.2025 IS=1E-15 KP=2.082
++CGSO=61.5P CGDO=3.5P CBD=108P PB=1 LAMBDA=0
+.MODEL DIODE1 D IS=1.10461E-12 N=1.0114 RS=0.166
+.ENDS ZVN4210G
+*
+*   ZETEX   ZVN4306G  Spice model   Last revision 3/97
+*
+.SUBCKT ZVN4306G 30 40 50
+*NODES: DRAIN GATE SOURCE
+M1 30 20 50 50 MOD1
+RG 40 20 108
+RL 30 50 6E6
+D1 50 30 DIODE1
+.MODEL MOD1 NMOS VTO=2.634 RS=0.2762 RD=0.0 IS=1E-15 KP=9.77
++CGSO=224.5E-12 CGDO=10.5E-12 CBD=405E-12 PB=1 LAMBDA=0
+.MODEL DIODE1 D IS=6.19E-13 N=1.0043 RS=0.065
+.ENDS ZVN4306G
+*
+*   ZETEX   ZVN4310G  Spice model   Last revision 3/97
+*
+.SUBCKT ZVN4310G 30 40 50
+*NODES: DRAIN GATE SOURCE
+M1 30 20 50 50 MOD1
+RG 40 20 82
+RL 30 50 1E7
+D1 50 30 DIODE1
+.MODEL MOD1 NMOS VTO=2.555 RS=0.2068 RD=0.1665 IS=1E-15 KP=5.02
++CGSO=200E-12 CGDO=13.5E-12 CBD=288E-12 PB=1 LAMBDA=0
+.MODEL DIODE1 D IS=9.759E-13 N=1.02476 RS=0.0844
+.ENDS ZVN4310G
+*
+*ZETEX  ZVN4424G Mosfet Spice Subcircuit   Last revision  3/97
+*
+.SUBCKT ZVN4424G 3 4 5
+*                D G S
+M1 3 2 5 5 N4424AM
+RG 4 2 200
+RL 3 5 240E6
+D1 5 3 N4424AD
+.MODEL N4424AM NMOS VTO=1.25 RS=2.34 RD=1.634 IS=1E-15 KP=5.319
++CGSO=101E-12 CGDO=4E-12 CBD=66.2E-12 PB=1
+.MODEL N4424AD D IS=5.516E-13 RS=.2084 N=1.0078
+.ENDS ZVN4424G
+*
+*ZETEX  ZVP3306F Mosfet Spice Subcircuit       Last revision 3/97
+*
+.SUBCKT ZVP3306F 3 4 5
+*                D G S
+M1 3 2 5 5 P3306M
+RG 4 2 252
+RL 3 5 1.2E8
+D1 3 5 P3306D
+*
+.MODEL P3306M PMOS VTO=-2.875 RS=5.227 RD=7.524 IS=1E-15 KP=.145
++CGSO=28E-12 CGDO=3E-12 CBD=35E-12 PB=1 LAMBDA=6.67E-3
+*
+.MODEL P3306D D IS=5E-12 RS=.768
+.ENDS ZVP3306F
+*
+*
+*ZETEX  ZVP4424G Mosfet Spice Subcircuit   Last revision 3/97
+*
+.SUBCKT ZVP4424G 3 4 5
+*                D G S
+M1 3 2 5 5 P4424AM
+RG 4 2 140
+RL 3 5 4E9
+D1 3 5 P4424AD
+.MODEL P4424AM PMOS VTO=-1.5 RS=1.245 RD=6.2 IS=1E-15 KP=0.52
++CGSO=98.8E-12 CGDO=3.2E-12 CBD=65.3E-12 PB=1
+.MODEL P4424AD D IS=9.36E-13 RS=.196 N=1.045
+.ENDS ZVP4424G
+*
+*
+*
+*                          (C)  1997 ZETEX PLC
+*
+*   The copyright in these models  and  the designs embodied belong
+*   to Zetex PLC ("Zetex").  They  are  supplied  free of charge by
+*   Zetex for the purpose of research and design and may be used or
+*   copied intact  (including this notice)  for  that purpose only.
+*   All other rights are reserved. The models are believed accurate
+*   but  no condition  or warranty  as to their  merchantability or
+*   fitness for purpose is given and no liability in respect of any
+*   use is accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham, Lancashire.  
+*              OL9 8NP   UK

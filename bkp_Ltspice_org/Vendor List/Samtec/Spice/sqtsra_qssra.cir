@@ -1,0 +1,118 @@
+* <sqtsra_qssra>
+***************************************************************************
+*                            COPYRIGHT, SAMTEC                            *
+*                     ALL INTERNATIONAL RIGHTS RESERVED                   *
+***************************************************************************
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*! Samtec makes no warranty or guarantee as to the suitability of its     !
+*! products or models for any specific application. Models were developed !
+*! using nominal values for physical dimensions and material properties,  !
+*! and specific grounding and boundary conditions.                        !
+*!                                                                        !
+*! Actual in-circuit performance can vary significantly from simulated    !
+*! results.  All parameters should be validated by the customer's own     !
+*! technical experts.  By downloading a model, the user agrees to absolve !
+*! Samtec from all liability related to the use or application of the     !
+*! model or product.                                                      !
+*!                                                                        !
+*! Samtec reserves the right to change a model at any time without        !
+*! further notice.                                                        !
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*
+* Connector: QTS-xxx-01-x-D-RA__QSS-xxx-01-x-D-RA
+* Rev Date : 10/07/2002
+* Status   : DEVELOPMENTAL
+* Structure: single-line (end pin and internal pin represented)
+* Rating   : 1 ns Tr/Tf (10%-90%) or slower
+*
+***************************************************************************
+**** README ************ CONNECTOR MODEL STRUCTURE ************ README ****
+***************************************************************************
+*
+* MODEL BOUNDARIES:  Male connector standoff to female connector standoff
+* (NO TERMINATIONS, DRIVING SOURCES, OR PARASITIC CAPACITANCES ARE INCLUDED)
+*
+* NODE SEQUENCE:  **Important Note** - This model is "homogenous";
+*                 it is a "black box" representation of the mated connector
+*                 (lumped element and transmission line parameters included)
+*
+* CONNECTOR-TO-MODEL CROSS REFERENCE
+* Model subcircuit "end pin" maps to connector pin 01 or 02
+* Model subcircuit "internal" maps to connector pin 03, 04, and so on
+*
+***************************** CONNECTOR MODEL *****************************
+****************** RLC MODELS ********************
+*
+* OUTER/LONG ROW, INTERNAL PIN
+***************IN*OUT*REF
+.SUBCKT QTRQSROI 1  2   3
+*************************
+L4 1 4 3.22NH
+C5 4 3 3.22PF
+L5 4 2 3.22NH
+.ENDS QTRQSROI
+*************
+*
+* OUTER/LONG ROW, END PIN ****
+***************IN*OUT*REF
+.SUBCKT QTRQSROE 1  2   3
+*************************
+L4 1 4 4.5NH
+C5 4 3 2.33PF
+L5 4 2 4.5NH
+.ENDS QTRQSROE
+************
+*
+* INNER/SHORT ROW, INTERNAL PIN
+***************IN*OUT*REF
+.SUBCKT QTRQSRII 1  2   3
+*************************
+L4 1 4 2.41NH
+C5 4 3 1.69PF
+L5 4 2 2.41NH
+.ENDS QTRQSRII
+*************
+*
+* INNER/SHORT ROW, END PIN ****
+***************IN*OUT*REF
+.SUBCKT QTRQSRIE 1  2   3
+*************************
+L4 1 4 3.2NH
+C5 4 3 1.24PF
+L5 4 2 3.2NH
+.ENDS QTRQSRIE
+************
+*
+********** TRANSMISSION LINE MODELS **************
+*
+* OUTER/LONG ROW, INTERNAL PIN
+****************IN*OUT*REF
+.SUBCKT QTRQSROIL 1  2  3
+************************
+T4 1 3 2 3 Z0=45 TD=144PS
+.ENDS QTRQSROIL
+***************
+*
+* OUTER/LONG ROW, END PIN *****
+****************IN*OUT*REF
+.SUBCKT QTRQSROEL 1  2   3
+************************
+T4 1 3 2 3 Z0=62 TD=144PS
+.ENDS QTRQSROEL 
+***************
+*
+* INNER/SHORT ROW, INTERNAL PIN
+****************IN*OUT*REF
+.SUBCKT QTRQSRIIL 1  2  3
+************************
+T4 1 3 2 3 Z0=53 TD=90PS
+.ENDS QTRQSRIIL
+***************
+*
+* INNER/SHORT ROW, END PIN *****
+****************IN*OUT*REF
+.SUBCKT QTRQSRIEL 1  2   3
+************************
+T4 1 3 2 3 Z0=72 TD=90PS
+.ENDS QTRQSRIEL 
+***************

@@ -1,0 +1,53 @@
+*
+.SUBCKT BD132 1 2 3 
+* housing parasitics
+LBlead 2 22 2.2E-09 
+LE 3 333 4.2E-09 
+LC 1 11 7.39E-10 
+LBbond 22 222 1.5E-09 
+CBCG 222 11 3.3E-13 
+CBEG 222 333 5E-14 
+CCEG 11 333 6.5E-13 
+Q1 11 222 333 QBD132 
+*
+.MODEL QBD132 PNP ( 
++ IS = 2.171E-13 
++ NF = 0.9918 
++ ISE = 2.423E-14 
++ NE = 1.274 
++ BF = 133 
++ IKF = 3.09 
++ VAF = 91 
++ NR = 0.9926 
++ ISC = 3.626E-13 
++ NC = 1.193 
++ BR = 18.54 
++ IKR = 0.35 
++ VAR = 23 
++ RB = 13 
++ IRB = 0.0005946 
++ RBM = 4.441E-10 
++ RE = 0.19 
++ RC = 0.04082 
++ XTB = 0 
++ EG = 1.11 
++ XTI = 3 
++ CJE = 3.968E-10 
++ VJE = 0.9472 
++ MJE = 0.4214 
++ TF = 1.354E-09 
++ XTF = 7 
++ VTF = 7 
++ ITF = 3.692 
++ PTF = 0 
++ CJC = 2.687E-10 
++ VJC = 0.1708 
++ MJC = 0.3977 
++ XCJC = 1 
++ TR = 4.6E-08 
++ CJS = 0 
++ VJS = 0.75 
++ MJS = 0.333 
++ FC = 0.78) 
+.ENDS
+*

@@ -1,0 +1,102 @@
+*SPICE model for AT-iNA0170
+*
+.SUBCKT INA0170  OUT   IN   GND
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T1
+C1T1    11      0       .070PF
+LT1     11      12      .224NH
+C2T1    12      0       .070PF
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T2
+C1T2    14      0       .019PF
+LT2     14      15      .034NH
+C2T2    15      0       .019PF
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T3
+C1T3    13      0       .098PF
+LT3     13      16      .312NH
+C2T3    16      0       .098PF
+* Bond wire inductance
+LIN         12      DIEIN   .35NH
+LOUT     16      DIEOUT  .35NH
+LGND     15      DIEGND  .10NH
+* Contact inductance
+LL1     IN      11      .05NH
+LL2     GND     14      .01NH
+LL3     OUT     13      .05NH
+*Parasitic capacitances
+CCEB    12      15      .02PF
+CCEC    15      DIEOUT  .01PF
+CCBC    12      DIEOUT  .02PF
+* INSERT DIE MODEL
+XNA01DIE DIEOUT  DIEIN   DIEGND  INA01
+.ENDS
+*
+* chip model
+.SUBCKT INA01   DIEOUT  DIEIN   DIEGND
+
+RBIAS1   Q2E      14      155  
+RBIAS2   Q3E      14       67  
+RE2      Q3E      15       25  
+RF1      DIEIN    14     1500  
+RF2      Q1C   DIEOUT     380  
+LP1      Q1E   DIEGND   0.20NH
+
+LP2      15    DIEGND   0.20NH
+CP1      Q1E   DIEGND   0.35PF
+CP2      15    DIEGND   0.50PF
+C3     DIEOUT  DIEGND   0.25PF
+C4       Q1C   DIEGND   0.036PF
+C5     DIEIN   DIEGND   0.086PF
+C13      Q2E   DIEGND   0.023PF
+C14      14    DIEGND   0.036PF
+C16     Q3E    DIEGND   0.029PF
+XNA01Q1  Q1C   DIEIN   Q1E   DIEGND    A01Q1
+XNA01Q2  DIEOUT  Q1C    Q2E   DIEGND    A01Q2
+XNA01Q3  DIEOUT  Q2E    Q3E   DIEGND    A01Q3
+.ENDS
+* Q1 distributed base model
+.SUBCKT A01Q1   Q1C     Q1B     Q1E    Q1S
+RC1      C1      5    10    
+RC2      5      Q1C   10    
+RB1     Q1B     7     1.1   
+RB2     7      8     3.2  
+RB3     8      B1     2.7   
+RE      E1      Q1E    0.24  
+Q1      C1      B1     E1      QINA    420
+DCD1    Q1B     C1     DMOD    572
+DCD2    7      C1     DMOD    680
+DCD3    8      C1     DMOD    340
+DCS     Q1S     5     DMOD    2475
+.ENDS
+* Q2 distributed base model
+.SUBCKT A01Q2   Q2C     Q2B     Q2E    Q2S
+RC1      C1      5    10     
+RC2      5      Q2C   10     
+RB1     Q2B     7     1.1    
+RB2      7      8     3.2    
+RB3     8      B1     2.7   
+RE      E1      Q2E    0.28  
+Q1      C1      B1     E1      QINA    420
+DCD1    Q2B     C1     DMOD    570
+DCD2    7       C1     DMOD    680
+DCD3    8      C1     DMOD    340
+DCS    Q2S      5     DMOD    2475
+.ENDS
+* Q3 distributed base model
+.SUBCKT A01Q3   Q3C     Q3B     Q3E    Q3S
+RC1      C1      5     9     
+RC2      5      Q3C    8     
+RB1     Q3B     7     1.2    
+RB2      7      8     3.7    
+RB3      8      B1     3.1   
+RE      E1      Q3E    0.28  
+Q1      C1      B1     E1      QINA    360
+DCD1    Q3B     C1     DMOD    502
+DCD2    7      C1     DMOD    583
+DCD3    8      C1     DMOD    292
+DCS     Q3S     5     DMOD2    2409
+.ENDS
+.MODEL  DMOD    D(IS=1E-25, CJO=2.4E-16, VJ=.76, M=.53, BV=45)
+.MODEL  DMOD2    D(IS=1E-25, CJO=1.2E-16, VJ=.80, M=.50, BV=45, RS=1.0E+06)
+.MODEL  QINA    NPN (BF=100, BR=2.5, IS=1.7E-18, VA=20, TF=12PS,
++               CJE=2.4E-15, VJE=1.01, MJE=0.6, PTF=25, XTB=1.818,
++               VTF=6, ITF=3E-4, IKF=1.3E-4, XTF=4, NF=1.03, ISE=5E-15,
++               NE=2.5)

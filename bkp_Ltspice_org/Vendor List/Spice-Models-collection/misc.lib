@@ -1,0 +1,19 @@
+* Library of Miscellaneous Analog Models
+
+*  Copyright OrCAD, Inc. 1998 All Rights Reserved.
+
+* $Revision:   1.26  $
+* $Author:   RPEREZ  $
+* $Date:   20 Apr 1998 08:58:20  $
+
+*---------------------------------------------------------------------------
+*
+* OrCAD Incorporated would like to acknowledge Sandia National Laboratories
+* for the contribution of their measurement-based model included in this 
+* library.
+
+*----------------------------------------------------------------------------
+*
+* misc.lib is obsolete. It has been split into two libraries: 
+*	mix_misc.lib -- contains mixed devices 
+* 	anl_misc.lib -- contains analog devices

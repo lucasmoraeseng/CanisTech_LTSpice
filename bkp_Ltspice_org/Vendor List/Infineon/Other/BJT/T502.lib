@@ -1,0 +1,28 @@
+***************************************************************
+* SIEMENS Small Signal Semiconductors
+* GUMMEL-POON MODEL CHIP PARAMETERS IN SPICE 2G6 SYNTAX
+* VALID UP TO 6 GHZ
+* >>> T502 <<< (CHIP) + C-E-diode
+* Extracted on behalf of SIEMENS Small Signal Semiconductors by
+* Institut fuer Mobil- und Satellitenfunktechnik (IMST)
+* (C) 1996 SIEMENS AG
+* Version 1.1    July 1997
+***************************************************************
+* Transistor chip:
+.MODEL T502 NPN(
++ IS = 2.0045e-16     BF = 72.534       NF = 1.2432
++ VAF = 28.383        IKF = 0.48731     ISE = 1.9049e-14
++ NE = 2.0518         BR = 7.8287       NR = 1.3325
++ VAR = 19.705        IKR = 0.69141     ISC = 1.9237e-17
++ NC = 1.1724         RB = 8.5757       IRB = 0.00072983
++ RBM = 3.4849        RE = 0.31111      RC = 0.10105
++ CJE = 1.8063e-15    VJE = 0.8051      MJE = 0.46576
++ TF = 6.7661e-12     XTF = 0.42199     VTF = 0.23794
++ ITF = 0.001         PTF = 0           CJC = 2.3453e-13
++ VJC = 0.81969       MJC = 0.30232     XCJC = 0.3
++ TR = 2.3249e-09     CJS= 0            VJS = 0.75
++ MJS = 0             XTB = 0           EG = 1.11
++ XTI = 3             FC = 0.73234)
+* C-E-diode:
+.MODEL CE2 D( IS = 3.50e-15       N = 1.02          RS=10)
+***************************************************************

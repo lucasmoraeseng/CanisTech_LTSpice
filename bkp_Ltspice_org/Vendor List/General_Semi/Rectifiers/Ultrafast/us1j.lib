@@ -1,0 +1,23 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+.MODEL US1J D (
++   N=4.1587
++  IS=2.78613E-006
++  RS=0.112241
++  EG=1.11
++ XTI=3
++ CJO=2.92033E-011
++  VJ=3.46059
++   M=0.835798
++  FC=0.5
++  TT=1.84973E-007
++  BV=600
++ IBV=0.1
++  KF=0
++  AF=1 )

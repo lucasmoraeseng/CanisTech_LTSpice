@@ -1,0 +1,59 @@
+*SPICE model for MSA1000  
+*Start bond wires
+.SUBCKT MSA1000 70      20      40
+LLB     20      35      .5NH
+LLE     40      55      .2NH
+*end bond wires
+*CALL DIE MODEL
+XDIE    70      35      55      MSA10
+.ENDS
+*end bond wires
+* Start die model
+.SUBCKT MSA10   DIEOUT  DIEIN   DIEGND
+RF      DIEIN   13      120   
+RE      Q2E     DIEGND  8.73  
+RB      DIEIN   DIEGND  270   
+RBIAS   Q1E     DIEGND  25    
+RDC     DIEIN   DIEOUT  900   
+CF      DIEIN   DIEOUT  0.33PF
+CP1     Q1E     DIEOUT  0.52PF
+CP2     Q2E     DIEOUT  0.230PF
+CP3     DIEGND  DIEOUT  0.790PF
+CFBL    14      DIEOUT  80PF
+LF      13      14      1.00NH
+XA10Q1  DIEOUT  DIEIN   Q1E     A10Q1
+XA10Q2  DIEOUT  Q1E     Q2E     A10Q2
+.ENDS
+* Q1 distributed base model
+.SUBCKT A10Q1   Q1C    Q1B     Q1E
+RB1     Q1B     11     0.9   
+RB2     11      12     1.1   
+RB3     12      B1     0.8   
+RC      C1      Q1C    2.7   
+RE      E1      13     0.7   
+RBAL    13      Q1E    1.38  
+Q1      C1      B1     E1      QPWR    1440
+DCD1    Q1B     C1     DMOD    2354
+DCD2    11      C1     DMOD    4760
+DCD3    12      C1     DMOD    1224
+DCD4    13      C1     DMOD    1717
+.ENDS
+* Q2 distributed base model
+.SUBCKT A10Q2   Q2C    Q2B     Q2E
+RB1     Q2B     21     0.7   
+RB2     21      22     0.6   
+RB3     22      B2     0.4   
+RC      C2      Q2C    1.24  
+RE      E2      23     0.3   
+RBAL    23      Q2E    0.69  
+Q1      C2      B2     E2      QPWR    2880
+DCD1    Q2B     C2     DMOD    4530
+DCD2    21      C2     DMOD    9520
+DCD3    22      C2     DMOD    2448
+DCD4    23      C2     DMOD    1717
+.ENDS
+.MODEL  DMOD    D(IS=1E-25, CJO=2.45E-16, VJ=.76, M=.53, BV=45, IBV=1E-9)
+.MODEL  QPWR    NPN (BF=75, BR=5, IS=1.65E-18, VA=30, TF=14PS,
++               CJE=1.8E-15, VJE=1.01, MJE=0.6, PTF=50, XTB=1.818,
++               VTF=6, ITF=3E-4, IKF=1.0E-4, XTF=4, NF=1.03, ISE=5E-15,
++               NE=2.5)

@@ -1,0 +1,23 @@
+* Library of Japanese Models
+
+*  Copyright OrCAD, Inc. 1998 All Rights Reserved.
+
+* $Revision:   1.2  $
+* $Author:   RPEREZ  $
+* $Date:   17 Apr 1998 15:11:24  $
+*
+* ---------------------------------------------------------------------------
+
+* This file references each of these libraries.
+
+
+.lib "jdiode.lib"               ; Japanese diodes, zeners, rectifiers, 
+                                ; varactors, Schottky diodes
+.lib "jbipolar.lib"             ; Japanese bipolar transistors
+.lib "jpwrbjt.lib"              ; Japanese power bipolar transistors
+.lib "jpwrmos.lib"              ; Japanese power MOSFETs
+.lib "jopamp.lib"               ; Japanese opamps
+.lib "jjfet.lib"                ; Japanese JFETs
+
+
+* end of library file

@@ -1,0 +1,25 @@
+***************************************************************
+* SIEMENS Small Signal Semiconductors
+* GUMMEL-POON MODEL CHIP PARAMETERS IN SPICE 2G6 SYNTAX
+* VALID UP TO 6 GHZ
+* >>> T359 <<< (CHIP)
+* Extracted on behalf of SIEMENS Small Signal Semiconductors by
+* Institut fuer Mobil- und Satellitenfunktechnik (IMST)
+* (C) 1996 SIEMENS AG
+* Version 1.1    July 1997
+***************************************************************
+.MODEL T359 NPN(
++ IS = 2.738e-16      BF = 125          NF = 0.95341
++ VAF = 24            IKF = 0.26949     ISE = 1.0627e-14
++ NE = 1.935          BR = 14.267       NR = 1.4289
++ VAR = 3.8742        IKR = 0.037925    ISC = 3.7409e-17
++ NC = 0.94371        RB = 1.8368       IRB = 0.00091763
++ RBM = 1             RE = 0.76534      RC = 0.11938
++ CJE = 1.1824e-15    VJE = 0.70276     MJE = 0.48654
++ TF = 1.8828e-11     XTF = 0.69477     VTF = 0.8
++ ITF = 0.00096893    PTF = 0           CJC = 9.3503e-13
++ VJC = 1.1828        MJC = 0.30002     XCJC = 0.053563
++ TR = 1.0037e-09     CJS= 0            VJS = 0.75
++ MJS = 0             XTB = 0           EG = 1.11
++ XTI = 3             FC = 0.72063)
+***************************************************************

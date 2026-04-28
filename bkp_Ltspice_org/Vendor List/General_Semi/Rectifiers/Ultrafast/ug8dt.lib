@@ -1,0 +1,23 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+.MODEL UG8DT D (
++   N=2.69107
++  IS=1.23442E-005
++  RS=0.00430462
++  EG=1.11
++ XTI=3
++ CJO=83.2E-12 
++  VJ=0.75 
++   M=0.333
++  FC=0.5
++  TT=4.93261E-008
++  BV=200
++ IBV=0.1
++  KF=0
++  AF=1 )

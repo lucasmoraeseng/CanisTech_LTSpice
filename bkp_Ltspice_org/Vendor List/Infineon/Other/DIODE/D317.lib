@@ -1,0 +1,13 @@
+*****************************************************************
+* INFINEON technologies                                         *
+* RF & Discrete Semiconductors                                  *
+* SCHOTTKY DIODE SPICE ( DIODE CHIP ONLY )                          *
+*                                                               *
+* Version:  1.1                                                 *
+* Date:     November 1999                                       *
+*****************************************************************
+.MODEL D317 D(Is=150n N=1.04 Rs=2.6 Xti=1.8 Eg=.68 Cjo=265f M=.09
++ Vj=.13 Fc=.5 Bv=4 Ibv=10u Tt=25p)
+* add R=1.5MEG parallel for better IR and R0 simulation
+* 28.10.1994 SIEMENS HL EH PD1 Kurth
+*****************************************************************

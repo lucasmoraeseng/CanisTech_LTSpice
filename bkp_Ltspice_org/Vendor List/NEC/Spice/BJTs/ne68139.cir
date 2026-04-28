@@ -1,0 +1,61 @@
+* FILENAME:         NE68139.CIR
+* NEC PART NUMBER:  NE68139
+* LAST MODIFIED:    6/96
+* BIAS CONDITIONS:  Vce=2.5V to 8.0V, Ic=0.3mA to 7mA
+* FREQ RANGE:       0.1GHz to 3.0GHz
+*
+*                        CCBpkg
+*               ,--------||-----------.
+*               |                     |
+*               |        CCB          |
+*               |    .---||---.       |
+*  BASE         |    |        |       | COLLECTOR
+*               |    |   /----o--LC---o---Lcx---o
+*  o---Lbx------o-LB-o--|Q1   |       |
+*               |    B   \   --       |
+*               |        |   -- CCE  --
+*        CBEpkg--      E o----'      -- CCEpkg
+*              --        |            |
+*               |       LE            |
+*               '--------o------------'
+*                        |
+*                       Lex
+*                        |
+*                        o EMITTER
+*
+*       CCB    = 0.07pF           LB  = 0.88nH
+*       CCE    = 0.01pF           LE  = 0.7nH
+*                                 LC  = 0.79nH
+*       CCBpkg = 0.165pF          Lbx = 0.39nH
+*       CCEpkg = 0.165pF          Lcx = 0.39nH
+*       CBEpkg = 0.01pF           Lex = 0.2nH
+*
+*                   c b e
+.SUBCKT NE68139/CEL 2 1 3
+Q1  8 7 9 NE68100
+CCB 7 8 0.07E-12
+CCE 8 9 0.01E-12
+LE  9 6 0.7E-9
+LB  4 7 0.88E-9
+LC  8 5 0.79E-9
+CBEPKG 4 6 0.01E-12
+CCBPKG 4 5 0.165E-12
+CCEPKG 5 6 0.165E-12
+LBX 1 4 0.39E-9
+LCX 5 2 0.39E-9
+LEX 6 3 0.2E-9
+.MODEL NE68100 NPN 
++( IS=2.7e-16     BF=185           NF=1.02        VAF=15           IKF=0.055
++ ISE=1.77e-11    NE=2.1           BR=1           NR=1             VAR=0
++ IKR=0           ISC=0            NC=2           RE=0.6           RB=12
++ RBM=3.7         IRB=1.2e-5       RC=8           CJE=1.2e-12      VJE=0.77
++ MJE=0.5         CJC=0.8e-12      VJC=0.27       MJC=0.56         XCJC=0
++ CJS=0           VJS=0.75         MJS=0          FC=0.5           TF=14.0e-12
++ XTF=3           VTF=25           ITF=0.1        PTF=0            TR=0.3e-9
++ EG=1.11         XTB=0            XTI=3          KF=0             AF=1 )
+*
+* NOTE:  CEL develops models using the Libra simulator.  For this simulator, 
+*        a value of 0 for VAR and IKR is interpreted as infinity.
+.ENDS
+*$
+

@@ -1,0 +1,92 @@
+*EL8102/3, EL8202/3, EL8302 and EL8402 -- Model Rev. A 7/31/2003
+*low power, wide bandwidth amplifier---500MHz
+*The AC response for this model is based on Vs=5V
+*SR,open loop gain, voltage noise and current noise are modeled.
+* connections:        +input
+*                       |  -input
+*                       |    | +Vsupply
+*                       |    |    | -Vsupply
+*                       |    |    |    |  output
+*                       |    |    |    |    |
+.subckt EL8102          3    2    7    4    6
+*
+*Input Stage
+vos 9 5 0.8mV
+ios 5 500 0.1uA
+i1 7 14 400uA
+i2 7 15 400uA
+r1 14 12 600
+r2 15 13 600
+r3 14 15 480
+r4 10 4 800
+r5 11 4 800
+q1 10 9 12 qp
+q2 11 2 13 qp
+*
+* voltage noise generator
+ie 0 30 3.121uA
+ca 30 31 1GF
+v1 31 0 dc 0V
+de 30 0 den
+h1 5 3 v1 9k
+*
+* current noise generator
+iin 0 32 3.121uA
+di 32 0 din
+cb 32 33 1GF
+v2 33 0 dc 0V
+f1 2 9 v2 1
+*
+*Gain Stage
+g1 16 500 11 10 1.67e-3
+r6 16 500 50k
+vs1 16 17 0V
+cc1 17 20 1.2p
+*G2 stage
+g2 18 500 16 500 1e-3
+r7 18 500 1k
+*
+*G3 stage
+g3 19 500 18 500 5.22e-3
+r8 19 500 2.73k
+cc2 19 20 1p
+*
+*Output satage
+g4 20 500 19 500 6.15e-2
+r9 20 500 6.2k
+l1 20 21 2.5nH
+vs2 21 6 0V
+c0 6 500 2p
+*
+*voltage reference
+eref 500 0 poly(2) (7,0) (4,0) 0 0.5 0.5
+rref 500 0 1M
+esp 499 500 poly(1) (7,4) 0 0.5
+esn 498 500 poly(1) (4,7) 0 0.5
+*
+*Output swing and current limiting
+* sourcing current
+d9 6 100 dx
+d10 100 101 dx
+vm1 7 101 0.05
+f3 100 101 poly(1) vs2 -0.08 1
+*sinking current
+d11 102 6 dx
+d12 103 102 dx
+vm2 103 4 0.05
+f4 103 102 poly(1) vs2 -0.15 -1
+
+* Supply current
+idc 7 4 4.8m
+*models
+.model qp pnp  
++ BF=70 VAF=17 IS=5e-15
++ TF=2.5e-10 RB=2 RC=2 RE=2
++ CJE=0.03p CJS=0.088p 
++ CJC=.03p 
+.ends
+.model din d(kf=1.92e-15 af=1)
+.model den d(kf=1.28e-15 af=1)
+.model dx d(N=0.001)
+.ends EL8102
+*$

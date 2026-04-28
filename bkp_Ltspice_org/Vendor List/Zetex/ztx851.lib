@@ -1,0 +1,22 @@
+*ZETEX  ZTX851 Spice model   Last revision 21/1/93
+*
+.MODEL ZTX851 NPN IS =1.0085E-12 NF =1.0001 BF =240 IKF=5.1 VAF=158
++             ISE=2E-13 NE =1.38 NR =0.9988 BR =110 IKR=5.5 VAR=46 
++             ISC=4.6515E-13 NC =1.334 RB =0.025 RE =0.018 RC =0.015 
++             CJC=155E-12 MJC=0.4348 VJC=0.6477 CJE=1.05E-9 
++             TF =0.79E-9 TR =24E-9
+*
+*
+*                          (C)  1993 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

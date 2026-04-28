@@ -1,0 +1,20 @@
+*****************************************************************
+* INFINEON technologies                                         *
+* RF & Discrete Semiconductors                                  *
+* SCHOTTKY DIODE SPICE ( DIODE CHIP ONLY )                          *
+*                                                               *
+* Version:  1.1                                                 *
+* Date:     November 1999                                       *
+*****************************************************************
+.MODEL D359 D(IS=121U RS=0.158 N=1.04 XTI=2.06 EG=.500 
++ CJO=52.5P M=.250 VJ=.280 FC=.500 BV=8.0 IBV=1.00M TT=10P)
+***************************************************************** 
+* Attention! Model works for Temp < 110°C only                  *
+*****************************************************************
+* Extracted By: 
+* SIEMENS Semiconductors 
+* HL HF PE SIL
+* J.P. Schaffer
+* Date:
+* 9. September 1998 
+*****************************************************************

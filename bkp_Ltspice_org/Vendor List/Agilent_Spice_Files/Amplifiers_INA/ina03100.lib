@@ -1,0 +1,81 @@
+*SPICE model for iNA03100  
+.SUBCKT INA03100     OUT      IN      GND
+*Package
+LIN      IN       1      .35NH
+LOUT     OUT      3      .35NH
+LGND     GND      2      .1NH
+*end package
+* CALL DIE MODEL
+XDIE    3      1      2      INA03
+.ENDS
+*
+* chip model
+.SUBCKT INA03   DIEOUT  DIEIN   DIEGND
+RBIAS1   Q2E     14     330      
+RBIAS2   Q3E     14     520      
+RE2      Q3E     15      50      
+RF1      DIEIN   14     750      
+RF2      Q1C    DIEOUT  700      
+LP1      Q1E    DIEGND   0.20NH
+LP2      15     DIEGND   0.20NH
+CP1      Q1E    DIEGND   0.35PF
+CP2      15     DIEGND   0.50PF
+C3     DIEOUT   DIEGND   0.25PF
+C4       Q1C    DIEGND   0.036PF
+C5     DIEIN    DIEGND   0.086PF
+C13      Q2E    DIEGND   0.023PF
+C14      14     DIEGND   0.036PF
+CCOMP    Q3E      20     1.25PF
+RES       20      15    25
+XNA03Q1  Q1C     DIEIN   Q1E   DIEGND    A03Q1
+XNA03Q2  DIEOUT   Q1C    Q2E   DIEGND    A03Q2
+XNA03Q3  DIEOUT   Q2E    Q3E   DIEGND    A03Q3
+.ENDS
+* Q1 distributed base model
+.SUBCKT A03Q1   Q1C     Q1B     Q1E    Q1S
+RC1      C1      5     6.5     
+RC2      5      Q1C   22.5     
+RB1     Q1B      7     2.4     
+RB2      7       8     7.5     
+RB3      8       B1    6.3     
+RE      E1      Q1E    0.55    
+Q1      C1      B1     E1      QINA    180
+DCD1    Q1B     C1     DMOD    292
+DCD2    7       C1     DMOD    292
+DCD3    8       C1     DMOD    146
+DCS    Q1S      5      DMOD    1419
+.ENDS
+* Q2 distributed base model
+.SUBCKT A03Q2   Q2C     Q2B     Q2E    Q2S
+RC1      C1      5     5.5     
+RC2      5      Q2C   80       
+RB1     Q2B      7     8.4     
+RB2      7       8    28       
+RB3     8       B1    23.5     
+RE      E1      Q2E    2.1     
+Q1      C1      B1     E1      QINA    48
+DCD1    Q2B     C1     DMOD    123
+DCD2     7      C1     DMOD     79
+DCD3     8      C1     DMOD     40
+DCS     Q2S      5     DMOD    756
+.ENDS
+* Q3 distributed base model
+.SUBCKT A03Q3   Q3C     Q3B     Q3E    Q3S
+RC1      C1      5      7     
+RC2      5      Q3C    27     
+RB1     Q3B     7       3.6   
+RB2      7      8      11.2   
+RB3      8      B1      9.4   
+RE      E1      Q3E     0.83  
+Q1      C1      B1     E1      QINA    120
+DCD1    Q3B     C1     DMOD    209
+DCD2    7      C1     DMOD    198
+DCD3    8      C1     DMOD     99
+DCS    Q3S      5     DMOD2    1092
+.ENDS
+.MODEL  DMOD    D(IS=1E-25, CJO=2.4E-16, VJ=.76, M=.53, BV=45)
+.MODEL  DMOD2    D(IS=1E-25, CJO=1.2E-16, VJ=.80, M=.50, BV=45, RS=1.0E+06)
+.MODEL  QINA    NPN (BF=100, BR=2.5, IS=1.7E-18, VA=20, TF=12PS,
++               CJE=2.4E-15, VJE=1.01, MJE=0.6, PTF=25, XTB=1.818,
++               VTF=6, ITF=3E-4, IKF=1.3E-4, XTF=4, NF=1.03, ISE=5E-15,
++               NE=2.5)   NE=2.5)

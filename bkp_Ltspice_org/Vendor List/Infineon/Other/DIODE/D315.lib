@@ -1,0 +1,12 @@
+*****************************************************************
+* INFINEON technologies                                         *
+* RF & Discrete Semiconductors                                  *
+* SCHOTTKY DIODE SPICE ( DIODE CHIP ONLY )                          *
+*                                                               *
+* Version:  1.1                                                 *
+* Date:     November 1999                                       *
+*****************************************************************
+.MODEL D315  D(Is=95n N=1.05 Rs=5 Xti=1.8 Eg=.68 Cjo=170f M=.09
++               Vj=.13 Fc=.5 Bv=4 Ibv=10u Tt=25p)
+* add R=3.3MEG parallel for better IR and R0 simulation
+*****************************************************************

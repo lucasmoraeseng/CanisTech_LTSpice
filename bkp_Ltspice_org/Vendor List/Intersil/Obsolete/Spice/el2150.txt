@@ -1,0 +1,64 @@
+* EL2150/EL2250/EL2450 Macromodel 
+* connections:        +input
+*                       |  -input
+*                       |    | +Vsupply
+*                       |    |    | -Vsupply
+*                       |    |    |    |  output  
+*                       |    |    |    |    |   
+*                       |    |    |    |    |   
+.subckt EL2150C         3    2    7    4    6   
+*
+* Input stage 
+*
+i1  7 10 250uA
+i2  7 11 250uA
+r1 10 11 4K
+q1 12  2 10 qp
+q2 13  3 11 qpa
+r2 12  4 100
+r3 13  4 100
+*
+* Second Stage & Compensation
+*
+gm 15 4 13 12 4.6m   
+r4 15 4 15Meg
+c1 15 4 0.36pF
+*
+* Poles
+*
+e1 17  4 15 4 1.0
+r6 17 25 0.4K
+c3 25  4 1pF
+r7 25 18 0.5K  
+c4 18  4 1pF  
+*
+* Output Stage 
+* 
+i3 20 4 1.0mA
+q3  7 23 20 qn
+q4  7 18 19 qn
+q5  7 18 21 qn 
+q6  4 20 22 qp
+q7  7 23 18 qn
+d1 19 20 da
+r8 21 6 2
+r9 22 6 2
+r10 18 21  10k
+r11  7 23 100k
+d2 23 24 da
+d4 24 4 da
+d5 23 18 da
+d6 4 15 da
+*
+* Power Supply Current
+*
+ips 7 4 3.2mA
+*
+* Models 
+*
+.model qn  npn(is=800e-18 bf=150 tf=0.02nS)
+.model qpa pnp(is=810e-18 bf=50 tf=0.02nS)
+.model qp  pnp(is=800e-18 bf=54 tf=0.02nS)
+.model da d(tt=0nS)
+.ends EL2150C
+*$

@@ -1,0 +1,30 @@
+* FQI20N06 60V N-CHANNEL DMOSFET ELECTRICAL PARAMETERS
+*------------------------------------------------------------------------------------
+.SUBCKT  FQI20N06  20  10  30
+Rg     10    1    1
+M1      2    1    3    3    DMOS    L=1u   W=1u
+.MODEL DMOS NMOS (VTO={3.78*{-0.00078*TEMP+1.0195}}  KP={14.5*{-0.00077*TEMP+1.01925}}
++  THETA=0.056    VMAX=7.8E4    LEVEL=3)
+Cgs     1    3    425p
+Rd     20    4    17.5m TC=0.0087
+Dds     3    4    DDS
+.MODEL     DDS    D(BV={60*{0.001*TEMP+0.975}}   M=0.5      CJO=145p     VJ=0.8)
+Dbody   3   20    DBODY
+.MODEL DBODY  D(IS=3.0E-12   N=1.02    RS=7.5m   EG=1.17    TT=43n)
+Ra      4    2    15m TC=0.0087
+Rs      3    5    1.0m
+Ls      5    30   1.97n
+M2      1    8    6    6   INTER
+E2      8    6    4    1   2
+.MODEL   INTER    NMOS(VTO=0  KP=10   LEVEL=1)
+Cgdmax  7    4    413p
+Rcgd    7    4    10meg
+Dgd     6    4    DGD
+Rdgd    4    6    10meg
+.MODEL     DGD    D(M=0.56   CJO=413p   VJ=0.48)
+M3      7    9    1    1   INTER
+E3      9    1    4    1   -2
+.ENDS FQI20N06
+*-------------------------------------------------------------------------------------
+* FAIRCHILD PUCHUN S.KOREA     CASE: I2-PAK      PID: FQP20N06 
+* 2000-03-25 CREATION

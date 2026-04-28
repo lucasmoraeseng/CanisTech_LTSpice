@@ -1,0 +1,48 @@
+* FILENAME:        NE33200.CIR
+* NEC PART NUMBER: NE33200
+* LAST MODIFIED:   10/98
+* BIAS CONDITIONS: Vds=2V,  Id=10mA to 20mA
+* FREQ RANGE:      0.1GHz to 10GHZ
+*
+*
+* STATZ GaAsFET Model
+*
+*               ---o--Rdx--Ld---o
+*               |  |             DRAIN
+*GATE       I --   RDB         
+*  o---Lg---I Q1   |     
+*           I---   CBS    
+*               |__|
+*               |
+*               Rsx
+*               |          
+*               Ls
+*               |
+*               o SOURCE
+*
+*       Lg=0.17nH       RDB=270 ohms
+*       Ls=0.03nH       CBS=10,000pF
+*       Ld=0.08nH       Rdx=5 ohms
+*                       Rsx=1 ohms
+*
+*                    d g s
+.SUBCKT NE33200/CEL 2 1 3
+Z1   7  4  8 NE33200
+RDB  7  9  270
+CBS  9  8  10000E-12
+Rsx  8  6  1
+Rdx  7  5  5
+Lg   4  1  0.17E-9
+Ld   2  5  0.08E-9
+Ls   6  3  0.03E-9
+.MODEL NE33200 NMF (LEVEL=2
++ BETA=0.0989   VTO=-0.6         ALPHA=8           LAMBDA=0.2
++ B=0           TAU=4e-12        IS=8e-14          N=1
++ VBI=1         FC=0.5           RD=0              RS=0
++ RG=0          M=0              CDS=0.16e-12      CGS=0.4e-12
++ CGD=0.05e-12  VDELTA=0.5       VMAX=0.5          EG=1.43        
++ KF=0          AF=1             XTI=3             VTOTC=0 
++ BETATCE=0) 
+.ENDS
+*$
+

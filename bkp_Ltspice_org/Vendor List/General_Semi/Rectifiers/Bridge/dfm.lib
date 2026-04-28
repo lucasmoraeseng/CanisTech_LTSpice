@@ -1,0 +1,34 @@
+DFM						
+* comparison measured simulated data for static behavior					.include df06m.mod	
+					.dc v1 .1 1.45 .05	
+v1 1 0 dc 1					.probe	
+d1 1 0 df06m					.temp 0 25 75	
+						
+* measured data for t=25°C		* measured data for t=0°C		* measured data for t=75°C		
+g25C 10 0 table {v(1)} =		g0C 20 0 table {v(1)} =		g75C 30 0 table {v(1)} =		
++ 676.3m 10MA 		+ 722.3m 10MA 		+ 584.15m 10MA 		
++ 757.2m 50MA		+ 795.25m 50MA		+ 678m 50MA		
++ 793.5m 100mA		+ 827.8m 100mA		+ 719.6m 100mA		
++ 887.65m 500mA		+ 919.4m 500mA		+ 832.3m 500mA		
++ 966.45m 1.0A		+ 976.8m 1.0A		+ 899.05m 1.0A		
++ 1.0515 2.0A		+ 1.0515 2.0A		+ 989.35m 2.0A		
++ 1.2165 5.0A		+ 1.206 5.0A		+ 1.172 5.0A		
++ 1.45  10.0A		+ 1.412  10.0A		+ 1.4245  10.0A		
+r_g25C 10 0 1		r_g0C 20 0 1		r_g75C 30 0 1		
+ 	 	 	 		 	 
+.end	 	 	 		 	
+.model df06m    
++ Is=4.24n 
++ N=1.785 
++ Rs=31.64m 
++ Ikf=.5526 
++ Xti=3 
++ Eg=1.11 
++ Cjo=35.72p						
++ M=21.9m 
++ Vj=5 
++ Fc=.5 
+Bv=reverse voltage* 
++ Ibv=200n 
++ Tt=4.205u						
+* look databook (e.g. for DF06M = 600)					

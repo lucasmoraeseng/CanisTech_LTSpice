@@ -1,0 +1,131 @@
+
+
+*$
+* THIS FILE CONTAINS A PRE-RAD MODEL AT 75 C.
+* PARAMETER MODEL EXTRACTED FROM MEASURED DATA UTILIZING AN SCR
+* MODEL DEVELOPED BY AVANT, LEE, AND CHEN. FURTHER INFORMATION ON THE MODEL
+* CAN BE FOUND IN THE IEEE POWER ELECTRONICS CONFERENCE PAPER (JULY 1981) THAT
+* THEY PRESENTED. TITLE OF PAPER IS : "A PRACTICAL SCR MODEL FOR COMPUTER AIDED
+* ANALYSIS OF AC RESONANT CHARGING CIRCUITS".
+
+*
+* THIS MODEL CORRECTLY SIMULATES THE MEASURED PARAMETERS OF
+* TON, DV/DT, IH, IGT, RON, AND VT. THIS MODEL IS TO BE USED ONLY AT THE
+* TEMP. FOR WHICH IT WAS EXTRACTED.
+*
+* A TURN-OFF TIME OF 15US WAS USED.
+*
+
+*
+* THE FOLLOWING IS A PRE-RAD MODEL AT 75 C :
+*
+*                    ANODE
+*                    |   GATE
+*                    |   |    CATHODE
+*                    |   |    |
+.SUBCKT 2N1595/75C   4   1   10
+R 1 10 3200
+DFOR 1 3 DMOD1
+Q1 1 3 4 QMOD1
+Q2 3 1 10 QMOD2
+.MODEL DMOD1 D(
++         IS = 1E-14
++         RS = 0
++          N = 1
++         TT = 0
++        CJO = 0
++         VJ = 1
++          M = .5
++         EG = 1.11
++        XTI = 3
++         KF = 0
++         AF = 1
++         FC = .5
++         BV = 288.5
++        IBV = .001
++ )
+.MODEL QMOD1 PNP(
++         IS = 5.9E-15
++         BF = .19
++         NF = 1
++        VAF = 9.9999E+13
++        IKF = 9.9999E+13
++        ISE = 0
++         NE = 1.5
++         BR = .19
++         NR = 1
++        VAR = 9.9999E+13
++        IKR = 9.9999E+13
++        ISC = 0
++         NC = 2
++         RB = 0
++        IRB = 9.9999E+13
++        RBM = 0
++         RE = 0.0958
++         RC = 0
++        CJE = 0
++        VJE = .75
++        MJE = .33
++         TF = 2.8E-6
++        XTF = 0
++        VTF = 9.9999E+13
++        ITF = 0
++        PTF = 0
++        CJC = 0
++        VJC = .75
++        MJC = .33
++       XCJC = 1
++         TR = 135E-6
++        CJS = 0
++        VJS = .75
++        MJS = 0
++        XTB = 0
++         EG = 1.11
++        XTI = 3
++         KF = 0
++         AF = 1
++         FC = .5
++ )
+.MODEL QMOD2 NPN(
++         IS = 5.9E-15
++         BF = 9
++         NF = 1
++        VAF = 9.9999E+13
++        IKF = 9.9999E+13
++        ISE = 0
++         NE = 1.5
++         BR = 1
++         NR = 1
++        VAR = 9.9999E+13
++        IKR = 9.9999E+13
++        ISC = 0
++         NC = 2
++         RB = 0
++        IRB = 9.9999E+13
++        RBM = 0
++         RE = 0
++         RC = 0
++        CJE = 0
++        VJE = .75
++        MJE = .33
++         TF = 0
++        XTF = 0
++        VTF = 9.9999E+13
++        ITF = 0
++        PTF = 0
++        CJC = 34E-12
++        VJC = .75
++        MJC = .33
++       XCJC = 1
++         TR = 0
++        CJS = 0
++        VJS = .75
++        MJS = 0
++        XTB = 0
++         EG = 1.11
++        XTI = 3
++         KF = 0
++         AF = 1
++         FC = .5
++ )
+.ENDS 2N1595/75C

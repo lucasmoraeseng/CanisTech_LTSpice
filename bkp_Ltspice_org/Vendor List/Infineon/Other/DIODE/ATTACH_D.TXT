@@ -1,0 +1,171 @@
+Filename: attach_d.txt
+Version:  1.1
+Date:     April 1999
+
+This list contains the various chip codes for all
+Infineon Technologies RF diodes. To model a diode 
+connect the chip model to the package equivalent 
+ circuit given in the ~\package directory.
+
+Please note that there are only a few chip models 
+available by now. 
+Please refer to s_diode.lib (includes package 
+capacitances) for further models.
+
+                                           J.P. Schaffer
+
+Infineon Technologies Varactor Diodes:
+
+Type        Chip     Package File     Pinout
+BB419       D192     SOD123.TXT       1=C; 2=A
+BB439       D192     SOD323.TXT       1=C; 2=A
+BB512       D196     SOD123.TXT       1=C; 2=A
+BB515       D197     SOD123.TXT       1=C; 2=A
+BB535       D197     SOD323.TXT       1=C; 2=A
+BB545       D198     SOD323.TXT       1=C; 2=A
+BB555       D197     SCD80.TXT        1=C; 2=A
+BB565       D198     SCD80.TXT        1=C; 2=A
+BB619       D191     SOD123.TXT       1=C; 2=A
+BB619C      D349     SOD123.TXT       1=C; 2=A
+BB620       D193     SOD123.TXT       1=C; 2=A
+BB639       D191     SOD323.TXT       1=C; 2=A
+BB639C      D349     SOD323.TXT       1=C; 2=A
+BB640       D193     SOD323.TXT       1=C; 2=A
+BB659       D191     SCD80.TXT        1=C; 2=A
+BB659C      D349     SCD80.TXT        1=C; 2=A
+BB669       D354     SOD323.TXT       1=C; 2=A
+BB689       D354     SCD80.TXT        1=C; 2=A
+BB804       D171     SOT23_2.TXT      1=A1; 2=A2; 3=C1/C2
+BB811       D182     SOD123.TXT       1=C; 2=A
+BB814       D140     SOT23_2.TXT      1=A1; 2=A2; 3=C1/C2
+BB833       D339     SOD323.TXT       1=C; 2=A
+BB835       D348     SOD323.TXT       1=C; 2=A
+BB837       D355     SOD323.TXT       1=C; 2=A
+BB914       D199     SOT23_2.TXT      1=A1; 2=A2; 3=C1/C2
+BBY51       D340     SOT23_2.TXT      1=A1; 2=A2; 3=C1/C2
+BBY51-02W   D340     SCD80.TXT        1=C; 2=A
+BBY51-03W   D340     SOD323.TXT       1=C; 2=A
+BBY51-07    D340     SOT143_D.TXT     1=C1; 2=C2; 3=A2; 4=A1
+BBY52       D341     SOT23_2.TXT      1=A1; 2=A2; 3=C1/C2
+BBY52-02W   D341     SCD80.TXT        1=C; 2=A
+BBY52-03W   D341     SOD323.TXT       1=C; 2=A
+BBY53       D353     SOT23_2.TXT      1=A1; 2=A2; 3=C1/C2
+BBY53-02W   D353     SCD80.TXT        1=C; 2=A
+BBY53-03W   D353     SOD323.TXT       1=C; 2=A
+
+Infineon Technologies PIN Diodes:
+
+Type        Chip     Package File     Pinout
+BA582       D194     SOD123.TXT       1=C; 2=A
+BA585       D172     SOD123.TXT       1=C; 2=A
+BA592       D194     SOD323.TXT       1=C; 2=A
+BA595       D172     SOD323.TXT       1=C; 2=A
+BA597       D318     SOD323.TXT       1=C; 2=A
+BA885       D172     SOT23_1.TXT      1=A; 3=C
+BA892       D194     SCD80.TXT        1=C; 2=A
+BAR14-1     D148     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAR15-1     D148     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAR16-1     D148     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+BAR17       D149     SOT23_1.TXT      1=A; 3=C
+BAR60       D148     SOT143_R.TXT     1=C1/C2/A3; 2=C3; 3=A1; 4=A2
+BAR61       D148     SOT143_R.TXT     1=C1/C3; 2=A2; 3=C2/A3; 4=A1
+BAR63       D310     SOT23_1.TXT      1=A; 3=C
+BAR63-02W   D310     SCD80.TXT        1=C; 2=A
+BAR63-03W   D310     SOD323.TXT       1=C; 2=A
+BAR63-04    D310     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAR63-04W   D310     SOT323_.TXT      1=A1; 3=C1/A2; 2=C2
+BAR63-05    D310     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAR63-05W   D310     SOT323_2.TXT     1=A1; 3=C1/C2; 2=A2
+BAR63-06    D310     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+BAR63-06W   D310     SOT323.TXT       1=C1; 3=A1/A2; 2=C2
+BAR64       D311     SOT23_1.TXT      1=C; 2=A
+BAR64-02W   D311     SCD80.TXT        1=C; 2=A
+BAR64-03W   D311     SOT323_1.TXT     1=C; 2=A
+BAR64-04    D311     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAR64-05    D311     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAR64-06    D311     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+BAR64-07    D311     SOT143_D.TXT     1=C1; 2= C2; 3=A2; 4=A1
+BAR65-02W   D307     SCD80.TXT        1=C; 2=A
+BAR65-03W   D307     SOD323.TXT       1=C; 2=A
+BAR65-07    D307     SOT143_D.TXT     1=C1; 2= C2; 3=A2; 4=A1
+BAR66       D309     SOT23_2.TXT      1=A1; 2=C2; 3=C1/A2
+BAR80       D194     MW4_S.TXT        1&3=C; 2&4=A
+BAR81       D307     MW4_S.TXT        1&3=C; 2&4=A
+BAT18       D194     SOT23_1.TXT      1=A; 3=C
+BAT18-04    D194     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAT18-05    D194     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAT18-06    D194     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+
+Infineon Technologies Schottky Diodes:
+
+Type        Chip     Package File     Pinout
+BAS125      D325     SOT23_1.TXT      1=A; 3=C
+BAS125-04   D325     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAS125-05   D325     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAS125-06   D325     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+BAS125-07   D325     SOT143_D.TXT     1=C1; 2=C2; 3=A2; 4=A1
+BAS125W     D325     SOT323_1.TXT     1=A; 3=C
+BAS140W     D337     SOD323.TXT       1=C; 2=A
+BAS170W     D336     SOD323.TXT       1=C; 2=A
+BAS40       D337     SOT23_1.TXT      1=A; 3=C
+BAS40-04    D337     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAS40-04W   D337     SOT323_2.TXT     1=A1; 3=C1/A2; 2=C2
+BAS40-05    D337     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAS40-05W   D337     SOT323_2.TXT     1=A1; 3=C1/C2; 2=A2
+BAS40-06    D337     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+BAS40-06W   D337     SOT323_2.TXT     1=C1; 3=A1/A2; 2=C2
+BAS70       D336     SOT23_1.TXT      1=A; 3=C
+BAS70-04    D336     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAS70-04W   D336     SOT323_2.TXT     1=A1; 3=C1/A2; 2=C2
+BAS70-05    D336     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAS70-05W   D336     SOT323_2.TXT     1=A1; 3=C1/C2; 2=A2
+BAS70-06    D336     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+BAS70-06W   D336     SOT323_2.TXT     1=C1; 3=A1/A2; 2=C2
+BAS70-07W   D336     SOT343_D.TXT     1=C1; 2=C2; 3=A2; 4=A1
+BAT114-099  D321     SOT143_D.TXT     1=C1; 2=A2; 3=C2; 4=A1
+BAT114-099R D321     SOT143_R.TXT     crossover ring quad
+BAT14-03W   D314     SOD323.TXT       1=C; 2=A
+BAT14-098   D314     SOD123.TXT       1=C; 2=A
+BAT14-099   D314     SOT143_D.TXT     1=C1; 2=A2; 3=C2; 4=A1
+BAT14-099R  D314     SOT143_R.TXT     crossover ring quad
+BAT15-03W   D315     SOD323.TXT       1=C; 2=A
+BAT15-04    D315     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAT15-098   D315     SOD123.TXT       1=C; 2=A
+BAT15-099   D315     SOT143_D.TXT     1=C1; 2=A2; 3=C2; 4=A1
+BAT15-099R  D317     SOT143_R.TXT     crossover ring quad
+BAT165      D327     SOT323_1.TXT     1=A; 3=C
+BAT17       D188     SOT23_1.TXT      1=A; 3=C
+BAT17-04    D188     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAT17-04W   D188     SOT323_2.TXT     1=A1; 3=C1/A2; 2=C2
+BAT17-05    D188     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAT17-05W   D188     SOT323_2.TXT     1=A1; 3=C1/C2; 2=A2
+BAT17-06    D188     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+BAT17-06W   D188     SOT323_2.TXT     1=C1; 3=A1/A2; 2=C2
+BAT17W      D188     SOT323_1.TXT     1=A; 3=C
+BAT62       D168     SOT143_D.TXT     1=A1; 2=C2; 3=A2; 4=C1;
+BAT62-02W   D168     SCD80.TXT        1=C; 2=A
+BAT62-03W   D168     SOD323.TXT       1=C; 2=A
+BAT62-07W   D168     SOT343_D.TXT     1=C1; 2=C2; 3=A2; 4=A1
+BAT63       D322     SOT143_D.TXT     1=A1; 2=C2; 3=A2; 4=C1;
+BAT63-03W   D322     SOD323.TXT       1=C; 2=A
+BAT63-099R  D322     SOD143_R.TXT     crossover ring quad
+BAT64       D333     SOT23_2.TXT      1=A; 3=C
+BAT64-04    D333     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAT64-05    D333     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAT64-06    D333     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+BAT64-07    D333     SOT143_D.TXT     1=C1; 2=C2; 3=A2; 4=A1
+BAT65       D327     SOD123.TXT       1=C; 2=A
+BAT65-04    D327     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAT66-05    D335     SOT223.TXT       1=A1; 2&4=C1/C2; 3=A2
+BAT68       D324     SOT23_1.TXT      1=A; 3=C
+BAT68-03W   D324     SOD323.TXT       1=C; 2=A
+BAT68-04    D324     SOT23_2.TXT      1=A1; 3=C1/A2; 2=C2
+BAT68-04W   D324     SOT323_2.TXT     1=A1; 3=C1/A2; 2=C2
+BAT68-05    D324     SOT23_2.TXT      1=A1; 3=C1/C2; 2=A2
+BAT68-05W   D324     SOT323_2.TXT     1=A1; 3=C1/C2; 2=A2
+BAT68-06    D324     SOT23_2.TXT      1=C1; 3=A1/A2; 2=C2
+BAT68-06W   D324     SOT323_2.TXT     1=C1; 3=A1/A2; 2=C2
+BAT68-07    D324     SOT143_D.TXT     1=C1; 2=C2; 3=A2; 4=A1
+BAT68-07W   D324     SOT343_D.TXT     1=C1; 2=C2; 3=A2; 4=A1
+BAT68W      D324     SOT323_1.TXT     1=A; 3=C
+BAT70-05    D346     SOT223.TXT       1=A1; 2&4=C1/C2; 3=A2

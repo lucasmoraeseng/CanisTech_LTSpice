@@ -1,0 +1,21 @@
+* BF851A NJF model
+* created using Parts release 6.2 on 07/20/95 at 14:54
+* Parts is a MicroSim product.
+.MODEL BF851A NJF
++ VTO=-.5111
++ BETA=15.19E-3
++ LAMBDA=35.93E-3
++ IS=410.2E-18
++ ALPHA=1.000E-6
++ VK=1
++ RD=4.164
++ RS=4.164
++ CGD=6.299E-12
++ CGS=6.299E-12
++ PB=.6917
++ KF=21.54E-18
++ AF=.7958
++ BETATCE=-.5
++ VTOTC=-2.500E-3
+*$
+

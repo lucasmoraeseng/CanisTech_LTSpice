@@ -1,0 +1,205 @@
+* EL4332C Macromodel
+* Revision A,  April 1996
+*******************************************************************************
+**
+* Applications Hints. The EL 4332 has two Vcc pins, one Vee pin, and three 
+*ground pins. The Vcc pins * (pins 14 and 15 are internally shorted 
+*together in the model, but the ground pins (GND1, GND2, and 
+* GND3 (nodes 2, 7, and 10, respectively) must be connected to ground (node
+0) using a 
+*1e-6 ohm resistor. 
+* Alternatively, nodes 2, 7, and 10 may be connected to ground through a 25 
+*ohm resistor in parallel with a 4 nH inductor to simulate package and PCB 
+*parasitics. 
+*
+******************************************************************************
+* Connections: 
+*   OUT1
+*     |     GND1     
+*     |      |    A1       
+*     |      |     |      B1  
+*     |      |     |      |     B2  
+*     |      |     |      |     |       A2  
+*.    |      |     |      |     |       |       GND2
+*     |      |     |      |     |       |        |      OUT2
+*     |      |     |      |     |       |        |       |   
+*     |      |     |      |     |       |        |       |   
+*     1      2     3      4     5       6        7       8   
+*
+*   OUT3              
+*    |       GND3    
+*    |         |     B3
+*    |         |      |     A3
+*    |         |      |      |       Vee
+*    |         |      |      |        |      Vcc
+*    |         |      |      |        |       |     Vcc
+*    |         |      |      |        |       |      |     A/B
+*    |         |      |      |        |       |      |      |    
+*    |         |      |      |        |       |      |      |      
+*    9         10     11     12      13      14     15      16
+*   
+*
+.subckt el4332C 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+****************** A B Switch ***********************************
+Rshort 14  15 1e-12
+rshort1 15 0 1000Meg
+Isw    14 110 1.5mA
+vref  111   0 1.6v
+q1    101   16  110 qp
+q2    102  111  110 qp
+R1    101   13  500
+R2    102   13  500
+Rd1   107    0  100
+Esw   107    0  table {v(102,101)*100} (0,0) (1,1)
+*
+*************** Amplifier  #1  *****************
+q131    103     3   112  qp
+q141    104  114  113  qp
+q151    105      4  115  qp
+q161    106  117  116  qp
+Ia11    14  112  1mA
+Ia21    14  113  1mA
+Ib11    14  115  1mA
+Ib21    14  116  1mA
+Rga1 112 113   275
+Rgb1 115 116   275
+R31   103    13   275
+R41   104    13   275
+R51   105    13   275
+R61   106    13   275
+R71       1  114   400
+R81   114     2    400
+R91       1  117   400
+R110 117      2   400
+Ediff1 108 0  value {( v(104,103)*v(107)) + (v(106,105)*(1-v(107)))}
+rdiff1 108 0 1K
+*
+* Compensation Section 
+*
+ga1  0 134 108 0 1m
+rh1  134 0 5Meg
+cc1  134 0 0.6pF
+*
+* Poles
+*
+ep1  141   0     134  0   1.0
+rpa1 141 142   200
+cpa1 142   0   0.75pF
+rpb1 142 143   200
+cpb1 143   0   0.75pF
+*
+* Output Stage 
+* 
+i011  15 150 1.0mA
+i021 151  13 1.0mA
+q71  13 143 150 qp 
+q81  15 143 151 qn
+q91  15 150 152 qn
+q101 13 151 153 qp 
+ros11 152 1  2
+ros21 153 1  2
+*
+*************** Amplifier  #2  *****************
+q231    203      6  212  qp
+q241    204  214  213  qp
+q251    205      5  215  qp
+q261    206  217  216  qp
+Ia12    14  212  1mA
+Ia22    14  213  1mA
+Ib12    14  215  1mA
+Ib22    14  216  1mA
+Rga2 212 213   275
+Rgb2 215 216   275
+R231  203  13   275
+R241  204  13   275
+R251  205  13   275
+R261  206  13   275
+R271    8 214   400
+R281  214   7   400
+R291    8 217   400
+R210  217   7   400
+Ediff2 208 0  value {( v(204,203)*v(107)) + (v(206,205)*(1-v(107)))}
+rdiff2  208 0 1K
+*
+* Compensation Section 
+*
+ga2  0 234 208 0 1m
+rh2  234 0 5Meg
+cc2  234 0 0.6pF
+*
+* Poles
+*
+ep2  241   0   234  0   1.0
+rpa2 241 242   200
+cpa2 242   0   0.75pF
+rpb2 242 243   200
+cpb2 243   0   0.75pF
+*
+* Output Stage 
+* 
+i012  15 250 1.0mA
+i022 251  13 1.0mA
+q271  13 243 250 qp 
+q281  15 243 251 qn
+q291  15 250 252 qn
+q201  13 251 253 qp 
+ros12 252 8  2
+ros22 253 8  2
+*
+*************** Amplifier  #3  *****************
+q331    303    12  312  qp
+q341    304  314  313  qp
+q351    305    11  315  qp
+q361    306  317  316  qp
+Ia13    14  312  1mA
+Ia23    14  313  1mA
+Ib13    14  315  1mA
+Ib23    14  316  1mA
+Rga3 312 313   275 
+Rgb3 315 316   275
+R331  303  13   275
+R341  304  13   275
+R351  305  13   275
+R361  306  13   275
+R371    9 314   400
+R381  314  10   400
+R391    9 317   400
+R310  317  10   400
+Ediff3 308 0  value {( v(304,303)*v(107)) + (v(306,305)*(1-v(107)))}
+rdiff3 308 0 1K
+*
+* Compensation Section 
+*
+ga3  0 334 308 0 1m
+rh3  334 0 5Meg
+cc3  334 0 0.6pF
+*
+* Poles
+*
+ep3  341     0   334  0   1.0
+rpa3 341 342   200
+cpa3 342   0   0.75pF
+rpb3 342 343   200
+cpb3 343   0   0.75pF
+*
+* Output Stage 
+* 
+i01    15 350 1.0mA
+i023 351  13 1.0mA
+q371  13 343 350 qp 
+q381  15 343 351 qn
+q391  15 350 352 qn
+q301  13 351 353 qp 
+ros13 352 9  2
+ros23 353 9  2
+*
+* Power Supply Current
+*
+ips 15 13 22mA
+*
+* Models 
+*
+.model qp  pnp(is=1.5e-16 bf=300 tf=0.01nS)
+.model qn  npn(is=0.8e-18 bf=300 tf=0.01nS)
+.ends EL4332C
+*$

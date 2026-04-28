@@ -1,0 +1,23 @@
+*ZETEX  ZTX327 Spice model   Last revision 24/2/94
+*
+.MODEL ZTX327 NPN IS=3.15E-15 BF=95 VAF=90 ISE=2.21E-13 NE=1.637
++   BR=8 VAR=10 NF=.9835 NR=.987 IKR=.12 ISC=7.12E-14 NC=1.27 RB=.5
++   RE=0.07 RC=.44 CJE=15E-12 TF=.13E-9 CJC=7.22E-12 TR=1.3E-7
++   VJC=.539 MJC=.4017 XTF=3 ITF=.35
+*
++   IKF=.3           ;Use IKF=.3 and omit NK in 2G6 type Spices.
+*   IKF=.85 NK=.75   ;Use IKF=.85 and NK=.75 in PSPICE V5.0 and on.
+*
+*                          (C)  1994 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

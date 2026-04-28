@@ -1,0 +1,901 @@
+* SIMetrix model library
+
+* Copyright (C) 1998 Newbury Technology Ltd. All rights reserved.
+* 
+* These models are believed to be accurate but Newbury Technology Ltd.
+* offers no guarantee as to their fitness for any purpose nor do they
+* accept any responsibility for damage caused directly or indirectly
+* by their use.
+*
+*
+* 2.10.98
+
+
+
+*From Philips SC04 "Small signal transistors 1991"
+* Base spreading parameters (RB,IRB,RBM) estimated. TR derived using BCY58 data
+.model BC546A npn ( IS=7.59E-15 VAF=172.5 BF=230 IKF=0.2015 NE=1.4568
++    ISE=3.779E-14 IKR=0.03 ISC=2.00E-13 NC=1.2 NR=1 BR=5 RC=0.25 CJC=6.33E-12
++    FC=0.5 MJC=0.33 VJC=0.65 CJE=1.25E-11 MJE=0.55 VJE=0.65 TF=4.26E-10
++    ITF=0.47 VTF=3 XTF=20 RB=100 IRB=0.0001 RBM=10 RE=0.5 TR=1.50E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Base spreading parameters (RB,IRB,RBM) estimated. TR derived using BCY58 data
+.model BC546B npn ( IS=7.59E-15 VAF=73.4 BF=480 IKF=0.0962 NE=1.2665
++    ISE=3.278E-15 IKR=0.03 ISC=2.00E-13 NC=1.2 NR=1 BR=5 RC=0.25 CJC=6.33E-12
++    FC=0.5 MJC=0.33 VJC=0.65 CJE=1.25E-11 MJE=0.55 VJE=0.65 TF=4.26E-10
++    ITF=0.6 VTF=3 XTF=20 RB=100 IRB=0.0001 RBM=10 RE=0.5 TR=1.50E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Base spreading parameters (RB,IRB,RBM) estimated. TR derived using BCY58 data
+.model BC547C npn ( IS=7.59E-15 VAF=19.3 BF=500 IKF=0.0710 NE=1.3808
++    ISE=7.477E-15 IKR=0.03 ISC=2.00E-13 NC=1.2 NR=1 BR=5 RC=0.25 CJC=6.33E-12
++    FC=0.5 MJC=0.33 VJC=0.65 CJE=1.25E-11 MJE=0.55 VJE=0.65 TF=4.12E-10
++    ITF=0.4 VTF=3 XTF=12.5 RB=100 IRB=0.0001 RBM=10 RE=0.5 TR=1.50E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Base spreading parameters (RB,IRB,RBM) estimated. TR from BCY70 data
+.model BC556A pnp ( IS=5.15E-15 VAF=112.0 BF=182 IKF=0.0999 NE=1.5859
++    ISE=1.906E-14 IKR=0.03 ISC=5.00E-13 NC=1.4 NR=1 BR=5 RC=0.35 CJC=8.80E-12
++    FC=0.5 MJC=0.28 VJC=1 CJE=1.00E-11 MJE=0.38 VJE=0.4 TF=9.00E-10
++    ITF=0.6 VTF=3 XTF=11.5 RB=100 IRB=0.0001 RBM=10 RE=0.75 TR=2.00E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Base spreading parameters (RB,IRB,RBM) estimated. TR from BCY70 data
+.model BC556B pnp ( IS=3.50E-15 VAF=80.5 BF=330 IKF=0.1018 NE=1.3140
++    ISE=3.816E-16 IKR=0.03 ISC=5.00E-13 NC=1.6 NR=1 BR=5 RC=0.35 CJC=8.80E-12
++    FC=0.5 MJC=0.28 VJC=1 CJE=1.00E-11 MJE=0.38 VJE=0.4 TF=7.00E-10
++    ITF=0.6 VTF=3 XTF=11.5 RB=100 IRB=0.0001 RBM=10 RE=0.75 TR=2.00E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Base spreading parameters (RB,IRB,RBM) estimated. TR from BCY70 data
+.model BC557C pnp ( IS=2.37E-15 VAF=41.8 BF=490 IKF=0.0614 NE=1.2509
++    ISE=1.314E-16 IKR=0.03 ISC=1.00E-13 NC=1.3 NR=1 BR=5 RC=0.35 CJC=8.80E-12
++    FC=0.5 MJC=0.28 VJC=1 CJE=1.00E-11 MJE=0.38 VJE=0.4 TF=5.75E-10
++    ITF=0.3 VTF=3 XTF=5 RB=100 IRB=0.0001 RBM=10 RE=0.75 TR=2.00E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Hfe vs ic from NS Discrete 1978 @ vce = 10V. PS and MOT data @ vce=1v only. TR estimated - no data available
+.model BC337 npn ( IS=8.52E-15 VAF=120.7 BF=280 IKF=1.1412 NE=1.3647
++    ISE=3.562E-14 IKR=0.1 ISC=1.00E-12 NC=1.4 NR=1 BR=10 RC=0.05 CJC=1.20E-11
++    FC=0.5 MJC=0.28 VJC=0.4 CJE=3.10E-11 MJE=0.38 VJE=0.9 TF=4.10E-10
++    ITF=1.5 VTF=3 XTF=25 RE=0.2 TR=1.10E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Hfe vs ic from NS Discrete 1978 @ vce = 10V. PS and MOT data @ vce=1v only. TR estimated - no data available
+.model BC337-25 npn ( IS=8.52E-15 VAF=99.7 BF=500 IKF=0.1962 NE=1.2069
++    ISE=9.239E-14 IKR=0.1 ISC=1.00E-12 NC=1.4 NR=1 BR=10 RC=0.05 CJC=1.20E-11
++    FC=0.5 MJC=0.28 VJC=0.4 CJE=3.10E-11 MJE=0.38 VJE=0.9 TF=4.10E-10
++    ITF=1.5 VTF=3 XTF=25 RE=0.2 TR=1.10E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Hfe vs ic from NS Discrete 1978 @ vce = 10V. PS and MOT data @ vce=1v only. TR estimated - no data available
+.model BC337-40 npn ( IS=8.52E-15 VAF=66.4 BF=700 IKF=1.1363 NE=1.3525
++    ISE=1.271E-14 IKR=0.1 ISC=1.00E-12 NC=1.4 NR=1 BR=10 RC=0.05 CJC=1.20E-11
++    FC=0.5 MJC=0.28 VJC=0.4 CJE=3.10E-11 MJE=0.38 VJE=0.9 TF=4.10E-10
++    ITF=1.5 VTF=3 XTF=25 RE=0.2 TR=1.10E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Hfe vs ic from NS Discrete 1978 @ vce = 10V. PS and MOT data @ vce=1v only. TR  from MPSA56
+.model BC327 pnp ( IS=2.48E-13 VAF=99.6 BF=170 IKF=0.9648 NE=1.7746
++    ISE=3.464E-12 IKR=0.1 ISC=1.00E-12 NC=1.4 NR=1 BR=10 RC=0.05 CJC=2.00E-11
++    FC=0.5 MJC=0.37 VJC=0.6 CJE=4.70E-11 MJE=0.44 VJE=0.6 TF=9.70E-10
++    ITF=1.9 VTF=3 XTF=25 RE=0.2 TR=9.00E-08)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Hfe vs ic from NS Discrete 1978 @ vce = 10V. PS and MOT data @ vce=1v only. TR  from MPSA56
+.model BC327-25 pnp ( IS=2.48E-13 VAF=66.3 BF=300 IKF=0.8804 NE=1.6634
++    ISE=6.055E-13 IKR=0.1 ISC=1.00E-12 NC=1.4 NR=1 BR=10 RC=0.05 CJC=2.00E-11
++    FC=0.5 MJC=0.37 VJC=0.6 CJE=4.70E-11 MJE=0.44 VJE=0.6 TF=9.70E-10
++    ITF=1.9 VTF=3 XTF=25 RE=0.2 TR=9.00E-08)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Hfe vs ic from NS Discrete 1978 @ vce = 10V. PS and MOT data @ vce=1v only. TR  from MPSA56
+.model BC327-40 pnp ( IS=2.48E-13 VAF=49.6 BF=456 IKF=0.8648 NE=1.6489
++    ISE=5.464E-13 IKR=0.1 ISC=1.00E-12 NC=1.4 NR=1 BR=10 RC=0.05 CJC=2.00E-11
++    FC=0.5 MJC=0.37 VJC=0.6 CJE=4.70E-11 MJE=0.44 VJE=0.6 TF=9.70E-10
++    ITF=1.9 VTF=3 XTF=25 RE=0.2 TR=9.00E-08)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Data for hfe vs ic given for vce=2v. Modelled for estimated behavior for vce=5v. TR, C-B and C-E cap estimated. No data given
+.model BC635 npn ( IS=1.65E-13 VAF=95.6 BF=135 IKF=1.2066 NE=1.3615
++    ISE=4.183E-13 IKR=0.2 ISC=1.00E-12 NC=1.3 NR=1 BR=10 RC=0.05 CJC=2.00E-11
++    FC=0.5 MJC=0.37 VJC=0.6 CJE=6.50E-11 MJE=0.44 VJE=0.6 TF=5.15E-10
++    ITF=3.7 VTF=3 XTF=25 RE=0.15 TR=1.00E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Data for hfe vs ic given for vce=2v. Modelled for estimated behavior for vce=5v. TR, C-B and C-E cap estimated. No data given
+.model BC635-16 npn ( IS=1.65E-13 VAF=95.6 BF=211.95 IKF=1.2066 NE=1.3615
++    ISE=2.665E-13 IKR=0.2 ISC=1.00E-12 NC=1.3 NR=1 BR=10 RC=0.05 CJC=2.00E-11
++    FC=0.5 MJC=0.37 VJC=0.6 CJE=6.50E-11 MJE=0.44 VJE=0.6 TF=5.15E-10
++    ITF=3.7 VTF=3 XTF=25 RE=0.15 TR=1.00E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Data for hfe vs ic given for vce=2v. Modelled for estimated behavior for vce=5v. TR, C-B and C-E cap estimated. No data given
+.model BC636 pnp ( IS=5.15E-14 VAF=95.7 BF=150 IKF=0.7262 NE=1.2154
++    ISE=1.621E-14 IKR=0.2 ISC=1.00E-12 NC=1.3 NR=1 BR=5 RC=0.05 CJC=2.30E-11
++    FC=0.5 MJC=0.33 VJC=0.6 CJE=1.35E-10 MJE=0.33 VJE=0.6 TF=2.07E-09
++    ITF=6 VTF=3 XTF=10 RE=0.15 TR=4.00E-07)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Data for hfe vs ic given for vce=2v. Modelled for estimated behavior for vce=5v. TR, C-B and C-E cap estimated. No data given
+.model BC636-16 pnp ( IS=5.15E-14 VAF=95.7 BF=235.5 IKF=0.7262 NE=1.2154
++    ISE=1.032E-14 IKR=0.2 ISC=1.00E-12 NC=1.3 NR=1 BR=5 RC=0.05 CJC=2.30E-11
++    FC=0.5 MJC=0.33 VJC=0.6 CJE=1.35E-10 MJE=0.33 VJE=0.6 TF=2.07E-09
++    ITF=6 VTF=3 XTF=10 RE=0.15 TR=4.00E-07)
+
+*From Philips SC04 "Small signal transistors 1991" and NS Discrete 1978
+* Base resistance not modelled - no info. CBE estimated.
+.model BF198 npn ( IS=7.42E-17 VAF=45.8 BF=160 IKF=0.0162 NE=1.3261
++    ISE=5.626E-16 IKR=0.001 ISC=1.00E-13 NC=1.3 NR=1 BR=5 RC=100 CJC=4.25E-13
++    FC=0.5 MJC=0.25 VJC=0.6 CJE=1.35E-12 MJE=0.33 VJE=0.6 TF=3.10E-10
++    ITF=0.04 VTF=3 XTF=60 RE=5.5)
+
+*From Philips SC04 "Small signal transistors 1991" and NS Discrete 1978
+* Base resistance not modelled - no info. CBE estimated. Vce(sat) estimated.
+.model BF199 npn ( IS=1.61E-15 VAF=35.8 BF=150 IKF=0.0467 NE=1.3552
++    ISE=1.494E-14 IKR=0.001 ISC=1.00E-14 NC=1.5 NR=1 BR=5 RC=10 CJC=5.00E-13
++    FC=0.5 MJC=0.2 VJC=0.8 CJE=5.00E-12 MJE=0.4 VJE=0.6 TF=1.86E-10
++    ITF=0.045 VTF=3 XTF=50 RE=1)
+
+*From NS Discrete 1978
+* Base resistance not modelled - no info. 
+.model BF257 npn ( IS=2.48E-14 VAF=45.7 BF=200 IKF=0.1509 NE=1.1981
++    ISE=1.668E-14 IKR=0.05 ISC=1.00E-12 NC=1.5 NR=1 BR=5 RC=10 CJC=1.50E-11
++    FC=0.5 MJC=0.38 VJC=0.2 CJE=4.90E-11 MJE=0.42 VJE=0.7 TF=1.70E-09
++    ITF=1 VTF=20 XTF=100 RE=0.8)
+
+* From Motorola Small-Signal DL126/D Rev 4 (1993)
+* Base resistance not modelled - no info.
+.model MPSA92 pnp ( IS=2.43E-14 VAF=95.7 BF=90 IKF=0.1548 NE=1.4926
++    ISE=2.239E-13 IKR=0.05 ISC=1.00E-10 NC=1.5 NR=1 BR=5 RC=4 CJC=2.50E-11
++    FC=0.5 MJC=0.5 VJC=0.4 CJE=8.00E-11 MJE=0.33 VJE=0.7 TF=1.20E-09
++    ITF=0.5 VTF=20 XTF=100 RE=1.2)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Base resistance not modelled - no info.  Cbe from BC337
+.model BFX84 npn ( IS=1.90E-14 VAF=281.4 BF=300 IKF=0.2727 NE=1.6510
++    ISE=6.986E-12 IKR=0.05 ISC=1.00E-12 NC=1.1 NR=1 BR=6 RC=0.3 CJC=1.95E-11
++    FC=0.5 MJC=0.39 VJC=0.8 CJE=3.10E-11 MJE=0.38 VJE=0.9 TF=9.00E-10
++    ITF=3 VTF=3 XTF=30 RE=0.2 TR=2.50E-06)
+
+*From Philips SC04 "Small signal transistors 1991"
+* Base resistance not modelled - no info.  Cbe from BC337
+.model BFX85 npn ( IS=1.90E-14 VAF=281.4 BF=360 IKF=0.2727 NE=1.6510
++    ISE=5.822E-12 IKR=0.05 ISC=1.00E-12 NC=1.1 NR=1 BR=6 RC=0.3 CJC=1.95E-11
++    FC=0.5 MJC=0.39 VJC=0.8 CJE=3.10E-11 MJE=0.38 VJE=0.9 TF=1.10E-09
++    ITF=3 VTF=3 XTF=30 RE=0.2 TR=2.50E-06)
+
+*From Motorola Small-signal DL126/D Rev4 1993
+* FT vs Ic from MPS2907
+.model Q2N2907 pnp ( IS=3.58E-14 VAF=26.4 BF=300 IKF=0.3416 NE=1.2861
++    ISE=3.830E-14 IKR=0.03 ISC=2.00E-12 NC=1.2 NR=1 BR=5 RC=0.4 CJC=1.80E-11
++    FC=0.5 MJC=0.45 VJC=0.8 CJE=2.65E-11 MJE=0.33 VJE=0.75 TF=4.10E-10
++    ITF=0.54 VTF=3 XTF=20 RE=1.4 TR=8.00E-08)
+
+*From Motorola Small-signal DL126/D Rev4 1993
+* FT vs Ic from MPS2907
+.model Q2N2904 pnp ( IS=3.58E-14 VAF=26.4 BF=120 IKF=0.3416 NE=1.2861
++    ISE=9.574E-14 IKR=0.03 ISC=2.00E-12 NC=1.2 NR=1 BR=5 RC=0.4 CJC=1.80E-11
++    FC=0.5 MJC=0.45 VJC=0.8 CJE=2.65E-11 MJE=0.33 VJE=0.75 TF=4.10E-10
++    ITF=0.54 VTF=3 XTF=20 RE=1.4 TR=8.00E-08)
+
+*From Philips small-signal transistors sc04 1991.
+* FT vs Ic estimated (ITF,XTF,XTF) no data available
+.model BSW66A npn ( IS=2.37E-14 VAF=90.7 BF=200 IKF=1.0448 NE=1.2423
++    ISE=4.220E-14 IKR=0.03 ISC=2.00E-14 NC=1.2 NR=1 BR=5 RC=0.1 CJC=6.00E-11
++    FC=0.5 MJC=0.53 VJC=0.75 CJE=2.30E-10 MJE=0.5 VJE=0.75 TF=1.05E-09
++    ITF=1 VTF=10 XTF=10 RE=0.2 TR=4.00E-07)
+
+*From Philips small-signal transistors sc04 1991.
+
+.model BSX20 npn ( IS=6.11E-16 VAF=24.1 BF=150 IKF=0.0394 NE=1.2426
++    ISE=1.988E-15 IKR=0.01 ISC=1.50E-10 NC=1.4 NR=1 BR=5 RC=0.8 CJC=3.50E-12
++    FC=0.5 MJC=0.17 VJC=0.9 CJE=4.40E-12 MJE=0.3 VJE=0.75 TF=2.10E-10
++    ITF=0.5 VTF=10 XTF=15 RE=1.2 TR=2.00E-06)
+
+*From Philips small-signal transistors sc04 1991.
+* 
+.model BSX59 npn ( IS=3.66E-13 VAF=90.6 BF=200 IKF=1.2019 NE=1.6214
++    ISE=7.738E-11 IKR=0.01 ISC=5.00E-10 NC=1.2 NR=1 BR=5 RC=0 CJC=1.20E-11
++    FC=0.5 MJC=0.25 VJC=0.75 CJE=4.20E-11 MJE=0.3 VJE=0.5 TF=2.80E-10
++    ITF=0.25 VTF=10 XTF=1 RE=0.25 TR=1.90E-06)
+
+*From Philips small-signal transistors sc04 1991.
+* 
+.model BSX60 npn ( IS=3.66E-13 VAF=90.6 BF=254 IKF=1.2019 NE=1.6214
++    ISE=6.093E-11 IKR=0.01 ISC=5.00E-10 NC=1.2 NR=1 BR=5 RC=0 CJC=1.20E-11
++    FC=0.5 MJC=0.25 VJC=0.75 CJE=4.20E-11 MJE=0.3 VJE=0.5 TF=2.80E-10
++    ITF=0.25 VTF=10 XTF=1 RE=0.25 TR=2.40E-06)
+
+*From Philips small-signal transistors sc04 1991.
+* 
+.model BSX61 npn ( IS=3.66E-13 VAF=90.6 BF=286 IKF=1.2019 NE=1.6214
++    ISE=5.412E-11 IKR=0.01 ISC=5.00E-10 NC=1.2 NR=1 BR=5 RC=0 CJC=1.20E-11
++    FC=0.5 MJC=0.25 VJC=0.75 CJE=4.20E-11 MJE=0.3 VJE=0.5 TF=2.80E-10
++    ITF=0.25 VTF=10 XTF=1 RE=0.25 TR=3.00E-06)
+
+* From Motorola Small-Signal DL126/D Rev 4 (1993)
+* 
+.model MPS3640 pnp ( IS=2.32E-16 VAF=24.1 BF=200 IKF=0.0355 NE=1.1273
++    ISE=7.804E-17 IKR=0.01 ISC=4.00E-14 NC=1.28 NR=1 BR=5 RC=1 CJC=2.50E-12
++    FC=0.5 MJC=0.2 VJC=0.75 CJE=2.50E-12 MJE=0.27 VJE=0.75 TF=7.00E-11
++    RE=1.1 TR=1.40E-08)
+
+* From Motorola Small-Signal DL126/D Rev 4 (1993)
+* 
+.model MPSA06 npn ( IS=2.48E-13 VAF=267.4 BF=400 IKF=0.3269 NE=1.6499
++    ISE=9.671E-12 IKR=0.02 ISC=0.00E+00 NC=2 NR=1 BR=10 RC=0 CJC=1.60E-11
++    FC=0.5 MJC=0.28 VJC=0.5 CJE=5.50E-11 MJE=0.35 VJE=0.72 TF=5.60E-10
++    ITF=1.3 VTF=10 XTF=20 RE=0.2 TR=1.00E-07)
+
+* Based on BC327 with reduced gain
+* 
+.model Q2N4036 pnp ( IS=2.48E-13 VAF=99.6 BF=90.1 IKF=0.9648 NE=1.7746
++    ISE=6.535E-12 IKR=0.1 ISC=1.00E-12 NC=1.4 NR=1 BR=10 RC=0.05 CJC=2.00E-11
++    FC=0.5 MJC=0.37 VJC=0.6 CJE=4.70E-11 MJE=0.44 VJE=0.6 TF=9.70E-10
++    ITF=1.9 VTF=3 XTF=25 RE=0.2 TR=9.00E-08)
+
+
+*From NS Discrete 1978 - Process 43
+* Base resistance not modelled - no info. cje est.
+.model Q2N917 npn ( IS=1.65E-15 VAF=100.0 BF=150 IKF=0.0515 NE=1.2648
++    ISE=3.390E-15 IKR=0.1 ISC=1.00E-11 NC=1.2 NR=1 BR=5 RC=6 CJC=3.00E-12
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=1.70E-12 MJE=0.33 VJE=0.75 TF=1.40E-10
++    ITF=0.2 VTF=10 XTF=10 RE=1 TR=2.80E-08)
+
+
+* reduced gain version of MPSA06 - process 12
+.model Q2N2102 npn ( IS=2.48E-13 VAF=267.4 BF=200 IKF=0.3269 NE=1.6499
++    ISE=1.934E-11 IKR=0.02 ISC=0.00E+00 NC=2 NR=1 BR=10 RC=0 CJC=1.60E-11
++    FC=0.5 MJC=0.28 VJC=0.5 CJE=5.50E-11 MJE=0.35 VJE=0.72 TF=5.60E-10
++    ITF=1.3 VTF=10 XTF=20 RE=0.2 TR=1.00E-07)
+
+*From NS Discrete 1978, Motorola DL126/D rev 4 - Process 23
+* Base resistance not modelled - no info.
+.model Q2N3903 npn ( IS=2.48E-13 VAF=101.7 BF=200 IKF=0.0334 NE=1.5243
++    ISE=4.226E-12 IKR=0.02 ISC=5.00E-12 NC=1.1 NR=1 BR=10 RC=0.5 CJC=3.50E-12
++    FC=0.5 MJC=0.25 VJC=0.7 CJE=4.50E-12 MJE=0.33 VJE=0.75 TF=2.80E-10
++    ITF=0.4 VTF=2 XTF=10 RE=1 TR=8.00E-07)
+
+
+* 2n3903 with more gain
+.model Q2N3904 npn ( IS=2.48E-13 VAF=101.7 BF=400 IKF=0.0334 NE=1.5243
++    ISE=2.113E-12 IKR=0.02 ISC=5.00E-12 NC=1.1 NR=1 BR=10 RC=0.5 CJC=3.50E-12
++    FC=0.5 MJC=0.25 VJC=0.7 CJE=4.50E-12 MJE=0.33 VJE=0.75 TF=2.80E-10
++    ITF=0.4 VTF=2 XTF=10 RE=1 TR=8.00E-07)
+
+*From NS Discrete 1978, Motorola DL126/D rev 4 - Process 66
+* Base resistance not modelled - no info.
+.model Q2N3905 pnp ( IS=2.48E-13 VAF=40.6 BF=200 IKF=0.0225 NE=1.2693
++    ISE=1.998E-13 IKR=0.1 ISC=1.00E-12 NC=1.1 NR=1 BR=10 RC=1.9 CJC=8.00E-12
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=7.00E-12 MJE=0.4 VJE=0.75 TF=1.60E-10
++    ITF=1.5 VTF=2 XTF=4 RE=0.5 TR=8.00E-07)
+
+
+* 2n3905 with more gain
+.model Q2N3906 pnp ( IS=2.48E-13 VAF=40.6 BF=400 IKF=0.0225 NE=1.2693
++    ISE=9.992E-14 IKR=0.1 ISC=1.00E-12 NC=1.1 NR=1 BR=10 RC=1.9 CJC=8.00E-12
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=7.00E-12 MJE=0.4 VJE=0.75 TF=1.60E-10
++    ITF=1.5 VTF=2 XTF=4 RE=0.5 TR=8.00E-07)
+
+
+* bc327 with less gain. NS process 67
+.model Q2N4031 pnp ( IS=2.48E-13 VAF=99.6 BF=88.4 IKF=0.9648 NE=1.7746
++    ISE=6.661E-12 IKR=0.1 ISC=1.00E-12 NC=1.4 NR=1 BR=10 RC=0.05 CJC=2.00E-11
++    FC=0.5 MJC=0.37 VJC=0.6 CJE=4.70E-11 MJE=0.44 VJE=0.6 TF=9.70E-10
++    ITF=1.9 VTF=3 XTF=25 RE=0.2 TR=9.00E-08)
+
+* From Motorola DL126/D Rev 4
+* NS Process 62
+.model Q2N5086 pnp ( IS=3.58E-14 VAF=90.6 BF=250 IKF=0.0888 NE=1.4466
++    ISE=8.869E-14 IKR=0.03 ISC=2.00E-12 NC=1.5 NR=1 BR=5 RC=0.4 CJC=7.00E-12
++    FC=0.5 MJC=0.45 VJC=0.8 CJE=9.00E-12 MJE=0.33 VJE=0.75 TF=4.70E-10
++    ITF=0.4 VTF=3 XTF=20 RE=1.4 TR=9.00E-08)
+
+
+* 2N5086 with higher gain
+.model Q2N5087 pnp ( IS=3.58E-14 VAF=90.6 BF=425 IKF=0.0888 NE=1.4466
++    ISE=5.217E-14 IKR=0.03 ISC=2.00E-12 NC=1.5 NR=1 BR=5 RC=0.4 CJC=7.00E-12
++    FC=0.5 MJC=0.45 VJC=0.8 CJE=9.00E-12 MJE=0.33 VJE=0.75 TF=4.70E-10
++    ITF=0.4 VTF=3 XTF=20 RE=1.4 TR=9.00E-08)
+
+* From Motorola DL126/D Rev 4
+* NS Process 13
+.model Q2N4401 npn ( IS=2.48E-13 VAF=90.6 BF=440 IKF=0.3252 NE=1.2925
++    ISE=1.910E-13 IKR=0.02 ISC=1.00E-10 NC=1.2 NR=1 BR=2 RC=0.8 CJC=1.00E-11
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=2.30E-11 MJE=0.33 VJE=0.75 TF=4.00E-10
++    ITF=2 VTF=10 XTF=30 RB=3.6 IRB=0 RBM=0 RE=0 TR=2.60E-06)
+
+
+* 2N4401 with less gain
+.model Q2N4400 npn ( IS=2.48E-13 VAF=90.6 BF=220 IKF=0.3252 NE=1.2925
++    ISE=3.821E-13 IKR=0.02 ISC=1.00E-10 NC=1.2 NR=1 BR=2 RC=0.8 CJC=1.00E-11
++    FC=0.5 MJC=0.33 VJC=0.75 CJE=2.30E-11 MJE=0.33 VJE=0.75 TF=4.00E-10
++    ITF=2 VTF=10 XTF=30 RB=3.6 IRB=0 RBM=0 RE=0 TR=2.60E-06)
+
+* From Motorola DL126/D Rev 4
+* NS Process 19/20
+.model Q2N2222 npn ( IS=2.48E-13 VAF=73.9 BF=400 IKF=0.1962 NE=1.2069
++    ISE=3.696E-14 IKR=0.02 ISC=5.00E-09 NC=2 NR=1 BR=5 RC=0.3 CJC=7.00E-12
++    FC=0.5 MJC=0.5 VJC=0.5 CJE=1.80E-11 MJE=0.5 VJE=1 TF=4.00E-10
++    ITF=2 VTF=10 XTF=10 RE=0.4 TR=4.00E-08)
+
+
+* 2N2222 with less gain
+.model Q2N2221 npn ( IS=2.48E-13 VAF=73.9 BF=160 IKF=0.1962 NE=1.2069
++    ISE=9.239E-14 IKR=0.02 ISC=5.00E-09 NC=2 NR=1 BR=5 RC=0.3 CJC=7.00E-12
++    FC=0.5 MJC=0.5 VJC=0.5 CJE=1.80E-11 MJE=0.5 VJE=1 TF=4.00E-10
++    ITF=2 VTF=10 XTF=10 RE=0.4 TR=4.00E-08)
+
+.alias BC107A BC546A npn
+.alias BC107 BC546B npn
+.alias BC548 BC546B npn
+.alias Q2N5172 BC546B npn
+.alias BC108C BC547C npn
+.alias BC177A BC556A pnp
+.alias BC177 BC556B pnp
+.alias BC856B BC556B pnp
+.alias BC213C BC557C pnp
+.alias BC140 BC337 npn
+.alias BC338-25 BC337-25 npn
+.alias BC338-40 BC337-40 npn
+.alias BC160 BC327 pnp
+.alias BC328-25 BC327-25 pnp
+.alias BC328-40 BC327-40 pnp
+.alias BC635-10 BC635 npn
+.alias BC637-16 BC635-16 npn
+.alias BC636-10 BC636 pnp
+.alias BC638-16 BC636-16 pnp
+.alias MPSH32 BF198 npn
+.alias BF197 BF199 npn
+.alias BF258 BF257 npn
+.alias BF421 MPSA92 pnp
+.alias BSR40 BFX84 npn
+.alias BSR41 BFX85 npn
+.alias Q2N2905A Q2N2907 pnp
+.alias Q2N2904A Q2N2904 pnp
+.alias BSW67A BSW66A npn
+.alias Q2N2369 BSX20 npn
+.alias MPS3639 MPS3640 pnp
+.alias MPSA05 MPSA06 npn
+.alias Q2N4030 Q2N4036 pnp
+.alias Q2N918 Q2N917 npn
+.alias Q2N2270 Q2N2102 npn
+.alias Q2N4123 Q2N3903 npn
+.alias BSR17A Q2N3904 NPN
+.alias Q2N4125 Q2N3905 PNP
+.alias Q2N4126 Q2N3906 PNP
+.alias Q2N3962 Q2N5086 PNP
+.alias Q2N3964 Q2N5087 PNP
+.alias BC108A BC546A npn
+.alias BC107B BC546B npn
+.alias BC548B BC546B npn
+.alias ZTX384 BC546B npn
+.alias BC109C BC547C npn
+.alias BC178A BC556A pnp
+.alias BC177B BC556B pnp
+.alias BC857 BC556B pnp
+.alias BC213LC BC557C pnp
+.alias BC140-16 BC337 npn
+.alias BC817-25 BC337-25 npn
+.alias BC817-40 BC337-40 npn
+.alias BC160-16 BC327 pnp
+.alias BC807-25 BC327-25 pnp
+.alias BC807-40 BC327-40 pnp
+.alias BC637 BC635 npn
+.alias BC639-16 BC635-16 npn
+.alias BC638 BC636 pnp
+.alias BC640-16 BC636-16 pnp
+.alias BF196 BF198 npn
+.alias BF240 BF199 npn
+.alias BF259 BF257 npn
+.alias BF423 MPSA92 pnp
+.alias BSP40 BFX84 npn
+.alias BSP41 BFX85 npn
+.alias Q2N2905 Q2N2907 pnp
+.alias Q2N2906 Q2N2904 pnp
+.alias BSW68A BSW66A npn
+.alias Q2N2369A BSX20 npn
+.alias MPS4258 MPS3640 pnp
+.alias Q2N3019 MPSA06 npn
+.alias Q2N5770 Q2N917 npn
+.alias Q2N4124 Q2N3904 NPN
+.alias PMBT3906 Q2N3906 PNP
+.alias Q2N3963 Q2N5086 PNP
+.alias Q2N3965 Q2N5087 PNP
+.alias BC167A BC546A npn
+.alias BC108 BC546B npn
+.alias BC549 BC546B npn
+.alias BCW60b BC546B npn
+.alias BC168C BC547C npn
+.alias BC179A BC556A pnp
+.alias BC178 BC556B pnp
+.alias BC857B BC556B pnp
+.alias BC214C BC557C pnp
+.alias BC141 BC337 npn
+.alias BC818-25 BC337-25 npn
+.alias BC818-40 BC337-40 npn
+.alias BC161 BC327 pnp
+.alias BC808-25 BC327-25 pnp
+.alias BC808-40 BC327-40 pnp
+.alias BC637-10 BC635 npn
+.alias BCP54-16 BC635-16 npn
+.alias BC638-10 BC636 pnp
+.alias BCP51-16 BC636-16 pnp
+.alias BF241 BF199 npn
+.alias BF420 BF257 npn
+.alias BF492 MPSA92 pnp
+.alias BSR42 BFX84 npn
+.alias BSR43 BFX85 npn
+.alias Q2N2907A Q2N2907 pnp
+.alias Q2N2906A Q2N2904 pnp
+.alias PH2369 BSX20 npn
+.alias MPS5771 MPS3640 pnp
+.alias Q2N3053 MPSA06 npn
+.alias Q2N4234 Q2N4036 pnp
+.alias MPS3563 Q2N917 npn
+.alias PMBT3904 Q2N3904 NPN
+.alias BSR18A Q2N3906 PNP
+.alias Q2N4058 Q2N5086 PNP
+.alias Q2N4059 Q2N5087 PNP
+.alias BC168A BC546A npn
+.alias BC108B BC546B npn
+.alias BC549B BC546B npn
+.alias BCX70h BC546B npn
+.alias BC169C BC547C npn
+.alias BC212A BC556A pnp
+.alias BC178B BC556B pnp
+.alias BC858 BC556B pnp
+.alias BC214LC BC557C pnp
+.alias BC337-16 BC337 npn
+.alias BC817-40W BC337-40 npn
+.alias BC161-16 BC327 pnp
+.alias BC807-40W BC327-40 pnp
+.alias BC639 BC635 npn
+.alias BCP55-16 BC635-16 npn
+.alias BC640 BC636 pnp
+.alias BCP52-16 BC636-16 pnp
+.alias BF840 BF199 npn
+.alias BF422 BF257 npn
+.alias BF493 MPSA92 pnp
+.alias BSP42 BFX84 npn
+.alias BSP43 BFX85 npn
+.alias Q2N3702 Q2N2907 pnp
+.alias Q2N3703 Q2N2904 pnp
+.alias MPS2369 BSX20 npn
+.alias PN3639 MPS3640 pnp
+.alias Q2N3700 MPSA06 npn
+.alias Q2N4235 Q2N4036 pnp
+.alias MPS6507 Q2N917 npn
+.alias MMBT3904LT1 Q2N3904 NPN
+.alias MMBT3906LT1 Q2N3906 PNP
+.alias Q2N4061 Q2N5086 PNP
+.alias Q2N4062 Q2N5087 PNP
+.alias BC182A BC546A npn
+.alias BC109 BC546B npn
+.alias BC550 BC546B npn
+.alias ZTX238 BC546B npn
+.alias BC183C BC547C npn
+.alias BC212LA BC556A pnp
+.alias BC179 BC556B pnp
+.alias BC858B BC556B pnp
+.alias BC308C BC557C pnp
+.alias BC337A BC337 npn
+.alias BC327-16 BC327 pnp
+.alias BC639-10 BC635 npn
+.alias BCP56-16 BC635-16 npn
+.alias BC640-10 BC636 pnp
+.alias BCP53-16 BC636-16 pnp
+.alias BF841 BF199 npn
+.alias BF457 BF257 npn
+.alias BF493S MPSA92 pnp
+.alias BFY50 BFX84 npn
+.alias BFY52 BFX85 npn
+.alias Q2N4403 Q2N2907 pnp
+.alias Q2N4402 Q2N2904 pnp
+.alias MPS2369A BSX20 npn
+.alias PN3640 MPS3640 pnp
+.alias MMBTA05LT1 MPSA06 npn
+.alias Q2N4236 Q2N4036 pnp
+.alias Q2N3563 Q2N917 npn
+.alias MMBT3904 Q2N3904 NPN
+.alias MMBT3906 Q2N3906 PNP
+.alias PMBT5086 Q2N5086 PNP
+.alias PMBT5087 Q2N5087 PNP
+.alias BC182LA BC546A npn
+.alias BC109B BC546B npn
+.alias BC550B BC546B npn
+.alias ZTX239b BC546B npn
+.alias BC183LC BC547C npn
+.alias BC213A BC556A pnp
+.alias BC179B BC556B pnp
+.alias BC859 BC556B pnp
+.alias BC309C BC557C pnp
+.alias BC338 BC337 npn
+.alias BC327A BC327 pnp
+.alias BCP54 BC635 npn
+.alias BCX54-16 BC635-16 npn
+.alias BCP51 BC636 pnp
+.alias BCX51-16 BC636-16 pnp
+.alias BFS20 BF199 npn
+.alias BF458 BF257 npn
+.alias BF621 MPSA92 pnp
+.alias BFY51 BFX84 npn
+.alias BFX86 BFX85 npn
+.alias MPS3702 Q2N2907 pnp
+.alias Q2N5365 Q2N2904 pnp
+.alias FMMT2369A BSX20 npn
+.alias PN5140 MPS3640 pnp
+.alias MMBTA06LT1 MPSA06 npn
+.alias Q2N3564 Q2N917 npn
+.alias MMBT5086 Q2N5086 PNP
+.alias MMBT5087LT1 Q2N5087 PNP
+.alias BC183A BC546A npn
+.alias BC167 BC546B npn
+.alias BC846 BC546B npn
+.alias BCY58-8 BC546B npn
+.alias BC184C BC547C npn
+.alias BC213LA BC556A pnp
+.alias BC212 BC556B pnp
+.alias BC859B BC556B pnp
+.alias BC558C BC557C pnp
+.alias BC338-16 BC337 npn
+.alias BC328 BC327 pnp
+.alias BCP54-10 BC635 npn
+.alias BCX55-16 BC635-16 npn
+.alias BCP51-10 BC636 pnp
+.alias BCX52-16 BC636-16 pnp
+.alias MPSH11 BF199 npn
+.alias BF459 BF257 npn
+.alias BF623 MPSA92 pnp
+.alias BFY55 BFX84 npn
+.alias MPS2907 Q2N2907 pnp
+.alias Q2N5366 Q2N2904 pnp
+.alias BSV52 BSX20 npn
+.alias PN5910 MPS3640 pnp
+.alias MMBTA05 MPSA06 npn
+.alias PN918 Q2N917 npn
+.alias MMBT5087 Q2N5087 PNP
+.alias BC183LA BC546A npn
+.alias BC167B BC546B npn
+.alias BC846B BC546B npn
+.alias BCY59-8 BC546B npn
+.alias BC184LC BC547C npn
+.alias BC214A BC556A pnp
+.alias BC212B BC556B pnp
+.alias BC860 BC556B pnp
+.alias BC559C BC557C pnp
+.alias BC817 BC337 npn
+.alias BC328-16 BC327 pnp
+.alias BCP55 BC635 npn
+.alias BCX56-16 BC635-16 npn
+.alias BCP52 BC636 pnp
+.alias BCX53-16 BC636-16 pnp
+.alias MPSH19 BF199 npn
+.alias BF620 BF257 npn
+.alias BF721 MPSA92 pnp
+.alias MPS2907A Q2N2907 pnp
+.alias MPS3703 Q2N2904 pnp
+.alias PN2369 BSX20 npn
+.alias Q2N3639 MPS3640 pnp
+.alias MMBTA06 MPSA06 npn
+.alias MMBT918LT1 Q2N917 npn
+.alias BC237A BC546A npn
+.alias BC168 BC546B npn
+.alias BC847 BC546B npn
+.alias ZTX302 BC546B npn
+.alias BC238C BC547C npn
+.alias BC214LA BC556A pnp
+.alias BC212L BC556B pnp
+.alias BC860B BC556B pnp
+.alias BC560C BC557C pnp
+.alias BC817-16 BC337 npn
+.alias BC807 BC327 pnp
+.alias BCP55-10 BC635 npn
+.alias BCP52-10 BC636 pnp
+.alias MPSH24 BF199 npn
+.alias BF622 BF257 npn
+.alias BF723 MPSA92 pnp
+.alias MPS6534 Q2N2907 pnp
+.alias BFX29 Q2N2904 pnp
+.alias PN2369A BSX20 npn
+.alias Q2N3640 MPS3640 pnp
+.alias MMBT918 Q2N917 npn
+.alias BC238A BC546A npn
+.alias BC168B BC546B npn
+.alias BC847B BC546B npn
+.alias BC846BW BC546B npn
+.alias BC239C BC547C npn
+.alias BC261A BC556A pnp
+.alias BC212LB BC556B pnp
+.alias BCF30 BC556B pnp
+.alias BC857C BC557C pnp
+.alias BC818 BC337 npn
+.alias BC807-16 BC327 pnp
+.alias BCP56 BC635 npn
+.alias BCP53 BC636 pnp
+.alias MPSH34 BF199 npn
+.alias BF720 BF257 npn
+.alias BF821 MPSA92 pnp
+.alias PMBT2907 Q2N2907 pnp
+.alias BFX30 Q2N2904 pnp
+.alias ZTX313 BSX20 npn
+.alias Q2N4258 MPS3640 pnp
+.alias BC317A BC546A npn
+.alias BC169 BC546B npn
+.alias BC848 BC546B npn
+.alias BC847BW BC546B npn
+.alias BC318C BC547C npn
+.alias BC262A BC556A pnp
+.alias BC213 BC556B pnp
+.alias BCF70 BC556B pnp
+.alias BC858C BC557C pnp
+.alias BC818-16 BC337 npn
+.alias BC808 BC327 pnp
+.alias BCP56-10 BC635 npn
+.alias BCP53-10 BC636 pnp
+.alias MPSH10 BF199 npn
+.alias BF722 BF257 npn
+.alias BF823 MPSA92 pnp
+.alias PMBT2907A Q2N2907 pnp
+.alias MPS3638 Q2N2904 pnp
+.alias ZTX314 BSX20 npn
+.alias Q2N4258A MPS3640 pnp
+.alias BC318A BC546A npn
+.alias BC169B BC546B npn
+.alias BC848B BC546B npn
+.alias BC848BW BC546B npn
+.alias BC319C BC547C npn
+.alias BC263A BC556A pnp
+.alias BC213B BC556B pnp
+.alias BCW70 BC556B pnp
+.alias BC859C BC557C pnp
+.alias BCX19 BC337 npn
+.alias BC808-16 BC327 pnp
+.alias BCX54 BC635 npn
+.alias BCX51 BC636 pnp
+.alias MMBTH10LT1 BF199 npn
+.alias BF820 BF257 npn
+.alias MPSA93 MPSA92 pnp
+.alias PXT2907 Q2N2907 pnp
+.alias MPS3638A Q2N2904 pnp
+.alias FMMT2369 BSX20 npn
+.alias Q2N5140 MPS3640 pnp
+.alias BC547A BC546A npn
+.alias BC182 BC546B npn
+.alias BC849 BC546B npn
+.alias BC548C BC547C npn
+.alias BC307A BC556A pnp
+.alias BC213L BC556B pnp
+.alias BCY70 BC556B pnp
+.alias BC860C BC557C pnp
+.alias BCX20 BC337 npn
+.alias BCX17 BC327 pnp
+.alias BCX54-10 BC635 npn
+.alias BCX51-10 BC636 pnp
+.alias MMBTH10 BF199 npn
+.alias BF822 BF257 npn
+.alias FMMTA92 MPSA92 pnp
+.alias PXT2907A Q2N2907 pnp
+.alias MPS6533 Q2N2904 pnp
+.alias MMBT2369LT1 BSX20 npn
+.alias Q2N5771 MPS3640 pnp
+.alias BC548A BC546A npn
+.alias BC182B BC546B npn
+.alias BC849B BC546B npn
+.alias BC549C BC547C npn
+.alias BC308A BC556A pnp
+.alias BC213LB BC556B pnp
+.alias BCY71 BC556B pnp
+.alias BCX71K BC557C pnp
+.alias Q2N3566 BC337 npn
+.alias BCX18 BC327 pnp
+.alias BCX55 BC635 npn
+.alias BCX52 BC636 pnp
+.alias FMMTH10 BF199 npn
+.alias MPSA42 BF257 npn
+.alias MMBTA92LT1 MPSA92 pnp
+.alias PZT2907 Q2N2907 pnp
+.alias BFX88 Q2N2904 pnp
+.alias MMBT2369ALT1 BSX20 npn
+.alias Q2N5910 MPS3640 pnp
+.alias BC846A BC546A npn
+.alias BC182L BC546B npn
+.alias BC850 BC546B npn
+.alias BC550C BC547C npn
+.alias BC309A BC556A pnp
+.alias BC214 BC556B pnp
+.alias BCY72 BC556B pnp
+.alias BCW61D BC557C pnp
+.alias Q2N3569 BC337 npn
+.alias Q2N4033 BC327 pnp
+.alias BCX55-10 BC635 npn
+.alias BCX52-10 BC636 pnp
+.alias MPSA43 BF257 npn
+.alias MMBTA93LT1 MPSA92 pnp
+.alias PZT2907A Q2N2907 pnp
+.alias BFX87 Q2N2904 pnp
+.alias MMBT2369 BSX20 npn
+.alias MMBT3640LT1 MPS3640 pnp
+.alias BC847A BC546A npn
+.alias BC182LB BC546B npn
+.alias BC850B BC546B npn
+.alias BC847C BC547C npn
+.alias BC557A BC556A pnp
+.alias BC214B BC556B pnp
+.alias ZTX212b BC556B pnp
+.alias ZTX337 BC337 npn
+.alias Q2N4037 BC327 pnp
+.alias BCX56 BC635 npn
+.alias BCX53 BC636 pnp
+.alias FMMTA42 BF257 npn
+.alias MMBTA92 MPSA92 pnp
+.alias PN2907 Q2N2907 pnp
+.alias MMBT2369A BSX20 npn
+.alias MMBT3640 MPS3640 pnp
+.alias BC848A BC546A npn
+.alias BC183 BC546B npn
+.alias BCF32 BC546B npn
+.alias BC848C BC547C npn
+.alias BC558A BC556A pnp
+.alias BC214L BC556B pnp
+.alias ZTX214c BC556B pnp
+.alias ZTX452 BC337 npn
+.alias Q2N4314 BC327 pnp
+.alias BCX56-10 BC635 npn
+.alias BCX53-10 BC636 pnp
+.alias MMBTA42LT1 BF257 npn
+.alias MMBTA93 MPSA92 pnp
+.alias PN2907A Q2N2907 pnp
+.alias BCV71 BC546A npn
+.alias BC183B BC546B npn
+.alias BCV72 BC546B npn
+.alias BC849C BC547C npn
+.alias BC559A BC556A pnp
+.alias BC214LB BC556B pnp
+.alias ZTX214 BC556B pnp
+.alias ZTX451 BC337 npn
+.alias MPSA55 BC327 pnp
+.alias MMBTA43LT1 BF257 npn
+.alias BSR15 Q2N2907 pnp
+.alias BCW31 BC546A npn
+.alias BC183L BC546B npn
+.alias BCW32 BC546B npn
+.alias BC850C BC547C npn
+.alias BC560A BC556A pnp
+.alias BC261 BC556B pnp
+.alias BCX71h BC556B pnp
+.alias ZTX450 BC337 npn
+.alias MPSA56 BC327 pnp
+.alias MMBTA42 BF257 npn
+.alias BSR16 Q2N2907 pnp
+.alias BCW60A BC546A npn
+.alias BC183LB BC546B npn
+.alias BCW60 BC546B npn
+.alias BCF33 BC547C npn
+.alias BC856A BC556A pnp
+.alias BC261B BC556B pnp
+.alias BCX71j BC556B pnp
+.alias ZTX453 BC337 npn
+.alias Q2N4032 BC327 pnp
+.alias MMBTA43 BF257 npn
+.alias FMMT2907 Q2N2907 pnp
+.alias BCW71 BC546A npn
+.alias BC184 BC546B npn
+.alias BCW60C BC546B npn
+.alias BC857A BC556A pnp
+.alias BC262 BC556B pnp
+.alias BCX71 BC556B pnp
+.alias BFS60 BC337 npn
+.alias MMBTA55LT1 BC327 pnp
+.alias Q2N3502 Q2N2907 pnp
+.alias BCX70G BC546A npn
+.alias BC184B BC546B npn
+.alias BCW72 BC546B npn
+.alias BCW33 BC547C npn
+.alias BC858A BC556A pnp
+.alias BC262B BC556B pnp
+.alias BCW30 BC556B pnp
+.alias ZTX337A BC337 npn
+.alias MMBTA56LT1 BC327 pnp
+.alias Q2N3503 Q2N2907 pnp
+.alias BCY56 BC546A npn
+.alias BC184L BC546B npn
+.alias BCX70 BC546B npn
+.alias BCW60D BC547C npn
+.alias BC859A BC556A pnp
+.alias BC263 BC556B pnp
+.alias BCW61b BC556B pnp
+.alias ZTX338A BC337 npn
+.alias MMBTA55 BC327 pnp
+.alias Q2N3504 Q2N2907 pnp
+.alias BCY58-7 BC546A npn
+.alias BC184LB BC546B npn
+.alias BCX70J BC546B npn
+.alias BCW81 BC547C npn
+.alias BC860A BC556A pnp
+.alias BC263B BC556B pnp
+.alias BCW61c BC556B pnp
+.alias MMBTA56 BC327 pnp
+.alias Q2N3505 Q2N2907 pnp
+.alias BCY59-7 BC546A npn
+.alias BC237 BC546B npn
+.alias BCY57 BC546B npn
+.alias BCX70K BC547C npn
+.alias BCF29 BC556A pnp
+.alias BC307 BC556B pnp
+.alias BC856BW BC556B pnp
+.alias Q2N3392 BC546A npn
+.alias BC237B BC546B npn
+.alias BCY58 BC546B npn
+.alias BCW69 BC556A pnp
+.alias BC307B BC556B pnp
+.alias BC857BW BC556B pnp
+.alias FMMT2907A Q2N2907 pnp
+.alias BC238 BC546B npn
+.alias BCY58-9 BC546B npn
+.alias BCY58-10 BC547C npn
+.alias ZTX212 BC556A pnp
+.alias BC308 BC556B pnp
+.alias BC858BW BC556B pnp
+.alias MMBT2907LT1 Q2N2907 pnp
+.alias ZTX107A BC546A npn
+.alias BC238B BC546B npn
+.alias BCY59 BC546B npn
+.alias BCY59-10 BC547C npn
+.alias ZTX213 BC556A pnp
+.alias BC308B BC556B pnp
+.alias MMBT2907ALT1 Q2N2907 pnp
+.alias ZTX300 BC546A npn
+.alias BC239 BC546B npn
+.alias BCY59-9 BC546B npn
+.alias Q2N3390 BC547C npn
+.alias BCW89 BC556A pnp
+.alias BC309 BC556B pnp
+.alias MMBT4403LT1 Q2N2907 pnp
+.alias ZTX301 BC546A npn
+.alias BC239B BC546B npn
+.alias Q2N3391 BC546B npn
+.alias ZTX108C BC547C npn
+.alias BCX71g BC556A pnp
+.alias BC309B BC556B pnp
+.alias MMBT2907 Q2N2907 pnp
+.alias ZTX303 BC546A npn
+.alias BC317 BC546B npn
+.alias Q2N3395 BC546B npn
+.alias ZTX109C BC547C npn
+.alias BCW29 BC556A pnp
+.alias BC557 BC556B pnp
+.alias MMBT2907A Q2N2907 pnp
+.alias ZTX304 BC546A npn
+.alias BC317B BC546B npn
+.alias Q2N3396 BC546B npn
+.alias ZTX384c BC547C npn
+.alias BCW61a BC556A pnp
+.alias BC557B BC556B pnp
+.alias MMBT4403 Q2N2907 pnp
+.alias Q2N3709 BC546A npn
+.alias BC318 BC546B npn
+.alias Q2N3397 BC546B npn
+.alias BC558 BC556B pnp
+.alias BC318B BC546B npn
+.alias Q2N3398 BC546B npn
+.alias BC558B BC556B pnp
+.alias Q2N3416 BC546A npn
+.alias BC319 BC546B npn
+.alias ZTX107 BC546B npn
+.alias BC559 BC556B pnp
+.alias MPS3709 BC546A npn
+.alias BC319B BC546B npn
+.alias ZTX107B BC546B npn
+.alias BC559B BC556B pnp
+.alias BC546 BC546B npn
+.alias ZTX108 BC546B npn
+.alias BC560 BC556B pnp
+.alias BC547 BC546B npn
+.alias ZTX109 BC546B npn
+.alias BC560B BC556B pnp
+.alias BC547B BC546B npn
+.alias Q2N4424 BC546B npn
+.alias BC856 BC556B pnp

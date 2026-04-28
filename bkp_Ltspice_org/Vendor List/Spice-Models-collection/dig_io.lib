@@ -1,0 +1,4176 @@
+* Library of analog-to-digital and digital-to-analog interfaces
+*
+*  Copyright OrCAD, Inc. 1998 All Rights Reserved.
+*
+* $Revision:   1.25  $
+* $Author:   RPEREZ  $
+* $Date:   17 Apr 1998 13:46:30  $
+*
+* ---------------------------------------------------------------------------
+*
+* The parameters in this model library were derived from:
+*
+*   The TTL Data Book, Texas Instruments, 1985
+*     vol. 2, pp 1-21 to 1-28, pp 3-4 to 3-9, and pp 3-79 to 3-81
+*   ALS/AS Logic Data Book, Texas Instruments, 1986
+*     pp 4-13 to 4-21, 4-24 (for tpwrt values)
+*   High-speed CMOS Logic Data Book, Texas Instruments, 1988
+*     pp 4-50
+*   FAST Data Book, Fairchild, 1982
+*     pp 2-4 to 2-9
+*   High Speed CMOS PC74HC/HCT/HCU Logic Family Book,
+*     Philips Semiconductors, 1991, pp. 30-67 (also for tpwrt values)
+*   Philips Components - Signetics ECL Products, 1990
+*   FACT Advanced CMOS Logic Databook, 1990
+*     National Semiconductor, pp. 1-2 to 1-20
+*
+* AtoD and DtoA Subcircuits
+* -------------------------
+* The subcircuits in this library are used to convert analog signals
+* into digital signals (AtoD) and digital signals into analog signals
+* (DtoA).  The PSpice Digital Simulation Option creates "X" devices which
+* reference these subcircuits whenever it needs to convert a digital or
+* analog signal.  The user usually will not need to use these subcircuits
+* directly.  However, if you need to add new AtoD or DtoA subcircuits, the 
+* interface nodes must be in the following order, and have the following
+* parameters:
+*
+*   AtoD: .subckt <name> <analog-node> <dig-node> <dig-pwr> <dig-gnd>
+*         +	params: CAPACITANCE=0
+*
+*   DtoA: .subckt <name> <dig-node> <analog-node> <dig-pwr> <dig-gnd>
+*         +	params: DRVL=0  DRVH=0  CAPACITANCE=0
+*
+* I/O Models
+* ----------
+* I/O models specify the names of the AtoD and DtoA subcircuits PSpice must
+* use to convert analog signals to digital signals or vice versa.  (I/O models
+* also describe driving and loading characteristics.)  Up to four of each
+* AtoD and DtoA subcircuit names may be specified in an I/O model, using 
+* parameters AtoD1 through AtoD4, and DtoA1 through DtoA4.  The subcircuit
+* which PSpice actually uses depends on the value of the IO_LEVEL parameter
+* in a subcircuit reference.
+*   
+* As implemented in this library, the levels have the following definitions:
+*
+*   IO_LEVEL  Definition
+*   --------  --------------------------------------------------------------
+*      1      AtoD generates X, R, and F between VIL max and VIH min
+*      2      AtoD transitions directly between 0 and 1 at Vt
+*      3      Unused (Same as level 1)
+*      4      Unused (Same as level 2)
+*
+* Note that Schmitt-trigger inputs always transition directly between 0 and 1.
+*
+* For example, to specify the basic interface without an intermediate
+* X value, you would use:
+*
+* X1 in out 74LS04 PARAMS: IO_LEVEL=2
+*
+* If the IO_LEVEL is not specified for a device, the default IO_LEVEL is used.
+* The default level is controled by the .OPTION parameter DIGIOLVL, which
+* defaults to 1.
+*
+* Switching Times
+* ---------------
+* The I/O models include switching time parameters for low-to-high, and
+* high-to-low transitions (TSWLHn and TSWHLn).  There is a different pair of
+* switching times for each IO_LEVEL value.  These times are subtracted from
+* the propagation delay times for devices which have a DtoA subcircuit created
+* at their output.  The switching time is the time it takes the output of the
+* DtoA to change its output voltage from steady state to the logic threshold.
+* The switching time values are selected so that inserting a DtoA-AtoD pair
+* in a logic path does not change the overall propagation delay.  (Assuming
+* that no additional load is placed on the analog signal.)
+*
+* Power Supplies
+* --------------
+* The I/O models also specify the name of a digital power supply subcircuit.
+* These subcircuits are called by PSpice in the event any AtoD/DtoA interfaces
+* are created.
+*
+* Contents
+* --------
+* This library is divided into major sections.  The first section contains
+* miscellaneous models and subcircuits.  The remainder of the library 
+* contains models and subcircuits specific to device families.
+*
+*   Miscellaneous Models and Subcircuits
+*     Digital Power Supply
+*     Stimulus Device Models and Subcircuits
+*     Zero-Delay Models
+*     Default Models and Subcircuits
+*   CD4000A Family
+*   CD4000B Family
+*   CD4000UB Family
+*   74/54 Family (Standard TTL)
+*   74/54AC and ACT Family
+*   74/54ALS Family
+*   74/54AS Family
+*   74/54F Family
+*   74/54H Family
+*   74/54HC and HCT Family
+*   74/54L Family
+*   74/54LS Family
+*   74/54S Family
+*   ECL 10K Family
+*   ECL 100K Family
+*
+* DtoA conversion: Rlo = Rout*Vpwr/(Vpwr-Vout)
+*                  Rhi = Rout*Vpwr/Vout
+
+******************************************************************************
+* Miscellaneous Models and Subcircuits
+******************************************************************************
+
+*-----------------------------------------------------------------------------
+* Digital Power Supplies
+*-----------------------------------------------------------------------------
+
+*  PSpice calls a power supply subcircuit as a consequence of AtoD or DtoA
+*  interface creation.  The resulting digital power supply nodes are used
+*  by the AtoD/DtoA interfaces.  The name of the power supply subcircuit 
+*  is specified in the technology's I/O models.  Currently, these power
+*  supplies are:
+*
+*    Device Type   Subcircuit Name  Nodes Created
+*    ------------- ---------------  ---------------------------------------
+*    TTL           DIGIFPWR	    $G_DPWR  $G_DGND
+*    CD4000 CMOS   CD4000_PWR	    $G_CD4000_VDD  $G_CD4000_VSS
+*    10K ECL       ECL_10K_PWR	    $G_ECL_10K_VCC1, _VCC2, _VEE, _VTT
+*    100K ECL      ECL_100K_PWR	    $G_ECL_100K_VCC1, _VCC2, _VEE, _VTT
+*
+*  PSpice always passes node 0 as the required analog reference node "GND".
+*  By default, the nodes created by the subcircuit call are global nodes
+*  ($G_xxx) which are used throughout the device library for that family.
+*
+*  The default power supply voltage for TTL (and compatible CMOS) devices 
+*  is 5.0v.
+*
+*  The CD4000 power supply voltage defaults to 5.0v.  Its level is controlled
+*  by two global parameters CD4000_VDD and CD4000_VSS.  To use a different
+*  power supply voltage, simply define the parameter CD4000_VDD in your 
+*  circuit, which will override the value defined below.  For example,
+*
+*	.PARAM CD4000_VDD = 12.0V
+*  
+*  will change the default voltage for all CD4000 devices to 12.0v.
+*
+*  For designs with two or more power supply voltages, you can create your
+*  own instance of CD4000_PWR and supply your own VDD and VSS node names, 
+*  and the desired voltage.  For example, to create a 3.5 volt supply, with 
+*  nodes MY_VDD and MY_VSS, add the following line to your circuit:
+*
+*	XMYVDD 0 MY_VDD MY_VSS CD4000_PWR params: VOLTAGE=3.5V
+*
+*  Then specify the nodes MY_VDD and MY_VSS on your subcircuit calls. The
+*  default nodes $G_CD4000_VDD and $G_CD4000_VSS would still be available.
+*
+*  The ECL families are different because they have three power supply pins
+*  on typical devices, and do not normally operate from +5V supplies.  Use
+*  the ECL_10K_PWR and ECL_100K_PWR subcircuits below to alter the power
+*  supply characteristics.
+*  
+*$
+
+*
+* TTL/CMOS power supply
+*
+.subckt DIGIFPWR  AGND
++	optional: DPWR=$G_DPWR DGND=$G_DGND
++	params:   VOLTAGE=5.0v REFERENCE=0v
+*
+VDPWR  DPWR DGND  {VOLTAGE}
+R1     DPWR AGND  1MEG
+VDGND  DGND AGND  {REFERENCE}
+R2     DGND AGND  1MEG
+.ends
+*$
+
+*
+* CD4000 CMOS power supply
+*
+.param CD4000_VDD 5.0V
+.param CD4000_VSS 0.0V
+
+.subckt CD4000_PWR  AGND
++	optional: VDD=$G_CD4000_VDD VSS=$G_CD4000_VSS
++	params:   VOLTAGE={CD4000_VDD} REFERENCE={CD4000_VSS}
+*
+VVDD  VDD VSS   {VOLTAGE}
+R1    VDD AGND  1MEG
+VVSS  VSS AGND  {REFERENCE}
+R2    VSS AGND  1MEG
+.ends
+*$
+
+*
+* ECL power supplies
+*
+* The ECL power supplies connect to four nodes: VEE, VCC1, VCC2, and VTT.
+* By default these are global nodes.  
+*
+.subckt ECL_10K_PWR AGND
++       optional: VEE =$G_ECL_10K_VEE
++                 VCC1=$G_ECL_10K_VCC1
++                 VCC2=$G_ECL_10K_VCC2
++                 VTT =$G_ECL_10K_VTT
++       params:   VEE =-5.2v  ; relative to Vcc1 
++                 VCC1= 0v 
++                 VCC2= 0v 
++                 VTT =-2v 
+VEE   VEEx  VCC1   {VEE}
+RVEE  VEEx  VEE    1m
+R1    VEE   AGND   1MEG
+VCC1  VCC1x AGND   {VCC1}
+RVCC1 VCC1x VCC1   1m
+R2    VCC1  AGND   1MEG
+VCC2  VCC2x AGND   {VCC2}
+RVCC2 VCC2x VCC2   1m
+R3    VCC2  AGND   1MEG
+VTT   VTTx  AGND   {VTT}
+RVTT  VTTx  VTT    1m
+R4    VTT   AGND   1MEG
+.ends
+*$
+
+.subckt ECL_100K_PWR AGND
++       optional: VEE =$G_ECL_100K_VEE
++                 VCC1=$G_ECL_100K_VCC1
++                 VCC2=$G_ECL_100K_VCC2
++                 VTT =$G_ECL_100K_VTT
++       params:   VEE =-4.5v  ; relative to Vcc1
++                 VCC1= 0v 
++                 VCC2= 0v 
++                 VTT =-2v 
+VEE   VEEx  VCC1   {VEE}
+RVEE  VEEx  VEE    1m
+R1    VEE   AGND   1MEG
+VCC1  VCC1x AGND   {VCC1}
+RVCC1 VCC1x VCC1   1m
+R2    VCC1  AGND   1MEG
+VCC2  VCC2x AGND   {VCC2}
+RVCC2 VCC2x VCC2   1m
+R3    VCC2  AGND   1MEG
+VTT   VTTx  AGND   {VTT}
+RVTT  VTTx  VTT    1m
+R4    VTT   AGND   1MEG
+.ends
+*$
+*-----------------------------------------------------------------------------
+* Stimulus Device Models and Subcircuits
+*-----------------------------------------------------------------------------
+*$
+*-------------------------------------------------
+* Stimulus I/O Models
+
+.model IO_STM uio (
++	drvh=0	drvl=0
++	DtoA1="DtoA_STM"	DtoA2="DtoA_STM"
++	DtoA3="DtoA_STM"	DtoA4="DtoA_STM"
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_STM_OC uio (
++	drvh=1MEG	drvl=0
++	DtoA1="DtoA_STM_OC"	DtoA2="DtoA_STM_OC"
++	DtoA3="DtoA_STM_OC"	DtoA4="DtoA_STM_OC"
++	DIGPOWER="DIGIFPWR"
++	)
+
+*$
+*-------------------------------------------------
+* Stimulus DtoA Subcircuit
+
+.subckt DtoA_STM  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DINSTM DGTLNET=D IO_STM
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* Stimulus Open Collector DtoA Subcircuit
+
+.subckt DtoA_STM_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DINSTM_OC DGTLNET=D IO_STM_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* Stimulus Digital Input/Output Models
+*
+* We use 1/2 ohm and a 500ps transition time, on the assumption that
+* this will be a "strong" signal source with a "fast" switching time
+* in most systems which use this library. Change the tsw's and/or the
+* rlow and rhi values if these don't work for your system.
+*
+.model DINSTM dinput (
++	s0name="0"	s0tsw=0.5ns	s0rlo=.5	s0rhi=1k
++	s1name="1"	s1tsw=0.5ns	s1rlo=1k	s1rhi=.5
++	s2name="X"	s2tsw=0.5ns	s2rlo=0.429	s2rhi=1.16 ; .313ohm, 1.35v
++	s3name="R"	s3tsw=0.5ns	s3rlo=0.429	s3rhi=1.16 ; .313ohm, 1.35v
++	s4name="F"	s4tsw=0.5ns	s4rlo=0.429	s4rhi=1.16 ; .313ohm, 1.35v
++	s5name="Z"	s5tsw=0.5ns	s5rlo=1MEG	s5rhi=1MEG
++	)
+*$
+.model DINSTM_OC dinput (
++	s0name="0"	s0tsw=0.5ns	s0rlo=.5	s0rhi=1k
++	s1name="1"	s1tsw=0.5ns	s1rlo=1MEG	s1rhi=1MEG
++	s2name="X"	s2tsw=0.5ns	s2rlo=0.429	s2rhi=1.16 ; .313ohm, 1.35v
++	s3name="R"	s3tsw=0.5ns	s3rlo=0.429	s3rhi=1.16 ; .313ohm, 1.35v
++	s4name="F"	s4tsw=0.5ns	s4rlo=0.429	s4rhi=1.16 ; .313ohm, 1.35v
++	s5name="Z"	s5tsw=0.5ns	s5rlo=1MEG	s5rhi=1MEG
++	)
+*$
+*-----------------------------------------------------------------------------
+* Zero-Delay Models
+*-----------------------------------------------------------------------------
+*-------------------------------------------------
+* Zero-Delay Gate Model
+
+.model D0_GATE ugate ()
+*$
+*-------------------------------------------------
+* Zero-Delay Tristate Gate Model
+
+.model D0_TGATE utgate ()
+*$
+
+*-------------------------------------------------
+* Zero-Delay Edge-Triggered Flip-Flop Model
+
+.model D0_EFF ueff ()
+*$
+*-------------------------------------------------
+* Zero-Delay Gated Flip-Flop Model
+
+.model D0_GFF ugff ()
+*$
+
+*-----------------------------------------------------------------------------
+* Default Models and Subcircuits
+*-----------------------------------------------------------------------------
+
+*-------------------------------------------------
+* Default I/O Models
+*$
+.model IO_DFT uio (
++	drvh=50	drvl=50
++	AtoD1="AtoD_STD"	AtoD2="AtoD_STD_NX"
++	AtoD3="AtoD_STD"	AtoD4="AtoD_STD_NX"
++	DtoA1="DtoA_STD"	DtoA2="DtoA_STD"
++	DtoA3="DtoA_STD"	DtoA4="DtoA_STD"
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_DFT_OC uio (
++	drvh=1MEG	drvl=50
++	AtoD1="AtoD_STD"	AtoD2="AtoD_STD"
++	AtoD3="AtoD_STD"	AtoD4="AtoD_STD"
++	DtoA1="DtoA_STD_OC"	DtoA2="DtoA_STD_OC"
++	DtoA3="DtoA_STD_OC"	DtoA4="DtoA_STD_OC"
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+*-------------------------------------------------
+* Default AtoD Subcircuit
+
+.subckt AtoDDEFAULT  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O1  A DGND DO74 DGTLNET=D IO_DFT
+.ends
+*$
+*-------------------------------------------------
+* Default DtoA Subcircuit
+
+.subckt DtoADEFAULT  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74 DGTLNET=D IO_DFT
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+*$
+
+******************************************************************************
+* PLSyn models
+******************************************************************************
+*
+* The default and CMOS models use the ACT model, TTL uses 74LS
+
+*-------------------------------------------------
+* PLSyn IO models
+*$
+
+.model PLSYN_IO_DEFAULT uio (
++	drvh=24.5		drvl=18.7
++	inld=5pF
++	AtoD1="AtoD_ACT"	AtoD2="AtoD_ACT_NX"
++	AtoD3="AtoD_ACT"	AtoD4="AtoD_ACT_NX"
++	DtoA1="DtoA_AC"	        DtoA2="DtoA_AC"
++	DtoA3="DtoA_AC"	        DtoA4="DtoA_AC"
++       tswhl1=477ps		tswlh1=470ps
++       tswhl2=477ps		tswlh2=470ps
++       tswhl3=477ps		tswlh3=470ps
++       tswhl4=477ps		tswlh4=470ps
++	DIGPOWER="DIGIFPWR"
++	)
+
+*$
+.model PLSYN_IO_CMOS uio (
++	drvh=24.5		drvl=18.7
++	inld=5pF
++	AtoD1="AtoD_ACT"	AtoD2="AtoD_ACT_NX"
++	AtoD3="AtoD_ACT"	AtoD4="AtoD_ACT_NX"
++	DtoA1="DtoA_AC"	        DtoA2="DtoA_AC"
++	DtoA3="DtoA_AC"	        DtoA4="DtoA_AC"
++       tswhl1=477ps		tswlh1=470ps
++       tswhl2=477ps		tswlh2=470ps
++       tswhl3=477ps		tswlh3=470ps
++       tswhl4=477ps		tswlh4=470ps
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model PLSYN_IO_TTL uio (
++	drvh=108.		drvl=157.
++	AtoD1="AtoD_LS"		AtoD2="AtoD_LS_NX"
++	AtoD3="AtoD_LS"		AtoD4="AtoD_LS_NX"
++	DtoA1="DtoA_LS"		DtoA2="DtoA_LS"
++	DtoA3="DtoA_LS"		DtoA4="DtoA_LS"
++	tswhl1=2.724ns		tswlh1=2.104ns
++	tswhl2=2.724ns		tswlh2=2.104ns
++	tswhl3=2.724ns		tswlh3=2.104ns
++	tswhl4=2.724ns		tswlh4=2.104ns
++	DIGPOWER="DIGIFPWR"
++	)
+
+*$
+*-------------------------------------------------
+* ECL 100K I/O Models
+
+* Input stage, and internal logic model
+.model PLSYN_INT_IO_ECL uio (
++	drvh=300	drvl=300
++	AtoD1="AtoD_100K"	AtoD2="AtoD_100K_NX"
++	AtoD3="AtoD_100K"	AtoD4="AtoD_100K_NX"
+* There should never be any DtoA on the internal nodes, so we 
+* use a subcircuit which is not defined.
++	DtoA1="100K_Internal"	DtoA2="100K_Internal"
++	DtoA3="100K_Internal"	DtoA4="100K_Internal"
++	DIGPOWER="ECL_100K_PWR"
++	)
+
+*$
+* Output stage: emitter follower drives high only
+.model PLSYN_EXT_IO_ECL uio (
++	drvh=6    	drvl=100K
++       outld=.2pf
++	AtoD1="AtoD_100K"	AtoD2="AtoD_100K_NX"
++	AtoD3="AtoD_100K"	AtoD4="AtoD_100K_NX"
++	DtoA1="DtoA_100K"	DtoA2="DtoA_100K"
++	DtoA3="DtoA_100K"	DtoA4="DtoA_100K"
++       tswhl1=0.433ns		tswlh1=0.377ns
++       tswhl2=0.433ns		tswlh2=0.377ns
++       tswhl3=0.433ns		tswlh3=0.377ns
++       tswhl4=0.433ns		tswlh4=0.377ns
++	DIGPOWER="ECL_100K_PWR"
++	)
+
+*$
+
+******************************************************************************
+* CD4000A Family
+******************************************************************************
+*
+* The CD4000A family is modeled using the delays for 5v operation.
+* The input thresholds and output drives are correct for operation from 
+* 3v to 18v supplies.  To get accurate delays for these power supply levels
+* you must change the delay models in file DIG_5.LIB.
+
+*-------------------------------------------------
+* 4000A I/O Models
+*$
+
+.model IO_4000A uio (
++	drvh=1649	drvl=1649
++	AtoD1="AtoD_4000A"	AtoD2="AtoD_4000A_NX"
++	AtoD3="AtoD_4000A"	AtoD4="AtoD_4000A_NX"
++	DtoA1="DtoA_4000A"	DtoA2="DtoA_4000A"
++	DtoA3="DtoA_4000A"	DtoA4="DtoA_4000A"
++       tswhl1=7.07ns		tswlh1=8.58ns
++       tswhl2=6.94ns		tswlh2=8.37ns
++       tswhl3=9.33ns		tswlh3=10.73ns
++       tswhl4=9.18ns		tswlh4=10.59ns
++	DIGPOWER="CD4000_PWR"
++	)
+*$
+.model IO_4000A_ST uio (
++	drvh=1649	drvl=1649
++	AtoD1="AtoD_4000A_ST"	AtoD2="AtoD_4000A_ST"
++	AtoD3="AtoD_4000A_ST"	AtoD4="AtoD_4000A_ST"
++	DtoA1="DtoA_4000A"	DtoA2="DtoA_4000A"
++	DtoA3="DtoA_4000A"	DtoA4="DtoA_4000A"
++       tswhl1=7.07ns		tswlh1=8.58ns
++       tswhl2=6.94ns		tswlh2=8.37ns
++       tswhl3=9.33ns		tswlh3=10.73ns
++       tswhl4=9.18ns		tswlh4=10.59ns
++	DIGPOWER="CD4000_PWR"
++	)
+*$
+.model IO_4000A_OC uio (
++	drvh=10MEG	drvl=1649
++	AtoD1="AtoD_4000A"	AtoD2="AtoD_4000A_NX"
++	AtoD3="AtoD_4000A"	AtoD4="AtoD_4000A_NX"
++	DtoA1="DtoA_4000A_OC"	DtoA2="DtoA_4000A_OC"
++	DtoA3="DtoA_4000A_OC"	DtoA4="DtoA_4000A_OC"
++       tswhl1=7.07ns		tswlh1=8.58ns
++       tswhl2=6.94ns		tswlh2=8.37ns
++       tswhl3=9.33ns		tswlh3=10.73ns
++       tswhl4=9.18ns		tswlh4=10.59ns
++	DIGPOWER="CD4000_PWR"
++	)
+*$
+*-------------------------------------------------
+* 4000A Standard AtoD Subcircuits
+*$
+.subckt AtoD_4000A  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+XNORM A NORM DPWR DGND AtoD_NORM_4000A
+O0  NORM DGND DO4000A DGTLNET=D IO_4000A
+C1  A DGND {CAPACITANCE+0.1pF}
+D1  DGND A    D74CLMP
+D2  A    DPWR D74CLMP
+.ends
+*$
+.subckt AtoD_4000A_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+XNORM A NORM DPWR DGND AtoD_NORM_4000A
+O0  NORM DGND DO4000A_NX DGTLNET=D IO_4000A
+C1  A DGND {CAPACITANCE+0.1pF}
+D1  DGND A    D74CLMP
+D2  A    DPWR D74CLMP
+.ends
+*$
+*-------------------------------------------------
+* 4000A Schmitt-trigger AtoD Subcircuits
+
+.subckt AtoD_4000A_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+XNORM A NORM DPWR DGND AtoD_NORM_4000A
+O0  NORM DGND DO4000A_ST DGTLNET=D IO_4000A
+C1  A DGND {CAPACITANCE+0.1pF}
+D1  DGND A    D74CLMP
+D2  A    DPWR D74CLMP
+.ends
+*$
+*-------------------------------------------------
+* 4000A Standard DtoA Subcircuit
+
+.subckt DtoA_4000A  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+X1  DPWR DGND DRVPWR DRVGND DtoA_DRIVE_4000A 
+N1  A DRVGND DRVPWR DIN4000A DGTLNET=D IO_4000A
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+*$
+*-------------------------------------------------
+* 4000A Open Collector DtoA Subcircuit
+
+.subckt DtoA_4000A_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+X1  DPWR DGND DRVPWR DRVGND DtoA_DRIVE_4000A 
+N1  A DRVGND DRVPWR DIN4000A_OC DGTLNET=D IO_4000A_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+*$
+*-------------------------------------------------
+* 4000A Input Voltage Normilization Subcircuit
+*
+* This circuit normalizes the input voltage, so that
+* voltages below -0.5 are '0', and above +0.5 are '1'.
+* The EVt device "looks up" the threshold voltage for the 
+* current power supply voltage in the table.  The data for the
+* table comes from the minimum and maximum voltage transfer
+* characteristics graph for the CD4000A.
+
+.subckt AtoD_NORM_4000A A ANORM DPWR DGND
+*
+EVt THRESHOLD 0 TABLE {V(DPWR,DGND)} = 1.5,0 3.5,0.6 5,1.5 10,3 15,4
+RVt THRESHOLD 0 100k
+EN  ANORM DGND VALUE = {(V(A,DGND)-V(DPWR,DGND)/2)/((V(DPWR,DGND)-2*V(THRESHOLD))+1u)}
+RN  ANORM DGND 100k
+Rld1 A DPWR 100MEG
+Rld2 A DGND 100MEG
+.ends
+*$
+*-------------------------------------------------
+* 4000A Output Drive Subcircuit
+*
+* This circuit constructs the correct output drive
+* resistance for the power supply voltage.  This resistance is inserted
+* in series with the digital input device, and the digital input device 
+* resistance is set to a low value when it is on.  The tables provide the 
+* output current at 1v VDS for various values of VDD (3V is an estimate)
+* from the CD4000A
+
+.subckt DtoA_DRIVE_4000A DPWR DGND DRVPWR DRVGND
+*
+EDRVP DRVP 0 TABLE {V(DPWR,DGND)} = 1.5,0mA 3,0.5mA 5,1.2mA 10,2.0mA 15,3.0mA
+EDRVN DRVN 0 TABLE {V(DPWR,DGND)} = 1.5,0mA 3,0.5mA 5,1.5mA 10,4.0mA 15,7.0mA
+RDRVP DRVP 0 1K
+RDRVN DRVN 0 1K
+GPWR DPWR DRVPWR VALUE = {V(DPWR,DRVPWR)*V(DRVP)}
+GGND DRVGND DGND VALUE = {V(DRVGND,DGND)*V(DRVN)}
+RDUM1 DPWR DRVPWR 100MEG
+RDUM2 DGND DRVGND 100MEG
+.ends
+*$
+*-------------------------------------------------
+* 4000A Digital Input/Output Models
+
+.model DIN4000A dinput (
++	s0name="0"	s0tsw=15ns	s0rlo=1 	s0rhi=80K
++	s1name="1"	s1tsw=15ns	s1rlo=40K	s1rhi=1
++	s2name="X"	s2tsw=15ns	s2rlo=800	s2rhi=800
++	s3name="R"	s3tsw=15ns	s3rlo=800	s3rhi=800
++	s4name="F"	s4tsw=15ns	s4rlo=800	s4rhi=800
++	s5name="Z"	s5tsw=15ns	s5rlo=1MEG	s5rhi=1MEG
++	)
+*$
+.model DIN4000A_OC dinput (
++	s0name="0"	s0tsw=15ns	s0rlo=1 	s0rhi=80K
++	s1name="1"	s1tsw=15ns	s1rlo=1MEG	s1rhi=1MEG
++	s2name="X"	s2tsw=15ns	s2rlo=800	s2rhi=800
++	s3name="R"	s3tsw=15ns	s3rlo=800	s3rhi=800
++	s4name="F"	s4tsw=15ns	s4rlo=800	s4rhi=800
++	s5name="Z"	s5tsw=15ns	s5rlo=1MEG	s5rhi=1MEG
++	)
+*$
+.model DO4000A doutput (
++	s0name="X"	s0vlo=-0.5	s0vhi=0.5
++	s1name="0"	s1vlo=-3.0	s1vhi=-0.5
++	s2name="R"	s2vlo=-0.5	s2vhi=0.05
++	s3name="R"	s3vlo=-0.05	s3vhi=0.5
++	s4name="X"	s4vlo=-0.5	s4vhi=0.5
++	s5name="1"	s5vlo= 0.5	s5vhi=3.0
++	s6name="F"	s6vlo=-0.05	s6vhi=0.5
++	s7name="F"	s7vlo=-0.5	s7vhi=0.05
++	)
+*$
+.model DO4000A_NX doutput (
++	s0name="0"	s0vlo=-3.0	s0vhi=0.0
++	s2name="1"	s2vlo= 0.0	s2vhi=3.0
++	)
+*$
+.model DO4000A_ST doutput (
++	s0name="0"	s0vlo=-3.0	s0vhi=0.2
++	s1name="1"	s1vlo=-0.3	s1vhi=3.0
++	)
+*$
+******************************************************************************
+* CD4000B Family
+******************************************************************************
+*
+* The CD4000B family is modeled using the delays for 5v operation.
+* The input thresholds and output drives are correct for operation from 
+* 3v to 18v supplies.  To get accurate delays for these power supply levels
+* you must change the delay models in file DIG_5.LIB.
+
+*-------------------------------------------------
+* 4000B I/O Models
+*$
+.model IO_4000B uio (
++	drvh=1443	drvl=1443
++	AtoD1="AtoD_4000B"	AtoD2="AtoD_4000B_NX"
++	AtoD3="AtoD_4000B"	AtoD4="AtoD_4000B_NX"
++	DtoA1="DtoA_4000B"	DtoA2="DtoA_4000B"
++	DtoA3="DtoA_4000B"	DtoA4="DtoA_4000B"
++       tswhl1=7.72ns		tswlh1=7.56ns
++       tswhl2=7.86ns		tswlh2=7.40ns
++       tswhl3=9.71ns		tswlh3=9.41ns
++       tswhl4=9.63ns		tswlh4=9.24ns
++	DIGPOWER="CD4000_PWR"
++	)
+*$
+.model IO_4000B_ST uio (
++	drvh=1443	drvl=1443
++	AtoD1="AtoD_4000B_ST"	AtoD2="AtoD_4000B_ST"
++	AtoD3="AtoD_4000B_ST"	AtoD4="AtoD_4000B_ST"
++	DtoA1="DtoA_4000B"	DtoA2="DtoA_4000B"
++	DtoA3="DtoA_4000B"	DtoA4="DtoA_4000B"
++       tswhl1=7.72ns		tswlh1=7.56ns
++       tswhl2=7.86ns		tswlh2=7.40ns
++       tswhl3=9.71ns		tswlh3=9.41ns
++       tswhl4=9.63ns		tswlh4=9.24ns
++	DIGPOWER="CD4000_PWR"
++	)
+*$
+.model IO_4000B_OC uio (
++	drvh=10MEG	drvl=1443
++	AtoD1="AtoD_4000B"	AtoD2="AtoD_4000B_NX"
++	AtoD3="AtoD_4000B"	AtoD4="AtoD_4000B_NX"
++	DtoA1="DtoA_4000B_OC"	DtoA2="DtoA_4000B_OC"
++	DtoA3="DtoA_4000B_OC"	DtoA4="DtoA_4000B_OC"
++       tswhl1=6.68ns		tswlh1=9.78ns
++       tswhl2=6.64ns		tswlh2=9.81ns
++       tswhl3=10.63ns		tswlh3=22.94ns
++       tswhl4=10.28ns		tswlh4=20.89ns
++	DIGPOWER="CD4000_PWR"
++	)
+*$
+*-------------------------------------------------
+* 4000B Standard AtoD Subcircuits
+
+.subckt AtoD_4000B  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+XNORM A NORM DPWR DGND AtoD_NORM_4000B
+O0  NORM DGND DO4000B DGTLNET=D IO_4000B
+C1  A DGND {CAPACITANCE+0.1pF}
+D1  DGND A    D74CLMP
+D2  A    DPWR D74CLMP
+.ends
+*$
+.subckt AtoD_4000B_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+XNORM A NORM DPWR DGND AtoD_NORM_4000B
+O0  NORM DGND DO4000B_NX DGTLNET=D IO_4000B
+C1  A DGND {CAPACITANCE+0.1pF}
+D1  DGND A    D74CLMP
+D2  A    DPWR D74CLMP
+.ends
+
+*$
+*-------------------------------------------------
+* 4000B Schmitt-trigger AtoD Subcircuits
+
+.subckt AtoD_4000B_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+XNORM A NORM DPWR DGND AtoD_NORM_4000B
+O0  NORM DGND DO4000B_ST DGTLNET=D IO_4000B
+C1  A DGND {CAPACITANCE+0.1pF}
+D1  DGND A    D74CLMP
+D2  A    DPWR D74CLMP
+.ends
+
+*$
+*-------------------------------------------------
+* 4000B Standard DtoA Subcircuit
+
+.subckt DtoA_4000B  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+X1  DPWR DGND DRVPWR DRVGND DtoA_DRIVE_4000B 
+N1  A DRVGND DRVPWR DIN4000B DGTLNET=D IO_4000B
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 4000B Open Collector DtoA Subcircuit
+
+.subckt DtoA_4000B_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+X1  DPWR DGND DRVPWR DRVGND DtoA_DRIVE_4000B 
+N1  A DRVGND DRVPWR DIN4000B_OC DGTLNET=D IO_4000B_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 4000B Input Voltage Normilization Subcircuit
+*
+* This circuit normalizes the input voltage, so that
+* voltages below -0.5 are '0', and above +0.5 are '1'.
+* The EVt device "looks up" the threshold voltage for the 
+* current power supply voltage in the table.  The data for the
+* table comes from the minimum and maximum voltage transfer
+* characteristics graph for the CD4000B.
+
+.subckt AtoD_NORM_4000B A ANORM DPWR DGND
+*
+EVt THRESHOLD 0 TABLE {V(DPWR,DGND)} = 1.5,0 3.5,0.6 5,1.5 10,3 15,4
+RVt THRESHOLD 0 100k
+EN  ANORM DGND VALUE = {(V(A,DGND)-V(DPWR,DGND)/2)/((V(DPWR,DGND)-2*V(THRESHOLD))+1u)}
+RN  ANORM DGND 100k
+Rld1 A DPWR 100MEG
+Rld2 A DGND 100MEG
+.ends
+
+*$
+*-------------------------------------------------
+* 4000B Output Drive Subcircuit
+*
+* This circuit constructs the correct output drive
+* resistance for the power supply voltage.  This resistance is inserted
+* in series with the digital input device, and the digital input device 
+* resistance is set to a low value when it is on.  The tables provide the 
+* output current at 1v VDS for various values of VDD (3V is an estimate)
+* from the CD4000B
+
+.subckt DtoA_DRIVE_4000B DPWR DGND DRVPWR DRVGND
+*
+EDRVP DRVP 0 TABLE {V(DPWR,DGND)} = 1.5,0.0mA 5,2.0mA 10,5.0mA 15,5.0mA
+EDRVN DRVN 0 TABLE {V(DPWR,DGND)} = 1.5,0.0mA 5,1.5mA 10,4.2mA 15,6.5mA
+RDRVP DRVP 0 1K
+RDRVN DRVN 0 1K
+GPWR DPWR DRVPWR VALUE = {V(DPWR,DRVPWR)*V(DRVP)}
+GGND DRVGND DGND VALUE = {V(DRVGND,DGND)*V(DRVN)}
+RDUM1 DPWR DRVPWR 100MEG
+RDUM2 DGND DRVGND 100MEG
+.ends
+
+*$
+*-------------------------------------------------
+* 4000B Digital Input/Output Models
+
+.model DIN4000B dinput (
++	s0name="0"	s0tsw=15ns	s0rlo=1 	s0rhi=80K
++	s1name="1"	s1tsw=15ns	s1rlo=40K	s1rhi=1
++	s2name="X"	s2tsw=15ns	s2rlo=800	s2rhi=800
++	s3name="R"	s3tsw=15ns	s3rlo=800	s3rhi=800
++	s4name="F"	s4tsw=15ns	s4rlo=800	s4rhi=800
++	s5name="Z"	s5tsw=15ns	s5rlo=1MEG	s5rhi=1MEG
++	)
+*$
+.model DIN4000B_OC dinput (
++	s0name="0"	s0tsw=15ns	s0rlo=1 	s0rhi=80K
++	s1name="1"	s1tsw=15ns	s1rlo=1MEG	s1rhi=1MEG
++	s2name="X"	s2tsw=15ns	s2rlo=800	s2rhi=800
++	s3name="R"	s3tsw=15ns	s3rlo=800	s3rhi=800
++	s4name="F"	s4tsw=15ns	s4rlo=800	s4rhi=800
++	s5name="Z"	s5tsw=15ns	s5rlo=1MEG	s5rhi=1MEG
++	)
+*$
+.model DO4000B doutput (
++	s0name="X"	s0vlo=-0.5	s0vhi=0.5
++	s1name="0"	s1vlo=-3.0	s1vhi=-0.5
++	s2name="R"	s2vlo=-0.5	s2vhi=0.05
++	s3name="R"	s3vlo=-0.05	s3vhi=0.5
++	s4name="X"	s4vlo=-0.5	s4vhi=0.5
++	s5name="1"	s5vlo= 0.5	s5vhi=3.0
++	s6name="F"	s6vlo=-0.05	s6vhi=0.5
++	s7name="F"	s7vlo=-0.5	s7vhi=0.05
++	)
+*$
+.model DO4000B_NX doutput (
++	s0name="0"	s0vlo=-3.0	s0vhi=0.0
++	s2name="1"	s2vlo= 0.0	s2vhi=3.0
++	)
+*$
+.model DO4000B_ST doutput (
++	s0name="0"	s0vlo=-3.0	s0vhi=0.2
++	s1name="1"	s1vlo=-0.3	s1vhi=3.0
++	)
+*$
+
+
+******************************************************************************
+* CD4000UB Family
+******************************************************************************
+*
+* The CD4000A family is modeled using the delays for 5v operation.
+* The input thresholds and output drives are correct for operation from 
+* 3v to 18v supplies.  To get accurate delays for these power supply levels
+* you must change the delay models in file DIG_5.LIB.
+
+*-------------------------------------------------
+* 4000UB I/O Models
+*$
+
+.model IO_4000UB uio (
++	drvh=721	drvl=721
++	AtoD1="AtoD_4000UB"	AtoD2="AtoD_4000UB_NX"
++	AtoD3="AtoD_4000UB"	AtoD4="AtoD_4000UB_NX"
++	DtoA1="DtoA_4000UB"	DtoA2="DtoA_4000UB"
++	DtoA3="DtoA_4000UB"	DtoA4="DtoA_4000UB"
++       tswhl1=6.94ns		tswlh1=8.49ns
++       tswhl2=6.52ns		tswlh2=8.83ns
++       tswhl3=9.47ns		tswlh3=11.76ns
++       tswhl4=9.00ns		tswlh4=11.24ns
++	DIGPOWER="CD4000_PWR"
++	)
+*$
+.model IO_4000UB_ST uio (
++	drvh=721	drvl=721
++	AtoD1="AtoD_4000UB_ST"	AtoD2="AtoD_4000UB_ST"
++	AtoD3="AtoD_4000UB_ST"	AtoD4="AtoD_4000UB_ST"
++	DtoA1="DtoA_4000UB"	DtoA2="DtoA_4000UB"
++	DtoA3="DtoA_4000UB"	DtoA4="DtoA_4000UB"
++       tswhl1=6.94ns		tswlh1=8.49ns
++       tswhl2=6.52ns		tswlh2=8.83ns
++       tswhl3=9.47ns		tswlh3=11.76ns
++       tswhl4=9.00ns		tswlh4=11.24ns
++	DIGPOWER="CD4000_PWR"
++	)
+*$
+.model IO_4000UB_OC uio (
++	drvh=10MEG	drvl=721
++	AtoD1="AtoD_4000UB"	AtoD2="AtoD_4000UB_NX"
++	AtoD3="AtoD_4000UB"	AtoD4="AtoD_4000UB_NX"
++	DtoA1="DtoA_4000UB_OC"	DtoA2="DtoA_4000UB_OC"
++	DtoA3="DtoA_4000UB_OC"	DtoA4="DtoA_4000UB_OC"
++       tswhl1=6.94ns		tswlh1=8.49ns
++       tswhl2=6.52ns		tswlh2=8.83ns
++       tswhl3=9.47ns		tswlh3=11.76ns
++       tswhl4=9.00ns		tswlh4=11.24ns
++	DIGPOWER="CD4000_PWR"
++	)
+*$
+
+*-------------------------------------------------
+* 4000UB Standard AtoD Subcircuits
+
+.subckt AtoD_4000UB  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+XNORM A NORM DPWR DGND AtoD_NORM_4000UB
+O0  NORM DGND DO4000UB DGTLNET=D IO_4000UB
+C1  A DGND {CAPACITANCE+0.1pF}
+D1  DGND A    D74CLMP
+D2  A    DPWR D74CLMP
+.ends
+*$
+
+.subckt AtoD_4000UB_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+XNORM A NORM DPWR DGND AtoD_NORM_4000UB
+O0  NORM DGND DO4000UB_NX DGTLNET=D IO_4000UB
+C1  A DGND {CAPACITANCE+0.1pF}
+D1  DGND A    D74CLMP
+D2  A    DPWR D74CLMP
+.ends
+
+*$
+*-------------------------------------------------
+* 4000UB Schmitt-trigger AtoD Subcircuits
+
+.subckt AtoD_4000UB_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+XNORM A NORM DPWR DGND AtoD_NORM_4000UB
+O0  NORM DGND DO4000UB_ST DGTLNET=D IO_4000UB
+C1  A DGND {CAPACITANCE+0.1pF}
+D1  DGND A    D74CLMP
+D2  A    DPWR D74CLMP
+.ends
+
+*$
+*-------------------------------------------------
+* 4000UB Standard DtoA Subcircuit
+
+.subckt DtoA_4000UB  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+X1  DPWR DGND DRVPWR DRVGND DtoA_DRIVE_4000UB 
+N1  A DRVGND DRVPWR DIN4000UB DGTLNET=D IO_4000UB
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 4000UB Open Collector DtoA Subcircuit
+
+.subckt DtoA_4000UB_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+X1  DPWR DGND DRVPWR DRVGND DtoA_DRIVE_4000UB 
+N1  A DRVGND DRVPWR DIN4000UB_OC DGTLNET=D IO_4000UB_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 4000UB Input Voltage Normilization Subcircuit
+*
+* This circuit normalizes the input voltage, so that
+* voltages below -0.5 are '0', and above +0.5 are '1'.
+* The EVt device "looks up" the threshold voltage for the 
+* current power supply voltage in the table.  The data for the
+* table comes from the minimum and maximum voltage transfer
+* characteristics graph for the CD4000UB.
+
+.subckt AtoD_NORM_4000UB A ANORM DPWR DGND
+*
+EVt THRESHOLD 0 TABLE {V(DPWR,DGND)} = 1.5,0 5,1 10,2 15,3.0
+RVt THRESHOLD 0 100k
+EN  ANORM DGND VALUE = {(V(A,DGND)-V(DPWR,DGND)/2)/((V(DPWR,DGND)-2*V(THRESHOLD))+1u)}
+RN  ANORM DGND 100k
+Rld1 A DPWR 100MEG
+Rld2 A DGND 100MEG
+.ends
+
+*$
+*-------------------------------------------------
+* 4000UB Output Drive Subcircuit
+*
+* This circuit constructs the correct output drive
+* resistance for the power supply voltage.  This resistance is inserted
+* in series with the digital input device, and the digital input device 
+* resistance is set to a low value when it is on.  The tables provide the 
+* output current at 1v VDS for various values of VDD (3V is an estimate)
+* from the CD4000UB
+
+.subckt DtoA_DRIVE_4000UB DPWR DGND DRVPWR DRVGND
+*
+EDRVP DRVP 0 TABLE {V(DPWR,DGND)} = 1.5,0.0mA 5,1.0mA 10,5.0mA 15,5.0mA
+EDRVN DRVN 0 TABLE {V(DPWR,DGND)} = 1.5,0.0mA 5,1.5mA 10,4.0mA 15,6.0mA
+RDRVP DRVP 0 1K
+RDRVN DRVN 0 1K
+GPWR DPWR DRVPWR VALUE = {V(DPWR,DRVPWR)*V(DRVP)}
+GGND DRVGND DGND VALUE = {V(DRVGND,DGND)*V(DRVN)}
+RDUM1 DPWR DRVPWR 100MEG
+RDUM2 DGND DRVGND 100MEG
+.ends
+
+*$
+*-------------------------------------------------
+* 4000UB Digital Input/Output Models
+
+.model DIN4000UB dinput (
++	s0name="0"	s0tsw=15ns	s0rlo=1 	s0rhi=80K
++	s1name="1"	s1tsw=15ns	s1rlo=40K	s1rhi=1
++	s2name="X"	s2tsw=15ns	s2rlo=800	s2rhi=800
++	s3name="R"	s3tsw=15ns	s3rlo=800	s3rhi=800
++	s4name="F"	s4tsw=15ns	s4rlo=800	s4rhi=800
++	s5name="Z"	s5tsw=15ns	s5rlo=1MEG	s5rhi=1MEG
++	)
+*$
+.model DIN4000UB_OC dinput (
++	s0name="0"	s0tsw=15ns	s0rlo=1 	s0rhi=80K
++	s1name="1"	s1tsw=15ns	s1rlo=1MEG	s1rhi=1MEG
++	s2name="X"	s2tsw=15ns	s2rlo=800	s2rhi=800
++	s3name="R"	s3tsw=15ns	s3rlo=800	s3rhi=800
++	s4name="F"	s4tsw=15ns	s4rlo=800	s4rhi=800
++	s5name="Z"	s5tsw=15ns	s5rlo=1MEG	s5rhi=1MEG
++	)
+*$
+.model DO4000UB doutput (
++	s0name="X"	s0vlo=-0.5	s0vhi=0.5
++	s1name="0"	s1vlo=-3.0	s1vhi=-0.5
++	s2name="R"	s2vlo=-0.5	s2vhi=0.05
++	s3name="R"	s3vlo=-0.05	s3vhi=0.5
++	s4name="X"	s4vlo=-0.5	s4vhi=0.5
++	s5name="1"	s5vlo= 0.5	s5vhi=3.0
++	s6name="F"	s6vlo=-0.05	s6vhi=0.5
++	s7name="F"	s7vlo=-0.5	s7vhi=0.05
++	)
+*$
+.model DO4000UB_NX doutput (
++	s0name="0"	s0vlo=-3.0	s0vhi=0.0
++	s2name="1"	s2vlo= 0.0	s2vhi=3.0
++	)
+*$
+.model DO4000UB_ST doutput (
++	s0name="0"	s0vlo=-3.0	s0vhi=0.2
++	s1name="1"	s1vlo=-0.3	s1vhi=3.0
++	)
+*$
+
+
+******************************************************************************
+* 74/54 Family (standard TTL)
+******************************************************************************
+
+*-------------------------------------------------
+* 7400 I/O Models
+
+*$
+.model IO_STD uio (
++	drvh=96.4	drvl=104
++	AtoD1="AtoD_STD"	AtoD2="AtoD_STD_NX"
++	AtoD3="AtoD_STD"	AtoD4="AtoD_STD_NX"
++	DtoA1="DtoA_STD"	DtoA2="DtoA_STD"
++	DtoA3="DtoA_STD"	DtoA4="DtoA_STD"
++       tswhl1=1.511ns		tswlh1=3.517ns
++       tswhl2=1.487ns		tswlh2=3.564ns
++       tswhl3=1.511ns		tswlh3=3.517ns
++       tswhl4=1.487ns		tswlh4=3.564ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_STD_ST uio (
++	drvh=96.4	drvl=104
++	AtoD1="AtoD_STD_ST"	AtoD2="AtoD_STD_ST"
++	AtoD3="AtoD_STD_ST"	AtoD4="AtoD_STD_ST"
++	DtoA1="DtoA_STD"	DtoA2="DtoA_STD"
++	DtoA3="DtoA_STD"	DtoA4="DtoA_STD"
++       tswhl1=1.511ns		tswlh1=3.517ns
++       tswhl2=1.487ns		tswlh2=3.564ns
++       tswhl3=1.511ns		tswlh3=3.517ns
++       tswhl4=1.487ns		tswlh4=3.564ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_STD_OC uio (
++	drvh=1MEG	drvl=104
++	AtoD1="AtoD_STD"	AtoD2="AtoD_STD_NX"
++	AtoD3="AtoD_STD"	AtoD4="AtoD_STD_NX"
++	DtoA1="DtoA_STD_OC"	DtoA2="DtoA_STD_OC"
++	DtoA3="DtoA_STD_OC"	DtoA4="DtoA_STD_OC"
+*  tsw values measured with 330 ohm pull up
++       tswhl1=2.747ns		tswlh1=1.589ns
++       tswhl2=2.732ns		tswlh2=1.615ns
++       tswhl3=2.747ns		tswlh3=1.589ns
++       tswhl4=2.732ns		tswlh4=1.615ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+
+*-------------------------------------------------
+* 7400 Standard AtoD Subcircuits
+
+.subckt AtoD_STD  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74 DGTLNET=D IO_STD
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74CLMP
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	4k
+Q1      1       3       A       0	Q74 ; substrate should be DGND
+.ends
+*$
+
+.subckt AtoD_STD_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74_NX DGTLNET=D IO_STD
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74CLMP
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	4k
+Q1      1       3       A       0	Q74 ; substrate should be DGND
+.ends
+*$
+
+*-------------------------------------------------
+* 7400 Schmitt-trigger AtoD Subcircuits
+
+.subckt AtoD_STD_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74_ST DGTLNET=D IO_STD
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74CLMP
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	4k
+Q1      1       3       A       0	Q74
+.ends
+*$
+
+*-------------------------------------------------
+* 7400 standard DtoA Subcircuit
+
+.subckt DtoA_STD  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74 DGTLNET=D IO_STD
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+*$
+
+*-------------------------------------------------
+* 7400 open collector DtoA Subcircuit
+
+.subckt DtoA_STD_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74_OC DGTLNET=D IO_STD_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+*$
+
+*-------------------------------------------------
+* 7400 Digital Input/Output Models
+
+.model DIN74 dinput (
++	s0name="0"	s0tsw=3.5ns	s0rlo=7.13	s0rhi=389 ; 7ohm,    0.09v
++	s1name="1"	s1tsw=5.5ns	s1rlo=467	s1rhi=200 ; 140ohm,  3.5v
++	s2name="X"	s2tsw=3.5ns	s2rlo=42.9	s2rhi=116 ; 31.3ohm, 1.35v
++	s3name="R"	s3tsw=3.5ns	s3rlo=42.9	s3rhi=116 ; 31.3ohm, 1.35v
++	s4name="F"	s4tsw=3.5ns	s4rlo=42.9	s4rhi=116 ; 31.3ohm, 1.35v
++	s5name="Z"	s5tsw=3.5ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74_OC dinput (
++	s0name="0"	s0tsw=3.5ns	s0rlo=7.13	s0rhi=389 ; 7ohm,    0.09v
++	s1name="1"	s1tsw=5.5ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=3.5ns	s2rlo=42.9	s2rhi=116 ; 31.3ohm, 1.35v
++	s3name="R"	s3tsw=3.5ns	s3rlo=42.9	s3rhi=116 ; 31.3ohm, 1.35v
++	s4name="F"	s4tsw=3.5ns	s4rlo=42.9	s4rhi=116 ; 31.3ohm, 1.35v
++	s5name="Z"	s5tsw=5.5ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DO74 doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.4
++	s3name="R"	s3vlo=1.3	s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.3	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.4
++	)
+*$
+.model DO74_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.35
++	s2name="1"	s2vlo=1.35	s2vhi=7.0
++	)
+*$
+.model DO74_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.7
++	s1name="1"	s1vlo=0.9	s1vhi=7.0
++	)
+*$
+
+
+******************************************************************************
+* 74/54AC and ACT Family
+******************************************************************************
+
+*-------------------------------------------------
+* 74AC I/O Models
+
+*$
+.model IO_AC uio (
++	drvh=24.5		drvl=18.7
++	inld=5pF
++	AtoD1="AtoD_AC"		AtoD2="AtoD_AC_NX"
++	AtoD3="AtoD_AC"		AtoD4="AtoD_AC_NX"
++	DtoA1="DtoA_AC"		DtoA2="DtoA_AC"
++	DtoA3="DtoA_AC"		DtoA4="DtoA_AC"
++       tswhl1=477ps		tswlh1=470ps
++       tswhl2=477ps		tswlh2=470ps
++       tswhl3=477ps		tswlh3=470ps
++       tswhl4=477ps		tswlh4=470ps
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_AC_OC uio (
++	drvh=1MEG		drvl=18.7
++	inld=5pF
++	AtoD1="AtoD_AC"		AtoD2="AtoD_AC_NX"
++	AtoD3="AtoD_AC"		AtoD4="AtoD_AC_NX"
++	DtoA1="DtoA_AC_OC"	DtoA2="DtoA_AC_OC"
++	DtoA3="DtoA_AC_OC"	DtoA4="DtoA_AC_OC"
++       tswhl1=490ps		tswlh1=3.619ns
++       tswhl2=490ps		tswlh2=3.619ns
++       tswhl3=490ps		tswlh3=3.619ns
++       tswhl4=490ps		tswlh4=3.619ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_AC_ST uio (
++	drvh=24.5		drvl=18.7
++	inld=5pF
++	AtoD1="AtoD_AC_ST"	AtoD2="AtoD_AC_ST"
++	AtoD3="AtoD_AC_ST"	AtoD4="AtoD_AC_ST"
++	DtoA1="DtoA_AC"		DtoA2="DtoA_AC"
++	DtoA3="DtoA_AC"		DtoA4="DtoA_AC"
++       tswhl1=477ps		tswlh1=470ps
++       tswhl2=477ps		tswlh2=470ps
++       tswhl3=477ps		tswlh3=470ps
++       tswhl4=477ps		tswlh4=470ps
++	DIGPOWER="DIGIFPWR"
++	)
+
+* Note:
+*   The above Tsw times were measured at Vcc=5.0V, driving a single input.
+*   The Tsw times in the IO_AC_OC model were measured with an additional 
+*   1K pullup on the output.
+
+*$
+*-------------------------------------------------
+* 74ACT I/O Models
+*
+*  Note: The output stage is the same as the AC series, so the 
+*        AC DtoA is used.
+
+.model IO_ACT uio (
++	drvh=24.5		drvl=18.7
++	inld=5pF
++	AtoD1="AtoD_ACT"	AtoD2="AtoD_ACT_NX"
++	AtoD3="AtoD_ACT"	AtoD4="AtoD_ACT_NX"
++	DtoA1="DtoA_AC"	        DtoA2="DtoA_AC"
++	DtoA3="DtoA_AC"	        DtoA4="DtoA_AC"
++       tswhl1=477ps		tswlh1=470ps
++       tswhl2=477ps		tswlh2=470ps
++       tswhl3=477ps		tswlh3=470ps
++       tswhl4=477ps		tswlh4=470ps
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_ACT_OC uio (
++	drvh=1MEG	drvl=18.7
++	inld=5pF
++	AtoD1="AtoD_ACT"	AtoD2="AtoD_ACT_NX"
++	AtoD3="AtoD_ACT"	AtoD4="AtoD_ACT_NX"
++	DtoA1="DtoA_AC_OC"	DtoA2="DtoA_AC_OC"
++	DtoA3="DtoA_AC_OC"	DtoA4="DtoA_AC_OC"
++       tswhl1=490ps		tswlh1=3.619ns
++       tswhl2=490ps		tswlh2=3.619ns
++       tswhl3=490ps		tswlh3=3.619ns
++       tswhl4=490ps		tswlh4=3.619ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_ACT_ST uio (
++	drvh=24.5		drvl=18.7
++	inld=5pF
++	AtoD1="AtoD_ACT_ST"	AtoD2="AtoD_ACT_ST"
++	AtoD3="AtoD_ACT_ST"	AtoD4="AtoD_ACT_ST"
++	DtoA1="DtoA_AC"	        DtoA2="DtoA_AC"
++	DtoA3="DtoA_AC"		DtoA4="DtoA_AC"
++       tswhl1=477ps		tswlh1=470ps
++       tswhl2=477ps		tswlh2=470ps
++       tswhl3=477ps		tswlh3=470ps
++       tswhl4=477ps		tswlh4=470ps
++	DIGPOWER="DIGIFPWR"
++	)
+
+*$
+*-------------------------------------------------
+* 74AC AtoD Subcircuits
+
+*
+* 74AC Standard Input
+*
+.subckt AtoD_AC  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+X1  DGND A    74AC_CLAMP 
+X2  A    DPWR 74AC_CLAMP
+C1  A DGND {CAPACITANCE+0.01pF}
+O0  A DGND DO74AC DGTLNET=D IO_AC
+.ends
+
+*$
+*
+* 74AC Standard Input W/O Intermediate Levels
+*
+.subckt AtoD_AC_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+X1  DGND A    74AC_CLAMP 
+X2  A    DPWR 74AC_CLAMP
+C1  A DGND {CAPACITANCE+0.01pF}
+O0  A DGND DO74AC_NX DGTLNET=D IO_AC
+.ends
+*$
+
+*
+* 74AC Schmitt-trigger Input
+*
+.subckt AtoD_AC_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+X1  DGND A    74AC_CLAMP 
+X2  A    DPWR 74AC_CLAMP
+C1  A DGND {CAPACITANCE+0.01pF}
+O0  A DGND DO74AC_ST DGTLNET=D IO_AC
+.ends
+
+*$
+*-------------------------------------------------
+* 74ACT AtoD Subcircuits
+
+*
+* 74ACT Standard Input
+*
+.subckt AtoD_ACT  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+X1  DGND A    74AC_CLAMP 
+X2  A    DPWR 74AC_CLAMP
+C1  A DGND {CAPACITANCE+0.01pF}
+O0  A DGND DO74ACT DGTLNET=D IO_ACT
+.ends
+
+*$
+*
+* 74ACT Standard Input W/O Intermediate Levels
+*
+.subckt AtoD_ACT_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+X1  DGND A    74AC_CLAMP 
+X2  A    DPWR 74AC_CLAMP
+C1  A DGND {CAPACITANCE+0.01pF}
+O0  A DGND DO74ACT_NX DGTLNET=D IO_ACT
+.ends
+
+*$
+*
+* 74ACT Schmitt-trigger Input
+*
+.subckt AtoD_ACT_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+X1  DGND A    74AC_CLAMP 
+X2  A    DPWR 74AC_CLAMP
+C1  A DGND {CAPACITANCE+0.01pF}
+O0  A DGND DO74ACT_ST DGTLNET=D IO_ACT
+.ends
+
+*$
+*
+* Input Clamp 
+*
+.subckt 74AC_Clamp A C
+G_Clamp  A C TABLE { V(A,C) } 
++ 0.0, 1nA
++ 0.5, 1uA
++ 5.5, 1A
+.ends			      
+
+
+*$
+*-------------------------------------------------
+*
+* 74AC Standard DtoA Subcircuit
+*
+* This DtoA interface models the hi- and lo-level I-V curves for a standard
+* output at VCC=5.0V.
+*
+* The I-V curves were derived from
+*  FACT Advanced CMOS Logic Databook, 1990
+*  National Semiconductor, pp. 1-7, 1-8
+*
+.subckt DtoA_AC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+G_OH  DPWR DPWR_OH
++ TABLE { V(DPWR_OH,DPWR) }
++       -5.5,  142mA,
++       -4.0,  140mA,
++       -3.0,  135mA,
++       -2.0,  120mA,
++       -0.6,   50mA,
++        0.0,    0,
++        0.5,  -40mA
+X1  A    DPWR 74AC_CLAMP
+
+G_OL  DGND_OL DGND 
++  TABLE { V(DGND_OL,DGND) }
++      -0.5,  -70mA, 
++       0,      0,
++       1.0,  120mA,
++       1.6,  150mA,
++       2.0,  160mA,
++       3.0,  170mA,
++       5.5,  172mA,
+X2  DGND A    74AC_CLAMP 
+
+N1  A DGND_OL DPWR_OH DIN74AC DGTLNET=D IO_AC_DTOA
+C1  A DGND {CAPACITANCE+0.01pF}
+R1  A DGND 1G
+.ends
+
+.MODEL IO_AC_DTOA UIO()
+
+*$
+*-------------------------------------------------
+* 74AC Open Collector DtoA Subcircuit
+
+.subckt DtoA_AC_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+G_OL  DGND_OL DGND 
++  TABLE { V(DGND_OL,DGND) }
++      -0.5,  -70mA, 
++       0,      0,
++       1.0,  120mA,
++       1.6,  150mA,
++       2.0,  160mA,
++       3.0,  170mA,
++       5.5,  172mA,
+X2  DGND A    74AC_CLAMP 
+
+N1  A DGND_OL DPWR DIN74AC_OC DGTLNET=D IO_AC_DTOA
+C1  A DGND {CAPACITANCE+0.01pF}
+R1  A DGND 1G
+.ends
+
+*$
+*-------------------------------------------------
+* 74AC Digital Input/Output Models
+
+.model DIN74AC dinput (
++	s0name="0"	s0tsw=0.7ns	s0rlo=1.0	s0rhi=100K
++	s1name="1"	s1tsw=0.7ns	s1rlo=100K	s1rhi=1
++	s2name="X"	s2tsw=0.7ns	s2rlo=104	s2rhi=100
++	s3name="R"	s3tsw=0.7ns	s3rlo=104	s3rhi=100
++	s4name="F"	s4tsw=0.7ns	s4rlo=104	s4rhi=100
++	s5name="Z"	s5tsw=0.7ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74AC_OC dinput (
++	s0name="0"	s0tsw=0.7ns	s0rlo=1		s0rhi=100k
++	s1name="1"	s1tsw=0.7ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=0.7ns	s2rlo=104	s2rhi=100
++	s3name="R"	s3tsw=0.7ns	s3rlo=104	s3rhi=100
++	s4name="F"	s4tsw=0.7ns	s4rlo=104	s4rhi=100
++	s5name="Z"	s5tsw=0.7ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DO74AC doutput (
++	s0name="X"	s0vlo=1.50	s0vhi=3.50
++	s1name="0"	s1vlo=-1.5	s1vhi=1.5
++	s2name="R"	s2vlo=1.5	s2vhi=2.55
++	s3name="R"	s3vlo=2.45      s3vhi=3.50
++	s4name="X"	s4vlo=1.50	s4vhi=3.50
++	s5name="1"	s5vlo=3.50	s5vhi=7.0
++	s6name="F"	s6vlo=2.45	s6vhi=3.50
++	s7name="F"	s7vlo=1.50	s7vhi=2.55
++	)
+*$
+.model DO74AC_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=2.5
++	s2name="1"	s2vlo=2.5	s2vhi=7.0
++	)
+*$
+.model DO74AC_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=2.7
++	s1name="1"	s1vlo=1.3	s1vhi=7.0
++	)
+
+*$
+*-------------------------------------------------
+* 74ACT Digital Input/Output Models
+
+.model DO74ACT doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.55
++	s3name="R"	s3vlo=1.45	s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.45	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.55
++	)
+*$
+.model DO74ACT_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.5
++	s2name="1"	s2vlo=1.5	s2vhi=7.0
++	)
+*$
+.model DO74ACT_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.7
++	s1name="1"	s1vlo=0.9	s1vhi=7.0
++	)
+*$
+
+*****************************************************************************
+* 74/54ALS Family
+******************************************************************************
+
+*-------------------------------------------------
+* 74ALS00 I/O Models
+
+*$
+.model IO_ALS00 uio (
++	drvh=35.3	drvl=46.9
++	AtoD1="AtoD_ALS00"	AtoD2="AtoD_ALS00_NX"
++	AtoD3="AtoD_ALS00"	AtoD4="AtoD_ALS00_NX"
++	DtoA1="DtoA_ALS00"	DtoA2="DtoA_ALS00"
++	DtoA3="DtoA_ALS00"	DtoA4="DtoA_ALS00"
++       tswhl1=529ps		tswlh1=695ps
++       tswhl2=513ps		tswlh2=718ps
++       tswhl3=529ps		tswlh3=695ps
++       tswhl4=513ps		tswlh4=718ps
++	DIGPOWER="DIGIFPWR"	tpwrt=2.9ns
++	)
+*$
+.model IO_ALS00_ST uio (
++	drvh=35.3	drvl=46.9
++	AtoD1="AtoD_ALS00_ST"	AtoD2="AtoD_ALS00_ST"
++	AtoD3="AtoD_ALS00_ST"	AtoD4="AtoD_ALS00_ST"
++	DtoA1="DtoA_ALS00"	DtoA2="DtoA_ALS00"
++	DtoA3="DtoA_ALS00"	DtoA4="DtoA_ALS00"
++       tswhl1=529ps		tswlh1=695ps
++       tswhl2=513ps		tswlh2=718ps
++       tswhl3=529ps		tswlh3=695ps
++       tswhl4=513ps		tswlh4=718ps
++	DIGPOWER="DIGIFPWR"	tpwrt=2.9ns
++	)
+*$
+.model IO_ALS00_OC uio (
++	drvh=1MEG	drvl=46.9
++	AtoD1="AtoD_ALS00"	AtoD2="AtoD_ALS00_NX"
++	AtoD3="AtoD_ALS00"	AtoD4="AtoD_ALS00_NX"
++	DtoA1="DtoA_ALS00_OC"	DtoA2="DtoA_ALS00_OC"
++	DtoA3="DtoA_ALS00_OC"	DtoA4="DtoA_ALS00_OC"
++       tswhl1=968ps		tswlh1=308ps
++       tswhl2=959ps		tswlh2=316ps
++       tswhl3=968ps		tswlh3=308ps
++       tswhl4=959ps		tswlh4=316ps
++	DIGPOWER="DIGIFPWR"	tpwrt=2.9ns
++	)
+*$
+.model IO_ALS00_OC_ST uio (
++	drvh=1MEG	drvl=46.9
++	AtoD1="AtoD_ALS00_ST"	AtoD2="AtoD_ALS00_ST"
++	AtoD3="AtoD_ALS00_ST"	AtoD4="AtoD_ALS00_ST"
++	DtoA1="DtoA_ALS00_OC"	DtoA2="DtoA_ALS00_OC"
++	DtoA3="DtoA_ALS00_OC"	DtoA4="DtoA_ALS00_OC"
++       tswhl1=968ps		tswlh1=308ps
++       tswhl2=959ps		tswlh2=316ps
++       tswhl3=968ps		tswlh3=308ps
++       tswhl4=959ps		tswlh4=316ps
++	DIGPOWER="DIGIFPWR"	tpwrt=2.9ns
++	)
+* model for 74ALS devices with 25 ohm output series resistors
+*$
+.model IO_ALS_25 uio (
++	drvh=60.3	drvl=71.9
++	AtoD1="AtoD_ALS00"	AtoD2="AtoD_ALS00_NX"
++	AtoD3="AtoD_ALS00"	AtoD4="AtoD_ALS00_NX"
++	DtoA1="DtoA_ALS00"	DtoA2="DtoA_ALS00"
++	DtoA3="DtoA_ALS00"	DtoA4="DtoA_ALS00"
++       tswhl1=529ps		tswlh1=695ps
++       tswhl2=513ps		tswlh2=718ps
++       tswhl3=529ps		tswlh3=695ps
++       tswhl4=513ps		tswlh4=718ps
++	DIGPOWER="DIGIFPWR"	tpwrt=2.9ns
++	)
+*$
+*-------------------------------------------------
+* 74ALS1000 I/O Models
+
+*$
+.model IO_ALS000 uio (
++	drvh=28.9	drvl=28.1
++	AtoD1="AtoD_ALS00"	AtoD2="AtoD_ALS00_NX"
++	AtoD3="AtoD_ALS00"	AtoD4="AtoD_ALS00_NX"
++	DtoA1="DtoA_ALS000"	DtoA2="DtoA_ALS000"
++	DtoA3="DtoA_ALS000"	DtoA4="DtoA_ALS000"
++       tswhl1=457ps		tswlh1=680ps
++       tswhl2=443ps		tswlh2=700ps
++       tswhl3=457ps		tswlh3=680ps
++       tswhl4=443ps		tswlh4=700ps
++	DIGPOWER="DIGIFPWR"	tpwrt=2.9ns
++	)
+*$
+.model IO_ALS000_OC uio (
++	drvh=1MEG	drvl=28.1
++	AtoD1="AtoD_ALS00"	AtoD2="AtoD_ALS00_NX"
++	AtoD3="AtoD_ALS00"	AtoD4="AtoD_ALS00_NX"
++	DtoA1="DtoA_ALS000_OC"	DtoA2="DtoA_ALS000_OC"
++	DtoA3="DtoA_ALS000_OC"	DtoA4="DtoA_ALS000_OC"
++       tswhl1=860ps		tswlh1=417ps
++       tswhl2=855ps		tswlh2=421ps
++       tswhl3=860ps		tswlh3=417ps
++       tswhl4=855ps		tswlh4=421ps
++	DIGPOWER="DIGIFPWR"	tpwrt=2.9ns
++	)
+*$
+.model IO_ALS000_ST uio (
++	drvh=28.9	drvl=28.1
++	AtoD1="AtoD_ALS00_ST"	AtoD2="AtoD_ALS00_ST"
++	AtoD3="AtoD_ALS00_ST"	AtoD4="AtoD_ALS00_ST"
++	DtoA1="DtoA_ALS000"	DtoA2="DtoA_ALS000"
++	DtoA3="DtoA_ALS000"	DtoA4="DtoA_ALS000"
++       tswhl1=457ps		tswlh1=680ps
++       tswhl2=443ps		tswlh2=700ps
++       tswhl3=457ps		tswlh3=680ps
++       tswhl4=443ps		tswlh4=700ps
++	DIGPOWER="DIGIFPWR"	tpwrt=2.9ns
++	)
+*$
+.model IO_ALS000_OC_ST uio (
++	drvh=1MEG	drvl=28.1
++	AtoD1="AtoD_ALS00_ST"	AtoD2="AtoD_ALS00_ST"
++	AtoD3="AtoD_ALS00_ST"	AtoD4="AtoD_ALS00_ST"
++	DtoA1="DtoA_ALS000_OC"	DtoA2="DtoA_ALS000_OC"
++	DtoA3="DtoA_ALS000_OC"	DtoA4="DtoA_ALS000_OC"
++       tswhl1=860ps		tswlh1=417ps
++       tswhl2=855ps		tswlh2=421ps
++       tswhl3=860ps		tswlh3=417ps
++       tswhl4=855ps		tswlh4=421ps
++	DIGPOWER="DIGIFPWR"	tpwrt=2.9ns
++	)
+*$
+
+*-------------------------------------------------
+* 74ALS00 Standard AtoD Subcircuits
+
+.subckt AtoD_ALS00  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74ALS00 DGTLNET=D IO_ALS00
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1	1	2	D74
+D2      2       DGND	D74
+D3      3       1       D74
+D4      3       A       D74
+D5      1       a	D74S
+R1	DPWR	3	370k    ; 37K * (Hfe of Q1A + 1)
+.ends
+
+*$
+.subckt AtoD_ALS00_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74ALS00_NX DGTLNET=D IO_ALS00
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1	1	2	D74
+D2      2       DGND	D74
+D3      3       1       D74
+D4      3       A       D74
+D5      1       a	D74S
+R1	DPWR	3	370k    ; 37K * (Hfe of Q1A + 1)
+.ends
+
+*$
+*-------------------------------------------------
+* 74ALS00 Schmitt-trigger AtoD Subcircuits
+
+.subckt AtoD_ALS00_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74ALS00 DGTLNET=D IO_ALS00
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1	1	2	D74
+D2      2       DGND	D74
+D3      3       1       D74
+D4      3       A       D74
+D5      1       a	D74S
+R1	DPWR	3	370k    ; 37K * (Hfe of Q1A + 1)
+.ends
+
+*$
+*-------------------------------------------------
+* 74ALS00 Standard DtoA Subcircuit
+
+.subckt DtoA_ALS00  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74ALS00 DGTLNET=D IO_ALS00
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74ALS00 Open Collector DtoA Subcircuit
+
+.subckt DtoA_ALS00_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74ALS00_OC DGTLNET=D IO_ALS00_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74ALS1000 Standard DtoA Subcircuit
+
+.subckt DtoA_ALS000  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74ALS1000 DGTLNET=D IO_ALS000
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74ALS1000 Open Collector DtoA Subcircuit
+
+.subckt DtoA_ALS000_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74ALS1000_OC DGTLNET=D IO_ALS000_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74ALS00 Digital Input/Output Models
+
+.model DIN74ALS00 dinput (
++	s0name="0"	s0tsw=1.0ns	s0rlo=26.0	s0rhi=1060 ; 25.3ohm, 0.12v
++	s1name="1"	s1tsw=1.0ns	s1rlo=167	s1rhi=71.4 ; 50.0ohm, 3.50v
++	s2name="X"	s2tsw=1.0ns	s2rlo=49.4	s2rhi=127 ; 35.6ohm, 1.40v
++	s3name="R"	s3tsw=1.0ns	s3rlo=49.4	s3rhi=127 ; 35.6ohm, 1.40v
++	s4name="F"	s4tsw=1.0ns	s4rlo=49.4	s4rhi=127 ; 35.6ohm, 1.40v
++	s5name="Z"	s5tsw=1.0ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74ALS00_OC dinput (
++	s0name="0"	s0tsw=1.0ns	s0rlo=26.0	s0rhi=1060 ; 25.3ohm, 0.12v
++	s1name="1"	s1tsw=1.0ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=1.0ns	s2rlo=24.5	s2rhi=62.9 ; 17.6ohm, 1.40v
++	s3name="R"	s3tsw=1.0ns	s3rlo=49.4	s3rhi=127 ; 35.6ohm, 1.40v
++	s4name="F"	s4tsw=1.0ns	s4rlo=49.4	s4rhi=127 ; 35.6ohm, 1.40v
++	s5name="Z"	s5tsw=1.0ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DO74ALS00 doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.45
++	s3name="R"	s3vlo=1.35	s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.35	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.45
++	)
+*$
+.model DO74ALS00_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.40
++	s2name="1"	s2vlo=1.4	s2vhi=7.0
++	)
+*$
+.model DO74ALS00_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.7
++	s1name="1"	s1vlo=0.9	s1vhi=7.0
++	)
+*$
+
+*-------------------------------------------------
+* 74ALS1000 Digital Input/Output Models
+
+*$
+.model DIN74ALS1000 dinput (
++	s0name="0"	s0tsw=1.0ns	s0rlo=7.59	s0rhi=414 ; 7.45ohm, 0.09v
++	s1name="1"	s1tsw=1.0ns	s1rlo=139	s1rhi=59.5 ; 41.7ohm, 3.50v
++	s2name="X"	s2tsw=1.0ns	s2rlo=24.5	s2rhi=62.9 ; 17.6ohm, 1.40v
++	s3name="R"	s3tsw=1.0ns	s3rlo=24.5	s3rhi=62.9 ; 17.6ohm, 1.40v
++	s4name="F"	s4tsw=1.0ns	s4rlo=24.5	s4rhi=62.9 ; 17.6ohm, 1.40v
++	s5name="Z"	s5tsw=1.0ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74ALS1000_OC dinput (
++	s0name="0"	s0tsw=1.0ns	s0rlo=7.59	s0rhi=414 ; 7.45ohm, 0.09v
++	s1name="1"	s1tsw=1.0ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=1.0ns	s2rlo=24.5	s2rhi=62.9 ; 17.6ohm, 1.40v
++	s3name="R"	s3tsw=1.0ns	s3rlo=24.5	s3rhi=62.9 ; 17.6ohm, 1.40v
++	s4name="F"	s4tsw=1.0ns	s4rlo=24.5	s4rhi=62.9 ; 17.6ohm, 1.40v
++	s5name="Z"	s5tsw=1.0ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+
+
+******************************************************************************
+* 74/54AS Family
+******************************************************************************
+
+*-------------------------------------------------
+* 74AS00 I/O Models
+
+*$
+.model IO_AS00 uio (
++	drvh=19.9	drvl=19.8
++	AtoD1="AtoD_AS00"	AtoD2="AtoD_AS00_NX"
++	AtoD3="AtoD_AS00"	AtoD4="AtoD_AS00_NX"
++	DtoA1="DtoA_AS00"	DtoA2="DtoA_AS00"
++	DtoA3="DtoA_AS00"	DtoA4="DtoA_AS00"
++       tswhl1=298ps		tswlh1=400ps
++       tswhl2=276ps		tswlh2=426ps
++       tswhl3=298ps		tswlh3=400ps
++       tswhl4=276ps		tswlh4=426ps
++	DIGPOWER="DIGIFPWR"	tpwrt=1.5ns
++	)
+*$
+.model IO_AS00_OC uio (
++	drvh=1MEG	drvl=19.8
++	AtoD1="AtoD_AS00"	AtoD2="AtoD_AS00_NX"
++	AtoD3="AtoD_AS00"	AtoD4="AtoD_AS00_NX"
++	DtoA1="DtoA_AS00_OC"	DtoA2="DtoA_AS00_OC"
++	DtoA3="DtoA_AS00_OC"	DtoA4="DtoA_AS00_OC"
++       tswhl1=298ps		tswlh1=400ps
++       tswhl2=276ps		tswlh2=426ps
++       tswhl3=298ps		tswlh3=400ps
++       tswhl4=276ps		tswlh4=426ps
++	DIGPOWER="DIGIFPWR"	tpwrt=1.5ns
++	)
+*$
+.model IO_AS00_ST uio (
++	drvh=19.9	drvl=19.8
++	AtoD1="AtoD_AS00_ST"	AtoD2="AtoD_AS00_ST"
++	AtoD3="AtoD_AS00_ST"	AtoD4="AtoD_AS00_ST"
++	DtoA1="DtoA_AS00"	DtoA2="DtoA_AS00"
++	DtoA3="DtoA_AS00"	DtoA4="DtoA_AS00"
++       tswhl1=298ps		tswlh1=400ps
++       tswhl2=276ps		tswlh2=426ps
++       tswhl3=298ps		tswlh3=400ps
++       tswhl4=276ps		tswlh4=426ps
++	DIGPOWER="DIGIFPWR"	tpwrt=1.5ns
++	)
+*$
+.model IO_AS00_OC_ST uio (
++	drvh=1MEG	drvl=19.8
++	AtoD1="AtoD_AS00_ST"	AtoD2="AtoD_AS00_ST"
++	AtoD3="AtoD_AS00_ST"	AtoD4="AtoD_AS00_ST"
++	DtoA1="DtoA_AS00_OC"	DtoA2="DtoA_AS00_OC"
++	DtoA3="DtoA_AS00_OC"	DtoA4="DtoA_AS00_OC"
++       tswhl1=298ps		tswlh1=400ps
++       tswhl2=276ps		tswlh2=426ps
++       tswhl3=298ps		tswlh3=400ps
++       tswhl4=276ps		tswlh4=426ps
++	DIGPOWER="DIGIFPWR"	tpwrt=1.5ns
++	)
+*$
+
+*-------------------------------------------------
+* 74AS1000 I/O Models
+
+*$
+.model IO_AS000 uio (
++	drvh=13.7	drvl=18.0
++	AtoD1="AtoD_AS00"	AtoD2="AtoD_AS00_NX"
++	AtoD3="AtoD_AS00"	AtoD4="AtoD_AS00_NX"
++	DtoA1="DtoA_AS000"	DtoA2="DtoA_AS000"
++	DtoA3="DtoA_AS000"	DtoA4="DtoA_AS000"
++       tswhl1=269ps		tswlh1=372ps
++       tswhl2=246ps		tswlh2=397ps
++       tswhl3=269ps		tswlh3=372ps
++       tswhl4=246ps		tswlh4=397ps
++	DIGPOWER="DIGIFPWR"	tpwrt=1.5ns
++	)
+*$
+.model IO_AS000_OC uio (
++	drvh=1MEG	drvl=18.0
++	AtoD1="AtoD_AS00"	AtoD2="AtoD_AS00_NX"
++	AtoD3="AtoD_AS00"	AtoD4="AtoD_AS00_NX"
++	DtoA1="DtoA_AS000_OC"	DtoA2="DtoA_AS000_OC"
++	DtoA3="DtoA_AS000_OC"	DtoA4="DtoA_AS000_OC"
++       tswhl1=269ps		tswlh1=372ps
++       tswhl2=246ps		tswlh2=397ps
++       tswhl3=269ps		tswlh3=372ps
++       tswhl4=246ps		tswlh4=397ps
++	DIGPOWER="DIGIFPWR"	tpwrt=1.5ns
++	)
+*$
+.model IO_AS000_ST uio (
++	drvh=13.7	drvl=18.0
++	AtoD1="AtoD_AS00_ST"	AtoD2="AtoD_AS00_ST"
++	AtoD3="AtoD_AS00_ST"	AtoD4="AtoD_AS00_ST"
++	DtoA1="DtoA_AS000"	DtoA2="DtoA_AS000"
++	DtoA3="DtoA_AS000"	DtoA4="DtoA_AS000"
++       tswhl1=269ps		tswlh1=372ps
++       tswhl2=246ps		tswlh2=397ps
++       tswhl3=269ps		tswlh3=372ps
++       tswhl4=246ps		tswlh4=397ps
++	DIGPOWER="DIGIFPWR"	tpwrt=1.5ns
++	)
+*$
+.model IO_AS000_OC_ST uio (
++	drvh=1MEG	drvl=18.0
++	AtoD1="AtoD_AS00_ST"	AtoD2="AtoD_AS00_ST"
++	AtoD3="AtoD_AS00_ST"	AtoD4="AtoD_AS00_ST"
++	DtoA1="DtoA_AS000_OC"	DtoA2="DtoA_AS000_OC"
++	DtoA3="DtoA_AS000_OC"	DtoA4="DtoA_AS000_OC"
++       tswhl1=269ps		tswlh1=372ps
++       tswhl2=246ps		tswlh2=397ps
++       tswhl3=269ps		tswlh3=372ps
++       tswhl4=246ps		tswlh4=397ps
++	DIGPOWER="DIGIFPWR"	tpwrt=1.5ns
++	)
+
+*$
+*-------------------------------------------------
+* 74AS00 Standard AtoD Subcircuits
+
+.subckt AtoD_AS00  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74AS00 DGTLNET=D IO_AS00
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1	1	2	D74
+D2      2       DGND	D74
+D3      3       1       D74
+D4      3       A       D74
+D5      1       a	D74S
+R1	DPWR	3	84k    ; 10K * (Hfe of Q1A + 1)
+.ends
+
+*$
+.subckt AtoD_AS00_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74AS00_NX DGTLNET=D IO_AS00
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1	1	2	D74
+D2      2       DGND	D74
+D3      3       1       D74
+D4      3       A       D74
+D5      1       a	D74S
+R1	DPWR	3	84k    ; 10K * (Hfe of Q1A + 1)
+.ends
+
+*$
+*-------------------------------------------------
+* 74AS00 Schmitt-trigger AtoD Subcircuits
+
+.subckt AtoD_AS00_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74AS00 DGTLNET=D IO_AS00
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1	1	2	D74
+D2      2       DGND	D74
+D3      3       1       D74
+D4      3       A       D74
+D5      1       a	D74S
+R1	DPWR	3	84k    ; 10K * (Hfe of Q1A + 1)
+.ends
+
+*$
+*-------------------------------------------------
+* 74AS00 Standard DtoA Subcircuit
+
+.subckt DtoA_AS00  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74AS00 DGTLNET=D IO_AS00
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74AS00 Open Collector DtoA Subcircuit
+
+.subckt DtoA_AS00_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74AS00_OC DGTLNET=D IO_AS00_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*-------------------------------------------------
+*$
+* 74AS1000 Standard DtoA Subcircuit
+
+.subckt DtoA_AS000  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74AS1000 DGTLNET=D IO_AS000
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74AS1000 Open Collector DtoA Subcircuit
+
+.subckt DtoA_AS000_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74AS1000_OC DGTLNET=D IO_AS000_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74AS00 Digital Input/Output Models
+
+.model DIN74AS00 dinput (
++	s0name="0"	s0tsw=0.6ns	s0rlo=8.28	s0rhi=337 ; 8.08ohm, 0.12v
++	s1name="1"	s1tsw=0.6ns	s1rlo=85.0	s1rhi=36.4 ; 25.5ohm, 3.50v
++	s2name="X"	s2tsw=0.6ns	s2rlo=20.5	s2rhi=47.8 ; 14.4ohm, 1.50v
++	s3name="R"	s3tsw=0.6ns	s3rlo=20.5	s3rhi=47.8 ; 14.4ohm, 1.50v
++	s4name="F"	s4tsw=0.6ns	s4rlo=20.5	s4rhi=47.8 ; 14.4ohm, 1.50v
++	s5name="Z"	s5tsw=0.6ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74AS00_OC dinput (
++	s0name="0"	s0tsw=0.6ns	s0rlo=8.28	s0rhi=337 ; 8.08ohm, 0.12v
++	s1name="1"	s1tsw=0.6ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=0.6ns	s2rlo=20.5	s2rhi=47.8 ; 14.4ohm, 1.50v
++	s3name="R"	s3tsw=0.6ns	s3rlo=20.5	s3rhi=47.8 ; 14.4ohm, 1.50v
++	s4name="F"	s4tsw=0.6ns	s4rlo=20.5	s4rhi=47.8 ; 14.4ohm, 1.50v
++	s5name="Z"	s5tsw=0.6ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DO74AS00 doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.55
++	s3name="R"	s3vlo=1.45      s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.45	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.55
++	)
+*$
+.model DO74AS00_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.5
++	s2name="1"	s2vlo=1.5	s2vhi=7.0
++	)
+*$
+.model DO74AS00_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.7
++	s1name="1"	s1vlo=0.9	s1vhi=7.0
++	)
+*$
+
+*-------------------------------------------------
+* 74AS1000 Digital Input/Output Models
+
+*$
+.model DIN74AS1000 dinput (
++	s0name="0"	s0tsw=0.6ns	s0rlo=3.89	s0rhi=158 ; 3.80ohm, 0.12v
++	s1name="1"	s1tsw=0.6ns	s1rlo=30.9	s1rhi=13.2 ; 9.26ohm, 3.50v
++	s2name="X"	s2tsw=0.6ns	s2rlo=8.47	s2rhi=19.8 ; 5.93ohm, 1.50v
++	s3name="R"	s3tsw=0.6ns	s3rlo=8.47	s3rhi=19.8 ; 5.93ohm, 1.50v
++	s4name="F"	s4tsw=0.6ns	s4rlo=8.47	s4rhi=19.8 ; 5.93ohm, 1.50v
++	s5name="Z"	s5tsw=0.6ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74AS1000_OC dinput (
++	s0name="0"	s0tsw=0.6ns	s0rlo=3.89	s0rhi=158 ; 3.80ohm, 0.12v
++	s1name="1"	s1tsw=0.6ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=0.6ns	s2rlo=8.47	s2rhi=19.8 ; 5.93ohm, 1.50v
++	s3name="R"	s3tsw=0.6ns	s3rlo=8.47	s3rhi=19.8 ; 5.93ohm, 1.50v
++	s4name="F"	s4tsw=0.6ns	s4rlo=8.47	s4rhi=19.8 ; 5.93ohm, 1.50v
++	s5name="Z"	s5tsw=0.6ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+
+
+******************************************************************************
+* 74/54F Family
+******************************************************************************
+
+*-------------------------------------------------
+* 74F I/O Models
+
+*$
+.model IO_F uio (
++	drvh=50		drvl=50
++	AtoD1="AtoD_F"		AtoD2="AtoD_F_NX"
++	AtoD3="AtoD_F"		AtoD4="AtoD_F_NX"
++	DtoA1="DtoA_F"		DtoA2="DtoA_F"
++	DtoA3="DtoA_F"		DtoA4="DtoA_F"
++       tswhl1=1.243ns		tswlh1=1.908ns
++       tswhl2=1.076ns		tswlh2=2.087ns
++       tswhl3=1.243ns		tswlh3=1.908ns
++       tswhl4=1.076ns		tswlh4=2.087ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_F_OC uio (
++	drvh=1MEG	drvl=50
++	AtoD1="AtoD_F"		AtoD2="AtoD_F_NX"
++	AtoD3="AtoD_F"		AtoD4="AtoD_F_NX"
++	DtoA1="DtoA_F_OC"	DtoA2="DtoA_F_OC"
++	DtoA3="DtoA_F_OC"	DtoA4="DtoA_F_OC"
++       tswhl1=2.387ns		tswlh1=0.910ns
++       tswhl2=2.315ns		tswlh2=1.023ns
++       tswhl3=2.387ns		tswlh3=0.910ns
++       tswhl4=2.315ns		tswlh4=1.023ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_F_ST uio (
++	drvh=50		drvl=50
++	AtoD1="AtoD_F_ST"	AtoD2="AtoD_F_ST"
++	AtoD3="AtoD_F_ST"	AtoD4="AtoD_F_ST"
++	DtoA1="DtoA_F"		DtoA2="DtoA_F"
++	DtoA3="DtoA_F"		DtoA4="DtoA_F"
++       tswhl1=1.243ns		tswlh1=1.908ns
++       tswhl2=1.076ns		tswlh2=2.087ns
++       tswhl3=1.243ns		tswlh3=1.908ns
++       tswhl4=1.076ns		tswlh4=2.087ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+
+*-------------------------------------------------
+* 74F00 Standard AtoD Subcircuits
+
+.subckt AtoD_F  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74F DGTLNET=D IO_F
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1      3       A       D74
+D2      3       1       D74
+D3	1	2	D74
+D4      2       DGND	D74
+R1	DPWR	3	10k
+.ends
+
+*$
+.subckt AtoD_F_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74F_NX DGTLNET=D IO_F
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1      3       A       D74
+D2      3       1       D74
+D3	1	2	D74
+D4      2       DGND	D74
+R1	DPWR	3	10k
+.ends
+*$
+
+*-------------------------------------------------
+* 74F Schmitt-trigger/buffer ('F244) Subcircuits
+
+.subckt AtoD_F_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74F_ST DGTLNET=D IO_F
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1      3       A       D74
+D2      3       1       D74
+D3	1	2	D74
+D4      2       DGND	D74
+R1	DPWR	3	4k
+.ends
+
+*$
+*-------------------------------------------------
+* 74F Standard DtoA Subcircuit
+
+.subckt DtoA_F  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74F DGTLNET=D IO_F
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74F Open Collector DtoA Subcircuit
+
+.subckt DtoA_F_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74F_OC DGTLNET=D IO_F_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74F Digital Input/Output Models
+
+.model DIN74F dinput (
++	s0name="0"	s0tsw=3ns	s0rlo=7.64	s0rhi=417 ; 7.5ohm,  0.09v
++	s1name="1"	s1tsw=3ns	s1rlo=167	s1rhi=71.4 ; 50ohm,   3.5v
++	s2name="X"	s2tsw=3ns	s2rlo=28.5	s2rhi=60.6 ; 19.4ohm, 1.60v
++	s3name="R"	s3tsw=3ns	s3rlo=28.5	s3rhi=60.6 ; 19.4ohm, 1.60v
++	s4name="F"	s4tsw=3ns	s4rlo=28.5	s4rhi=60.6 ; 19.4ohm, 1.60v
++	s5name="Z"	s5tsw=3ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74F_OC dinput (
++	s0name="0"	s0tsw=3ns	s0rlo=7.64	s0rhi=417 ; 7.5ohm,  0.09v
++	s1name="1"	s1tsw=3ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=3ns	s2rlo=28.5	s2rhi=60.6 ; 19.4ohm, 1.60v
++	s3name="R"	s3tsw=3ns	s3rlo=28.5	s3rhi=60.6 ; 19.4ohm, 1.60v
++	s4name="F"	s4tsw=3ns	s4rlo=28.5	s4rhi=60.6 ; 19.4ohm, 1.60v
++	s5name="Z"	s5tsw=3ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DO74F doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.65
++	s3name="R"	s3vlo=1.55	s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.55	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.65
++	)
+*$
+.model DO74F_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.6
++	s2name="1"	s2vlo=1.6	s2vhi=7.0
++	)
+*$
+.model DO74F_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.8
++	s1name="1"	s1vlo=1.4	s1vhi=7.0
++	)
+*$
+
+
+******************************************************************************
+* 74/54H Family
+******************************************************************************
+
+*-------------------------------------------------
+* 74H I/O Models
+
+*$
+.model IO_H uio (
++	drvh=45.0	drvl=57.6
++	AtoD1="AtoD_H"		AtoD2="AtoD_H_NX"
++	AtoD3="AtoD_H"		AtoD4="AtoD_H_NX"
++	DtoA1="DtoA_H"		DtoA2="DtoA_H"
++	DtoA3="DtoA_H"		DtoA4="DtoA_H"
++       tswhl1=1.325ns		tswlh1=1.988ns
++       tswhl2=1.302ns		tswlh2=2.014ns
++       tswhl3=1.325ns		tswlh3=1.988ns
++       tswhl4=1.302ns		tswlh4=2.014ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_H_OC uio (
++	drvh=1MEG	drvl=57.6
++	AtoD1="AtoD_H"		AtoD2="AtoD_H_NX"
++	AtoD3="AtoD_H"		AtoD4="AtoD_H_NX"
++	DtoA1="DtoA_H_OC"	DtoA2="DtoA_H_OC"
++	DtoA3="DtoA_H_OC"	DtoA4="DtoA_H_OC"
++       tswhl1=2.376ns		tswlh1=0.948ns
++       tswhl2=2.364ns		tswlh2=0.958ns
++       tswhl3=2.376ns		tswlh3=0.948ns
++       tswhl4=2.364ns		tswlh4=0.958ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_H_ST uio (
++	drvh=45.0	drvl=57.6
++	AtoD1="AtoD_H_ST"	AtoD2="AtoD_H_ST"
++	AtoD3="AtoD_H_ST"	AtoD4="AtoD_H_ST"
++	DtoA1="DtoA_H"		DtoA2="DtoA_H"
++	DtoA3="DtoA_H"		DtoA4="DtoA_H"
++       tswhl1=1.325ns		tswlh1=1.988ns
++       tswhl2=1.302ns		tswlh2=2.014ns
++       tswhl3=1.325ns		tswlh3=1.988ns
++       tswhl4=1.302ns		tswlh4=2.014ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+
+*-------------------------------------------------
+* 74H00 Standard AtoD Subcircuits
+
+*$
+.subckt AtoD_H  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74H DGTLNET=D IO_H
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74CLMP
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	2.8k
+Q1      1       3       A       0	Q74
+.ends
+*$
+
+.subckt AtoD_H_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74H_NX DGTLNET=D IO_H
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74CLMP
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	2.8k
+Q1      1       3       A       0	Q74
+.ends
+
+*$
+*-------------------------------------------------
+* 74H Schmitt-trigger AtoD Subcircuits
+
+.subckt AtoD_H_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74H_ST DGTLNET=D IO_H
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74CLMP
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	2.8k
+Q1      1       3       A       0	Q74
+.ends
+
+*$
+*-------------------------------------------------
+* 74H Standard DtoA Subcircuit
+
+.subckt DtoA_H  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74H DGTLNET=D IO_H
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74H Open Collector DtoA Subcircuit
+
+.subckt DtoA_H_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74H_OC DGTLNET=D IO_H_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74H Digital Input/Output Models
+*
+* The H series uses the same parameters as the 7400 series, because 
+* no published data could be found on output I-V characteristics.
+*
+.model DIN74H dinput (
++	s0name="0"	s0tsw=3ns	s0rlo=7.13	s0rhi=389 ; 7ohm,    0.09v
++	s1name="1"	s1tsw=3ns	s1rlo=467	s1rhi=200 ; 140ohm,  3.5v
++	s2name="X"	s2tsw=3ns	s2rlo=42.9	s2rhi=116 ; 31.3ohm, 1.35v
++	s3name="R"	s3tsw=3ns	s3rlo=42.9	s3rhi=116 ; 31.3ohm, 1.35v
++	s4name="F"	s4tsw=3ns	s4rlo=42.9	s4rhi=116 ; 31.3ohm, 1.35v
++	s5name="Z"	s5tsw=3ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74H_OC dinput (
++	s0name="0"	s0tsw=3ns	s0rlo=7.13	s0rhi=389 ; 7ohm,    0.09v
++	s1name="1"	s1tsw=3ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=3ns	s2rlo=42.9	s2rhi=116 ; 31.3ohm, 1.35v
++	s3name="R"	s3tsw=3ns	s3rlo=42.9	s3rhi=116 ; 31.3ohm, 1.35v
++	s4name="F"	s4tsw=3ns	s4rlo=42.9	s4rhi=116 ; 31.3ohm, 1.35v
++	s5name="Z"	s5tsw=3ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DO74H doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.4
++	s3name="R"	s3vlo=1.3	s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.3	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.4
++	)
+*$
+.model DO74H_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.35
++	s2name="1"	s2vlo=1.35	s2vhi=7.0
++	)
+*$
+.model DO74H_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.7
++	s1name="1"	s1vlo=0.9	s1vhi=7.0
++	)
+*$
+
+
+
+******************************************************************************
+* 74/54HC and HCT Family
+******************************************************************************
+
+*-------------------------------------------------
+* 74HC I/O Models
+*$
+.model IO_HC uio (
++	drvh=87	                drvl=87
++	inld=3.5pF
++	AtoD1="AtoD_HC"	        AtoD2="AtoD_HC_NX"
++	AtoD3="AtoD_HC"		AtoD4="AtoD_HC_NX"
++	DtoA1="DtoA_HC"	        DtoA2="DtoA_HC"
++	DtoA3="DtoA_HC_E"	DtoA4="DtoA_HC_E"
++       tswhl1=2.742ns		tswlh1=2.758ns
++       tswhl2=2.742ns		tswlh2=2.758ns
++       tswhl3=2.751ns		tswlh3=2.763ns
++       tswhl4=2.751ns		tswlh4=2.763ns
++	DIGPOWER="DIGIFPWR"	tpwrt=2ns
++	)
+*$
+.model IO_HC_OC uio (
++	drvh=1MEG	        drvl=87
++	inld=3.5pF
++	AtoD1="AtoD_HC"	        AtoD2="AtoD_HC_NX"
++	AtoD3="AtoD_HC"		AtoD4="AtoD_HC_NX"
++	DtoA1="DtoA_HC_OC"	DtoA2="DtoA_HC_OC"
++	DtoA3="DtoA_HC_OC_E"	DtoA4="DtoA_HC_OC_E"
++       tswhl1=2.811ns		tswlh1=4.582ns
++       tswhl2=2.811ns		tswlh2=4.582ns
++       tswhl3=2.805ns		tswlh3=4.589ns
++       tswhl4=2.805ns		tswlh4=4.589ns
++	DIGPOWER="DIGIFPWR"	tpwrt=2ns
++	)
+*$
+.model IO_HC_BUS uio (
++	drvh=57	                drvl=57
++	inld=3.5pF		outld=6pF
++	AtoD1="AtoD_HC"		AtoD2="AtoD_HC_NX"
++	AtoD3="AtoD_HC"		AtoD4="AtoD_HC_NX"
++	DtoA1="DtoA_HC_BUS"	DtoA2="DtoA_HC_BUS"
++	DtoA3="DtoA_HC_BUS_E"	DtoA4="DtoA_HC_BUS_E"
++       tswhl1=2.954ns		tswlh1=3.039ns
++       tswhl2=2.954ns		tswlh2=3.039ns
++       tswhl3=2.947ns		tswlh3=2.964ns
++       tswhl4=2.947ns		tswlh4=2.964ns
++	DIGPOWER="DIGIFPWR"	tpwrt=2ns
++	)
+*$
+.model IO_HC_ST uio (
++	drvh=87	                drvl=87
++	inld=3.5pF
++	AtoD1="AtoD_HC_ST"	AtoD2="AtoD_HC_ST"
++	AtoD3="AtoD_HC_ST"	AtoD4="AtoD_HC_ST"
++	DtoA1="DtoA_HC"	        DtoA2="DtoA_HC"
++	DtoA3="DtoA_HC_E"	DtoA4="DtoA_HC_E"
++       tswhl1=2.742ns		tswlh1=2.758ns
++       tswhl2=2.742ns		tswlh2=2.758ns
++       tswhl3=2.751ns		tswlh3=2.763ns
++       tswhl4=2.751ns		tswlh4=2.763ns
++	DIGPOWER="DIGIFPWR"	tpwrt=2ns
++	)
+*
+* Note:
+*   The above Tsw times were measured at Vcc=5.0V, driving a single input.
+*   The Tsw times in the IO_HC_OC model were measured with an additional 
+*   1K pullup on the output.
+*
+
+*$
+*-------------------------------------------------
+* 74HCT I/O Models
+*
+* Note: The output stage is the same as the HC series, so the 
+*	HC DtoA is used.  Because the power supply range is limited,
+*	only simple (5v) models are used on the output.
+
+.model IO_HCT uio (
++	drvh=87	                drvl=87
++	AtoD1="AtoD_HCT"	AtoD2="AtoD_HCT_NX"
++	AtoD3="AtoD_HCT"	AtoD4="AtoD_HCT_NX"
++	DtoA1="DtoA_HC"	        DtoA2="DtoA_HC"
++	DtoA3="DtoA_HC"		DtoA4="DtoA_HC"
++       tswhl1=2.742ns		tswlh1=2.758ns
++       tswhl2=2.742ns		tswlh2=2.758ns
++       tswhl3=2.742ns		tswlh3=2.758ns
++       tswhl4=2.742ns		tswlh4=2.758ns
++	DIGPOWER="DIGIFPWR"	tpwrt=3.5ns
++	)
+*$
+.model IO_HCT_OC uio (
++	drvh=1MEG		drvl=87
++	AtoD1="AtoD_HCT"	AtoD2="AtoD_HCT_NX"
++	AtoD3="AtoD_HCT"	AtoD4="AtoD_HCT_NX"
++	DtoA1="DtoA_HC_OC"	DtoA2="DtoA_HC_OC"
++	DtoA3="DtoA_HC_OC"	DtoA4="DtoA_HC_OC"
++       tswhl1=2.811ns		tswlh1=4.582ns
++       tswhl2=2.811ns		tswlh2=4.582ns
++       tswhl3=2.811ns		tswlh3=4.582ns
++       tswhl4=2.811ns		tswlh4=4.582ns
++	DIGPOWER="DIGIFPWR"	tpwrt=3.5ns
++	)
+*$
+.model IO_HCT_BUS uio (
++	drvh=57	                drvl=57
++	AtoD1="AtoD_HCT"	AtoD2="AtoD_HCT_NX"
++	AtoD3="AtoD_HCT"	AtoD4="AtoD_HCT_NX"
++	DtoA1="DtoA_HC_BUS"	DtoA2="DtoA_HC_BUS"
++	DtoA3="DtoA_HC_BUS"	DtoA4="DtoA_HC_BUS"
++       tswhl1=2.954ns		tswlh1=3.039ns
++       tswhl2=2.954ns		tswlh2=3.039ns
++       tswhl3=2.954ns		tswlh3=3.039ns
++       tswhl4=2.954ns		tswlh4=3.039ns
++	DIGPOWER="DIGIFPWR"	tpwrt=3.5ns
++	)
+*$
+.model IO_HCT_ST uio (
++	drvh=87	                drvl=87
++	AtoD1="AtoD_HCT_ST"	AtoD2="AtoD_HCT_ST"
++	AtoD3="AtoD_HCT_ST"	AtoD4="AtoD_HCT_ST"
++	DtoA1="DtoA_HC"	        DtoA2="DtoA_HC"
++	DtoA3="DtoA_HC"		DtoA4="DtoA_HC"
++       tswhl1=2.742ns		tswlh1=2.758ns
++       tswhl2=2.742ns		tswlh2=2.758ns
++       tswhl3=2.742ns		tswlh3=2.758ns
++       tswhl4=2.742ns		tswlh4=2.758ns
++	DIGPOWER="DIGIFPWR"	tpwrt=3.5ns
++	)
+
+*$
+*-------------------------------------------------
+* 74HC AtoD Subcircuits
+
+*
+* 74HC Standard Input
+*
+.subckt AtoD_HC  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+C1  A DGND {CAPACITANCE+0.01pF}
+X1  DGND A    HC_CLAMP
+X2  A    DPWR HC_CLAMP
+ENORM NORM DGND VALUE={V(A,DGND)/(V(DPWR,DGND)+1U)}
+O0  NORM DGND DO74HC DGTLNET=D IO_HC
+.ends
+*$
+
+*
+* 74HC Standard Input W/O Intermediate Levels
+*
+.subckt AtoD_HC_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+C1  A DGND {CAPACITANCE+0.01pF}
+X1  DGND A    HC_CLAMP
+X2  A    DPWR HC_CLAMP
+ENORM NORM DGND VALUE={V(A,DGND)/(V(DPWR,DGND)+1U)}
+O0  NORM DGND DO74HC_NX DGTLNET=D IO_HC
+.ends
+*$
+
+*
+* 74HC Schmitt-trigger Input
+*
+.subckt AtoD_HC_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+C1  A DGND {CAPACITANCE+0.01pF}
+X1  DGND A    HC_CLAMP
+X2  A    DPWR HC_CLAMP
+ENORM NORM DGND VALUE={V(A,DGND)/(V(DPWR,DGND)+1U)}
+O0  NORM DGND DO74HC_ST DGTLNET=D IO_HC
+.ends
+*$
+
+*-------------------------------------------------
+* 74HCT AtoD Subcircuits
+
+*
+* 74HCT Standard Input
+*
+.subckt AtoD_HCT  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+C1  A DGND {CAPACITANCE+0.01pF}
+X1  DGND A    HC_CLAMP
+X2  A    DPWR HC_CLAMP
+O0  A DGND DO74HCT DGTLNET=D IO_HCT
+.ends
+
+*$
+*
+* 74HCT Standard Input W/O Intermediate Levels
+*
+.subckt AtoD_HCT_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+C1  A DGND {CAPACITANCE+0.01pF}
+X1  DGND A    HC_CLAMP
+X2  A    DPWR HC_CLAMP
+O0  A DGND DO74HCT_NX DGTLNET=D IO_HCT
+.ends
+
+*$
+*
+* 74HCT Schmitt-trigger Input
+*
+.subckt AtoD_HCT_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+C1  A DGND {CAPACITANCE+0.01pF}
+X1  DGND A    HC_CLAMP
+X2  A    DPWR HC_CLAMP
+O0  A DGND DO74HCT_ST DGTLNET=D IO_HCT
+.ends
+
+*$
+*
+* HC Clamp Model
+*
+.subckt HC_Clamp A C
+G_Clamp  A C TABLE { V(A,C) } 
++ 0.0, 1nA
++ 0.5, 1uA
++ 5.5, 1A
+.ends			      
+
+*$
+*-------------------------------------------------
+* 74HC DtoA Subcircuits
+
+*
+* 74HC Standard Output, Simple Model
+*
+* This DtoA interface models the hi- and lo-level I-V curves for a standard
+* output at VCC=4.5V. For accurate currents at other supply voltages, or 
+* for temperature effects, use the "elaborate" model (below) by specifying 
+* IOLEVEL 3 or 4.
+*
+* The I-V curves were taken from
+*
+*  High Speed CMOS PC74HC/HCT/HCU Logic Family Book, 1991
+*  Philips Semiconductors, pp. 56-58
+*
+* Typical values at 25 deg. C were used.
+*
+* Changes:
+*   rbh - 06/01/93 - Handle different VCC; update clamps
+*
+.subckt DtoA_HC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+G_OH  DPWR DPWR_OH
++ TABLE {V(DPWR_OH,DPWR) }
++       -7.0,  45mA,
++       -3.5,  41mA,
++	-2.0,  33mA,
++       -1.0,  20mA,
++          0,   0,
++        1.5, -35mA
+X1  A    DPWR HC_CLAMP
+ROH DPWR DPWR_OH 100meg
+
+G_OL  DGND_OL DGND 
++  TABLE { V(DGND_OL,DGND) }
++       -1.0,  -23mA, 
++        0,     0,
++        1.0,   23mA,
++        1.5,   30mA,
++        2.5,   36mA,
++        5.0,   37mA
+X2  DGND A    HC_CLAMP
+ROL DGND DGND_OL 100MEG
+
+N1  A DGND_OL DPWR_OH DIN74HC DGTLNET=D IO_HC_DTOA
+C1  A DGND {CAPACITANCE+0.01pF}
+R1  A DGND 1G
+.ends
+
+
+*$
+*
+* 74HC Standard Output, Elaborate Model
+*
+* This DtoA interface models the legal range of supply voltages (2.0v-6.0v)
+* as well as temperature effects on output current.  Because of its 
+* complexity, the evaluation time of this model is about 3x the simple model.
+*
+* The I-V and temperature derating curves were derived from
+*
+*  High Speed CMOS PC74HC/HCT/HCU Logic Family Book, 1991
+*  Philips Semiconductors, pp. 56-58
+*
+* Typical values were used in all curves.
+*
+.subckt DtoA_HC_E  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+G_OH  DPWR DPWR_OH
++ VALUE = { 
++   TABLE( V(DPWR,DGND),
++     2.0, TABLE( V(DPWR_OH,DGND), ; VCC=2
++       -1.0,   7.6mA,
++        0,     7.2mA,
++        0.8,   6.6mA,
++        1.4,   5.0mA,
++        2.0,   0.0mA,  ; Remaining values extrapolated from 4.5v
++        2.5,  -8.25mA,
++        3.0, -17.67mA,
++        3.5, -30.0mA,
++        4.5, -50.0mA
++       ),
++     4.5, TABLE( V(DPWR_OH,DGND), ; VCC=4.5
++       -1.0,  45mA,
++        1.0,  41mA,
++        2.5,  33mA,
++        3.5,  20mA,
++        4.5,   0,
++        6.0, -35mA
++        ),
++     6.0, TABLE( V(DPWR_OH,DGND), ; VCC=6.0
++       -1.0,  69mA,
++        1.0,  67mA,
++        2.5,  62mA,
++        4.5,  35mA,
++        6.0,   0,
++        7.0, -25mA
++        )
++     ) * TABLE( TEMP, -50, 1.3, 25, 1, 125, 0.7)
++   }
+X1  A    DPWR HC_CLAMP
+ROH DPWR DPWR_OH 100meg
+
+G_OL  DGND_OL DGND 
++ VALUE = { 
++   TABLE( V(DPWR,DGND),
++     2.0, TABLE( V(DGND_OL,DGND), ; VCC=2
++         -0.5,  -5mA, 
++          0,     0,
++          0.4,   4mA,
++          0.8,   5.6mA,
++          1.2,   6mA,
++          2.5,   6.5mA
++         ),
++     4.5, TABLE( V(DGND_OL,DGND), ; VCC=4.5
++         -1.0,  -23mA, 
++          0,     0,
++          1.0,   23mA,
++          1.5,   30mA,
++          2.5,   36mA,
++          5.0,   37mA
++         ),
++     6.0, TABLE( V(DGND_OL,DGND), ; VCC=6.0
++         -1.0,  -30mA, 
++          0,     0,
++          1.0,   30mA,
++          2.0,   47mA,
++          3.5,   57mA,
++          6.5,   59mA
++         )
++    ) * TABLE( TEMP, -50, 1.3, 25, 1, 125, 0.7)
++   }
+X2  DGND A    HC_CLAMP
+ROL DGND DGND_OL 100MEG
+
+N1  A DGND_OL DPWR_OH DIN74HC DGTLNET=D IO_HC_DTOA
+C1  A DGND {CAPACITANCE+0.01pF}
+R1  A DGND 1G
+.ends
+
+*$
+*
+* 74HC Bus Output, Simple Model
+*
+* This DtoA interface models the hi- and lo-level I-V curves for a bus
+* output at VCC=4.5V. For accurate currents at other supply voltages, or 
+* for temperature effects, use the "elaborate" model (below) by specifying 
+* IOLEVEL 3 or 4.
+*
+* The I-V curves were taken from
+*
+*  High Speed CMOS PC74HC/HCT/HCU Logic Family Book, 1991
+*  Philips Semiconductors, pp. 56-58
+*
+* Typical values at 25 deg. C were used.
+*
+* Changes:
+*   rbh - 06/01/93 - Handle different VCC; update clamps
+*
+.subckt DtoA_HC_BUS  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+G_OH  DPWR DPWR_OH
++ TABLE { V(DPWR_OH,DPWR) }
++       -7.0,  70mA,
++       -3.5,  63mA,
++       -2.0,  49mA,
++	-1.0,  30mA
++        0.0,   0,
++        1.5, -54mA
+X1  A    DPWR HC_CLAMP
+ROH DPWR DPWR_OH 100meg
+
+G_OL  DGND_OL DGND 
++  table { V(DGND_OL,DGND) }
++      -1.0,  -34mA, 
++       0,      0,
++       1.0,   34mA,
++       1.5,   44mA,
++       2.5,   53mA,
++       7.0,   57mA,
+X2  DGND A    HC_CLAMP
+ROL DGND DGND_OL 100MEG
+
+N1  A DGND_OL DPWR_OH DIN74HC DGTLNET=D IO_HC_DTOA
+C1  A DGND {CAPACITANCE+0.01pF}
+R1  A DGND 1G
+.ends
+
+*$
+*
+* 74HC Bus Output, Elaborate Model
+*
+* This DtoA interface models the valid range of supply voltages (2.0v-6.0v)
+* as well as temperature effects on output current.  Because of its 
+* complexity, the evaluation time of this model is about 3x the simple model.
+*
+* The I-V and temperature derating curves were derived from
+*
+*  High Speed CMOS PC74HC/HCT/HCU Logic Family Book, 1991
+*  Philips Semiconductors, pp. 56-58
+*
+* Typical values were used in all curves.
+*
+.subckt DtoA_HC_BUS_E  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+G_OH  DPWR DPWR_OH
++ VALUE = { 
++   TABLE( V(DPWR,DGND),
++     2.0, TABLE( V(DPWR_OH,DGND), ; VCC=2
++       -1.0,  11.5mA,
++        0,    10.5mA,
++        0.8,  10.0mA,
++        1.4,   7.4mA,
++        2.0,   0A,    ; Remaining values extrapolated from 4.5v
++        2.5, -12.0mA, 
++        3.0, -26.3mA,
++        3.5, -45.0mA,
++        4.5, -75.0mA
++       ),
++     4.5, TABLE( V(DPWR_OH,DGND), ; VCC=4.5
++       -1.0,  70mA,
++        1.0,  63mA,
++        2.5,  49mA,
++        3.5,  30mA,
++        4.5,   0A,
++        6.0, -54mA
++        ),
++     6.0, TABLE( V(DPWR_OH,DGND), ; VCC=6.0
++       -1.0, 110mA,
++        1.5, 100mA,
++        3.0,  85mA,
++        4.5,  54mA,
++        6.0,   0A,
++        7.0, -40mA
++        )
++     ) * TABLE( TEMP, -50, 1.3, 25, 1, 125, 0.7)
++   }
+X1  A    DPWR HC_CLAMP
+ROH DPWR DPWR_OH 100meg
+
+G_OL  DGND_OL DGND 
++ VALUE = { 
++   TABLE( V(DPWR,DGND),
++     2.0, TABLE( V(DGND_OL,DGND), ; VCC=2
++         -1.0,  -16mA, 
++          0,     0,
++          0.4,   6mA,
++          0.8,   8.4mA,
++          1.2,   9.1mA,
++          2.5,   9.9mA
++         ),
++     4.5, TABLE( V(DGND_OL,DGND), ; VCC=4.5
++         -1.0,  -34mA, 
++          0,     0,
++          1.0,   34mA,
++          1.5,   44mA,
++          2.5,   53mA,
++          5.0,   56mA
++         ),
++     6.0, TABLE( V(DGND_OL,DGND), ; VCC=6.0
++         -1.0,  -44mA, 
++          0,     0,
++          1.0,   44mA,
++          2.0,   72mA,
++          3.5,   86mA,
++          6.5,   89mA
++         )
++    ) * TABLE( TEMP, -50, 1.3, 25, 1, 125, 0.7)
++   }
+X2  DGND A    HC_CLAMP
+ROL DGND DGND_OL 100MEG
+
+N1  A DGND_OL DPWR_OH DIN74HC DGTLNET=D IO_HC_DTOA
+C1  A DGND {CAPACITANCE+0.01pF}
+R1  A DGND 1G
+.ends
+
+*$
+*
+* 74HC Open-Drain Output, Simple Model
+*
+* This DtoA interface models the hi- and lo-level I-V curves for an open-
+* drain output at VCC=4.5V. For accurate currents at other supply voltages,
+* or for temperature effects, use the "elaborate" model (below) by specifying 
+* IOLEVEL 3 or 4.
+*
+* The I-V curves were taken from
+*
+*  High Speed CMOS PC74HC/HCT/HCU Logic Family Book, 1991
+*  Philips Semiconductors, pp. 56-58
+*
+* Typical values at 25 deg. C were used.
+*
+* Changes:
+*   rbh - 06/01/93 - Handle different VCC; update clamps
+*
+.subckt DtoA_HC_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+G_OL  DGND_OL DGND 
++  TABLE { V(DGND_OL,DGND) }
++       -1.0,  -23mA, 
++        0,     0,
++        1.0,   23mA,
++        1.5,   30mA,
++        2.5,   36mA,
++        5.0,   37mA
+X2  DGND A    HC_CLAMP
+ROL DGND DGND_OL 100MEG
+
+N1  A DGND_OL DPWR DIN74HC_OC DGTLNET=D IO_HC_DTOA
+C1  A DGND {CAPACITANCE+0.01pF}
+R1  A DGND 1G
+.ends
+
+*$
+*
+* 74HC Open-Drain Output, Elaborate Model
+*
+* This DtoA interface models the hi- and lo-level I-V curves for an open-
+* drain output accros the valid range of supply voltages (2.0V to 6.0V), as
+* well as temperature effects on the output current.
+*
+* The I-V and temperature derating curves were derived from
+*
+*  High Speed CMOS PC74HC/HCT/HCU Logic Family Book, 1991
+*  Philips Semiconductors, pp. 56-58
+*
+* Typical values were used in all curves.
+*
+.subckt DtoA_HC_OC_E  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+G_OL  DGND_OL DGND 
++ VALUE = { 
++   TABLE( V(DPWR,DGND),
++     2.0, TABLE( V(DGND_OL,DGND), ; VCC=2
++         -0.5,  -5mA, 
++          0,     0,
++          0.4,   4mA,
++          0.8,   5.6mA,
++          1.2,   6mA,
++          2.5,   6.5mA
++         ),
++     4.5, TABLE( V(DGND_OL,DGND), ; VCC=4.5
++         -1.0,  -23mA, 
++          0,     0,
++          1.0,   23mA,
++          1.5,   30mA,
++          2.5,   36mA,
++          5.0,   37mA
++         ),
++     6.0, TABLE( V(DGND_OL,DGND), ; VCC=6.0
++         -1.0,  -30mA, 
++          0,     0,
++          1.0,   30mA,
++          2.0,   47mA,
++          3.5,   57mA,
++          6.5,   59mA
++         )
++    ) * TABLE( TEMP, -50, 1.3, 25, 1, 125, 0.7)
++   }
+X2  DGND A    HC_CLAMP
+ROL DGND DGND_OL 100MEG
+
+N1  A DGND_OL DPWR DIN74HC_OC DGTLNET=D IO_HC_DTOA
+C1  A DGND {CAPACITANCE+0.01pF}
+R1  A DGND 1G
+.ends
+
+.model IO_HC_DTOA uio ()
+
+*$
+*-------------------------------------------------
+* 74HC Digital Input/Output Models
+
+.model DIN74HC dinput (
++	s0name="0"	s0tsw=5.0ns	s0rlo=1		s0rhi=100K
++	s1name="1"	s1tsw=5.0ns	s1rlo=100K	s1rhi=1
++	s2name="X"	s2tsw=5.0ns	s2rlo=110	s2rhi=100
++	s3name="R"	s3tsw=5.0ns	s3rlo=110	s3rhi=100
++	s4name="F"	s4tsw=5.0ns	s4rlo=110	s4rhi=100
++	s5name="Z"	s5tsw=5.0ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74HC_OC dinput (
++	s0name="0"	s0tsw=5.0ns	s0rlo=1		s0rhi=100K
++	s1name="1"	s1tsw=5.0ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=5.0ns	s2rlo=110	s2rhi=100
++	s3name="R"	s3tsw=5.0ns	s3rlo=110	s3rhi=100
++	s4name="F"	s4tsw=5.0ns	s4rlo=110	s4rhi=100
++	s5name="Z"	s5tsw=5.0ns	s5rlo=200K	s5rhi=200K
++	)
+
+*$
+*
+* Input voltage thresholds are normalized to unit Vcc.  Values are
+* derived from:
+* 
+*   High Speed CMOS Logic Data Book, Texas Instruments, 1989 pp 4-42,4-43
+*
+* Because the input voltages are normalized, the minimum/maximum voltages
+* will vary with supply voltage.  For example, at VCC=5.0, the minimum input
+* voltage is -1.5V, but at 2.0V, the minimum is -0.6V.
+* 
+*$
+.model DO74HC doutput (
++	s0name="X"	s0vlo=0.2	s0vhi=0.7
++	s1name="0"	s1vlo=-0.3	s1vhi=0.2
++	s2name="R"	s2vlo=0.2	s2vhi=0.55
++	s3name="R"	s3vlo=0.45	s3vhi=0.7
++	s4name="X"	s4vlo=0.2	s4vhi=0.7
++	s5name="1"	s5vlo=0.7	s5vhi=1.3
++	s6name="F"	s6vlo=0.45	s6vhi=0.7
++	s7name="F"	s7vlo=0.2	s7vhi=0.55
++	)
+*$
+.model DO74HC_NX doutput (
++	s0name="0"	s0vlo=-1.3	s0vhi=0.5
++	s2name="1"	s2vlo=0.5	s2vhi=1.3
++	)
+*$
+.model DO74HC_ST doutput (
++	s0name="0"	s0vlo=-1.3	s0vhi=0.55
++	s1name="1"	s1vlo=0.33	s1vhi=1.3
++	)
+*$
+
+*-------------------------------------------------
+* 74HCT Digital Input/Output Models
+
+.model DO74HCT doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.55
++	s3name="R"	s3vlo=1.45	s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.45	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.55
++	)
+*$
+.model DO74HCT_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.5
++	s2name="1"	s2vlo=1.5	s2vhi=7.0
++	)
+*$
+.model DO74HCT_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.7
++	s1name="1"	s1vlo=0.9	s1vhi=7.0
++	)
+*$
+
+******************************************************************************
+* 74/54L Family
+******************************************************************************
+
+*-------------------------------------------------
+* 74L I/O Models
+
+*$
+.model IO_L uio (
++	drvh=381.	drvl=169.
++	AtoD1="AtoD_L"		AtoD2="AtoD_L_NX"
++	AtoD3="AtoD_L"		AtoD4="AtoD_L_NX"
++	DtoA1="DtoA_L"		DtoA2="DtoA_L"
++	DtoA3="DtoA_L"		DtoA4="DtoA_L"
++       tswhl1=6.31ns		tswlh1=10.46ns
++       tswhl2=6.47ns		tswlh2=10.27ns
++       tswhl3=6.31ns		tswlh3=10.46ns
++       tswhl4=6.47ns		tswlh4=10.27ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_L_OC uio (
++	drvh=1MEG	drvl=169.
++	AtoD1="AtoD_L"		AtoD2="AtoD_L_NX"
++	AtoD3="AtoD_L"		AtoD4="AtoD_L_NX"
++	DtoA1="DtoA_L_OC"	DtoA2="DtoA_L_OC"
++	DtoA3="DtoA_L_OC"	DtoA4="DtoA_L_OC"
++       tswhl1=11.30ns		tswlh1=4.42ns
++       tswhl2=11.39ns		tswlh2=4.28ns
++       tswhl3=11.30ns		tswlh3=4.42ns
++       tswhl4=11.39ns		tswlh4=4.28ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_L_ST uio (
++	drvh=381.	drvl=169.
++	AtoD1="AtoD_L_ST"	AtoD2="AtoD_L_ST"
++	AtoD3="AtoD_L_ST"	AtoD4="AtoD_L_ST"
++	DtoA1="DtoA_L"		DtoA2="DtoA_L"
++	DtoA3="DtoA_L"		DtoA4="DtoA_L"
++       tswhl1=6.31ns		tswlh1=10.46ns
++       tswhl2=6.47ns		tswlh2=10.27ns
++       tswhl3=6.31ns		tswlh3=10.46ns
++       tswhl4=6.47ns		tswlh4=10.27ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+
+*-------------------------------------------------
+* 74L Standard AtoD Subcircuits
+
+.subckt AtoD_L  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74L DGTLNET=D IO_L
+C1  A DGND {CAPACITANCE+0.1pF}
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	40k
+Q1      1       3       A       0	Q74
+.ends
+*$
+.subckt AtoD_L_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74L_NX DGTLNET=D IO_L
+C1  A DGND {CAPACITANCE+0.1pF}
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	40k
+Q1      1       3       A       0	Q74
+.ends
+
+*$
+*-------------------------------------------------
+* 74L Schmitt-trigger AtoD Subcircuits
+
+.subckt AtoD_L_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74L_ST DGTLNET=D IO_L
+C1  A DGND {CAPACITANCE+0.1pF}
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	40k
+Q1      1       3       A       0	Q74
+.ends
+
+*$
+*-------------------------------------------------
+* 74L Standard DtoA Subcircuit
+
+.subckt DtoA_L  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74L DGTLNET=D IO_L
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74L Open Collector DtoA Subcircuit
+
+.subckt DtoA_L_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74L_OC DGTLNET=D IO_L_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74L Digital Input/Output Models
+
+.model DIN74L dinput (
++	s0name="0"	s0tsw=15ns	s0rlo=31.6	s0rhi=3130 ; 31.3ohm, 0.05v
++	s1name="1"	s1tsw=17ns	s1rlo=3130	s1rhi=781 ; 625ohm,  4.00v
++	s2name="X"	s2tsw=15ns	s2rlo=186	s2rhi=559 ; 140ohm,  1.25v
++	s3name="R"	s3tsw=15ns	s3rlo=186	s3rhi=559 ; 140ohm,  1.25v
++	s4name="F"	s4tsw=15ns	s4rlo=186	s4rhi=559 ; 140ohm,  1.25v
++	s5name="Z"	s5tsw=15ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74L_OC dinput (
++	s0name="0"	s0tsw=15ns	s0rlo=31.6	s0rhi=3130 ; 31.3ohm, 0.05v
++	s1name="1"	s1tsw=15ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=15ns	s2rlo=186	s2rhi=559 ; 140ohm,  1.25v
++	s3name="R"	s3tsw=15ns	s3rlo=186	s3rhi=559 ; 140ohm,  1.25v
++	s4name="F"	s4tsw=15ns	s4rlo=186	s4rhi=559 ; 140ohm,  1.25v
++	s5name="Z"	s5tsw=15ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DO74L doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.3
++	s3name="R"	s3vlo=1.2	s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.2	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.3
++	)
+*$
+.model DO74L_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.25
++	s2name="1"	s2vlo=1.25	s2vhi=7.0
++	)
+*$
+.model DO74L_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.7
++	s1name="1"	s1vlo=0.9	s1vhi=7.0
++	)
+*$
+
+******************************************************************************
+* 74/54LS Family
+******************************************************************************
+
+*-------------------------------------------------
+* 74LS I/O Models
+
+.model IO_LS uio (
++	drvh=108.		drvl=157.
++	AtoD1="AtoD_LS"		AtoD2="AtoD_LS_NX"
++	AtoD3="AtoD_LS"		AtoD4="AtoD_LS_NX"
++	DtoA1="DtoA_LS"		DtoA2="DtoA_LS"
++	DtoA3="DtoA_LS"		DtoA4="DtoA_LS"
++	tswhl1=2.724ns		tswlh1=2.104ns
++	tswhl2=2.724ns		tswlh2=2.104ns
++	tswhl3=2.724ns		tswlh3=2.104ns
++	tswhl4=2.724ns		tswlh4=2.104ns
++	DIGPOWER="DIGIFPWR"
++	)
+
+*$
+.model IO_LS_OC uio (
++	drvh=1MEG		drvl=157.
++	AtoD1="AtoD_LS"		AtoD2="AtoD_LS_NX"
++	AtoD3="AtoD_LS"		AtoD4="AtoD_LS_NX"
++	DtoA1="DtoA_LS_OC"	DtoA2="DtoA_LS_OC"
++	DtoA3="DtoA_LS_OC"	DtoA4="DtoA_LS_OC"
+* Open collector Tsw measured with 1K pullup
++	tswhl1=2.800ns		tswlh1=2.052ns
++	tswhl2=2.800ns		tswlh2=2.052ns
++	tswhl3=2.800ns		tswlh3=2.052ns
++	tswhl4=2.800ns		tswlh4=2.052ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_LS_ST uio (
++	drvh=108.		drvl=157.
++	AtoD1="AtoD_LS_ST"	AtoD2="AtoD_LS_ST"
++	AtoD3="AtoD_LS_ST"	AtoD4="AtoD_LS_ST"
++	DtoA1="DtoA_LS"		DtoA2="DtoA_LS"
++	DtoA3="DtoA_LS"		DtoA4="DtoA_LS"
++	tswhl1=2.724ns		tswlh1=2.104ns
++	tswhl2=2.724ns		tswlh2=2.104ns
++	tswhl3=2.724ns		tswlh3=2.104ns
++	tswhl4=2.724ns		tswlh4=2.104ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_LS_OC_ST uio (
++	drvh=1MEG		drvl=157.
++	AtoD1="AtoD_LS_ST"	AtoD2="AtoD_LS_ST"
++	AtoD3="AtoD_LS_ST"	AtoD4="AtoD_LS_ST"
++	DtoA1="DtoA_LS_OC"	DtoA2="DtoA_LS_OC"
++	DtoA3="DtoA_LS_OC"	DtoA4="DtoA_LS_OC"
+* Open collector Tsw measured with 1K pullup
++	tswhl1=2.800ns		tswlh1=2.052ns
++	tswhl2=2.800ns		tswlh2=2.052ns
++	tswhl3=2.800ns		tswlh3=2.052ns
++	tswhl4=2.800ns		tswlh4=2.052ns
++	DIGPOWER="DIGIFPWR"
++	)
+
+*$
+*-------------------------------------------------
+* 74LS Standard AtoD Subcircuits
+
+*
+* 74LS Standard Input
+*
+.subckt AtoD_LS  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74LS DGTLNET=D IO_LS
+C1  A DGND {CAPACITANCE+0.1pF}
+X1  A DGND 74LS_InputClamp
+.ends
+
+*$
+*
+* 74LS Standard Input Without Intermediate Levels
+*
+.subckt AtoD_LS_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74LS_NX DGTLNET=D IO_LS
+C1  A DGND {CAPACITANCE+0.1pF}
+X1  A DGND 74LS_InputClamp
+.ends
+
+*$
+*
+* 74LS Schmitt-trigger Input
+*
+.subckt AtoD_LS_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74LS_ST DGTLNET=D IO_LS
+C1  A DGND {CAPACITANCE+0.1pF}
+X1  A DGND 74LS_InputClamp
+.ends
+
+*$
+.subckt 74LS_InputClamp  A DGND
+*
+G_Clamp  A DGND
++ TABLE { V(A) } 
++ -3.1   -1.00E+00
++ -1.5   -2.159E-01
++ -1.4   -1.706E-01
++ -1.3   -1.279E-01
++ -1.2   -8.926E-02
++ -1.1   -5.696E-02
++ -1.0   -3.339E-02
++ -0.9   -1.865E-02
++ -0.8   -1.019E-02
++ -0.7   -5.461E-03
++ -0.6   -2.856E-03
++ -0.5   -1.461E-03
++ -0.4   -7.288E-04
++ -0.3   -3.487E-04
++  0	 -225u
++  1.05	 -125u
++  1.08	 -100u
++  1.12	 -30u
++  1.15	 -10u
++  1.2	 -1u
++  1.4	  0
+.ends			      
+
+*$
+*-------------------------------------------------
+* 74LS DtoA Subcircuits
+
+*
+* 74LS Standard Output
+*
+.subckt DtoA_LS  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND_OL DPWR_OH DIN74LS DGTLNET=D IO_LS
+C1  A DGND {CAPACITANCE+0.1pF}
+R1  A DGND 1G
+
+G_OH  DPWR DPWR_OH
++ TABLE { V(DPWR_OH,DPWR) }
++ -10      1A
++ -5.5    73mA
++ -5	  65mA
++ -4	  50mA
++ -2.5    25.5mA
++ -2.2	  20mA
++ -1.75	  10mA
++ -1.55	   0
++ -1.4  -750u
++ -1.3    -1m
++  0.48	  -5mA
++  0.55  -10mA 
++  1	-100mA
++  6     -1A
+ROH DPWR DPWR_OH 100meg
+
+G_OL  DGND_OL DGND 
++ TABLE { V(DGND_OL,DGND) } 
++ -5      -1A
++ -600m	  -20m
++ -550m	  -13.5m
++ -500m   -10mA
++  0      -2mA
++  0.1    -10uA 
++  0.2     3mA 
++  0.7    24mA
++  0.75   24.5mA
++  1.6    25.3mA
++  1.7    26mA
++  1.8    28mA
++  3	  93mA
++  5      200mA
++  7      307mA
++  11     1A
+ROL DGND DGND_OL 100MEG
+.ends
+
+*$
+*
+* 74LS Open Collector Output
+*
+.subckt DtoA_LS_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND_OL DPWR DIN74LS_OC DGTLNET=D IO_LS_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+R1  A DGND 1G
+
+G_OL  DGND_OL DGND 
++ TABLE { V(DGND_OL,DGND) } 
++ -5      -1A
++ -600m	  -20m
++ -550m	  -13.5m
++ -500m   -10mA
++  0      -2mA
++  0.1    -10uA 
++  0.2     3mA 
++  0.7    24mA
++  0.75   24.5mA
++  1.6    25.3mA
++  1.7    26mA
++  1.8    28mA
++  3	  93mA
++  5      200mA
++  7      307mA
++  11     1A
+ROL DGND DGND_OL 100MEG
+
+.ends
+
+*$
+*-------------------------------------------------
+* 74LS Digital Input/Output Models
+
+.model DIN74LS dinput (
++	s0name="0"	s0tsw=5.0ns	s0rlo=1		s0rhi=100K
++	s1name="1"	s1tsw=4.5ns	s1rlo=100K	s1rhi=1
++	s2name="X"	s2tsw=4.5ns	s2rlo=30.9	s2rhi=100 
++	s3name="R"	s3tsw=4.5ns	s3rlo=30.9	s3rhi=100 
++	s4name="F"	s4tsw=4.5ns	s4rlo=30.9	s4rhi=100 
++	s5name="Z"	s5tsw=4.5ns	s5rlo=200K	s5rhi=200K
++	)
+
+*$
+.model DIN74LS_OC dinput (
++	s0name="0"	s0tsw=5.0ns	s0rlo=1		s0rhi=100k
++	s1name="1"	s1tsw=4.5ns	s1rlo=200k	s1rhi=200k
++	s2name="X"	s2tsw=4.5ns	s2rlo=30.9	s2rhi=100
++	s3name="R"	s3tsw=4.5ns	s3rlo=30.9	s3rhi=100
++	s4name="F"	s4tsw=4.5ns	s4rlo=30.9	s4rhi=100
++	s5name="Z"	s5tsw=4.5ns	s5rlo=200K	s5rhi=200K
++	)
+
+
+*$
+.model DO74LS doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.2
++	s3name="R"	s3vlo=1.1	s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.1	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.2
++	)
+
+*$
+.model DO74LS_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.15	; Vt for diode inputs
++	s2name="1"	s2vlo=1.15	s2vhi=7.0
++	)
+
+*$
+.model DO74LS_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.66
++	s1name="1"	s1vlo=0.855	s1vhi=7.0
++	)
+*$
+
+
+******************************************************************************
+* 74/54S Family
+******************************************************************************
+
+*-------------------------------------------------
+* 74S I/O Models
+
+*$
+.model IO_S uio (
++	drvh=72.7	drvl=60.6
++	AtoD1="AtoD_S"		AtoD2="AtoD_S_NX"
++	AtoD3="AtoD_S"		AtoD4="AtoD_S_NX"
++	DtoA1="DtoA_S"		DtoA2="DtoA_S"
++	DtoA3="DtoA_S"		DtoA4="DtoA_S"
++       tswhl1=0.788ns		tswlh1=0.889ns
++       tswhl2=0.795ns		tswlh2=0.887ns
++       tswhl3=0.788ns		tswlh3=0.889ns
++       tswhl4=0.795ns		tswlh4=0.887ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_S_50 uio (
++	drvh=72.7	drvl=60.6
++	AtoD1="AtoD_S"		AtoD2="AtoD_S_NX"
++	AtoD3="AtoD_S"		AtoD4="AtoD_S_NX"
++	DtoA1="DtoA_S_50"	DtoA2="DtoA_S_50"
++	DtoA3="DtoA_S_50"	DtoA4="DtoA_S_50"
++       tswhl1=0.788ns		tswlh1=0.889ns
++       tswhl2=0.795ns		tswlh2=0.887ns
++       tswhl3=0.788ns		tswlh3=0.889ns
++       tswhl4=0.795ns		tswlh4=0.887ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_S_OC uio (
++	drvh=1MEG	drvl=60.6
++	AtoD1="AtoD_S"		AtoD2="AtoD_S_NX"
++	AtoD3="AtoD_S"		AtoD4="AtoD_S_NX"
++	DtoA1="DtoA_S_OC"	DtoA2="DtoA_S_OC"
++	DtoA3="DtoA_S_OC"	DtoA4="DtoA_S_OC"
++       tswhl1=1.305ns		tswlh1=0.483ns
++       tswhl2=1.306ns		tswlh2=0.471ns
++       tswhl3=1.305ns		tswlh3=0.483ns
++       tswhl4=1.306ns		tswlh4=0.471ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_S_ST uio (
++	drvh=72.7	drvl=60.6
++	AtoD1="AtoD_S_ST"	AtoD2="AtoD_S_ST"
++	AtoD3="AtoD_S_ST"	AtoD4="AtoD_S_ST"
++	DtoA1="DtoA_S"		DtoA2="DtoA_S"
++	DtoA3="DtoA_S"		DtoA4="DtoA_S"
++       tswhl1=0.788ns		tswlh1=0.889ns
++       tswhl2=0.795ns		tswlh2=0.887ns
++       tswhl3=0.788ns		tswlh3=0.889ns
++       tswhl4=0.795ns		tswlh4=0.887ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+.model IO_S_OC_ST uio (
++	drvh=1MEG	drvl=60.6
++	AtoD1="AtoD_S_ST"	AtoD2="AtoD_S_ST"
++	AtoD3="AtoD_S_ST"	AtoD4="AtoD_S_ST"
++	DtoA1="DtoA_S_OC"	DtoA2="DtoA_S_OC"
++	DtoA3="DtoA_S_OC"	DtoA4="DtoA_S_OC"
++       tswhl1=1.305ns		tswlh1=0.483ns
++       tswhl2=1.306ns		tswlh2=0.471ns
++       tswhl3=1.305ns		tswlh3=0.483ns
++       tswhl4=1.306ns		tswlh4=0.471ns
++	DIGPOWER="DIGIFPWR"
++	)
+*$
+
+*-------------------------------------------------
+* 74S00 Standard AtoD Subcircuits
+
+.subckt AtoD_S  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74S DGTLNET=D IO_S
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	2.8k
+Q1      1       3       A       0	Q74S
+D3      3       1       D74S
+.ends
+
+*$
+.subckt AtoD_S_NX  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74S_NX DGTLNET=D IO_S
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	2.8k
+Q1      1       3       A       0	Q74S
+D3      3       1       D74S
+.ends
+
+*$
+*-------------------------------------------------
+* 74S Schmitt-trigger AtoD Subcircuits
+
+.subckt AtoD_S_ST  A D  DPWR DGND
++	params: CAPACITANCE=0
+*
+O0  A DGND DO74S_ST DGTLNET=D IO_S
+C1  A DGND {CAPACITANCE+0.1pF}
+D0	DGND	a	D74SCLMP
+D1	1	2	D74
+D2      2       DGND	D74
+R1	DPWR	3	2.8k
+Q1      1       3       A       0	Q74S
+D3      3       1       D74S
+.ends
+
+*$
+*-------------------------------------------------
+* 74S Standard DtoA Subcircuit
+
+.subckt DtoA_S  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74S DGTLNET=D IO_S
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74S 50-Ohm Driver DtoA Subcircuit
+
+.subckt DtoA_S_50  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74S_50 DGTLNET=D IO_S_50
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74S Open Collector DtoA Subcircuit
+
+.subckt DtoA_S_OC  D A  DPWR DGND
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A DGND DPWR DIN74S_OC DGTLNET=D IO_S_OC
+C1  A DGND {CAPACITANCE+0.1pF}
+.ends
+
+*$
+*-------------------------------------------------
+* 74S Digital Input/Output Models
+
+.model DIN74S dinput (
++	s0name="0"	s0tsw=1.5ns	s0rlo=12.0	s0rhi=389 ; 11.7ohm, 0.15v
++	s1name="1"	s1tsw=1.5ns	s1rlo=224	s1rhi=74.7 ; 56.0ohm, 3.75v
++	s2name="X"	s2tsw=1.5ns	s2rlo=34.6	s2rhi=98.4 ; 25.6ohm, 1.30v
++	s3name="R"	s3tsw=1.5ns	s3rlo=34.6	s3rhi=98.4 ; 25.6ohm, 1.30v
++	s4name="F"	s4tsw=1.5ns	s4rlo=34.6	s4rhi=98.4 ; 25.6ohm, 1.30v
++	s5name="Z"	s5tsw=1.5ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74S_50 dinput (
++	s0name="0"	s0tsw=1.5ns	s0rlo=12.0	s0rhi=389 ; 11.7ohm, 0.15v
++	s1name="1"	s1tsw=1.5ns	s1rlo=145.3	s1rhi=51.2 ; 37.9ohm, 3.75v
++	s2name="X"	s2tsw=1.5ns	s2rlo=34.6	s2rhi=98.4 ; 25.6ohm, 1.30v
++	s3name="R"	s3tsw=1.5ns	s3rlo=34.6	s3rhi=98.4 ; 25.6ohm, 1.30v
++	s4name="F"	s4tsw=1.5ns	s4rlo=34.6	s4rhi=98.4 ; 25.6ohm, 1.30v
++	s5name="Z"	s5tsw=1.5ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DIN74S_OC dinput (
++	s0name="0"	s0tsw=1.5ns	s0rlo=12.0	s0rhi=389 ; 11.7ohm, 0.15v
++	s1name="1"	s1tsw=1.5ns	s1rlo=200K	s1rhi=200K
++	s2name="X"	s2tsw=1.5ns	s2rlo=34.6	s2rhi=98.4 ; 25.6ohm, 1.30v
++	s3name="R"	s3tsw=1.5ns	s3rlo=34.6	s3rhi=98.4 ; 25.6ohm, 1.30v
++	s4name="F"	s4tsw=1.5ns	s4rlo=34.6	s4rhi=98.4 ; 25.6ohm, 1.30v
++	s5name="Z"	s5tsw=1.5ns	s5rlo=200K	s5rhi=200K
++	)
+*$
+.model DO74S doutput (
++	s0name="X"	s0vlo=0.8	s0vhi=2.0
++	s1name="0"	s1vlo=-1.5	s1vhi=0.8
++	s2name="R"	s2vlo=0.8	s2vhi=1.35
++	s3name="R"	s3vlo=1.25	s3vhi=2.0
++	s4name="X"	s4vlo=0.8	s4vhi=2.0
++	s5name="1"	s5vlo=2.0	s5vhi=7.0
++	s6name="F"	s6vlo=1.25	s6vhi=2.0
++	s7name="F"	s7vlo=0.8	s7vhi=1.35
++	)
+*$
+.model DO74S_NX doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.3
++	s2name="1"	s2vlo=1.3	s2vhi=7.0
++	)
+*$
+.model DO74S_ST doutput (
++	s0name="0"	s0vlo=-1.5	s0vhi=1.7
++	s1name="1"	s1vlo=0.9	s1vhi=7.0
++	)
+*$
+
+
+******************************************************************************
+* TTL device models
+******************************************************************************
+
+* These parameter values are taken from:
+*
+*   "Analysis and Design of Digital Integrated Circuits"
+*   by David A. Hodges and Horace G. Jackson
+*   1983, McGraw-Hill  pg 301
+*
+*$
+.model D74 d (
++	is=1e-16	rs=25	cjo=2pf
++	)
+*$
+.model D74S d (
++	is=1e-12	vj=.7	rs=25	cjo=2pf
++	)
+*$
+.model D74CLMP d (
++	is=1e-15	rs=2	cjo=2pf
++	)
+*$
+.model D74SCLMP d (
++	is=1e-11	vj=.7	rs=2	cjo=2pf
++	)
+*$
+.model Q74 npn (
++	ise=1e-16	isc=4e-16
++	bf=49	br=.03
++	cje=1pf	cjc=.5pf
++	cjs=3pf	vje=0.9v
++	vjc=0.8v	vjs=0.7v
++	mje=0.5	mjc=0.33
++	mjs=0.33	tf=0.2ns
++	tr=10ns	rb=50
++	rc=20
++	)
+*$
+.model Q74S npn (
++	ise=1e-16	isc=4e-16
++	bf=49	br=.33
++	cje=1pf	cjc=.5pf
++	cjs=3pf	vje=0.9v
++	vjc=0.8v	vjs=0.7v
++	mje=0.5	mjc=0.33
++	mjs=0.33	tf=0.2ns
++	tr=10ns	rb=50
++	rc=20
++	)
+*$
+
+
+*-------------------------------------------------
+* ECL 10K I/O Models
+
+* Input stage, and internal logic model
+.model IO_10K_IN uio (
++	drvh=300	drvl=300
++	AtoD1="AtoD_10K"	AtoD2="AtoD_10K_NX"
++	AtoD3="AtoD_10K"	AtoD4="AtoD_10K_NX"
+* There should never be any DtoA on the internal nodes, so we 
+* use a subcircuit which is not defined.
++	DtoA1="10K_Internal"	DtoA2="10K_Internal"
++	DtoA3="10K_Internal"	DtoA4="10K_Internal"
++	DIGPOWER="ECL_10K_PWR"
++	)
+
+*$
+* Output stage: emitter follower drives high only
+.model IO_10K_OUT uio (
++	drvh=6    	drvl=100K
++       outld=.5pf
++	AtoD1="AtoD_10K"	AtoD2="AtoD_10K_NX"
++	AtoD3="AtoD_10K"	AtoD4="AtoD_10K_NX"
++	DtoA1="DtoA_10K"	DtoA2="DtoA_10K"
++	DtoA3="DtoA_10K"	DtoA4="DtoA_10K"
++       tswhl1=1.060ns		tswlh1=0.946ns
++       tswhl2=1.060ns		tswlh2=0.946ns
++       tswhl3=1.060ns		tswlh3=0.946ns
++       tswhl4=1.060ns		tswlh4=0.946ns
++	DIGPOWER="ECL_10K_PWR"
++	)
+
+*$
+*-------------------------------------------------
+* ECL 10K Standard AtoD Subcircuits
+
+.subckt AtoD_10K  A D  VCC1 VEE
++	params: CAPACITANCE=0
+*
+O0  A VCC1 DO10K DGTLNET=D IO_10K_IN
+C1  A VCC1 {CAPACITANCE+0.01pF}
+.ends
+*$
+
+.subckt AtoD_10K_NX  A D  VCC1 VEE
++	params: CAPACITANCE=0
+*
+O0  A VCC1 DO10K_NX DGTLNET=D IO_10K_IN
+C1  A VCC1 {CAPACITANCE+0.01pF}
+.ends
+
+*$
+*-------------------------------------------------
+* ECL 10K standard DtoA Subcircuit
+*
+* We use a behavioral model for the output emitter follower.  This allows
+* us to exactly match the output voltage spec for a 50ohm load to -2.0v, and
+* also provide the 6ohm series resistance at output hi, and 8ohms series 
+* resistance at output low.  The output will only source current.
+
+.subckt DtoA_10K  D A  VCC2 VEE
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A0 VEE VCC2 DIN10K DGTLNET=D IO_10K_OUT
+R1  A0 VCC2 10MEG
+G1  VCC2 A1 VALUE = {((V(A0,VCC2)+2)/50)*exp((V(A0,A1)+5.45*((V(A0,VCC2)+2)/50))/.013) - 10E-14}
+R2  A1 A  5.45ohm
+R3  A  VCC2 10MEG ; dummy load to allow unconnected outputs without errors.
+C1  A  VCC2 {CAPACITANCE+0.01pF}
+.ends
+
+*$
+*-------------------------------------------------
+* ECL 10K Digital Input/Output Models
+*
+* Note: Input and Output variation with Temp is modeled.
+*       Input and Output variation with VEE is not modeled.
+*
+.model DIN10K dinput (
++	s0name="1"	s0tsw=2.0ns
+*       300ohm,            -30,-0.984,  25,-0.885,  85,-0.777
++	s0rlo={table(temp, -30,1880,    25,1763,    85,2008)}
++	s0rhi={table(temp, -30,357,     25,361.5,   85,352.7)}
++	s1name="0"	s1tsw=2.0ns
+*       300ohm,            -30,-1.791,  25,-1.750,  85,-1.705
++	s1rlo={table(temp, -30,871.0,   25,891.4,   85,915.0)}
++       s1rhi={table(temp, -30,457.6,   25,452.2,   85,446.4)}
++	s2name="X"	s2tsw=2.0ns
+*       300ohm             -30,-1.388,  25,-1.318,  85,-1.240
++	s2rlo={table(temp, -30,1124,    25,1184,    85,1258)}
++	s2rhi={table(temp, -30,409.2,   25,401.9,   85,393.9)}
++	s3name="R"	s3tsw=2.0ns
+*       300ohm             -30,-1.388,  25,-1.318,  85,-1.240
++	s3rlo={table(temp, -30,1124,    25,1184,    85,1258)}
++	s3rhi={table(temp, -30,409.2,   25,401.9,   85,393.9)}
++	s4name="F"	s4tsw=2.0ns
+*       300ohm             -30,-1.388,  25,-1.318,  85,-1.240
++	s4rlo={table(temp, -30,1124,    25,1184,    85,1258)}
++	s4rhi={table(temp, -30,409.2,   25,401.9,   85,393.9)}
++	s5name="Z"	s5tsw=2.0ns
+*       300ohm,            -30,-1.849,  25,-1.750,  85,-1.642
++	s5rlo={table(temp, -30,843.7,   25,891.4,   85,950.0)}
++       s5rhi={table(temp, -30,465.5,   25,452.2,   85,438.4)}
++	)
+*$
+.model DO10K doutput (
++	s0name="X"
++	s0vlo={table(temp, -30,-1.500,  25,-1.475,  85,-1.440)}
++	s0vhi={table(temp, -30,-1.205,  25,-1.105,  85,-1.035)}
++	s1name="0"
++	s1vlo={table(temp, -30,-1.990,  25,-1.950,  85,-1.925)} ; give 100mv extra margin
++	s1vhi={table(temp, -30,-1.500,  25,-1.475,  85,-1.440)}
++	s2name="R"
++	s2vlo={table(temp, -30,-1.500,  25,-1.475,  85,-1.440)}
++	s2vhi=-1.300
++	s3name="R"
++	s3vlo=-1.330
++	s3vhi={table(temp, -30,-1.205,  25,-1.105,  85,-1.035)}
++	s4name="X"
++	s4vlo={table(temp, -30,-1.500,  25,-1.475,  85,-1.440)}
++	s4vhi={table(temp, -30,-1.205,  25,-1.105,  85,-1.035)}
++	s5name="1"
++	s5vlo={table(temp, -30,-1.205,  25,-1.105,  85,-1.035)}
++	s5vhi={table(temp, -30,-0.790,  25,-0.710,  85,-0.600)} ; give 100mv extra margin
++	s6name="F"
++	s6vlo=-1.330
++	s6vhi={table(temp, -30,-1.205,  25,-1.105,  85,-1.035)}
++	s7name="F"
++	s7vlo={table(temp, -30,-1.500,  25,-1.475,  85,-1.440)}
++	s7vhi=-1.300
++       s8name="X"
++       s8vlo=-6.0
++       s8vhi={table(temp, -30,-1.990,  25,-1.950,  85,-1.925)} ; give 100mv extra margin
++       s9name="X"
++       s9vlo={table(temp, -30,-0.790,  25,-0.710,  85,-0.600)} ; give 100mv extra margin
++       s9vhi= 1.0    ; give 100mv extra margin
++	)
+*$
+.model DO10K_NX doutput (
++	s0name="0"
++	s0vlo={table(temp, -30,-1.990,  25,-1.950,  85,-1.925)} ; give 100mv extra margin
++	s0vhi={table(temp, -30,-1.352,  25,-1.290,  85,-1.237)}
++	s2name="1"
++	s2vlo={table(temp, -30,-1.352,  25,-1.290,  85,-1.237)}
++	s2vhi={table(temp, -30,-0.790,  25,-0.710,  85,-0.600)} ; give 100mv extra margin
++       s8name="X"
++       s8vlo=-6.0
++       s8vhi={table(temp, -30,-1.990,  25,-1.950,  85,-1.925)} ; give 100mv extra margin
++       s9name="X"
++       s9vlo={table(temp, -30,-0.790,  25,-0.710,  85,-0.600)} ; give 100mv extra margin
++       s9vhi= 1.0
++	)
+
+*$
+*-------------------------------------------------
+* ECL 10K input pulldown
+
+.model IO_10K_PULLDN uio (
++	drvh=1MEG	drvl=40K
++       outld=.5pf
++	DtoA1="PULLDOWN_DTOA"	DtoA2="PULLDOWN_DTOA"
++	DtoA3="PULLDOWN_DTOA"	DtoA4="PULLDOWN_DTOA"
++	DIGPOWER="ECL_10K_PWR"
++	)
+
+*$
+*-------------------------------------------------
+* ECL 100K I/O Models
+
+* Input stage, and internal logic model
+.model IO_100K_IN uio (
++	drvh=300	drvl=300
++	AtoD1="AtoD_100K"	AtoD2="AtoD_100K_NX"
++	AtoD3="AtoD_100K"	AtoD4="AtoD_100K_NX"
+* There should never be any DtoA on the internal nodes, so we 
+* use a subcircuit which is not defined.
++	DtoA1="100K_Internal"	DtoA2="100K_Internal"
++	DtoA3="100K_Internal"	DtoA4="100K_Internal"
++	DIGPOWER="ECL_100K_PWR"
++	)
+
+*$
+* Output stage: emitter follower drives high only
+.model IO_100K_OUT uio (
++	drvh=6    	drvl=100K
++       outld=.2pf
++	AtoD1="AtoD_100K"	AtoD2="AtoD_100K_NX"
++	AtoD3="AtoD_100K"	AtoD4="AtoD_100K_NX"
++	DtoA1="DtoA_100K"	DtoA2="DtoA_100K"
++	DtoA3="DtoA_100K"	DtoA4="DtoA_100K"
++       tswhl1=0.433ns		tswlh1=0.377ns
++       tswhl2=0.433ns		tswlh2=0.377ns
++       tswhl3=0.433ns		tswlh3=0.377ns
++       tswhl4=0.433ns		tswlh4=0.377ns
++	DIGPOWER="ECL_100K_PWR"
++	)
+
+*$
+*-------------------------------------------------
+* ECL 100K Standard AtoD Subcircuits
+
+.subckt AtoD_100K  A D  VCC1 VEE
++	params: CAPACITANCE=0
+*
+O0  A VCC1 DO100K DGTLNET=D IO_100K_IN
+C1  A VCC1 {CAPACITANCE+0.01pF}
+.ends
+
+*$
+.subckt AtoD_100K_NX  A D  VCC1 VEE
++	params: CAPACITANCE=0
+*
+O0  A VCC1 DO100K_NX DGTLNET=D IO_100K_IN
+C1  A VCC1 {CAPACITANCE+0.01pF}
+.ends
+
+*$
+*-------------------------------------------------
+* ECL 100K standard DtoA Subcircuit
+*
+* We use a behavioral model for the output emitter follower.  This allows
+* us to exactly match the output voltage spec for a 50ohm load to -2.0v, and
+* also provide the 6ohm series resistance at output hi, and 8ohms series 
+* resistance at output low.  The output will only source current.
+
+.subckt DtoA_100K  D A  VCC2 VEE
++	params: DRVL=0 DRVH=0 CAPACITANCE=0
+*
+N1  A0 VEE VCC2 DIN100K DGTLNET=D IO_100K_OUT
+R1  A0 VCC2 10MEG
+G1  VCC2 A1 VALUE = {((V(A0,VCC2)+2)/50)*exp((V(A0,A1)+5.45*((V(A0,VCC2)+2)/50))/.013) - 10E-14}
+R2  A1 A  5.45ohm
+R3  A  VCC2 10MEG ; dummy load to allow unconnected outputs without errors.
+C1  A  VCC2 {CAPACITANCE+0.01pF}
+.ends
+
+*$
+*-------------------------------------------------
+* ECL 100K Digital Input/Output Models
+*
+* Note: Input and Output variation with VEE is not modeled.
+*
+.model DIN100K dinput (
++	s0name="1"	s0tsw=0.8ns
+*       300ohm, 955mV           
++	s0rlo=1414
++	s0rhi=380.8
++	s1name="0"	s1tsw=0.8ns
+*       300ohm, 1705mV
++	s1rlo=791.8
++       s1rhi=483.0
++	s2name="X"	s2tsw=0.8ns
+*       300ohm, 1325mV
++	s2rlo=1019
++	s2rhi=425.2
++	s3name="R"	s3tsw=0.8ns
+*       300ohm, 1325mV
++	s3rlo=1019
++	s3rhi=425.2
++	s4name="F"	s4tsw=0.8ns
+*       300ohm, 1325mV
++	s4rlo=1019
++	s4rhi=425.2
++	s5name="Z"	s5tsw=0.8ns
+*       300ohm, 1705mV
++	s5rlo=791.8
++       s5rhi=483.0
++	)
+*$
+.model DO100K doutput (
++	s0name="X"
++	s0vlo=-1.475
++	s0vhi=-1.165
++	s1name="0"
++	s1vlo=-1.910 ; give 100mv extra margin
++	s1vhi=-1.475
++	s2name="R"
++	s2vlo=-1.475
++	s2vhi=-1.320
++	s3name="R"
++	s3vlo=-1.330
++	s3vhi=-1.165
++	s4name="X"
++	s4vlo=-1.475
++	s4vhi=-1.165
++	s5name="1"
++	s5vlo=-1.165
++	s5vhi=-0.780 ; give 100mv extra margin
++	s6name="F"
++	s6vlo=-1.330
++	s6vhi=-1.165
++	s7name="F"
++	s7vlo=-1.475
++	s7vhi=-1.320
+* These catch inputs which are out of bounds, but not much beyond the power supply.
++       s8name="X"
++       s8vlo=-6.0
++       s8vhi=-1.910 ; give 100mv extra margin
++       s9name="X"
++       s9vlo=-0.780 ; give 100mv extra margin
++       s9vhi= 1.0
++	)
+*$
+.model DO100K_NX doutput (
++	s0name="0"
++	s0vlo=-1.910 ; give 100mv extra margin
++	s0vhi=-1.325
++	s2name="1"
++	s2vlo=-1.325
++	s2vhi=-0.780 ; give 100mv extra margin
++       s8name="X"
++       s8vlo=-6.0
++       s8vhi=-1.910 ; give 100mv extra margin
++       s9name="X"
++       s9vlo=-0.780 ; give 100mv extra margin
++       s9vhi= 1.0
++	)
+
+*$
+*-------------------------------------------------
+* ECL 100K input pulldown
+
+.model IO_100K_PULLDN uio (
++	drvh=1MEG	drvl=40K
++       outld=.5pf
++	DtoA1="PULLDOWN_DTOA"	DtoA2="PULLDOWN_DTOA"
++	DtoA3="PULLDOWN_DTOA"	DtoA4="PULLDOWN_DTOA"
++	DIGPOWER="ECL_100K_PWR"
++	)
+
+* end of digital interface library
+*$
+

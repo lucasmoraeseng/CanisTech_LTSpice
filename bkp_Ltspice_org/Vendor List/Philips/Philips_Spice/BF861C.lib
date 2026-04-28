@@ -1,0 +1,21 @@
+* BF861C NJF model
+* created using Parts release 6.2 on 07/20/95 at 15:04
+* Parts is a MicroSim product.
+.MODEL BF861C NJF
++ VTO=-1.145
++ BETA=15.22E-3
++ LAMBDA=44.94E-3
++ IS=415.7E-18
++ ALPHA=1.000E-6
++ VK=1
++ RD=15.20
++ RS=15.20
++ CGD=6.581E-12
++ CGS=6.581E-12
++ PB=.7395
++ KF=11.22E-18
++ AF=.7958
++ BETATCE=-.5
++ VTOTC=-2.500E-3
+*$
+

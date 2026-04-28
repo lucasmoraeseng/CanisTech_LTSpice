@@ -1,0 +1,58 @@
+* MODELLING FOR STL28NFLL
+.SUBCKT STL28NFLL 1 2 3
+LG 2 4  7.5n
+LS 12 3 7.5n
+LD 6 1  4.5n
+RG 4 5  1.081
+RS 9 12 0.496E-03
+RD 7 6  0.851E-03
+RJ 8 7  0.448E-03
+CGS 5 9   0.204E-08
+CGD 7 10  0.488E-08
+CK  11 7  0.561E-09
+DGD 11 7 DGD
+DBS 12 6 DBS
+DBD  9 7 DBD
+MOS  13 5 9 9 MOS L=1u W=1u
+E1  10 5 101 0 1
+E2  11 5 102 0 1
+E3  8 13 POLY(2) 6 8 6 12 0 0 0 0  0.154
+G1  0 100 7 5 1u
+D1  100 101  DID
+D2  102 100  DID
+R1  101 0  1MEG
+R2  102 0  1MEG
+.ENDS STL28NFLL
+ 
+.MODEL MOS NMOS
++ LEVEL = 3
++ VTO   = 2.398
++ PHI   = 0.653
++ IS    = 0
++ JS    = 0
++ THETA = 0.112
++ KP    = 87.226
++ eta   = 0.689E-02
+ 
+.MODEL DGD D
++ IS    = 0.1P
++ CJO   = 0.194E-13
++ VJ    = 1.091
++ M     = 0.302
+.MODEL DBD D
++ IS    = 0.1P
++ CJO   = 0.329E-13
++ VJ    = 1.017
++ M     = 0.354
+.MODEL DBS D
++ IS    = 0.1P
++ BV    = 32
++ N     = 1
++ TT    = 0.539E-07
++ RS    = 0.623E-02
+.MODEL DID D
++ IS    = 0.01P
++ RS    = 0
++ BV    = 34
+ 
+* END OF MODELLING

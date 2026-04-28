@@ -1,0 +1,33 @@
+****************************************
+* (c)2000 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+*   Arpad.Buermen@fe.uni-lj.si         *
+****************************************
+
+* Version: SPICE3
+*                    anode     cathode
+* Reverse direction: node 1 <- node 2
+
+.SUBCKT bzx55c24 1 2
+DF 1 2 DFMOD
+.MODEL DFMOD D(N=1.19275 IS=2.18787E-013 RS=1.03072 EG=1.11167 XTI=3.05573
++ TT=1E-006 CJO=2.77E-011 VJ=0.6 M=0.33)
+* Leakage
+RL 1 2 1.8E+008 RLMOD
+.MODEL RLMOD R(TC1=0.0078 TC2=0 TNOM=25)
+* Breakdown
+EZ 2 3 5 0 1
+R1 3 4 0.0500369
+VD1 10 4 0.92297
+D1 10 1 DMOD1 TEMP=27
+.MODEL DMOD1 D(IS=1e-12 N=1.44285 RS=18.4313 TNOM=27)
+VD2 20 4 0.377868
+D2 20 1 DMOD2 TEMP=27
+.MODEL DMOD2 D(IS=1e-12 N=0.997121 RS=273.693 TNOM=27)
+I1 0 5 0.001
+RVZ 5 0 24000 RVZMOD
+.MODEL RVZMOD R(TC1=0.00065 TC2=0 TNOM=25)
+.ENDS

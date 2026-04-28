@@ -1,0 +1,21 @@
+ES2
+* created by Andreas Bursian, THOMATRONIK, 83022 Rosenheim
+* Tel.: -8031-2175-13 ***** Fax.: -8031/2157-30
+* date: 31.07.94 18:27
+* Model was made for the PSpice Simulator
+.MODEL ES2B_P D
+ + IS=0.0000005588
+ + N=2.03
+ + RS=0.005974
+ + IKF=5.137
+ + XTI=3
+ + EG=1.11
+ + CJO=0.00000000002317
+ + M=0.05708
+ + VJ=0.3905
+ + FC=0.5
+ + ISR=0.0000003548
+ + NR=1.927
+ +  BV=100
+ + IBV=0.000001
+ + TT=0.00000002718

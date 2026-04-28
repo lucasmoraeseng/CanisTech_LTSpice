@@ -1,0 +1,57 @@
+* FILENAME:         NE68619.CIR
+* NEC PART NUMBER:  NE68619
+* LAST MODIFIED:    6/96
+* BIAS CONDITIONS:  Vce=2.5V to 3V, Ic=0.3mA to 5mA 
+* FREQ RANGE:       0.1GHz to 3.0GHz
+*
+*                     CCBpkg
+*             .-------||--------.
+*             |          CCB    |
+*             |      .--||---.  |     COLLECTOR
+* BASE        |      |        | |
+*             |      |   /----o-o-----o--Lcx--o
+*     o--Lbx--o-LB---o--|Q1   |       |
+*             |      B   \   --       --
+*             |          |   -- CCE   -- CCEpkg
+*             --CBEpkg E o----'       |
+*             --         |            |
+*             |         LE            |
+*             `----------o------------'
+*                        |
+*                        |
+*                        Lex
+*                        |
+*                        |
+*                        o EMITTER
+*
+*       CCB   = 0.18pF           LB  = 0.004nH             
+*       CCE   = 0.18pF           LE  = 0.004nH           
+*       CCBpkg= 0.010pF          Lbx = 1.25nH          
+*       CCEpkg= 0.150pF          Lcx = 0.90nH             
+*       CBEpkg= 0.005pF          Lex = 1.05nH          
+*
+*                   c b e
+.SUBCKT NE68619/CEL 2 1 3
+Q1  5 7 8 NE68600
+CCB 7 5 0.18E-12
+CCE 5 8 0.18E-12
+LE  8 6 0.004E-9
+LB  4 7 0.004E-9
+CCBPKG 4 5 0.01E-12
+CCEPKG 5 6 0.15E-12
+CBEPKG 4 6 0.005E-12
+LBX 1 4 1.25E-9
+LCX 5 2 0.9E-9
+LEX 6 3 1.05E-9
+.MODEL NE68600 NPN
++( IS=23.0e-18   BF=147.6         NF=0.984       VAF=45           IKF=0.1 
++ ISE=3.60e-14   NE=2.72          BR=4.41        NR=0.987         VAR=2.54
++ IKR=1.50e-3    ISC=92.8e-15     NC=8.21        RE=1.7           RB=17  
++ RBM=3          IRB=7.59e-4      RC=10          CJE=0.117e-12    VJE=1.26
++ MJE=0.62       CJC=0.206e-12    VJC=0.941      MJC=0.267        XCJC=0.1 
++ CJS=0          VJS=0.75         MJS=0          FC=0.5           TF=8.0e-12
++ XTF=0.39       VTF=0.668        ITF=0.06       PTF=60           TR=0  
++ EG=1.11        XTB=0            XTI=3          KF=0             AF=1 )
+.ENDS
+*$
+

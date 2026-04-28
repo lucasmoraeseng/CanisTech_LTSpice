@@ -1,0 +1,22 @@
+*ZETEX  ZMS2800  Spice Model  Last Revision 25/04/00
+*
+.MODEL ZMS2800 D IS=1.31e-9 N=1.02 RS=22.1 IKF=2.71e-3
++XTI=2 EG=0.69 
++CJO=1.4e-12 M=0.276 VJ=0.391
++BV=82 IBV=10e-6 ISR=2.45e-9 NR=4.995 
+*
+*$
+*
+*                          (C)  1991 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agent.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

@@ -1,0 +1,294 @@
+**********
+IBIS3 - IBIS models using Intusoft SPICE 2G Compatible Topology(8):
+These parts use a configuration similar to the SPICE 2G compatible 
+subcircuit topology found in the IBIS2.LIB file. These models require
+IsSpice3 due to the various If-Then-Else statements and In-Line 
+equations used.
+
+All output parts connect in the same way: Input, Output, VCC, VEE, Enable
+All input parts connect in the same way: Input, VCC, VEE
+Suffix Meanings - O = Output, I = Input, B = BEST CASE, W = WORST CASE, 
+T = TYPICAL
+
+To use these models simply call the part as usual and change the 
+default library call from 
+
+"*INCLUDE IBIS1.LIB" to "*INCLUDE IBIS3.LIB"
+
+Other Libraries
+IBIS1: IBIS level 1 subcircuit, requires IsSpice3
+IBIS1A: IBIS level 1 subcircuit, requires IsSpice3
+IBIS2: IBIS level 2 subcircuit, SPICE 2G.6 Compatible
+*
+Component: Any PCI Shared Component
+PCIOB Buffer - emulates signals: A0-A31, DRVPCI
+PCIOW Buffer - emulates signals: A0-A31, DRVPCI
+PCIIB Buffer  - emulates signals: A0-A31, DRVPCI
+PCIIW Buffer  - emulates signals: A0-A31, DRVPCI
+Component: PCMC
+PCMC1OB Buffer   - emulates signals: A0-A31, DRVPCI
+PCMC1IB Buffer   - emulates signals: A0-A31, DRVPCI
+PCMC1OW Buffer   - emulates signals: A0-A31, DRVPCI
+PCMC1IW Buffer   - emulates signals: A0-A31, DRVPCI
+**********
+.SUBCKT PCIOW 10    14     6   9   8
+*Connections  Input Output VCC VEE Enable
+* Input/Enable Control
+X16 8 10 16 AND2X
+X17 10 8 1 NAND2
+*
+X12 1 4 9 2 DRVR
+X13 16 4 9 5 DRVR
+R6 4 7 33K
+R7 7 9 33K
+* Pull-up/pull-down structure Min
+M1 7 5 9 9 PCIOUTLN
+M2 7 2 4 4 PCIOUTHN
+.MODEL PCIOUTLN NMOS (LEVEL=1 VTO=2.2 KP=36M GAMMA=1.48
++ LAMBDA=50.49M RD=1.345 RS=2.95 IS=100F CGDO=12N)
+.MODEL PCIOUTHN PMOS (LEVEL=1 VTO=-2.2 KP=21.1M GAMMA=1.48
++ LAMBDA=237.49M RD=4.8 RS=13.2 IS=75F CGDO=12N)
+* Diode Clamps
+D1 7 4 DIODE
+D2 9 7 DIODE
+.MODEL DIODE D IS=13N N=1.8 RS=14
+* Package Parasitics Max
+ROSNB 11 13 100
+ROPKG 13 14 .200
+CCOMP 11 9 8.00P
+LOPKG 11 13 15.00N
+COPKG 14 9 2.00P
+V5 7 11 
+V6 6 4 
+.ENDS
+.SUBCKT NAND2 1 2 3
+B1 3 0 V= ~(V(1) & V(2))
+.ENDS
+.SUBCKT AND2X 1 2 3
+B1 3 0 V= (V(1) & ~V(2))
+.ENDS
+.SUBCKT DRVR 1  2  3   4
+*            IN VCC VEE OUT
+RC 4 3 1MEG
+CC 4 3 1P
+B1 0 4 I= V(1) > 1.2 ? V(2,4)/320 : V(3,4)/320
+.ENDS
+**********
+.SUBCKT PCIIW 14    6   9
+*Connections  Input VCC VEE
+D1 7 4 DIODE
+D2 9 7 DIODE
+.MODEL DIODE D IS=13N N=1.8 RS=14
+* Package Parasitics Max
+ROSNB 11 13 100
+ROPKG 13 14 .200
+CCOMP 11 9 8.00P
+LOPKG 11 13 15.00N
+COPKG 14 9 2.00P
+V5 7 11 
+V6 6 4  ; For measuring I(VCC)
+.ENDS
+**********
+.SUBCKT PCIOB 10    14     6   9   8
+*Connections  Input Output VCC VEE Enable
+* Input/Enable Control
+X16 8 10 16 AND2X
+X17 10 8 1 NAND2
+*
+X12 1 4 9 2 DRVR
+X13 16 4 9 5 DRVR
+R6 4 7 33K
+R7 7 9 33K
+* Pull-up/pull-down structure Max
+M1 7 5 9 9 PCIOUTLX
+M2 7 2 4 4 PCIOUTHX
+.MODEL PCIOUTLX NMOS (LEVEL=1 VTO=2.2 KP=85M GAMMA=1.48
++ LAMBDA=22.49M RD=405M RS=1.71 IS=100F CGDO=12N)
+.MODEL PCIOUTHX PMOS (LEVEL=1 VTO=-2.2 KP=101.5M GAMMA=1.48
++ LAMBDA=287.49M RD=1.15 RS=8.13 IS=75F CGDO=12N)
+* Diode Clamps
+D1 7 4 DIODE
+D2 9 7 DIODE
+.MODEL DIODE D IS=13N N=1.8 RS=14
+* Package Parasitics Min
+ROSNB 11 13 100
+ROPKG 13 14 .100
+CCOMP 11 9 4.00P
+LOPKG 11 13 8.00N
+COPKG 14 9 1.00P
+V5 7 11 
+V6 6 4 
+.ENDS
+.SUBCKT NAND2 1 2 3
+B1 3 0 V= ~(V(1) & V(2))
+.ENDS
+.SUBCKT AND2X 1 2 3
+B1 3 0 V= (V(1) & ~V(2))
+.ENDS
+.SUBCKT DRVR 1  2  3   4
+*            IN VCC VEE OUT
+RC 4 3 1MEG
+CC 4 3 1P
+B1 0 4 I= V(1) > 1.2 ? V(2,4)/160 : V(3,4)/160
+.ENDS
+**********
+.SUBCKT PCIIB 14    6   9
+*Connections  Input VCC VEE
+D1 7 4 DIODE
+D2 9 7 DIODE
+.MODEL DIODE D IS=13N N=1.8 RS=14
+* Package Parasitics Min
+ROSNB 11 13 100
+ROPKG 13 14 .100
+CCOMP 11 9 4.00P
+LOPKG 11 13 8.00N
+COPKG 14 9 1.00P
+V5 7 11 
+V6 6 4  ; For measuring I(VCC)
+.ENDS
+**********
+.SUBCKT PCMC1OW 10    14     6   9   8
+*Connections    Input Output VCC VEE Enable
+* Input/Enable Control
+X16 8 10 16 AND2X
+X17 10 8 1 NAND2
+*
+X12 1 4 9 2 DRVR
+X13 16 4 9 5 DRVR
+R6 4 7 33K
+R7 7 9 33K
+* Pull-up/pull-down structure Min
+M1 7 5 9 9 PCIOUTLN
+M2 7 2 4 4 PCIOUTHN
+.MODEL PCIOUTLN NMOS (LEVEL=1 VTO=2.2 KP=12M GAMMA=1.48
++ LAMBDA=12M RD=1.445 RS=7.74 IS=100F CGDO=12N)
+.MODEL PCIOUTHN PMOS (LEVEL=1 VTO=-2.2 KP=8.6M GAMMA=1.48
++ LAMBDA=76.23M RD=7.1 RS=10.2 IS=75F CGDO=12N)
+* Diode Clamps
+D1 7 4 DIODEV
+D2 9 7 DIODEG
+.MODEL DIODEV D IS=45N N=1.98 RS=938.6M
+.MODEL DIODEG D IS=.9N N=1.51 RS=1.165
+* Package Parasitics Max
+ROSNB 11 13 100
+ROPKG 13 14 .277
+CCOMP 11 9 7.64P
+LOPKG 11 13 32.75N
+COPKG 14 9 1.36P
+V5 7 11 
+V6 6 4 
+.ENDS
+.SUBCKT NAND2 1 2 3
+B1 3 0 V= ~(V(1) & V(2))
+.ENDS
+.SUBCKT AND2X 1 2 3
+B1 3 0 V= (V(1) & ~V(2))
+.ENDS
+.SUBCKT DRVR 1  2  3   4
+*            IN VCC VEE OUT
+RC 4 3 1MEG
+CC 4 3 1P
+B1 0 4 I= V(1) > 1.2 ? V(2,4)/675 : V(3,4)/556
+.ENDS
+**********
+.SUBCKT PCMC1IW 14    6   9
+*Connections    Input VCC VEE
+D1 7 4 DIODEV
+D2 9 7 DIODEG
+.MODEL DIODEV D IS=45N N=1.98 RS=938.6M
+.MODEL DIODEG D IS=.9N N=1.51 RS=1.165
+* Package Parasitics Max
+ROSNB 11 13 100
+ROPKG 13 14 .277
+CCOMP 11 9 7.64P
+LOPKG 11 13 32.75N
+COPKG 14 9 1.36P
+V5 7 11 
+V6 6 4  ; For measuring I(VCC)
+.ENDS
+**********
+.SUBCKT PCMC1OB 10    14     6   9   8
+*Connections    Input Output VCC VEE Enable
+* Input/Enable Control
+X16 8 10 16 AND2X
+X17 10 8 1 NAND2
+*
+X12 1 4 9 2 DRVR
+X13 16 4 9 5 DRVR
+R6 4 7 33K
+R7 7 9 33K
+* Pull-up/pull-down structure Max
+M1 7 5 9 9 PCIOUTLX
+M2 7 2 4 4 PCIOUTHX
+.MODEL PCIOUTLX NMOS (LEVEL=1 VTO=2.2 KP=28M GAMMA=1.48
++ LAMBDA=25.49M RD=1.4 RS=7.24 IS=100F CGDO=12N)
+.MODEL PCIOUTHX PMOS (LEVEL=1 VTO=-2.2 KP=33.7M GAMMA=1.48
++ LAMBDA=233.41M RD=9.25 RS=11.13 IS=75F CGDO=12N)
+* Diode Clamps
+D1 7 4 DIODEV
+D2 9 7 DIODEG
+.MODEL DIODEV D IS=45N N=1.98 RS=938.6M
+.MODEL DIODEG D IS=.9N N=1.51 RS=1.165
+* Package Parasitics Min
+ROSNB 11 13 100
+ROPKG 13 14 .227
+CCOMP 11 9 2.79P
+LOPKG 11 13 26.75N
+COPKG 14 9 1.21P
+V5 7 11 
+V6 6 4 
+.ENDS
+.SUBCKT NAND2 1 2 3
+B1 3 0 V= ~(V(1) & V(2))
+.ENDS
+.SUBCKT AND2X 1 2 3
+B1 3 0 V= (V(1) & ~V(2))
+.ENDS
+.SUBCKT DRVR 1  2  3   4
+*            IN VCC VEE OUT
+RC 4 3 1MEG
+CC 4 3 1P
+B1 0 4 I= V(1) > 1.2 ? V(2,4)/189 : V(3,4)/143
+.ENDS
+**********
+.SUBCKT PCMC1IB 14    6   9
+*Connections  Input VCC VEE
+D1 7 4 DIODEV
+D2 9 7 DIODEG
+.MODEL DIODEV D IS=45N N=1.98 RS=938.6M
+.MODEL DIODEG D IS=.9N N=1.51 RS=1.165
+* Package Parasitics Min
+ROSNB 11 13 100
+ROPKG 13 14 .227
+CCOMP 11 9 2.79P
+LOPKG 11 13 26.75N
+COPKG 14 9 1.21P
+V5 7 11 
+V6 6 4  ; For measuring I(VCC)
+.ENDS
+**********
+.SUBCKT BLINE1 1 2 {ER0=8.85P}
+*Interconnect Model for the Suface Microstrip Stub from the 
+* PCI Speedway to the Load
+O1 1 0 2 0 LOSSY
+.MODEL LOSSY LTRA rel=1.8 len={LENGTH*.0254}M
++ r=0 g=0
++ l=523NH/m
++ c=76PF/m 
+* z0 = {(523N/76P)^.5}Ohms
+* td = {(523N*76P)^.5}s
+* Total Delay = {(523N*76P)^.5 * (LENGTH * .0254)}s
+.ENDS
+***********
+.SUBCKT BLINE 1 2 {ER0=8.85P}
+*Interconnect Model for the Buried Microstrip PCI Speedway line
+O1 1 0 2 0 LOSSY
+.MODEL LOSSY LTRA rel=1.8 len={LENGTH*.0254}M
++ r=0 g=0
++ l=723NH/m
++ c=76PF/m 
+* z0 = {(723N/76P)^.5}Ohms 
+* td = {(723N*76P)^.5}s
+* Total Delay = {(723N*76P)^.5 * (LENGTH * .0254)}s
+.ENDS
+***********

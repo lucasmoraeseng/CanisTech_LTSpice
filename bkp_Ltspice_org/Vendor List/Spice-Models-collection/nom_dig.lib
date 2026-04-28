@@ -1,0 +1,70 @@
+* Library of Digital Logic
+
+*  Copyright OrCAD, Inc. 1998 All Rights Reserved.
+
+
+* $Revision:   1.17  $
+* $Author:   RPEREZ  $
+* $Date:   20 Apr 1998 09:21:26  $
+*
+*---------------------------------------------------------------
+
+* The parameters in this model library were derived from:
+*
+*   The TTL Data Book, Texas Instruments, 1985, vol. 2
+*   ALS/AS Logic Data Book, Texas Instruments, 1986
+*     
+*   High-speed CMOS Logic Data Book, Texas Instruments, 1988
+*     
+*   F Logic Data Book, Texas Instruments, 1987
+*
+*   FAST Data Book, Fairchild, 1982
+*
+*   PHILIPS Data Book, 1990
+*
+*   Philips ECL Databook June 1990
+*
+*   Programmable Logic Devices Databook and Design Guide,
+*   1989 Edition, National Semiconductor
+*
+*   and other sources noted with the device models.
+*
+* Each device is modeled by a subcircuit.  The subcircuit name is the
+* part name.  The interface pins of the subcircuit have the same name 
+* as the pin labels in the data book.  The general order is inputs
+* followed by outputs, but on the more complex devices you will have
+* to look at the subcircuit definition. The word "BAR" is appended to 
+* inverted inputs or outputs.
+*
+* The timing charactistics from the data book are included in the models, 
+* with all data sheet effects modeled, unless noted in the comments in the
+* header of the model.
+*
+* If a device contains multiple, independent, identical functions, only 
+* one is contained in the subcircuit. (e.g. the 7400 contains four two-
+* input NAND gates, but there is only one in the 7400 subckt.)
+*
+*
+* This file references each of the digital libraries.
+
+.lib 7400.lib           ; 74xxx
+.lib 74ac.lib           ; 74ACxxx
+.lib 74act.lib          ; 74ACTxxx
+.lib 74als.lib          ; 74ALSxxx
+.lib 74as.lib           ; 74ASxxx
+.lib 74f.lib            ; 74Fxxx
+.lib 74h.lib            ; 74Hxxx
+.lib 74hc.lib           ; 74HCxxx
+.lib 74hct.lib          ; 74HCTxxx
+.lib 74l.lib            ; 74Lxxx
+.lib 74ls.lib           ; 74LSxxx
+.lib 74s.lib            ; 74Sxxx
+.lib cd4000.lib         ; CD4000
+.lib dig_pal.lib        ; PAL's
+.lib dig_gal.lib        ; GAL's
+.lib dig_ecl.lib        ; 10k and 100k ecl
+.lib dig_misc.lib       ; Pullup/down resistors, Delay line, Digital 
+                        ; capacitive load
+.lib dig_io.lib         ; Circuit-to-logic and logic-to-circuit interface 
+                        ; models
+.lib dig_prim.lib       ; PLSyn digital primitives

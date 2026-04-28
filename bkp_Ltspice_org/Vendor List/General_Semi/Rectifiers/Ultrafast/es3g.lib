@@ -1,0 +1,23 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+.MODEL ES3G D (
++   N=2.69389
++  IS=1.25971E-005
++  RS=0.00412252
++  EG=1.11
++ XTI=3
++ CJO=4.1276E-011
++  VJ=0.558001
++   M=0.164583
++  FC=0.5
++  TT=8.63206E-008
++  BV=400
++ IBV=0.2
++  KF=0
++  AF=1 )

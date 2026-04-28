@@ -1,0 +1,1361 @@
+* Library of A/D and D/A Converters
+*
+* Copyright 1997-1997 by MicroSim Corporation
+* Neither this library nor any part may be copied without the express
+* written consent of MicroSim Corporation
+*
+*
+* $Revision:   
+* $Author:   
+* $Date:   
+*
+*
+* ----------------------------------------------------------------------
+*
+*
+*                              Single and Multiple Bit Buffers
+*
+**************************************************************************
+
+* Buffers are implemented through symbol TEMPLATES entirely to allow
+* IO_MODEL to be passed from the hierarchical symbol.
+
+* ----------------------------------------------------------------------
+*
+*
+*                              A/D Converters
+*
+**************************************************************************
+
+.subckt DC_ADC2 IN REF GND CNVRT STAT OVR
++                   DB1 DB0
++                   OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                   PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(2) DPWR DGND IN REF GND CNVRT STAT OVR 
++          DB1 DB0
++          ADC2_TIMING IO_HCT
++          MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC2_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+*$
+
+.subckt DC_ADC4 IN REF GND CNVRT STAT OVR
++                   DB3 DB2 DB1 DB0
++                   OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                   PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(4) DPWR DGND IN REF GND CNVRT STAT OVR 
++          DB3 DB2 DB1 DB0
++          ADC4_TIMING IO_HCT
++          MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC4_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+*$
+
+.subckt DC_ADC6 IN REF GND CNVRT STAT OVR
++                   DB5 DB4 DB3 DB2 DB1 DB0
++                   OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                   PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(6) DPWR DGND IN REF GND CNVRT STAT OVR 
++          DB5 DB4 DB3 DB2 DB1 DB0
++          ADC6_TIMING IO_HCT
++          MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC6_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+*$
+
+.subckt DC_ADC8 IN REF GND CNVRT STAT OVR
++                   DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                   OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                   PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(8) DPWR DGND IN REF GND CNVRT STAT OVR 
++          DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++          ADC8_TIMING IO_HCT
++          MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC8_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+*$
+
+.subckt DC_ADC10 IN REF GND CNVRT STAT OVR
++                   DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                   OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                   PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(10) DPWR DGND IN REF GND CNVRT STAT OVR 
++          DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++          ADC10_TIMING IO_HCT
++          MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC10_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+*$
+
+.subckt DC_ADC12 IN REF GND CNVRT STAT OVR
++                   DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                   OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                   PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(12) DPWR DGND IN REF GND CNVRT STAT OVR 
++          DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++          ADC12_TIMING IO_HCT
++          MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC12_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+*$
+
+.subckt DC_ADC14 IN REF GND CNVRT STAT OVR
++                   DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                   OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                   PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(14) DPWR DGND IN REF GND CNVRT STAT OVR 
++          DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++          ADC14_TIMING IO_HCT
++          MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC14_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+*$
+
+.subckt DC_ADC16 IN REF GND CNVRT STAT OVR
++         DB15 DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++         OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++         PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(16) DPWR DGND IN REF GND CNVRT STAT OVR 
++         DB15 DB14 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++         ADC16_TIMING IO_HCT
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC16_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+
+*$
+
+.subckt DC_ADC20 IN REF GND CNVRT STAT OVR
++                   DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12
++                   DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                   OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                   PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(20) DPWR DGND IN REF GND CNVRT STAT OVR 
++          DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12
++          DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++          ADC20_TIMING IO_HCT
++          MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC20_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+*$
+
+.subckt DC_ADC24 IN REF GND CNVRT STAT OVR
++                   DB23 DB22 DB21 DB20 DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12
++                   DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                   OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                   PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                   CONVWHI=40n CONVWLO=60n
+
+U1 ADC(24) DPWR DGND IN REF GND CNVRT STAT OVR 
++          DB23 DB22 DB21 DB20 DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12
++          DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++          ADC24_TIMING IO_HCT
++          MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL  ADC24_TIMING UADC 
+
+UC CONSTRAINT (1) DPWR DGND
++ CNVRT
++ IO_HCT  IO_LEVEL={IO_LEVEL}
++
++
++ WIDTH:
++   NODE = CNVRT
++   MIN_HI = {CONVWHI}
++   MIN_LO = {CONVWLO}
++
+
+.ENDS
+*$
+
+* ----------------------------------------------------------------------
+*
+*
+*                              D/A Converters
+*
+**************************************************************************
+
+.subckt DC_DAC2 OUT REF GND
++                 DB1 DB0
++                 OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                 PARAMS: MNTYMXDLY=0 IO_LEVEL=0 TSWMIN=10n TSWTYP=10n TSWMAX=10n
+
+U1 DAC(2) DPWR DGND OUT REF GND
++         DB1 DB0
++         DAC2_TIMING IO_STD
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC2_TIMING UDAC (TSWMN={TSWMIN} TSWTY={TSWTYP} TSWMX={TSWMAX}) ;Min Slew Rate approx.
+
+.ENDS
+*$
+
+.subckt DC_DAC4 OUT REF GND
++                 DB3 DB2 DB1 DB0
++                 OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                 PARAMS: MNTYMXDLY=0 IO_LEVEL=0 TSWMIN=10n TSWTYP=10n TSWMAX=10n
+
+U1 DAC(4) DPWR DGND OUT REF GND
++         DB3 DB2 DB1 DB0
++         DAC4_TIMING IO_STD
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC4_TIMING UDAC (TSWMN={TSWMIN} TSWTY={TSWTYP} TSWMX={TSWMAX}) ;Min Slew Rate approx.
+
+.ENDS
+*$
+
+.subckt DC_DAC6 OUT REF GND
++                 DB5 DB4 DB3 DB2 DB1 DB0
++                 OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                 PARAMS: MNTYMXDLY=0 IO_LEVEL=0 TSWMIN=10n TSWTYP=10n TSWMAX=10n
+
+U1 DAC(6) DPWR DGND OUT REF GND
++         DB5 DB4 DB3 DB2 DB1 DB0
++         DAC6_TIMING IO_STD
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC6_TIMING UDAC (TSWMN={TSWMIN} TSWTY={TSWTYP} TSWMX={TSWMAX}) ;Min Slew Rate approx.
+
+.ENDS
+*$
+
+.subckt DC_DAC8 OUT REF GND
++                 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                 OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                 PARAMS: MNTYMXDLY=0 IO_LEVEL=0 TSWMIN=10n TSWTYP=10n TSWMAX=10n
+
+U1 DAC(8) DPWR DGND OUT REF GND
++         DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++         DAC8_TIMING IO_STD
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC8_TIMING UDAC (TSWMN={TSWMIN} TSWTY={TSWTYP} TSWMX={TSWMAX}) ;Min Slew Rate approx.
+
+.ENDS
+*$
+
+.subckt DC_DAC10 OUT REF GND
++                 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                 OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                 PARAMS: MNTYMXDLY=0 IO_LEVEL=0 TSWMIN=10n TSWTYP=10n TSWMAX=10n
+
+U1 DAC(10) DPWR DGND OUT REF GND
++         DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++         DAC10_TIMING IO_STD
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC10_TIMING UDAC (TSWMN={TSWMIN} TSWTY={TSWTYP} TSWMX={TSWMAX}) ;Min Slew Rate approx.
+
+.ENDS
+*$
+
+.subckt DC_DAC12 OUT REF GND
++                 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                 OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                 PARAMS: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 DAC(12) DPWR DGND OUT REF GND
++         DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++         DAC12_TIMING IO_HCT
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC12_TIMING UDAC 
+
+.ENDS
+*$
+
+.subckt DC_DAC14 OUT REF GND
++                 DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++                 OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                 PARAMS: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 DAC(14) DPWR DGND OUT REF GND
++         DB13 DB12 DB11 DB10 DB9 DB8 DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++         DAC14_TIMING IO_HCT
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC14_TIMING UDAC 
+
+.ENDS
+*$
+
+.subckt DC_DAC16 OUT REF GND
++              DB15 DB14 DB13 DB12 DB11 DB10 DB9 DB8 
++              DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++              OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++              PARAMS: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 DAC(16) DPWR DGND OUT REF GND
++         DB15 DB14 DB13 DB12 DB11 DB10 DB9 DB8 
++         DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++         DAC16_TIMING IO_STD
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC16_TIMING UDAC 
+
+.ENDS
+*$
+
+.subckt DC_DAC20 OUT REF GND
++              DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12 DB11 DB10 DB9 DB8 
++              DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++              OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++              PARAMS: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 DAC(20) DPWR DGND OUT REF GND
++         DB19 DB18 DB17 DB16 DB15 DB14 DB13 DB12 DB11 DB10 DB9 DB8 
++         DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++         DAC20_TIMING IO_STD
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC20_TIMING UDAC 
+
+.ENDS
+*$
+
+.subckt DC_DAC24 OUT REF GND
++              DB23 DB22 DB21 DB20 DB19 DB18 DB17 DB16
++              DB15 DB14 DB13 DB12 DB11 DB10 DB9 DB8 
++              DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++              OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++              PARAMS: MNTYMXDLY=0 IO_LEVEL=0
+
+U1 DAC(24) DPWR DGND OUT REF GND
++         DB23 DB22 DB21 DB20 DB19 DB18 DB17 DB16
++         DB15 DB14 DB13 DB12 DB11 DB10 DB9 DB8 
++         DB7 DB6 DB5 DB4 DB3 DB2 DB1 DB0
++         DAC24_TIMING IO_STD
++         MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+.MODEL DAC24_TIMING UDAC 
+
+.ENDS
+*$
+
+* ----------------------------------------------------------------------
+*
+*
+*                              Registers
+*
+**************************************************************************
+
+.subckt DC_REG2 PREbar CLRbar Gate
++ D1 D0
++ Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n
+
+UINREG DLTCH(2) DPWR DGND PREbar CLRbar Gate     
++               D1 D0
++               Q1 Q0
++               QN1 QN0
++               REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN})
+.ends
+*$
+
+.subckt DC_REG4 PREbar CLRbar Gate
++ D3 D2 D1 D0
++ Q3 Q2 Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n
+
+UINREG DLTCH(4) DPWR DGND PREbar CLRbar Gate     
++               D3 D2 D1 D0
++               Q3 Q2 Q1 Q0
++               QN3 QN2 QN1 QN0
++               REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN})
+.ends
+*$
+
+.subckt DC_REG6 PREbar CLRbar Gate
++ D5 D4 D3 D2 D1 D0
++ Q5 Q4 Q3 Q2 Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n
+
+UINREG DLTCH(6) DPWR DGND PREbar CLRbar Gate     
++               D5 D4 D3 D2 D1 D0
++               Q5 Q4 Q3 Q2 Q1 Q0
++               QN5 QN4 QN3 QN2 QN1 QN0
++               REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN})
+.ends
+*$
+
+.subckt DC_REG8 PREbar CLRbar Gate
++ D7 D6 D5 D4 D3 D2 D1 D0
++ Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n
+
+UINREG DLTCH(8) DPWR DGND PREbar CLRbar Gate     
++               D7 D6 D5 D4 D3 D2 D1 D0
++               Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++               QN7 QN6 QN5 QN4 QN3 QN2 QN1 QN0
++               REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN})
+.ends
+*$
+
+.subckt DC_REG10 PREbar CLRbar Gate
++ D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++ Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n
+
+UINREG DLTCH(10) DPWR DGND PREbar CLRbar Gate     
++               D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++               Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++               QN9 QN8 QN7 QN6 QN5 QN4 QN3 QN2 QN1 QN0
++               REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN})
+.ends
+*$
+
+.subckt DC_REG12 PREbar CLRbar Gate
++ D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++ Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n
+
+UINREG DLTCH(12) DPWR DGND PREbar CLRbar Gate     
++               D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++               Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++               QN11 QN10 QN9 QN8 QN7 QN6 QN5 QN4 QN3 QN2 QN1 QN0
++               REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN})
+.ends
+*$
+
+.subckt DC_REG14 PREbar CLRbar Gate
++ D13 D12 D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++ Q13 Q12 Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n
+
+UINREG DLTCH(14) DPWR DGND PREbar CLRbar Gate     
++               D13 D12 D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++               Q13 Q12 Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++               QN13 QN12 QN11 QN10 QN9 QN8 QN7 QN6 QN5 QN4 QN3 QN2 QN1 QN0
++               REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN})
+.ends
+*$
+
+.subckt DC_REG16 PREbar CLRbar Gate
++ D15 D14 D13 D12 D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++ Q15 Q14 Q13 Q12 Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n TWGHMIN=0n TPGQTY=0n
+
+UINREG DLTCH(16) DPWR DGND PREbar CLRbar Gate     
++               D15 D14 D13 D12 D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++               Q15 Q14 Q13 Q12 Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++               QN15 QN14 QN13 QN12 QN11 QN10 QN9 QN8 QN7 QN6 QN5 QN4 QN3 QN2 QN1 QN0
++               REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN} 
++ TWGHMN={TWGHMIN} TPGQLHTY={TPGQTY} TPGQHLTY={TPGQTY})
+.ends
+*$
+
+.subckt DC_REG20 PREbar CLRbar Gate
++ D19 D18 D17 D16 D15 D14 D13 D12 D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++ Q19 Q18 Q17 Q16 Q15 Q14 Q13 Q12 Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n
+
+UINREG DLTCH(20) DPWR DGND PREbar CLRbar Gate     
++ D19 D18 D17 D16 D15 D14 D13 D12 D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++ Q19 Q18 Q17 Q16 Q15 Q14 Q13 Q12 Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++ QN19 QN18 QN17 QN16 QN15 QN14 QN13 QN12 QN11 QN10 QN9 QN8 QN7 QN6 
++ QN5 QN4 QN3 QN2 QN1 QN0
++ REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN})
+.ends
+*$
+
+.subckt DC_REG24 PREbar CLRbar Gate
++ D23 D22 D21 D20 D19 D18 D17 D16 D15 D14 D13 D12 
++ D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++ Q23 Q22 Q21 Q20 Q19 Q18 Q17 Q16 Q15 Q14 Q13 Q12 
++ Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 THDGMIN=10n TSUDGMIN=90n
+
+UINREG DLTCH(24) DPWR DGND PREbar CLRbar Gate     
++ D23 D22 D21 D20 D19 D18 D17 D16 D15 D14 D13 D12 
++ D11 D10 D9 D8 D7 D6 D5 D4 D3 D2 D1 D0
++ Q23 Q22 Q21 Q20 Q19 Q18 Q17 Q16 Q15 Q14 Q13 Q12 
++ Q11 Q10 Q9 Q8 Q7 Q6 Q5 Q4 Q3 Q2 Q1 Q0
++ QN23 QN22 QN21 QN20 QN19 QN18 QN17 QN16 QN15 QN14 QN13 QN12 
++ QN11 QN10 QN9 QN8 QN7 QN6 QN5 QN4 QN3 QN2 QN1 QN0
++ REG_TIME IO_HCT
+.MODEL REG_TIME UGFF (THDGMN={THDGMIN} TSUDGMN={TSUDGMIN})
+.ends
+*$
+
+* ----------------------------------------------------------------------
+*
+*
+*                              Memory
+*
+**************************************************************************
+
+.subckt DC_RAM4 READ WRITE ADDRS 
++ R3 R2 R1 R0
++ W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,4) DPWR DGND READ WRITE ADDRS
++ W3 W2 W1 W0
++ R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
+*.MODEL RAM_TIMING URAM (TPADHTY=20n TPADLTY=20n TPADHMN=10n TPADLMN=10n )
+.ENDS
+*$
+
+.subckt DC_RAM6 READ WRITE ADDRS 
++ R5 R4 R3 R2 R1 R0
++ W5 W4 W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,6) DPWR DGND READ WRITE ADDRS
++ W5 W4 W3 W2 W1 W0
++ R5 R4 R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
+*.MODEL RAM_TIMING URAM (TPADHTY=20n TPADLTY=20n TPADHMN=10n TPADLMN=10n )
+.ENDS
+*$
+
+.subckt DC_RAM8 READ WRITE ADDRS 
++ R7 R6 R5 R4 R3 R2 R1 R0
++ W7 W6 W5 W4 W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,8) DPWR DGND READ WRITE ADDRS
++ W7 W6 W5 W4 W3 W2 W1 W0
++ R7 R6 R5 R4 R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
+*.MODEL RAM_TIMING URAM (TPADHTY=20n TPADLTY=20n TPADHMN=10n TPADLMN=10n )
+.ENDS
+*$
+
+.subckt DC_RAM10 READ WRITE ADDRS 
++ R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,10) DPWR DGND READ WRITE ADDRS
++ W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
+*.MODEL RAM_TIMING URAM (TPADHTY=20n TPADLTY=20n TPADHMN=10n TPADLMN=10n )
+.ENDS
+*$
+
+.subckt DC_RAM12 READ WRITE ADDRS 
++ R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0 PTPADHMX=0 PTPADLMX=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,12) DPWR DGND READ WRITE ADDRS
++ W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
++                       TPADHMX={PTPADHMX} TPADLMX={PTPADLMX} )
+.ENDS
+*$
+
+.subckt DC_RAM14 READ WRITE ADDRS 
++ R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,14) DPWR DGND READ WRITE ADDRS
++ W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
+*.MODEL RAM_TIMING URAM (TPADHTY=20n TPADLTY=20n TPADHMN=10n TPADLMN=10n )
+.ENDS
+*$
+
+.subckt DC_RAM16 READ WRITE ADDRS 
++ R15 R14 R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ W15 W14 W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,16) DPWR DGND READ WRITE ADDRS
++ W15 W14 W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ R15 R14 R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
+*.MODEL RAM_TIMING URAM (TPADHTY=20n TPADLTY=20n TPADHMN=10n TPADLMN=10n )
+.ENDS
+*$
+
+.subckt DC_RAM18 READ WRITE ADDRS 
++ R17 R16 R15 R14 R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ W17 W16 W15 W14 W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,18) DPWR DGND READ WRITE ADDRS
++ W17 W16 W15 W14 W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ R17 R16 R15 R14 R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
+*.MODEL RAM_TIMING URAM (TPADHTY=20n TPADLTY=20n TPADHMN=10n TPADLMN=10n )
+.ENDS
+*$
+
+.subckt DC_RAM22 READ WRITE ADDRS 
++ R21 R20 R19 R18 R17 R16 R15 R14 R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ W21 W20 W19 W18 W17 W16 W15 W14 W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,22) DPWR DGND READ WRITE ADDRS
++ W21 W20 W19 W18 W17 W16 W15 W14 W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ R21 R20 R19 R18 R17 R16 R15 R14 R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
+*.MODEL RAM_TIMING URAM (TPADHTY=20n TPADLTY=20n TPADHMN=10n TPADLMN=10n )
+.ENDS
+*$
+
+.subckt DC_RAM26 READ WRITE ADDRS 
++ R25 R24 R23 R22 R21 R20 R19 R18 R17 R16 R15 R14 
++ R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ W25 W24 W23 W22 W21 W20 W19 W18 W17 W16 W15 W14 
++ W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++ PTPADHTY=0 PTPADLTY=0 PTPADHMN=0 PTPADLMN=0
+
+*  First of three stages of RAM to help simulate the 3 clock delay to get the output
+URAM RAM(1,26) DPWR DGND READ WRITE ADDRS
++ W25 W24 W23 W22 W21 W20 W19 W18 W17 W16 W15 W14 
++ W13 W12 W11 W10 W9 W8 W7 W6 W5 W4 W3 W2 W1 W0
++ R25 R24 R23 R22 R21 R20 R19 R18 R17 R16 R15 R14 
++ R13 R12 R11 R10 R9 R8 R7 R6 R5 R4 R3 R2 R1 R0
++ RAM_TIMING IO_HCT
++ MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
+
+*  RAM timing to account for the propagation delays given in the spec
+.MODEL RAM_TIMING URAM (TPADHTY={PTPADHTY} TPADLTY={PTPADLTY} 
++                       TPADHMN={PTPADHMN} TPADLMN={PTPADLMN} )
+*.MODEL RAM_TIMING URAM (TPADHTY=20n TPADLTY=20n TPADHMN=10n TPADLMN=10n )
+.ENDS
+*$
+
+* ----------------------------------------------------------------------
+*
+*
+*                              Misc.
+*
+**************************************************************************
+
+.SUBCKT DC_569 CLK_I GBAR_I U/DBAR_I ENPBAR_I ENTBAR_I LOADBAR_I ACLRBAR_I
++ SCLRBAR_I A_I B_I C_I D_I QA_O QB_O QC_O QD_O CCOBAR_O RCOBAR_O
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0
+*
+UDFF DFF(4) DPWR DGND $D_HI ACLRBAR CLK DA DB DC DD QA QB QC QD 
++ QABAR QBBAR QCBAR QDBAR D0_EFF IO_F
+*
+UF569LOG LOGICEXP(20,19) DPWR DGND
++ CLK_I GBAR_I U/DBAR_I ENPBAR_I ENTBAR_I LOADBAR_I ACLRBAR_I SCLRBAR_I
++ A_I B_I C_I D_I QA QB QC QD QABAR QBBAR QCBAR QDBAR
++ CLK GBAR U/DBAR ENPBAR ENTBAR LOADBAR ACLRBAR SCLRBAR A B C D DA DB DC DD
++ CCOBAR RCOBAR IEN
++ D0_GATE IO_F IO_LEVEL={IO_LEVEL}
++ LOGIC:
++   CLK = { CLK_I }
++   GBAR = { GBAR_I }
++   ENPBAR = { ENPBAR_I }
++   ENTBAR = { ENTBAR_I }
++   U/DBAR = { U/DBAR_I }
++   LOADBAR = { LOADBAR_I }
++   ACLRBAR = { ACLRBAR_I }
++   SCLRBAR = { SCLRBAR_I }
++   A = { A_I }
++   B = { B_I }
++   C = { C_I }
++   D = { D_I }
++   UP = { U/DBAR }
++   DN = { ~U/DBAR }
++   ILC1 = { ~(SCLRBAR & LOADBAR) }
++   ILC2 = { ~ILC1 }
++   IEN = { ~(ENTBAR | ENPBAR | ILC1) }
++   IUD1 = { UP | DN }
++   IUD2 = { (UP & QA) | (DN & QABAR) }
++   IUD3 = { (UP & QA & QB) | (DN & QABAR & QBBAR) }
++   IUD4 = { (UP & QA & QB & QC) | (DN & QABAR & QBBAR & QCBAR) }
++   IA1 = { ~((~(IUD1 & IEN) ^ QA) & ILC2) }
++   IA2 = { ~(~(A & SCLRBAR) & ILC1) }
++   IB1 = { ~((~(IUD2 & IEN) ^ QB) & ILC2) }
++   IB2 = { ~(~(B & SCLRBAR) & ILC1) }
++   IC1 = { ~((~(IUD3 & IEN) ^ QC) & ILC2) }
++   IC2 = { ~(~(C & SCLRBAR) & ILC1) }
++   ID1 = { ~((~(IUD4 & IEN) ^ QD) & ILC2) }
++   ID2 = { ~(~(D & SCLRBAR) & ILC1) }
++   IRC1 = { UP & ~ENTBAR & QD & QC & QB & QA }
++   IRC2 = { DN & ~ENTBAR & QDBAR & QCBAR & QBBAR & QABAR }
++   DA = { IA1 & IA2 }
++   DB = { IB1 & IB2 }
++   DC = { IC1 & IC2 }
++   DD = { ID1 & ID2 }
++   RCOBAR = { ~(IRC1 | IRC2) }
++   CCOBAR = { ~(~RCOBAR & ~CLK & IEN) }
+*
+UF569DLY PINDLY (6,1,14) DPWR DGND
++ CCOBAR RCOBAR QA QB QC QD
++ GBAR
++ CLK GBAR ENPBAR ENTBAR LOADBAR SCLRBAR ACLRBAR U/DBAR U/DBAR A B C D IEN
++ CCOBAR_O RCOBAR_O QA_O QB_O QC_O QD_O
++ IO_F MNTYMXDLY={MNTYMXDLY} IO_LEVEL={IO_LEVEL}
++ BOOLEAN:
++   CLOCK = { CHANGED_LH(CLK,0) }
++   ACLEAR = { CHANGED_HL(ACLRBAR,0) }
++   CNTENT = { CHANGED(ENTBAR,0) }
++   CNTENP = { CHANGED(ENPBAR,0) }
++   ENABLE = { CHANGED_HL(GBAR,0) }
++   DISABLE = { CHANGED_LH(GBAR,0) }
++ PINDLY:
++   CCOBAR_O = {
++     CASE(
++       CHANGED(CLK,0) & TRN_LH, DELAY(0,0,0),
++       CHANGED(CLK,0) & TRN_HL, DELAY(0,0,0),
++       (CNTENP | CNTENT) & TRN_LH, DELAY(0,0,0),
++       CHANGED(LOADBAR,0) & TRN_LH, DELAY(0,0,0),
++       CHANGED(LOADBAR,0) & TRN_HL, DELAY(0,0,0),
++       (CNTENP | CNTENT) & TRN_HL, DELAY(0,0,0),
++       CHANGED(SCLRBAR,0) & TRN_LH, DELAY(0,0,0),
++       CHANGED(SCLRBAR,0) & TRN_HL, DELAY(0,0,0),
++       CHANGED(U/DBAR,0) & TRN_LH, DELAY(0,0,0),
++       ACLEAR, DELAY(0,0,0),
++       CHANGED(U/DBAR,0) & TRN_HL, DELAY(0,0,0), 
++       DELAY(0,0,0)
++       )
++     }
++   RCOBAR_O = {
++     CASE(
++       CNTENT & TRN_LH, DELAY(0,0,0),
++       CNTENT & TRN_HL, DELAY(0,0,0),
++       CHANGED(U/DBAR,0) & TRN_HL, DELAY(0,0,0),
++       CLOCK & TRN_HL, DELAY(0,0,0),
++       CHANGED(U/DBAR,0) & TRN_LH, DELAY(0,0,0),
++       CLOCK & TRN_LH, DELAY(0,0,0),
++       ACLEAR, DELAY(0,0,0),
++       DELAY(0,0,0)
++       )
++     }
++ TRISTATE:
++   ENABLE LO GBAR
++   QA_O QB_O QC_O QD_O = {
++     CASE(
++       DISABLE & TRN_LZ, DELAY(0,0,0),
++       DISABLE & TRN_HZ, DELAY(0,0,0),
++       ENABLE & TRN_ZH, DELAY(0,0,0),
++       ENABLE & TRN_ZL, DELAY(0,0,0),
++       CLOCK & TRN_LH, DELAY(0,0,0),
++       CLOCK & TRN_HL, DELAY(0,0,0),
++       ACLEAR, DELAY(0,0,0),
++       DELAY(0,0,0)
++       )
++     }
+.ENDS
+*
+*$
+
+.SUBCKT DC_95_1  MODE_I CLK1_I CLK2_I SER_I A_I B_I C_I D_I
++ QA_O QB_O QC_O QD_O
++ OPTIONAL: DPWR=$G_DPWR   DGND=$G_DGND
++ PARAMS:   MNTYMXDLY=0    IO_LEVEL=0  
++ CLKHI=40n CLKLO=60n CLKMAX=5Meg CLKMIN=178.571K CKDPDMIN=25n CKDPDMAX=80n
+*
+ULS95BLOG LOGICEXP(11,13) DPWR DGND
++ MODE_I CLK1_I CLK2_I SER_I A_I B_I C_I D_I QA QB QC
++ MODE CLK1 CLK2 SER A B C D CLK DA DB DC DD
++ D0_GATE IO_LS
++ IO_LEVEL={IO_LEVEL}
++ LOGIC:
++   MODE = { MODE_I }
++   CLK1 = { CLK1_I }
++   CLK2 = { CLK2_I }
++   SER = { SER_I }
++   A   = { A_I }
++   B   = { B_I }
++   C   = { C_I }
++   D   = { D_I }
++
+* INTERMEDIATE TERM
++   MODEBAR = { ~MODE }
++
++   CLK = { ~((MODEBAR  & CLK1) | (MODE  & CLK2)) }
++   DA  = { (MODEBAR  & SER)    | (MODE  & A) }
++   DB  = { (MODEBAR  & QA) | (MODE  & B) }
++   DC  = { (MODEBAR  & QB) | (MODE  & C) }
++   DD  = { (MODEBAR  & QC) | (MODE  & D) }
+*
+U1 DFF(4) DPWR DGND $D_HI $D_HI CLK
++ DA DB DC DD QA QB QC QD
++ $D_NC  $D_NC $D_NC $D_NC
++ D0_EFF IO_LS
+*
+ULS95BDLY PINDLY (4,0,8) DPWR DGND
++ QA QB QC QD
++ CLK1 CLK2 MODE SER A B C D
++ QA_O QB_O QC_O QD_O
++ IO_LS  MNTYMXDLY={MNTYMXDLY}  IO_LEVEL={IO_LEVEL}
++
++ BOOLEAN:
++    CLK = { CHANGED_HL(CLK1,0) | CHANGED_HL(CLK2,0) }
++
++ PINDLY:
++   QA_O QB_O QC_O QD_O = {
++     CASE(
++       CLK & TRN_LH,  DELAY({CKDPDMIN},-1,{CKDPDMAX}),
++       CLK & TRN_HL,  DELAY({CKDPDMIN},-1,{CKDPDMAX}),
++       DELAY({CKDPDMIN},-1,{CKDPDMAX})                 ;DEFAULT
++       )
++     }
++
++ FREQ:
++   NODE = CLK1
++   MAXFREQ = {CLKMAX}
++   MINFREQ = {CLKMIN}
++
++ FREQ:
++   NODE = CLK2
++   MAXFREQ = {CLKMAX}
++   MINFREQ = {CLKMIN}
++
++ WIDTH:
++   NODE = CLK1
++   MIN_HI = {CLKHI}
++   MIN_LO = {CLKLO}
++
++ WIDTH:
++   NODE = CLK2
++   MIN_HI = {CLKHI}
++   MIN_LO = {CLKLO}
++
+.ENDS
+*
+*$
+
+.subckt SlewRate in out PARAMS: BW=1Meg SR=2Meg
+rin in 0 1Meg
+Gvi 0 1 VALUE {V(in)/1k}
+rsr 1 0 1k
+Vsr 1 out 0
+csr out 0 {1/(2k*3.1415926*BW)}
+*lsr s out 62900n
+D1 out 3 drec
+D2 out 4 drec
+D3 4 3 drec
+Vplim 3 0 15
+D4 5 out drec
+D5 5 6 drec
+D6 6 out drec
+Vnlim 5 0 -15
+G1 4 3 VALUE {I(Vsr)-(SR/(2k*3.1415926*BW))}
+G2 5 6 VALUE {-I(Vsr)-(SR/(2k*3.1415926*BW))}
+rout out 0 1Meg
+.MODEL drec D
++ RS=1.0000E-3
++ CJO=1.0000E-12
++ M=.3333
++ VJ=.75
++ ISR=100.00E-12
++ BV=100
++ IBV=100.00E-6
++ TT=5.0000E-9
+.ends
+*$
+
+.SUBCKT DC_95_2  MODE_I CLK1_I CLK2_I SER_I A_I B_I C_I D_I
++ QA_O QB_O QC_O QD_O
++ OPTIONAL: DPWR=$G_DPWR   DGND=$G_DGND
++ PARAMS:   MNTYMXDLY=0    IO_LEVEL=0  
++ DSET=10n DHOLD=100n
+*
+ULS95BLOG LOGICEXP(11,13) DPWR DGND
++ MODE_I CLK1_I CLK2_I SER_I A_I B_I C_I D_I QA QB QC
++ MODE CLK1 CLK2 SER A B C D CLK DA DB DC DD
++ D0_GATE IO_LS
++ IO_LEVEL={IO_LEVEL}
++ LOGIC:
++   MODE = { MODE_I }
++   CLK1 = { CLK1_I }
++   CLK2 = { CLK2_I }
++   SER = { SER_I }
++   A   = { A_I }
++   B   = { B_I }
++   C   = { C_I }
++   D   = { D_I }
++
+* INTERMEDIATE TERM
++   MODEBAR = { ~MODE }
++
++   CLK = { ~((MODEBAR  & CLK1) | (MODE  & CLK2)) }
++   DA  = { (MODEBAR  & SER)    | (MODE  & A) }
++   DB  = { (MODEBAR  & QA) | (MODE  & B) }
++   DC  = { (MODEBAR  & QB) | (MODE  & C) }
++   DD  = { (MODEBAR  & QC) | (MODE  & D) }
+*
+U1 DFF(4) DPWR DGND $D_HI $D_HI CLK
++ DA DB DC DD QA QB QC QD
++ $D_NC  $D_NC $D_NC $D_NC
++ D0_EFF IO_LS
+*
+ULS95BDLY PINDLY (4,0,8) DPWR DGND
++ QA QB QC QD
++ CLK1 CLK2 MODE SER A B C D
++ QA_O QB_O QC_O QD_O
++ IO_LS  MNTYMXDLY={MNTYMXDLY}  IO_LEVEL={IO_LEVEL}
++
++ BOOLEAN:
++    CLK = { CHANGED_HL(CLK1,0) | CHANGED_HL(CLK2,0) }
++
++ PINDLY:
++   QA_O QB_O QC_O QD_O = {
++     CASE(
++       CLK & TRN_LH,  DELAY(-1,-1,-1),
++       CLK & TRN_HL,  DELAY(-1,-1,-1),
++       DELAY(-1,-1,-1)                 ;DEFAULT
++       )
++     }
++
+
++ SETUP_HOLD:
++   DATA(1) SER
++   CLOCK HL = CLK1
++   SETUPTIME = {DSET}
++   HOLDTIME = {DHOLD}
++   WHEN = { (MODE != '1 ^ CHANGED(MODE,0)) }
++
+.ENDS
+*
+*$
+
+.MODEL DACCUR D
++ RS=1.0000E-3
++ CJO=1.0000E-12
++ M=.3333
++ VJ=.75
++ ISR=100.00E-12
++ BV=100
++ IBV=100.00E-6
++ TT=5.0000E-9
+*$
+
+.subckt admtce B15 B14 B13 B12 B11 B10 B9 adm
+R15 B15 0 1G
+R14 B14 0 1G
+R13 B13 0 1G
+R12 B12 0 1G
+R11 B11 0 1G
+R10 B10 0 1G
+R9 B9 0 1G
+Eadm adm 0 VALUE {(1/8k)+(V(B9)/288k)+(V(B10)/144k)+
++ ((PWRS(2.0,(V(B15)+V(B14)+V(B13)+V(B12)+V(B11)))-1)/72k)}
+Rout adm 0 1G
+.ends
+*$
+
+* ----------------------------------------------------------------------
+*
+*
+*                              Constraint Checkers
+*
+**************************************************************************
+
+
+* Constraints for A/D Converter - Parallel Interface
+.subckt ADCpar_CONSTRNT SIGNAL
++                  OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                  PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                  PMINFREQ=1 PMAXFREQ=47Meg PMIN_HI=11n PMIN_LO=11n
+
+*  CLOCK frequency must be between 10KHz and 11MegHz
+Umotr CONSTRAINT(1) DPWR DGND signal IO_HCT IO_LEVEL={IO_LEVEL}
++			FREQ:
++			NODE=SIGNAL
++			MINFREQ={PMINFREQ}
++			MAXFREQ={PMAXFREQ}
++			MESSAGE="CLOCK out of frequency bounds"
++                 WIDTH:
++                 NODE=SIGNAL
++                 MIN_HI={PMIN_HI}
++                 MIN_LO={PMIN_LO}
++                 MESSAGE="CLOCK below minimum pulse width"
+*+			FREQ:
+*+			NODE=SIGNAL
+*+			MINFREQ=10K
+*+			MAXFREQ=11Meg
+*+			MESSAGE="CLOCK out of frequency bounds"
+*+                 WIDTH:
+*+                 NODE=SIGNAL
+*+                 MIN_HI=45n
+*+                 MIN_LO=45n
+*+                 MESSAGE="CLOCK below minimum pulse width"
+.ends
+*$
+
+* Constraints for A/D Converter - Microcontroller Interface
+.subckt ADCmicro_CONSTRNT RC CS 
++                  OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++                  PARAMS: MNTYMXDLY=0 IO_LEVEL=0
++                  PMINPER=10u PMINLO=50n PMINSET=10n PMINHOLD=10n
+
+UT13 CONSTRAINT(2) DPWR DGND RC CS IO_HCT
++ FREQ:
++	NODE = RC
++	MAXFREQ = {1/PMINPER}
++	MESSAGE = "Conversion period below minimum"
++ WIDTH:
++	NODE = CS
++	MIN_LO = {PMINLO}
++	MESSAGE = "CS low below minimum width"
++ SETUP_HOLD:
++	CLOCK HL = CS
++	DATA(1) = RC
++	SETUPTIME = {PMINSET}
++	MESSAGE = "Setup time error"
++ SETUP_HOLD:
++	CLOCK LH = CS
++	DATA(1) = RC
++	HOLDTIME = {PMINHOLD}
++	MESSAGE = "Hold time error"
+
+.ends
+*$
+
+* Constraints for D/A Converter - Parallel Interface
+.SUBCKT DACpar_CONSTRNT CSbar WRbar LDACbar
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MNTYMXDLY=0 IO_LEVEL=0 CSMINLO=90n LDACMINLO=90n WRMINLO=90n
+*
+* Pulse Width Constraints
+Umotr CONSTRAINT(3) DPWR DGND CSbar WRbar LDACbar IO_HCT IO_LEVEL={IO_LEVEL}
++     WIDTH:
++      NODE=CSbar
++       MIN_LO={CSMINLO}
++       MESSAGE="CSbar low pulse width below minimum"
++     WIDTH:
++      NODE=LDACbar
++       MIN_LO={LDACMINLO}
++       MESSAGE="LDACbar low pulse width below minimum"
++     WIDTH:
++      NODE=WRbar
++       MIN_LO={WRMINLO}
++       MESSAGE="WRbar low pulse width below minimum"
+
+.ENDS
+*$
+
+* Constraints for D/A Converter - Serial Interface
+.subckt DACser_CONSTRNT ldac sclk sync 
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: MINW=50n SCLK=200n SCSET=50n SCHOLD=120n
+
+U1 CONSTRAINT (3)  DPWR DGND ldac sclk sync IO_HCT
++ FREQ:
++   NODE = sclk
++   MAXFREQ = {1/SCLK}
++ WIDTH:
++  NODE = ldac
++  MIN_LO = {MINW}
++  MESSAGE = "LDAC low below minimum width"
++ SETUP_HOLD:
++   DATA(1) = sync
++   CLOCK HL = sclk
++   SETUPTIME = {SCSET}
++   HOLDTIME = {SCHOLD}
++   MESSAGE = "Setup/hold time violation"
+
+.ends
+*$
+
+* Constraints for D/A Converter - DAC8043
+.subckt DAC8043_CONSTRNT clk ldbar
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: LDMINW=120n CLKminLO=120n CLKmaxHI=90n CLKLDstup=0n
+
+U1 CONSTRAINT (2) DPWR GPWR clk ldbar IO_HCT
++ WIDTH:
++   NODE= ldbar
++   MIN_LO= {LDMINW}
++   MESSAGE="LD pulse (low) too narrow"
++ WIDTH:
++   NODE= clk
++   MIN_LO= {CLKminLO}
++   MIN_HI= {CLKmaxHI}
++   MESSAGE= "Below minimum time (hi or low)"
++ SETUP_HOLD:
++   CLOCK HL= clk
++   DATA (1)= ldbar
++   SETUPTIME= {CLKLDstup}
++   MESSAGE= "Setup time violation between CLK and LDbar"
+
+.ends
+*$
+
+* Constraints for A/D Converter - AD7547
+.subckt AD7547_CONSTRNT wr csa csb
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: CSWSTMN=80ns CSWHTMN=0ns WPWMN=80ns
+
+U1 CONSTRAINT (3) DPWR GPWR wr csa csb IO_HCT
++ WIDTH:
++   NODE= wr
++   MIN_LO= {WPWMN}
++   MESSAGE="WR pulse too narrow"
++ SETUP_HOLD:
++   CLOCK LH= wr
++   DATA (2)= csa csb
++   SETUPTIME= {CSWSTMN}
++   HOLDTIME= {CSWHTMN}
++   MESSAGE= "Setup/hold time violation between WR and CSA or CSB"
+
+.ends
+*$
+
+* Constraints for D/A Converter - AD768
+.subckt AD768_CONSTRNT clk
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: FREQMAX=40MEG MINWIDTH=10n
+
+U1 CONSTRAINT (1) DPWR GPWR clk IO_HCT
++ FREQ:
++   NODE= clk
++   MAXFREQ= {FREQMAX}
++ WIDTH:
++   NODE= clk
++   MIN_HI= {MINWIDTH}
+
+.ends
+*$
+
+* Constraints for A/D Converter - ADS801
+.subckt ADS801_CONSTRNT clk
++ OPTIONAL: DPWR=$G_DPWR DGND=$G_DGND
++ PARAMS: FREQMIN=10K MINWL=20n MINWH=20n
+
+U1 CONSTRAINT (1) DPWR GPWR clk IO_HCT
++ FREQ:
++   NODE= clk
++   MINFREQ= {FREQMIN}
++ WIDTH:
++   NODE= clk
++   MIN_HI= {MINWL}
++   MIN_LO= {MINWH}
+
+.ends
+*$

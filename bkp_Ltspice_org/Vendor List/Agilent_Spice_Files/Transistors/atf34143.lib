@@ -1,0 +1,47 @@
+*ATF-34143 packaged FET model
+.SUBCKT ATF34143  16   14   15
+
+RR2     2       1       0.1  
+RR9     4       3       0.1  
+RR5     1       5       0.1  
+LL2     5       SOURCE  0.1nH  
+LL7     SOURCE  7       0.1nH  
+LL6     SOURCE  8       0.1nH  
+RR6     8       2       0.1  
+RR7     7       2       0.1  
+RR8     DRAIN   9       0.1  
+LL5     9       11      0.1nH  
+LL8     2       15      0.05nH  
+LL10    15      1       0.1nH  
+LL1     14      4       0.8nH  
+LL9     11      16      0.6nH  
+CC3     11      2       0.15e-12  
+CC4     1       4       0.15e-12  
+LL4     3       GATE    0.1nH  
+Z1    DRAIN   GATE    SOURCE  BATF34143
+.ENDS
+
+****     GaAs MESFET MODEL PARAMETERS
+*.MODEL BATF34143 NMF (LEVEL=2)
+.MODEL BATF34143 NMF ( LEVEL=2, Vto=-0.95, Beta=0.24, Lambda=0.09, Alpha=4, 
+                    +   B=0.8, Tnom=27, Vbi=0.7, Delta1=0.2, Cgs=0.8pF, 
+                    +   Cgd=0.16pF, Rd=0.25, Rg=1, Rs=0.125, Cds=0.04pF, 
+                    +  Is=1nA, P=0.65)        
+
+
+**ATF-34 FET chip Statz model parameters for small signal operation.
+
+*STATZ FET MODEL
+
+*                    IDS model       Gate model      Parasitics      Breakdown       Noise
+                     
+*                    NFET=yes        Delta1=0.2      Rg=1            Gsfwd=1         Fnc=1E6
+*                    PFET=no         Gscap=3         Rd=0.25         Gsrev=0         R=0.17
+*                    Idsmod=3        Cgs=0.8 pF      Rs=0.125        Gdfwd=1         C=0.2
+*                    Vto=-0.95       Gdcap=3         Lg=.0075 nH     Gdrev=0         P=0.65
+*                    Beta=0.24       Cgd=0.16 pF     Ld=.0075 nH     Vjr=1
+*                    LAMBDA=0.09     Cds=0.04 pF     Ls=.0025 nH     
+*                    Alpha=4         Crf=0.1         Is=1 nA
+*                    B=0.8           Rc=125          Ir=1 nA
+*                    Tnom=27                         Imax=0.1
+*                    Vbi=0.7

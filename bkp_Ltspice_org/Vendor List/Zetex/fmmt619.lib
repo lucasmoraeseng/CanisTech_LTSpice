@@ -1,0 +1,22 @@
+*ZETEX  FMMT619 Spice model   Last revision 8/7/93
+*
+.MODEL FMMT619  NPN IS =5.8032E-13 NF =1.0027 BF =485 IKF=2.2 VAF=84
++               ISE=1.5933E-13 NE =1.4148 NR =1.0006 BR =110 IKR=1.4 
++               VAR=51 ISC=5E-12 NC =1.45 RB =0.042 RE =0.033 
++               RC =0.0375 CJC=40E-12 MJC=0.3708 VJC=0.4347 CJE=217E-12 
++               TF =0.78E-9 TR =9E-9
+*
+*
+*                          (C)  1993 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP

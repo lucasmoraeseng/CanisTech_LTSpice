@@ -1,0 +1,43 @@
+*
+* PHILIPS SEMICONDUCTORS                                         Version:   2.0
+* Filename:   BFQ135.PRM                                         Date: May 1992
+*
+.MODEL  BFQ135   NPN
++              IS = 5.36265E-015
++              BF = 9.00000E+001
++              NF = 1.00672E+000
++             VAF = 4.73623E+001
++             IKF = 6.33467E+001
++             ISE = 2.82997E-013
++              NE = 1.87397E+000
++              BR = 9.14300E+000
++              NR = 1.05500E+000
++             VAR = 3.00000E+000
++             IKR = 3.62500E-002
++             ISC = 8.32000E-017
++              NC = 1.03900E+000
++              RB = 9.00000E+000
++             IRB = 1.00000E-006
++             RBM = 9.00000E+000
++              RE = 1.45426E+000
++              RC = 1.57000E+000
++              EG = 1.11000E+000
++             XTI = 3.00000E+000
++             CJE = 5.71884E-012
++             VJE = 6.00000E-001
++             MJE = 3.33659E-001
++              TF = 1.51500E-011
++             XTF = 9.96625E+002
++             VTF = 2.73200E+000
++             ITF = 2.75074E+000
++             CJC = 2.07942E-012
++             VJC = 1.99665E-001
++             MJC = 1.56006E-001
++            XCJC = 1.30000E-001
++              TR = 2.10000E-009
++             VJS = 7.50000E-001
++              FC = 7.13387E-001
+* Parameters with default value:
+* XTB, EG, XTI, CJS, VJS and MJS.
+*
+

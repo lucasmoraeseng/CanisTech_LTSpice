@@ -1,0 +1,25 @@
+*ZETEX  ZTX325 Spice model   Last revision 9/3/93
+*
+.MODEL ZTX325 NPN IS =4.9E-16 NF =.993 BF =93 VAF=90 IKF=.055 
++             ISE=1E-14 NE =1.800 BR =25 VAR=6 NR =1.005 IKR=.01 
++             ISC=4.5E-15 NC =1.2 RB =7 RBM=.5 IRB=5E-4 RE =.5 
++             RC =2.0 TF =5E-11 XTF=100 ITF=2.3 TR =2.4E-8 
++             CJE=1.18E-12 CJC=1.54E-12 VJC=.559 MJC=.25 VJE=1.12 
++             MJE=.4
+*
+* NOTE: FOR RF OPERATION ADD PACKAGE INDUCTANCE OF 2.5E-9H PER LEAD
+*
+*                          (C)  1993 ZETEX PLC
+*
+*   The copyright in this model  and  the design embodied belong to
+*   Zetex PLC ("Zetex"). It is supplied free of charge by Zetex for
+*   the purpose  of research  and design  and may be used or copied
+*   intact (including this notice) for that purpose only. All other
+*   rights  are  reserved.  The model  is believed  accurate but no
+*   condition or warranty as to its  merchantability or fitness for
+*   purpose  is  given  and  no liability  in respect of any use is
+*   accepted by Zetex PLC, its distributors or agents.
+*
+*
+*   Zetex PLC, Fields New Road, Chadderton, Oldham  OL9 8NP
+

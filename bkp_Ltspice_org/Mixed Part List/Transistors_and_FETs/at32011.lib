@@ -1,0 +1,42 @@
+*SPICE model for AT-32011
+
+.SUBCKT AT32011 60      20      40
+LL1     20      25      .05NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T1
+C1T1    25      0       .11PF
+LT1     25      30      .40NH
+C2T1    30      0       .11PF
+*
+LLB     30      35      .5NH
+CCEB    30      50      .04PF
+LL2     40      45      .01NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T2
+C1T2    45      0       .06PF
+LT2     45      50      .10NH
+C2T2    50      0       .06PF
+*
+LLE     50      55      .25NH
+CCEC    50      70      .01PF
+LL3     60      65      .05NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T3
+C1T3    65      0       .13PF
+LT3     65      70      .47NH
+C2T3    70      0       .13PF
+*
+CCBC    30      70      .04PF
+* CALL DIE MODEL 
+XDIE    70      35      55      AT320
+.ENDS
+
+** DIE MODEL (excludes bond wires)
+.SUBCKT AT320   75      20      85
+CBBP    20      75      .03PF; BASE BOND PAD CAPACITANCE
+CEBP    85      75      .03PF; EMITTER BOND PAD CAPACITANCE
+QINT    75      20      85      Q320     
+.ENDS
+*
+.MODEL  Q320    NPN (BF=100, BR=2.5, IS=3.1E-16, VA=20, TF=12PS, 
++               CJE=4.6E-13, VJE=1.01, MJE=0.6, PTF=25, XTB=1.818,
++               VTF=6, ITF=5.7E-2, IKF=2.5E-2, XTF=4, NF=1.03, ISE=9.5E-13,
++               NE=2.5, RB=9.78, RE=0.61, RC=35.97, CJC=1.8E-13, CJS=1.7E-13,
++               XCJC=0.20, PS=0.8, MS=0.5, PC=0.76, MC=0.53)

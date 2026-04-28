@@ -1,0 +1,32 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+* Nodes 1 and 2: AC input
+* Nodes 3 and 4: +/- DC output
+
+.SUBCKT RMB4S 1 2 3 4
+D1 1 3 LEGD
+D2 2 3 LEGD
+D3 4 1 LEGD
+D4 4 2 LEGD
+.MODEL LEGD D (
++   N=3.13486
++  IS=3.26666E-006
++  RS=0.0671315
++  EG=1.25942
++ XTI=3.09297
++ CJO=2.36026E-011
++  VJ=0.847059
++   M=0.325255
++  FC=0.5
++  TT=3.69946E-007
++  BV=400
++ IBV=0.051
++  KF=0
++  AF=1 )
+.ENDS

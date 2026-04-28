@@ -1,0 +1,16 @@
+*PHILIPS SEMICONDUCTORS         Version: 1.0
+*Filename: 2N5485.PRM         Date: feb 1993
+*
+.MODEL  2N5485   NJF
++             VTO = -2.2776E+000
++            BETA = 1.16245E-003
++          LAMBDA = 1.74427E-002
++              RD = 5.28684E+000
++              RS = 5.28684E+000
++              IS = 1.71027E-016
++            CGS = 2.68000E-012
++            CGD = 2.28000E-012
++              PB = 1.02676E+000
++              FC = 5.00000E-001
+*Parameter with default value: FC
+

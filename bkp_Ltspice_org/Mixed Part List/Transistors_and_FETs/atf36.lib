@@ -1,0 +1,18 @@
+NOTE: This file was integrated into GENESYS as a single part model.
+
+*ATF-36 FET chip Statz model parameters for small signal operation.
+
+MODEL=FET
+
+                    IDS model       Gate model      Parasitics      Breakdown       Noise
+                    NFET=yes        DELTA=0.2       RG=1            GSFWD=1         FNC=01e+6
+                    PFET=           GSCAP=3         RD=0.5          GSREV=0         R=0.17
+                    IDSMOD=3        CGS=0.13 pF     RS=0.5          GDFWD=1         P=0.55
+                    VTO=-0.55       GDCAP=3         LG=0.03 nH      GDREV=0         C=0.2
+                    BETA=0.10       CGD=0.04 pF     LD=0.04 nH      VJR=1   
+                    LAMBDA=0.25     LS=0.01 nH      IS=1 nA 
+                    ALPHA=5.0       CDS=0.05 pF     IR=1 nA 
+                    B=1.5           CRF=0.1         IMAX=0.1        
+                    TNOM=27         RC=350          XTI=    
+                    IDSTC=          N=      
+                    VBI=0.7         EG=

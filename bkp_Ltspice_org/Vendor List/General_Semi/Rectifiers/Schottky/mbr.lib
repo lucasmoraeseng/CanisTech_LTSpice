@@ -1,0 +1,36 @@
+MBR(B)2035-45CT					
+* comparison measured simulated data for static behavior					.include mbr2035_45a.mod
+					.dc v1 0 1.1 .05
+v1 1 0 dc 1					.probe
+d1 1 0 mbr2035_45a					.temp 0 25 75
+
+* measured data for t=25°C		* measured data for t=0°C		* measured data for t=75°C	
+g25C 10 0 table {v(1)} =		g0C 20 0 table {v(1)} =		g75C 30 0 table {v(1)} =	
++ .31505 100MA 		+ .3535 100MA 		+ .2446 100MA 	
++ .33535 200MA		+ .372 200MA		+ .26755 200MA	
++ .36435 500MA		+ .3986 500MA		+ .29735 500MA	
++ .3903  1.0A		+ .42225  1.0A		+ .32795  1.0A	
++ .4235 2.0A		+ .4518 2.0A		+ .3658 2.0A	
++ .48845 5.0A		+ .5103 5.0A		+ .4453 5.0A	
++ .5715 10.0A		+ .5855 10.0A		+ .5485 10.0A	
++ .7215  20.0A		+ .721  20.0A		+ .705  20.0A	
++ 1.012 50.0A		+ 1.0355 50.0A		+ 0.94 50.0A	
+r_g25C 10 0 1		r_g0C 20 0 1		r_g75C 30 0 1	
+
+.end					
+.model mbr2035_45a D
++ Is=2.154u 
++ N=1.116 
++ Rs=8.935m 
++ Ikf=2.273 
++ Xti=3.9 
++ Eg=0.69					
++ Cjo=1.226n 
++ M=.916 
++ Vj=4.375 
++ Fc=.5 
+* Bv=reverse voltage see datasheet Bv=35 or 45
++ Ibv=20u					
++ Tt=22.2n)					
+
+

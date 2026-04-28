@@ -1,0 +1,64 @@
+* FILENAME:        NE721S01.CIR
+* NEC PART NUMBER: NE721S01
+* LAST MODIFIED:   12/97
+* BIAS CONDITIONS: Vds=2V to 4V,  Id=20mA to 40mA
+* FREQ RANGE:      0.1GHz to 18GHZ
+*
+* Idss=58.9mA at Vds=3V, Vgs=0V
+* Vp =-1.91V  at Vds=3V, Id=0.1mA
+*
+* TOM GaAsFET Model
+*
+*             CGDpkg
+*       ,-------||----------------------------. 
+*       |                                     |
+*       |                                     | 
+*       |                  ---o--Rd-Ldx--Rdx--o--o
+*       |                 |   |               |  DRAIN 
+*GATE   |             I --    RDB             | 
+*    o--o--Rgx--Lgx---I Q1    |               |
+*       |             I---    CBS             |
+*       |                 |___|               |
+*       |                 |                   |
+*       |                 Rs                  |
+*       |                 |                   |
+*       |                Lsx                  |
+*       |                 |                   |
+*       |                Rsx                  |
+*       |   CGSpkg        |          CDSpkg   |
+*       `----||-----------o-----------||------'
+*                         |
+*                         o SOURCE
+*
+*       Lgx=0.71nH              Rgx=0.06 ohms           CGSpkg=0.055pF
+*       Lsx=0.1nH                     Rsx=0.06 ohms             CDSpkg=0.06pF
+*       Ldx=0.58nH              Rdx=0.06 ohms           CGDpkg=0.001pF
+*       RDB=3000 ohms           Rd=6 ohms
+*       CBS=10pF              Rs=4 ohms
+*
+*                    d g s
+.SUBCKT NE721S01/CEL 2 1 3
+Z1  10  7 11 NE72100
+RDB 10 12 3000
+CBS 12 11 10E-12
+Rs  11  9 4
+Rd  10  8 6
+Lgx  4  7 0.715E-9
+Ldx  8  5 0.58E-9
+Lsx  9  6 0.1E-9
+Rgx  1  4 0.06
+Rdx  2  5 0.06
+Rsx  6  3 0.06
+CGDpkg 1 2 0.001E-12
+CDSpkg 2 3 0.06E-12
+CGSpkg 1 3 0.055E-12
+.MODEL NE72100 NMF (LEVEL=3
++ VTO=-1.699    ALPHA=2.5        BETA=0.0254       GAMMA=0.09
++ Q=1.95        DELTA=1.1        VBI=0.8           IS=1e-14
++ N=1.2         TAU=6e-12        CDS=0.18e-12      CGS=0.7e-12
++ CGD=0.055e-12 VDELTA=1         FC=0.5            RG=7
++ RD=0          RS=0             KF=1.36e-10       AF=1.74
++ XTI=3         EG=1.43          VTOTC=0           BETATCE=0) 
+.ENDS
+*$
+

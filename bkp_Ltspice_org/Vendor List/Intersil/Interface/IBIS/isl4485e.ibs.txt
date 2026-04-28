@@ -1,0 +1,959 @@
+|***************************************************************************
+|                             Intersil ISL4485E       
+|                              
+|                               8 PIN SOIC
+|                       
+|***************************************************************************
+|
+[IBIS Ver]      3.2    
+[File name]     isl4485e.ibs      
+[File Rev]      2.0    
+[Date]          August 11,2003 
+    
+[Source]        Data used in this IBIS model was gathered from bench 
+                testing and datasheet specifications.  This model has not been 
+                software simulated. Package parasitics are industry norms, 
+                rather than actual measured values.
+
+[Notes]         This is an IBIS model for an EIA-TIA RS-485/422 Transceiver.
+                
+[Disclaimer]    Intersil Corporation provides IBIS models as a service to its 
+                customers, and hereby grants the user of this IBIS model a 
+                non-exclusive, nontransferable license to use this IBIS model. 
+                The user shall read this disclaimer and agree to the terms 
+                herein before using this IBIS model.  If the user does not 
+                accept these terms, the IBIS model may not be used.  Your use 
+                of this IBIS model shall serve as acceptance of these terms. 
+                The user is not granted rights to sell, loan, rent, lease or 
+                license the IBIS model in whole, in part, or in any modified 
+                form to anyone other than the user. The user may modify the 
+                IBIS model to suit their specific application, but all rights 
+                to derivative works shall belong to Intersil Corporation. This 
+                IBIS model is provided on an "AS IS" basis. Intersil 
+                Corporation makes absolutely no warranty with respect to the 
+                information contained herein. INTERSIL CORPORATION DISCLAIMS, 
+                AND THE CUSTOMER WAIVES, ALL WARRANTIES, EXPRESSED OR IMPLIED, 
+                INCLUDING WARRANTIES OF MERCHANTABILITY, NON-INFRINGEMENT, AND 
+                FITNESS FOR A PARTICULAR PURPOSE OR APPLICATION. The entire 
+                risk as to quality and performance is with the customer. 
+                Accordingly, in no event shall Intersil Corporation, its 
+                subsidiaries, directors, employees, or agents be liable for any 
+                damages, lost profits, or any other incidental, consequential, 
+                special, or punitive damages arising out of the use of this 
+                IBIS model.  Furthermore, Intersil Corporation reserves the 
+                right to make changes without notice to any IBIS model for any 
+                reason.  Intersil Corporation does not convey any license under 
+                patent rights or any other intellectual property rights, 
+                including those of third parties. Intersil Corporation is not 
+                obligated to provide maintenance or support for these IBIS 
+                models.
+
+[Copyright]     (C) Copyright 2003, Intersil Corporation.  All Rights Reserved.
+
+|*****************************************************************************
+|                              Component ISL4485E
+|*****************************************************************************
+
+[Component]     ISL4485E            
+[Manufacturer]  Intersil
+[Package]       
+|               typ             min              max
+
+R_pkg           0.250            NA               NA
+L_pkg           2.470nH          NA               NA       
+C_pkg           0.200pf          NA               NA
+
+|****************************************************************************
+
+[Pin]   signal_name     model_name        R_pin   L_pin    C_pin      
+
+1       RO             REC_OUT            
+2       RE             REC_ENABLE         
+3       DE             DRVR_ENABLE        
+4       DI             DRVR_IN           
+5       GND            GND                
+6       A              REC_DRVR_BI        
+7       B              REC_DRVR_BI       
+8       VCC            POWER              
+
+[Diff_pin]   inv_pin    vdiff    tdelay_typ    tdelay_min    tdelay_max     
+
+| The 'A' pin is Diff_pin and the 'B' pin is the inv_pin
+
+    6           7       200mV    2ns           0ns           10ns
+
+|****************************************************************************
+|                         Driver Input Model
+|****************************************************************************
+
+[Model]         DRVR_IN
+Model_type      Input  
+|Signals:       DI
+Vinh = 2.0
+Vinl = 0.8
+|                       typ             min             max
+C_comp                  1.3pf          NA              NA
+
+|****************************************************************************
+|                       typ             min             max
+[Temperature Range]     25.0          -40.00            85.0
+[Voltage range]         5.0V            4.5V            5.5V
+|
+|****************************************************************************
+
+[GND_clamp]
+
+|       Voltage        I(typ)              I(min)          I(max)       
+
+        -5.00          -2.26E+00           NA              NA
+        -4.00          -1.72E+00           NA              NA
+        -3.00          -1.20E+00           NA              NA
+        -2.00          -6.40E-01           NA              NA
+        -1.00          -1.00E-01           NA              NA
+        -0.95          -7.30E-02           NA              NA
+        -0.90          -4.70E-02           NA              NA
+        -0.80          -8.80E-03           NA              NA
+        -0.70          -1.40E-03           NA              NA
+        -0.60          -2.10E-04           NA              NA
+        -0.50          -3.10E-05           NA              NA
+        -0.40          -3.30E-06           NA              NA
+        -0.30          -2.50E-07           NA              NA
+        -0.20          -3.10E-08           NA              NA
+        -0.10          -1.50E-08           NA              NA
+         0.00          -4.00E-09           NA              NA
+         1.00           8.50E-08           NA              NA
+         2.00           1.70E-07           NA              NA
+         3.00           2.70E-07           NA              NA
+         4.00           3.60E-07           NA              NA
+         5.00           4.50E-07           NA              NA
+      
+
+[Power_clamp]
+
+|-------------------------------------------------------------
+| Note that the[POWER_clamp]voltage table is referenced to Vcc
+| and is calculated using Vtable=Vcc - Vmeasured.
+|-------------------------------------------------------------
+
+|      Voltage           I(typ)            I(min)          I(max)
+
+        -5.00            2.86E+00          NA              NA
+        -4.00            2.17E+00          NA              NA
+        -3.00            1.48E+00          NA              NA
+        -2.00            7.90E-01          NA              NA
+        -1.00            1.00E-01          NA              NA
+        -0.90            3.10E-02          NA              NA
+        -0.80            2.30E-03          NA              NA
+        -0.70            6.20E-05          NA              NA
+        -0.60            1.50E-06          NA              NA
+        -0.50            1.40E-06          NA              NA
+        -0.40            1.20E-06          NA              NA
+        -0.30            3.40E-07          NA              NA
+        -0.20            2.50E-07          NA              NA
+        -0.10            1.50E-07          NA              NA
+         0.00            1.00E-07          NA              NA      
+
+|****************************************************************************
+|                         Driver Enable Model
+|****************************************************************************
+
+[Model]         DRVR_ENABLE
+Model_type      Input  
+|Signals        DE
+Vinh = 2.0
+Vinl = 0.8
+|                       typ             min             max
+C_comp                  1.3pf           NA              NA
+
+|****************************************************************************
+|                       typ             min             max
+[Temperature Range]     25.0          -40.0            85.0
+[Voltage range]         5.0             4.5             5.5
+
+|****************************************************************************
+
+[GND_clamp]
+
+|       Voltage        I(typ)              I(min)          I(max)
+
+        -5.00          -3.70E+00           NA              NA
+        -4.00          -2.80E+00           NA              NA
+        -3.00          -1.90E+00           NA              NA
+        -2.00          -1.00E+00           NA              NA
+        -1.00          -1.30E-01           NA              NA
+        -0.95          -9.00E-02           NA              NA
+        -0.90          -4.60E-02           NA              NA
+        -0.80          -8.70E-03           NA              NA
+        -0.70          -1.40E-03           NA              NA
+        -0.60          -2.70E-04           NA              NA
+        -0.50          -4.80E-05           NA              NA
+        -0.40          -1.80E-05           NA              NA
+        -0.30          -1.40E-05           NA              NA
+        -0.20          -1.40E-05           NA              NA
+        -0.10          -1.30E-05           NA              NA
+         0.00          -1.20E-05           NA              NA
+         1.00          -1.00E-05           NA              NA
+         2.00          -7.83E-06           NA              NA
+         3.00          -4.97E-06           NA              NA
+         4.00          -2.37E-06           NA              NA
+         5.00          -4.10E-07           NA              NA
+
+[Power_clamp]
+
+|-------------------------------------------------------------
+| Note that the[POWER_clamp]voltage table is referenced to Vcc
+| and is calculated using Vtable=Vcc - Vmeasured.
+|-------------------------------------------------------------
+
+|      Voltage        I(typ)             I(min)          I(max)
+
+        -5.00           2.70E+00           NA              NA
+        -4.00           2.10E+00           NA              NA
+        -3.00           1.40E+00           NA              NA
+        -2.00           7.60E-01           NA              NA
+        -1.00           9.80E-02           NA              NA
+        -0.95           6.50E-02           NA              NA
+        -0.90           3.20E-02           NA              NA
+        -0.80           2.50E-03           NA              NA
+        -0.70           6.60E-05           NA              NA
+        -0.60           3.50E-06           NA              NA
+        -0.50           1.50E-06           NA              NA
+        -0.40           1.10E-06           NA              NA
+        -0.30           8.80E-07           NA              NA
+        -0.20           5.80E-07           NA              NA
+        -0.10           3.00E-07           NA              NA
+         0.00           5.00E-08           NA              NA
+
+
+|****************************************************************************
+|                         Receiver Enable Model
+|****************************************************************************
+
+[Model]         REC_ENABLE
+Model_type      Input  
+|Signals        RE                                  
+Vinh = 2.0
+Vinl = 0.8
+|                       typ             min             max
+C_comp                  1.3pF           NA              NA
+
+|****************************************************************************
+|                       typ             min             max
+[Temperature Range]     25.0          -40.0            85.0
+[Voltage range]         5.0             4.5             5.5
+|
+|****************************************************************************
+
+[GND_clamp]
+
+|       Voltage        I(typ)            I(min)          I(max)
+       
+        -5.00          -3.60E+00           NA              NA
+        -4.00          -2.70E+00           NA              NA
+        -3.00          -1.90E+00           NA              NA
+        -2.00          -1.00E+00           NA              NA
+        -1.00          -1.40E-01           NA              NA  
+        -0.95          -9.80E-02           NA              NA
+        -0.90          -5.50E-02           NA              NA
+        -0.80          -1.10E-02           NA              NA
+        -0.70          -1.80E-03           NA              NA
+        -0.60          -2.70E-04           NA              NA
+        -0.50          -4.00E-05           NA              NA
+        -0.40          -6.30E-06           NA              NA
+        -0.30          -1.40E-06           NA              NA
+        -0.20          -6.00E-07           NA              NA
+        -0.10          -2.80E-07           NA              NA
+         0.00           1.00E-09           NA              NA
+         1.00           9.00E-06           NA              NA
+         2.00           1.00E-05           NA              NA
+         3.00           1.50E-05           NA              NA
+         4.00           1.60E-05           NA              NA
+         5.00           1.80E-05           NA              NA 
+
+[Power_clamp]
+
+|-------------------------------------------------------------
+| Note that the[POWER_clamp]voltage table is referenced to Vcc
+| and is calculated using Vtable=Vcc - Vmeasured.
+|-------------------------------------------------------------
+
+|    Voltage           I(typ)            I(min)          I(max)
+
+        -5.00             2.70E+00          NA              NA
+        -4.00             2.10E+00          NA              NA
+        -3.00             1.41E+00          NA              NA
+        -2.00             7.60E-01          NA              NA
+        -1.00             9.80E-02          NA              NA
+        -0.95             6.50E-02          NA              NA
+        -0.90             3.20E-02          NA              NA
+        -0.80             2.40E-03          NA              NA
+        -0.70             8.40E-05          NA              NA
+        -0.60             3.50E-06          NA              NA
+        -0.50             1.50E-06          NA              NA
+        -0.40             1.10E-06          NA              NA
+        -0.30             8.80E-07          NA              NA
+        -0.20             5.80E-07          NA              NA
+        -0.10             3.00E-07          NA              NA
+         0.00             5.00E-08          NA              NA
+
+
+
+
+
+|****************************************************************************
+|                         Driver Output/Receiver Input Model
+|*********************************************************+*******************
+
+[Model]         REC_DRVR_BI            
+Model_type      I/O
+| Signals       A,B
+Vinl  = 1.5V
+Vinh  = 1.7V
+Vmeas = 2.6V
+Vref  = 2.6V                  |Reference voltage for timing measurements
+Cref  = 100pF                 |Timing specification test load capacitance value
+Rref  = 27                    |Note: 27 ohm load for single ended measurement
+                              |      emulates 54 ohm differential load.
+
+|                      typ             min             max
+C_comp                 9.3pF           NA              NA
+
+|****************************************************************************
+|                       typ             min             max
+[Temperature Range]     25.0          -40.0            85.0
+[Voltage range]         5.0V            4.5             5.5
+|
+|****************************************************************************
+
+[GND_clamp]
+
+|       Voltage      I(typ)              I(min)          I(max)
+ 
+        -5.0         -3.00E-04           NA              NA   
+        -4.0         -2.50E-04           NA              NA   
+        -3.0         -2.00E-04           NA              NA   
+        -2.0         -1.50E-04           NA              NA   
+        -1.0         -8.20E-05           NA              NA   
+         0.0         -3.00E-05           NA              NA   
+         1.0          2.00E-05           NA              NA   
+         2.0          7.50E-05           NA              NA   
+         3.0          1.30E-04           NA              NA   
+         4.0          1.80E-04           NA              NA   
+         5.0          2.50E-04           NA              NA   
+
+[Power_clamp]
+
+|-------------------------------------------------------------
+| Note that the[POWER_clamp]voltage table is referenced to Vcc
+| and is calculated using Vtable=Vcc - Vmeasured.
+|-------------------------------------------------------------
+
+|      Voltage       I(typ)              I(min)          I(max)
+
+        -5.00          4.86E-04           NA              NA
+        -4.00          4.34E-04           NA              NA
+        -3.00          3.86E-04           NA              NA
+        -2.00          3.34E-04           NA              NA
+        -1.00          2.82E-04           NA              NA  
+         0.00          2.33E-04           NA              NA  
+
+[Pulldown]
+
+|      Voltage         I(typ)             I(min)          I(max)
+
+       10.00            1.78E-01            NA              NA
+        9.00            1.78E-01            NA              NA
+        8.00            1.77E-01            NA              NA
+        7.00            1.76E-01            NA              NA
+        6.00            1.73E-01            NA              NA
+        5.50            1.70E-01            NA              NA
+        5.00            1.65E-01            NA              NA
+        4.00            1.52E-01            NA              NA
+        3.00            1.25E-01            NA              NA
+        2.00            8.00E-02            NA              NA
+        1.00            2.20E-02            NA              NA
+        0.80            1.15E-02            NA              NA
+        0.70            7.00E-03            NA              NA
+        0.60            2.50E-03            NA              NA
+        0.50            3.00E-04            NA              NA
+        0.40            0.00E+00            NA              NA
+        0.30           -1.60E-05            NA              NA
+        0.20           -2.20E-05            NA              NA
+        0.10           -2.80E-05            NA              NA
+        0.00           -3.30E-05            NA              NA
+       -0.10           -3.90E-05            NA              NA
+       -0.50           -6.00E-05            NA              NA
+       -1.00           -9.00E-05            NA              NA
+       -2.00           -1.50E-04            NA              NA
+       -3.00           -2.00E-04            NA              NA
+       -4.00           -2.50E-04            NA              NA
+       -5.00           -3.00E-04            NA              NA
+       
+[Pullup]
+
+|-------------------------------------------------------------
+| Note that the[Pullup]voltage table is referenced to Vcc
+| and is calculated using Vtable=Vcc - Vmeasured.
+|-------------------------------------------------------------
+
+|       Voltage        I(typ)             I(min)          I(max)
+      
+      -5.00             0.00E+00           NA              NA
+      -0.15             0.00E+00           NA              NA
+       0.00            -4.00E-03           NA              NA
+       0.50            -2.00E-02           NA              NA
+       1.00            -3.80E-02           NA              NA
+       1.50            -5.50E-02           NA              NA
+       2.00            -7.10E-02           NA              NA
+       2.50            -8.50E-02           NA              NA
+       3.00            -9.60E-02           NA              NA
+       3.50            -1.05E-01           NA              NA
+       4.00            -1.12E-01           NA              NA
+       4.50            -1.15E-01           NA              NA
+       5.00            -1.17E-01           NA              NA
+       6.00            -1.18E-01           NA              NA
+       7.00            -1.18E-01           NA              NA
+       8.00            -1.18E-01           NA              NA
+       9.00            -1.18E-01           NA              NA
+      10.00            -1.18E-01           NA              NA
+       
+      
+[Ramp]
+|                 typ                 min                 max
+dV/dt_r          1.35/9.8nS           NA                  NA 
+dV/dt_f          0.92/7.5nS           NA                  NA
+R_load = 500ohms
+
+
+[Rising Waveform]
+
+R_fixture = 27.0 
+V_fixture = 2.60V
+C_fixture = 100pF
+
+|        Time           V(typ)            V(min)         V(max)
+
+         0.00E+00       1.39              NA             NA   
+         5.00E-10       1.41              NA             NA    
+         1.00E-09       1.42              NA             NA   
+         1.50E-09       1.43              NA             NA   
+         2.00E-09       1.44              NA             NA   
+         2.50E-09       1.45              NA             NA   
+         3.00E-09       1.46              NA             NA   
+         3.50E-09       1.47              NA             NA   
+         4.00E-09       1.48              NA             NA   
+         4.50E-09       1.49              NA             NA   
+         5.00E-09       1.51              NA             NA   
+         5.50E-09       1.53              NA             NA   
+         6.00E-09       1.54              NA             NA   
+         6.50E-09       1.56              NA             NA   
+         7.00E-09       1.57              NA             NA   
+         7.50E-09       1.60              NA             NA   
+         8.00E-09       1.62              NA             NA 
+         8.50E-09       1.65              NA             NA              
+         9.00E-09       1.71              NA             NA   
+         9.50E-09       1.77              NA             NA   
+         1.00E-08       1.82              NA             NA   
+         1.05E-08       1.88              NA             NA   
+         1.10E-08       1.93              NA             NA   
+         1.15E-08       2.01              NA             NA   
+         1.20E-08       2.06              NA             NA   
+         1.25E-08       2.13              NA             NA   
+         1.30E-08       2.21              NA             NA   
+         1.35E-08       2.28              NA             NA   
+         1.40E-08       2.37              NA             NA   
+         1.45E-08       2.45              NA             NA   
+         1.50E-08       2.54              NA             NA 
+         1.55E-08       2.63              NA             NA   
+         1.60E-08       2.74              NA             NA   
+         1.65E-08       2.84              NA             NA   
+         1.70E-08       2.95              NA             NA
+         1.75E-08       3.10              NA             NA
+         1.80E-08       3.23              NA             NA
+         1.85E-08       3.35              NA             NA
+         1.90E-08       3.46              NA             NA
+         1.95E-08       3.60              NA             NA
+         2.00E-08       3.69              NA             NA
+         2.05E-08       3.79              NA             NA
+         2.10E-08       3.87              NA             NA
+         2.15E-08       3.93              NA             NA
+         2.20E-08       3.97              NA             NA
+         2.25E-08       3.99              NA             NA
+         2.30E-08       3.98              NA             NA
+         2.35E-08       3.96              NA             NA
+         2.40E-08       3.93              NA             NA
+         2.45E-08       3.90              NA             NA
+         2.50E-08       3.88              NA             NA
+         2.55E-08       3.86              NA             NA
+         2.60E-08       3.85              NA             NA
+         2.65E-08       3.84              NA             NA
+      
+ 
+[Falling Waveform]
+
+R_fixture = 27 
+V_fixture = 2.60V
+C_fixture = 100pF
+
+|        Time           V(typ)           V(min)         V(max)
+
+         0.00E+00       3.84              NA             NA   
+         5.00E-10       3.84              NA             NA    
+         1.00E-09       3.83              NA             NA   
+         1.50E-09       3.82              NA             NA   
+         2.00E-09       3.83              NA             NA   
+         2.50E-09       3.81              NA             NA   
+         3.00E-09       3.81              NA             NA   
+         3.50E-09       3.79              NA             NA   
+         4.00E-09       3.78              NA             NA   
+         4.50E-09       3.77              NA             NA   
+         5.00E-09       3.75              NA             NA   
+         5.50E-09       3.74              NA             NA   
+         6.00E-09       3.72              NA             NA   
+         6.50E-09       3.69              NA             NA   
+         7.00E-09       3.65              NA             NA   
+         7.50E-09       3.59              NA             NA   
+         8.00E-09       3.55              NA             NA 
+         8.50E-09       3.50              NA             NA              
+         9.00E-09       3.42              NA             NA   
+         9.50E-09       3.33              NA             NA   
+         1.00E-08       3.25              NA             NA   
+         1.05E-08       3.13              NA             NA   
+         1.10E-08       3.03              NA             NA   
+         1.15E-08       2.90              NA             NA   
+         1.20E-08       2.75              NA             NA   
+         1.25E-08       2.61              NA             NA   
+         1.30E-08       2.48              NA             NA   
+         1.35E-08       2.34              NA             NA   
+         1.40E-08       2.22              NA             NA   
+         1.45E-08       2.09              NA             NA   
+         1.50E-08       1.98              NA             NA 
+         1.55E-08       1.88              NA             NA   
+         1.60E-08       1.77              NA             NA   
+         1.65E-08       1.69              NA             NA   
+         1.70E-08       1.59              NA             NA   
+         1.75E-08       1.53              NA             NA   
+         1.80E-08       1.48              NA             NA
+         1.85E-08       1.46              NA             NA
+         1.90E-08       1.45              NA             NA
+         1.95E-08       1.44              NA             NA
+         2.00E-08       1.43              NA             NA
+         2.05E-08       1.42              NA             NA 
+         2.10E-08       1.41              NA             NA
+         2.15E-08       1.40              NA             NA
+         2.20E-08       1.39              NA             NA
+
+|****************************************************************************
+|                         Receiver Output Model
+|****************************************************************************
+
+[Model]         REC_OUT            
+Model_type      3-state
+| Signals       RO
+Vmeas = 1.5V                  |Reference voltage for timing measurements
+Cref  = 15pF                  |Timing specification test load capacitance value
+Vref  = 0.0V                  |Timing specification test load voltage; GND
+Rref  = 1k
+| variable              typ             min             max
+C_comp                  1.6pF           NA              NA
+
+|****************************************************************************
+|                       typ             min             max
+[Temperature Range]     25.0           -40.0            85.0
+[Voltage range]         5.0V            4.5V            5.5V
+|
+|****************************************************************************
+
+[GND_clamp]
+       
+|     Voltage          I(typ)             I(min)          I(max)
+
+        -5.00           -2.36E-00          NA              NA   
+        -4.00           -1.80E-00          NA              NA   
+        -3.00           -1.24E-00          NA              NA   
+        -2.00           -6.83E-01          NA              NA      
+        -1.00           -1.00E-01          NA              NA
+        -0.95           -9.65E-02          NA              NA
+        -0.90           -6.70E-02          NA              NA   
+        -0.80           -1.50E-02          NA              NA   
+        -0.70           -3.00E-03          NA              NA   
+        -0.60           -7.20E-04          NA              NA   
+        -0.50           -1.50E-04          NA              NA   
+        -0.40           -2.00E-05          NA              NA   
+        -0.30           -2.10E-06          NA              NA   
+        -0.20           -1.80E-07          NA              NA   
+        -0.10           -1.10E-08          NA              NA   
+         0.00           -4.00E-09          NA              NA   
+         1.00            4.50E-08          NA              NA 
+         2.00            1.80E-07          NA              NA 
+         3.00            2.80E-07          NA              NA 
+         4.00            3.70E-07          NA              NA
+         5.00            4.64E-07          NA              NA 
+
+[POWER_clamp]
+      
+|-------------------------------------------------------------
+| Note that the [POWER_clamp] voltage table is referenced to Vcc
+| and is calculated using Vtable = Vcc - Vmeasured.
+| Outputs are in a Tri-state mode.
+|-------------------------------------------------------------
+
+|      Voltage          I(typ)            I(min)          I(max)
+
+        -5.00          3.74E+00           NA              NA
+        -4.00          2.84E+00           NA              NA
+        -3.00          1.94E+00           NA              NA
+        -2.00          1.04E+00           NA              NA
+        -1.00          1.40E-01           NA              NA
+        -0.95          9.50E-02           NA              NA
+        -0.90          5.00E-02           NA              NA  
+        -0.80          6.30E-03           NA              NA   
+        -0.70          2.20E-04           NA              NA 
+        -0.60          5.00E-06           NA              NA   
+        -0.50          1.70E-07           NA              NA   
+        -0.40          3.70E-08           NA              NA   
+        -0.30          2.30E-08           NA              NA   
+        -0.20          1.30E-08           NA              NA 
+        -0.10          5.00E-09           NA              NA   
+         0.00          4.00E-09           NA              NA   
+ 
+
+[Pulldown]
+
+|      Voltage          I(typ)          I(min)          I(max)
+
+  10.00                 6.30E-02        NA              NA
+   9.00                 6.28E-02        NA              NA
+   8.00                 6.27E-02        NA              NA
+   7.00                 6.25E-02        NA              NA
+   6.00                 6.22E-02        NA              NA
+   5.00                 6.20E-02        NA              NA
+   4.00                 6.10E-02        NA              NA
+   3.00                 6.00E-02        NA              NA
+   2.50                 5.70E-02        NA              NA 
+   2.00                 5.20E-02        NA              NA
+   1.50                 4.60E-02        NA              NA
+   1.00                 3.40E-02        NA              NA
+   0.60                 2.20E-02        NA              NA
+   0.40                 1.50E-02        NA              NA
+   0.30                 1.10E-02        NA              NA
+   0.20                 7.50E-03        NA              NA
+   0.10                 3.40E-03        NA              NA
+   0.00                 0.00E+00        NA              NA
+  -5.00                 0.00E+00        NA              NA
+   
+ 
+ 
+ 
+ 
+|
+[Pullup]
+|       
+|-------------------------------------------------------------
+| Note that the[Pullup]voltage table is referenced to Vcc
+| and is calculated using Vtable=Vcc - Vmeasured.
+|-------------------------------------------------------------
+|
+|      Voltage         I(typ)             I(min)          I(max)
+|     
+         10.00            -2.80E-02          NA              NA
+          9.00            -2.79E-02          NA              NA
+          8.00            -2.78E-02          NA              NA
+          7.00            -2.77E-02          NA              NA
+          6.00            -2.75E-02          NA              NA
+          5.00            -2.70E-02          NA              NA
+          4.00            -2.60E-02          NA              NA
+          3.00            -2.45E-02          NA              NA
+          2.00            -2.10E-02          NA              NA
+          1.50            -1.75E-02          NA              NA
+          1.00            -1.30E-02          NA              NA
+          0.60            -8.10E-03          NA              NA
+          0.30            -4.20E-03          NA              NA
+          0.20            -2.80E-03          NA              NA
+          0.10            -1.30E-03          NA              NA
+          0.00             0.00E+00          NA              NA
+         -5.00             0.00E+00          NA              NA
+
+          
+ 
+  
+
+|
+|****************************************************************************
+|
+[Ramp]
+|                       typ                min            max
+dV/dt_r             2.68V/1.44ns            NA              NA
+dV/dt_f             2.89V/1.00ns            NA              NA
+
+R_load = 1.00E+03ohms
+|
+[Rising Waveform]
+
+R_fixture = 1.00E+03
+V_fixture = 0.0V
+C_fixture = 15pF
+
+
+|
+|        Time           V(typ)           V(min)          V(max)
+|
+
+ 
+        0.00E-10        0.06              NA              NA
+        2.00E-10        0.07              NA              NA
+        4.00E-10        0.09              NA              NA
+        6.00E-10        0.13              NA              NA
+        8.00E-10        0.18              NA              NA
+        1.00E-09        0.28              NA              NA
+        1.20E-09        0.40              NA              NA
+        1.40E-09        0.53              NA              NA   
+        1.60E-09        0.72              NA              NA   
+        1.80E-09        0.91              NA              NA   
+        2.00E-09        1.10              NA              NA   
+        2.20E-09        1.34              NA              NA   
+        2.40E-09        1.55              NA              NA   
+        2.60E-09        1.75              NA              NA   
+        2.80E-09        1.94              NA              NA   
+        3.00E-09        2.19              NA              NA
+        3.20E-09        2.41              NA              NA
+        3.40E-09        2.60              NA              NA
+        3.60E-09        2.78              NA              NA
+        3.80E-09        2.98              NA              NA
+        4.00E-09        3.13              NA              NA
+        4.20E-09        3.25              NA              NA
+        4.40E-09        3.38              NA              NA
+        4.60E-09        3.47              NA              NA
+        4.80E-09        3.56              NA              NA
+        5.00E-09        3.63              NA              NA
+        5.20E-09        3.72              NA              NA
+        5.40E-09        3.78              NA              NA
+        5.60E-09        3.85              NA              NA
+        5.80E-09        3.91              NA              NA   
+        6.00E-09        3.95              NA              NA   
+        6.20E-09        3.99              NA              NA   
+        6.40E-09        4.02              NA              NA   
+        6.60E-09        4.06              NA              NA   
+        6.80E-09        4.09              NA              NA   
+        7.00E-09        4.13              NA              NA   
+        7.20E-09        4.18              NA              NA   
+        7.40E-09        4.20              NA              NA   
+        7.60E-09        4.25              NA              NA   
+        7.80E-09        4.28              NA              NA   
+        8.00E-09        4.31              NA              NA   
+        8.20E-09        4.34              NA              NA   
+        8.40E-09        4.37              NA              NA   
+        8.60E-09        4.39              NA              NA
+        8.80E-09        4.42              NA              NA
+        9.00E-09        4.44              NA              NA
+        9.20E-09        4.46              NA              NA
+        9.40E-09        4.47              NA              NA
+        9.60E-09        4.48              NA              NA
+        9.80E-09        4.48              NA              NA
+        1.00E-08        4.49              NA              NA
+        1.02E-08        4.50              NA              NA
+        1.04E-08        4.51              NA              NA
+        1.06E-08        4.52              NA              NA
+        1.08E-08        4.53              NA              NA
+        1.10E-08        4.54              NA              NA
+        1.12E-08        4.55              NA              NA
+        1.14E-08        4.56              NA              NA
+        1.16E-08        4.57              NA              NA
+        1.18E-08        4.58              NA              NA
+        1.20E-08        4.59              NA              NA
+        1.22E-08        4.60              NA              NA
+   
+[Falling Waveform]
+
+R_fixture = 1.00E+03
+V_fixture = 0.0V
+C_fixture = 15pF
+
+|
+|        Time           V(typ)           V(min)         V(max)
+|
+
+        0.00E-10        4.60              NA              NA
+        2.00E-10        4.56              NA              NA
+        4.00E-10        4.53              NA              NA
+        6.00E-10        4.44              NA              NA
+        8.00E-10        4.28              NA              NA
+        1.00E-09        4.10              NA              NA
+        1.20E-09        3.84              NA              NA
+        1.40E-09        3.63              NA              NA
+        1.60E-09        3.35              NA              NA
+        1.80E-09        2.91              NA              NA
+        2.00E-09        2.42              NA              NA
+        2.20E-09        1.74              NA              NA   
+        2.40E-09        1.19              NA              NA   
+        2.60E-09        0.80              NA              NA   
+        2.80E-09        0.38              NA              NA   
+        3.00E-09        0.11              NA              NA   
+        3.20E-09       -0.21              NA              NA
+        3.40E-09       -0.50              NA              NA
+        3.60E-09       -0.71              NA              NA
+        3.80E-09       -0.83              NA              NA
+        4.00E-09       -0.93              NA              NA
+        4.20E-09       -1.00              NA              NA
+        4.40E-09       -1.01              NA              NA
+        4.60E-09       -0.97              NA              NA
+        4.80E-09       -0.93              NA              NA
+        5.00E-09       -0.87              NA              NA
+        5.20E-09       -0.77              NA              NA
+        5.40E-09       -0.68              NA              NA
+        5.60E-09       -0.58              NA              NA   
+        5.80E-09       -0.50              NA              NA   
+        6.00E-09       -0.40              NA              NA   
+        6.20E-09       -0.28              NA              NA   
+        6.40E-09       -0.16              NA              NA   
+        6.60E-09       -0.11              NA              NA   
+        6.80E-09        0.02              NA              NA   
+        7.00E-09        0.06              NA              NA   
+        7.20E-09        0.13              NA              NA   
+        7.40E-09        0.19              NA              NA   
+        7.60E-09        0.22              NA              NA   
+        7.80E-09        0.22              NA              NA   
+        8.00E-09        0.22              NA              NA   
+        8.20E-09        0.20              NA              NA   
+        8.40E-09        0.18              NA              NA   
+        8.60E-09        0.16              NA              NA   
+        8.80E-09        0.14              NA              NA   
+        9.00E-09        0.12              NA              NA   
+        9.20E-09        0.10              NA              NA   
+        9.40E-09        0.08              NA              NA   
+        9.60E-09        0.06              NA              NA   
+
+[Rising Waveform]
+
+R_fixture = 1.00E+03
+V_fixture = 5.0V
+C_fixture = 15pF
+
+|        Time           V(typ)           V(min)          V(max)
+ 
+        0.00E-10        0.22              NA              NA   
+        2.00E-10        0.25              NA              NA   
+        4.00E-10        0.29              NA              NA   
+        6.00E-10        0.33              NA              NA   
+        8.00E-10        0.39              NA              NA   
+        1.00E-09        0.52              NA              NA   
+        1.20E-09        0.66              NA              NA   
+        1.40E-09        0.86              NA              NA   
+        1.60E-09        1.05              NA              NA   
+        1.80E-09        1.30              NA              NA   
+        2.00E-09        1.52              NA              NA   
+        2.20E-09        1.80              NA              NA   
+        2.40E-09        2.05              NA              NA   
+        2.60E-09        2.36              NA              NA   
+        2.80E-09        2.64              NA              NA   
+        3.00E-09        2.86              NA              NA   
+        3.20E-09        3.08              NA              NA   
+        3.40E-09        3.33              NA              NA   
+        3.60E-09        3.52              NA              NA   
+        3.80E-09        3.73              NA              NA   
+        4.00E-09        3.92              NA              NA   
+        4.20E-09        4.08              NA              NA   
+        4.40E-09        4.17              NA              NA   
+        4.60E-09        4.30              NA              NA   
+        4.80E-09        4.36              NA              NA   
+        5.00E-09        4.45              NA              NA   
+        5.20E-09        4.51              NA              NA   
+        5.40E-09        4.55              NA              NA   
+        5.60E-09        4.58              NA              NA   
+        5.80E-09        4.61              NA              NA   
+        6.00E-09        4.64              NA              NA   
+        6.20E-09        4.65              NA              NA   
+        6.40E-09        4.68              NA              NA   
+        6.60E-09        4.71              NA              NA   
+        6.80E-09        4.73              NA              NA   
+        7.00E-09        4.76              NA              NA   
+        7.20E-09        4.77              NA              NA   
+        7.40E-09        4.80              NA              NA      
+        7.60E-09        4.83              NA              NA   
+        7.80E-09        4.85              NA              NA   
+        8.00E-09        4.89              NA              NA   
+        8.20E-09        4.91              NA              NA   
+        8.40E-09        4.93              NA              NA   
+        8.60E-09        4.94              NA              NA   
+        8.80E-09        4.96              NA              NA   
+        9.00E-09        4.98              NA              NA   
+        9.20E-09        5.00              NA              NA   
+
+   
+[Falling Waveform]
+
+R_fixture = 1.00E+03
+V_fixture = 5.0V
+C_fixture = 15pF
+
+|        Time           V(typ)           V(min)         V(max)
+
+        0.00E-10        5.00              NA              NA   
+        2.00E-10        4.98              NA              NA   
+        4.00E-10        4.95              NA              NA   
+        6.00E-10        4.92              NA              NA   
+        8.00E-10        4.83              NA              NA   
+        1.00E-09        4.70              NA              NA   
+        1.20E-09        4.44              NA              NA   
+        1.40E-09        4.10              NA              NA   
+        1.60E-09        3.77              NA              NA   
+        1.80E-09        3.42              NA              NA   
+        2.00E-09        3.00              NA              NA   
+        2.20E-09        2.48              NA              NA   
+        2.40E-09        2.00              NA              NA   
+        2.60E-09        1.54              NA              NA   
+        2.80E-09        1.06              NA              NA   
+        3.00E-09        0.64              NA              NA   
+        3.20E-09        0.26              NA              NA   
+        3.40E-09       -0.12              NA              NA   
+        3.60E-09       -0.44              NA              NA   
+        3.80E-09       -0.68              NA              NA   
+        4.00E-09       -0.85              NA              NA   
+        4.20E-09       -0.93              NA              NA   
+        4.40E-09       -0.98              NA              NA   
+        4.60E-09       -1.00              NA              NA   
+        4.80E-09       -0.97              NA              NA   
+        5.00E-09       -0.95              NA              NA   
+        5.20E-09       -0.90              NA              NA   
+        5.40E-09       -0.83              NA              NA   
+        5.60E-09       -0.73              NA              NA   
+        5.80E-09       -0.58              NA              NA   
+        6.00E-09       -0.45              NA              NA   
+        6.20E-09       -0.31              NA              NA   
+        6.40E-09       -0.11              NA              NA   
+        6.60E-09        0.08              NA              NA   
+        6.80E-09        0.17              NA              NA   
+        7.00E-09        0.27              NA              NA   
+        7.20E-09        0.30              NA              NA   
+        7.40E-09        0.33              NA              NA      
+        7.60E-09        0.36              NA              NA   
+        7.80E-09        0.35              NA              NA   
+        8.00E-09        0.35              NA              NA   
+        8.20E-09        0.34              NA              NA   
+        8.40E-09        0.33              NA              NA   
+        8.60E-09        0.32              NA              NA   
+        8.80E-09        0.31              NA              NA   
+        9.00E-09        0.29              NA              NA   
+        9.20E-09        0.28              NA              NA
+        9.40E-09        0.27              NA              NA
+        9.60E-09        0.26              NA              NA
+        9.80E-09        0.25              NA              NA
+        1.00E-08        0.24              NA              NA
+        1.02E-08        0.23              NA              NA
+        1.04E-08        0.22              NA              NA
+   
+|****************************************************************************  
+
+[End]
+
+
+
+
+
+ 
+  
+
+
+
+
+

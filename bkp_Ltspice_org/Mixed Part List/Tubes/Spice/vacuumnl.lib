@@ -1,0 +1,372 @@
+Intusoft Vacuum Tube Models
+Date: 2/98
+
+Copyright © Intusoft 1998
+Tel (310) 833-0710
+Fax (310) 833-9658
+e-mail:  info@intusoft.com
+World Wide Web site: http://www.intusoft.com
+
+These models are part of the ICAP/4Windows Deluxe package which currently
+includes over 10,000 models and hundreds of different part types. With
+regard to the number of part types, it is the largest library available
+from ANY SPICE vendor!!
+
+*************
+* Tube Subcircuit Application Notes
+* For more info see the Intusoft Newsletter #18 August 1990, Newsletter #34, Feb. 1994
+* and Newsletter #35 April 1994. 
+* 
+*************
+
+SPICE Simulation Models
+These SPICE simulation models may be used and distributed freely, 
+provided they are not altered in any way, resold, or included in 
+any other package for resale. In addition, the Intusoft copyright
+notice MUST be maintained and included with any model distribution.
+
+As a service to our customers, we provide a free modeling service.  
+If you are interested in obtaining additional models, please contact 
+Intusoft technical support.
+
+ICAP/4 Windows Demonstration Software
+The demonstration version of ICAP/4 Windows including IsSpice4 may be 
+downloaded from our Web site at no charge.  
+Also available for download are additional models, product and 
+ordering information, technical articles, and Intusoft Newsletters.
+
+SpiceMod Modeling Software
+SpiceMod is a CAE program that is used to create SPICE models from 
+data sheet values.  SPICEMOD is particularly useful in the circuit 
+design phase because it allows the designer to create SPICE models 
+based on electrical specifications before an actual device is selected.
+SpiceMod may be used to create models for diodes, Zener diodes, BJTs,
+power BJTs, Darlington BJTs, JFETs, MOSFETs, power MOSFETs, IGBTs, 
+SCRs, and TRIACS.
+
+**********
+Macromodels, simulation models, or other models provided by
+Intusoft, directly or indirectly, are not warranted by
+Intusoft as fully representing all of the specifications and
+operating characteristics of the semiconductor product to
+which the model relates. Moreover, these models are
+furnished on an "as is" basis without support or warranty of
+any kind, either expressed or implied, regarding the use
+thereof and Intusoft specifically disclaims all implied
+warranties of merchantability and fitness of the models for
+any purpose. Intusoft does not assume any liability arising
+out of the application or use of the models including
+infringement of patents and copyrights nor does Intusoft
+convey any license under its patents and copyrights or the
+rights of others. Intusoft reserves the right to make
+changes without notice to any model.
+
+Although the use of macromodels can be a useful tool in evaluating
+device performance in various applications, they cannot
+model exact device performance under all conditions, nor are
+they intended to replace breadboarding for final
+verification.
+**************************
+* 
+* Some Tube Models (TRIO1/PENT1/HEAT1) created by
+* EXCEM For the Intusoft Newsletter
+* 12, Chemin des Hauts de Clairefontaine
+* 78580 MAULE
+* FRANCE
+* tel 33 (1) 34 75 13 65
+* fax 33 (1) 34 75 13 66
+* 
+*  Advertising corner: EXCEM provides worldwide services in the fields of
+*  Electronics R&D, with focus on RF, theoretical and practical EMC,
+*  electronic simulations and DSP. We also represent INTUSOFT in France.
+* 
+*  Among other things we manufacture a high-voltage wide-band tube
+*  amplifier for driving high impedance loads (e.g. short E-field antenna).
+*
+*******************
+*SRC=12AU7A;12AU7A;Tubes;Complex;250V 3W Triode
+*SYM=TRIODE1
+.SUBCKT 12AU7A   1     2      3    4    5
+*               Anode Grid Cathode  F    F'
+* COPYRIGHT EXCEM, 1993
+*
+X1 1 2 3 10 TRIO1 {SFS=0.7 VBIG=-0.9 VBIA=-1.3 MU=17 RMU=0.5 VMU=-20 SFMU=1.6 
++ K=827E-6 RK=0.08 VK=-20 SFK=1.6 SIGMAG=0.05 ALPHAG=5.2 SFG=3.5}
+*
+X2 4 5 10 HEAT1 {INOM=0.15 VNOM=6.3 LAMBDA=1 RCOOL=3 TCTE=10 TNOM=1150 INIT=100 
++ W=2.045 ISAT=0.099}
+*
+C2 1 2 1.5P
+C3 3 1 0.5P
+C4 2 3 1.6P 
+C5 3 4 4P
+C6 3 5 4P
+*
+*INCLUDE VACUUMNL.LIB
+.ENDS
+*******************
+*SRC=12AU7A2;12AU7A2;Tubes;Complex;Triode, No Heater
+*SYM=TRIODE1
+.SUBCKT 12AU7A2   1     2      3    4    5
+*                Anode Grid Cathode  F    F'
+* COPYRIGHT EXCEM, 1993 Triode without Heater Model
+*
+X1 1 2 3 10 TRIO1 {SFS=0.7 VBIG=-0.9 VBIA=-1.3 MU=17 RMU=0.5 VMU=-20 SFMU=1.6 
++ K=827E-6 RK=0.08 VK=-20 SFK=1.6 SIGMAG=0.05 ALPHAG=5.2 SFG=3.5}
+*
+RF 4 5 42
+VH 10 0 99m
+*
+C2 1 2 1.5P
+C3 3 1 0.5P
+C4 2 3 1.6P 
+C5 3 4 4P
+C6 3 5 4P
+*
+*INCLUDE VACUUMNL.LIB
+.ENDS
+*******************
+*SRC=EL9000;EL9000;Tubes;Complex;Pentode
+*SYM=PENTODE1
+.SUBCKT EL9000    1     2     3     4      5    6 
+*               Anode Grid2 Grid1 Cathode  F    F'
+* COPYRIGHT EXCEM, 1993
+*
+X1 1 2 3 4 10 PENT1 {SFS=0.7 VBIG=-0.9 VBIA=-1.3 MUG2=17 MUA=15000 RMU=0.5 
++ VMU=-20 SFMU=1.6 K=5.4E-3 RK=0.08 VK=-20 SFK=1.6 SIGMA1=0.05 
++ ALPHA1=5.2 SFG1=3.5 SIGMA2=0.12 ALPHA2=0.06 SFG2=2.3 VCCR=0.58 SFVC=0.33}
+*
+X2 5 6 10 HEAT1 {INOM=0.15 VNOM=6.3 LAMBDA=1 RCOOL=3 TCTE=10 TNOM=1150 INIT=100 
++ W=2.045 ISAT=0.690}
+*
+C2 1 2 1.5P
+C3 3 1 0.5P
+C4 2 3 1.6P 
+C5 3 4 4P
+C6 3 5 4P
+*
+*INCLUDE VACUUMNL.LIB
+.ENDS
+*******************
+*SRC=EL9000_2;EL9000_2;Tubes;Complex;Pentode, No Heater
+*SYM=PENTODE1
+.SUBCKT EL9000_2    1     2     3     4      5    6 
+*                 Anode Grid2 Grid1 Cathode  F    F'
+* COPYRIGHT EXCEM, 1993
+*
+X1 1 2 3 4 10 PENT1 {SFS=0.7 VBIG=-0.9 VBIA=-1.3 MUG2=17 MUA=15000 RMU=0.5 
++ VMU=-20 SFMU=1.6 K=5.4E-3 RK=0.08 VK=-20 SFK=1.6 SIGMA1=0.05 
++ ALPHA1=5.2 SFG1=3.5 SIGMA2=0.12 ALPHA2=0.06 SFG2=2.3 VCCR=0.58 SFVC=0.33}
+*
+RF 5 6 42
+VH 10 0 99m
+*
+C2 1 2 1.5P
+C3 3 1 0.5P
+C4 2 3 1.6P 
+C5 3 4 4P
+C6 3 5 4P
+*
+*INCLUDE VACUUMNL.LIB
+.ENDS
+*******************
+*SRC=TRIODE;TRIO1;Tubes;Generic;Complex Triode
+*SYM=TRIO1
+.SUBCKT TRIO1    A  G  C  ISAT {SFS=??? VBIG=??? VBIA=??? MU=??? RMU=??? VMU=??? 
++ SFMU=??? K=??? RK=??? VK=??? SFK=??? SIGMAG=??? ALPHAG=??? SFG=???} 
+* 
+* COPYRIGHT EXCEM, 1993
+*
+* Forward and reverse conditions are treated in this triode model
+* as well as saturation.
+* The model describes only the static bahaviour of the triode, and
+* neglects secondary emission (that would occur at high VG and low VA).
+*
+* THE TRIODE'S 14 PARAMETERS ARE:
+*
+*     SFS     shape factor of the saturation law.
+*     VBIG    contact potential of the grid
+*             (the voltage above which grid may current start to flow).
+*     VBIA    contact potential of the anode.
+*     MU      amplification factor at slighly negative grid voltage.
+*     RMU     reduction factor for MU at very negative grid voltage.
+*     VMU     grid voltage for mid-range MU (negative).
+*     SFMU    shape factor for MU reduction law. 
+*     K       perveance at slightly negative grid voltage.
+*     RK      perveance reduction factor at very negative grid voltage.
+*     VK      grid voltage for mid-range perveance (negative).
+*     SFK     shape factor for perveance reduction law. 
+*     SIGMAG  effective cross-section of the grid relative to the anode.
+*     ALPHAG  grid current amplification factor.
+*     SFG     shape factor of the grid current law.
+*
+B1 15 0 V = V(G) - V(C) < -1P ?
++ {K} * (1+{RK} * ((V(G) - V(C)) / {VK})^{SFK}) / (1 + ((V(G) - V(C)) / {VK})^{SFK}) : {K}
+* V(15) is the effective perveance 
+B2 16 0 V = V(G) - V(C) < -1P ? {MU} * (1 + {RMU} * ((V(G) - V(C)) / {VMU})^{SFMU}) / 
++ (1 + ((V(G) - V(C)) / {VMU})^{SFMU}) : {MU}
+* V(16) is the effective MU
+B4 9 0 V = V(G) - V(C) - {VBIG} + (V(A) - V(C) - {VBIA}) / (V(16) + 1U)
+B6 10 0 V = V(9) > 0 ? V(15) * V(9)^1.5 / (V(ISAT) + 1P) : 0
+B7 12 0 V = V(10) < {SFS} ? V(10) * (V(ISAT) + 1P) :
++ (V(ISAT) + 1P) * ({SFS} + (V(10) - {SFS}) * {1-SFS} / ({1 - 2 * SFS} + V(10)))
+* B7 contains an arbitrary saturation law modeled by the shape factor SFS
+* to match the available data. SFS should be between 0 and 1. The
+* lower SFS the sloppier the saturation law.
+*
+B8 14 0 V = V(A) - V(C) > {VBIA + 0.1M} ? (V(A) - V(C) - {VBIA}) / {ALPHAG} : 2P
+B9 28 0 V = V(G) - V(C) > {VBIG + 0.1M} ? V(14) > 1P ? 
++ ((V(G) - V(C) - {VBIG} + {SIGMAG^(1/SFG)} * V(14)) / (V(G) - V(C) - {VBIG} + V(14)))^{SFG} : 0
+B10 8 0 V = V(G) - V(C) < 0 ? V(28) * (({VBIG+10U} + V(C) - V(G)) / {VBIG+10U}) : V(28)
+B15 G C I = V(8) * V(12)
+B17 A C I = (1 - V(8)) * V(12)
+.ENDS
+*******************
+*SRC=PENTODE;PENT1;Tubes;Generic;Complex Pentode
+*SYM=PENT1
+.SUBCKT PENT1    A  G2  G1  C  ISAT {SFS=??? VBIG=??? VBIA=??? MUG2=??? MUA=??? RMU=??? VMU=??? SFMU=??? 
++ K=??? RK=??? VK=??? SFK=??? SIGMA1=??? ALPHA1=??? SFG1=??? SIGMA2=??? ALPHA2=??? SFG2=??? VCCR=??? SFVC=???}
+* 
+* COPYRIGHT EXCEM, 1993
+*
+* Forward and reverse conditions are treated in this model
+* as well as saturation.
+* The model describes only the static bahaviour of the pentode, and
+* neglects secondary emission. It is assumed that G2 is always very
+* positive with respect to the cathode.
+*
+*
+* THE PENTODE'S 20 PARAMETERS ARE:
+*
+*     SFS     shape factor of the saturation law.
+*     VBIG    contact potential of the grid G1
+*             (the voltage above which grid current may start to flow).
+*     VBIA    contact potential of the anode.
+*     MUG2    amplification factor for G2 at slighly negative G1 voltage.
+*     MUA     amplification factor for A at slightly negative G1 voltage.
+*     RMU     reduction factor for MU at very negative G1 voltage.
+*     VMU     grid voltage for mid-range MU (negative).
+*     SFMU    shape factor for MU reduction law.
+*     K       perveance at slightly negative G1 voltage.
+*     RK      perveance reduction factor at very negative G1 voltage.
+*     VK      grid voltage for mid-range perveance (negative).
+*     SFK     shape factor for perveance reduction law. 
+*     SIGMA1  effective cross-section of G1 relative to the anode and G2.
+*     ALPHA1  grid G1 current amplification factor.
+*     SFG1    shape factor of the grid G1 current law.
+*     SIGMA2  effective cross-section of G2 relative to the anode.
+*     ALPHA2  grid G2 current amplification factor.
+*     SFG2    shape factor of the grid G2 current law.
+*     VCCR    virtual cathode current ratio.
+*     SFVC    shape factor of the virtual cathode current law.
+*
+*
+B1 15 0 V = V(G1) - V(C) < -1U ?  {K} * (1 + {RK} * 
++ ((V(G1) - V(C)) / {VK})^{SFK}) / (1 + ((V(G1) - V(C)) / {VK})^{SFK}) : {K}
+* V(15) is the effective perveance 
+B2 16 0 V = V(G1) - V(C) < -1U ?  (1 + {RMU} * ((V(G1) - V(C)) / {VMU})^{SFMU}) / 
++ (1 + ((V(G1) - V(C)) / {VMU})^{SFMU}) : 1
+* V(16) is the factor used to establish both effective MU coefficients
+E1 17 0 16 0 {MUG2}
+E2 18 0 16 0 {MUA}
+* V(17) is the effective MUG2 and V(18) is the effective MUA
+B4 9 0 V = V(G1) - V(C) - {VBIG} + (V(A) - V(C) - {VBIA}) / (V(18) + 1U) + 
++ (V(G2) - V(C)) / (V(17) + 1U)
+B6 10 0 V = V(9) > 1P ? V(15) * V(9)^1.5 / (V(ISAT) + 1P) : 0
+B7 12 0 V = V(10) < {SFS} ? V(10) * (V(ISAT) + 1P) :
++ (V(ISAT) + 1P) * ({SFS} + (V(10) - {SFS}) * {1-SFS} / ({1 - 2 * SFS} + V(10)))
+* B7 contains an arbitrary saturation law modeled by the shape factor SFS
+* to match the available (?) data. SFS should be between 0 and 1. The
+* lower SFS the sloppier the saturation law.
+*
+B8 14 0 V = V(G2) - V(C) + {MUG2 / MUA} * (V(A) - V(C)) > 0.1M ?
++ V(G2) - V(C) + {MUG2 / MUA} * (V(A) - V(C)) / {ALPHA1} : 0.2M
+B9 28 0 V = V(G1) - V(C) > {VBIG + 10U} ? V(14) > 0.1M ? 
++ ((V(G1) - V(C) - {VBIG} + {SIGMA1^(1/SFG1)} * 
++ V(14)) / (V(G1) - V(C) - {VBIG} + V(14)))^{SFG1} : 0
+*
+B10 8 0 V = V(G1) - V(C) < 0 ? V(28) * (({VBIG+10U} + V(C) - V(G1)) / {VBIG+10U}) : V(28) 
+*
+B11 21 0 V = V(A) - V(C) > {VBIA + 0.1M} ? (V(A) - V(C) - {VBIA}) / {ALPHA2} : 0.2M
+B12 32 0 V = V(G2) - V(C) > {VBIG+10U} ? V(21) > 0.1M ? 
++ ((V(G2) - V(C) -{VBIG} + {SIGMA2^(1 / SFG2)} * 
++ V(21)) / (V(G2) - V(C) -{VBIG} + V(21)))^{SFG2} : 0
+*
+B13 22 0 V = V(G2) - V(C) < 0 ? V(32) * (({VBIG+10U} + V(C) - V(G2)) / {VBIG+10U}) : V(32)
+*
+B14 23 0 V = V(22) - {SIGMA2} > 1P ? V(12) * (1-{VCCR} * (V(22) - {SIGMA2})^{SFVC}) : V(12)
+* When the virtual cathode is present, this factor describes the
+* decrease in cathode current (see Terman p. 192).
+*
+B15 G1 C I = V(8) * V(23)
+R15 G1 C 100MEG
+B16 G2 C I = (1 - V(8)) * V(22) * V(23)
+R16 G2 C 100MEG
+B17 A C I = (1 - V(8)) * (1 - V(22)) * V(23)
+R17 A C 100MEG
+*
+.ENDS
+*******************
+*SRC=HEATER;HEAT1;Tubes;Generic;Heater model
+*SYM=HEAT1
+.SUBCKT HEAT1  F  F' ISAT {INOM=??? VNOM=??? LAMBDA=??? RCOOL=??? TCTE=??? TNOM=??? INIT=??? W=??? ISAT=???}
+* 
+* COPYRIGHT EXCEM, 1993
+*
+* This model for the heater gives a voltage ISAT
+* that is an analog for the saturation current of the cathode.
+*
+*
+* THE HEATER'S 9 PARAMETERS ARE:
+*
+*     INOM    the nominal heater current, at nominal voltage.
+*     VNOM    the nominal heater voltage (causing nominal temperature)
+*     LAMBDA  temperature coefficient of the heater resistance.
+*             (normalized to the nominal temperature);
+*     RCOOL   resistance of the cold heater.
+*     TCTE    the time constant for the heater temperature.
+*     TNOM    the nominal heater temperature in K.
+*     INIT    initial heater temperature in % of TNOM.
+*     W       work function of the heater, in eV.
+*     ISAT    the saturation current at nominal heater voltage.
+*
+V1 F 4 0
+R1 5 4 0.01
+* Above the Debye temperature, the resistivity is nearly linear
+* with respect to temperature, see Ashcroft & Mermin p. 525 and p 461.
+B1 5 F' V = V(7) > 0 ? I(V1) * ({VNOM / INOM - RCOOL} * (1 + {LAMBDA} * (V(7) - 1)) + {RCOOL})
++ : I(V1) * {VNOM / INOM}
+* B1 delivers the power recieved by the heater
+B2 6 0 V = (V(F) - V(F')) * I(V1) > 0 ? (V(F) - V(F')) * I(V1) / {VNOM * INOM} : 1
+R2 6 7 1
+C1 7 0 {TCTE} IC = {INIT/100}
+* Only conductive dissipation is considered. Therfore, V(7) is a normalized temperature.
+* B4 contains the Richardson-Duschman law, with an exponential containing
+* B = W/k, the Bolzmann's constant is 0.8617e-4 eV/K
+* for Tungsten (see Ashcroft & Mermin p. 364) and W = 4.5 eV. It may
+* be 2.2 times lower for an oxide-coated cathode (see Terman p. 173).
+* B3 delivers the saturation current.
+E1 13 0 7 0 {TNOM}
+B3 ISAT 0 V = V(13) > 0 ? 
++ {ISAT} * V(7)^2 * EXPL(({W/0.8417E-4} * (1 / {TNOM} - 1 / (V(13) + 1))),5) : {ISAT}
+* The 1 Kelvin added to V(13) avoids convergence problems.
+.ENDS
+******************
+*SRC=12AX7A;T12AX7A;Tubes;Simple;250V 1W Triode
+*SYM=TRIODE
+.SUBCKT T12AX7A 1    3     4    
+*               Grid Plate Cathode       
+* One Half - High Mu Twin Triode, Similar to 12AX7-A
+G1 6 4 POLY(2) 1 4 3 4  
++ 0 1.1041M 11.041U 79.300U 1.5860U 7.9300N     
+Q1 3 4 6 NPN    
+.MODEL NPN NPN  
+D1 6 4 DIODE    
+.MODEL DIODE D  
+CGP 1 3 1.7000P 
+CIN 1 4 1.6000P 
+COUT 3 4 460.00F
+R2 3 4 100MEG   
+.ENDS   
+**********
+

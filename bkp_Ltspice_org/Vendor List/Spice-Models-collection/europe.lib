@@ -1,0 +1,15 @@
+* Library of European Models
+*
+*  Copyright OrCAD, Inc. 1998 All Rights Reserved.
+*
+* $Revision:   1.6  $
+* $Author:   RPEREZ  $
+* $Date:   17 Apr 1998 14:10:18  $
+*
+* ---------------------------------------------------------------------------
+
+* This file references each of these libraries.
+
+.lib "ediode.lib"               ; European diodes
+.lib "ebipolar.lib"             ; European bipolar transistors
+.lib "epwrbjt.lib"              ; European power bipolar transistors

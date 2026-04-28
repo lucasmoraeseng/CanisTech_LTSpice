@@ -1,0 +1,10 @@
+*SPICE model for HSMS-820x
+*The parameters are for a single diode (HSMS-8101). Parameters also apply 
+*to the individual diodes within multiple diode configurations. 
+*
+.SUBCKT hsms820x 1 2
+DCD1    1     2      DMOD    
+.MODEL  DMOD	D(IS=4.6E-8, CJO=0.18E-12, VJ=.65, BV=7.3, IBV=10E-5
++		EG=0.69, N=1.09, RS=6, XTI=2, M=0.5, FC=0.5)
+.ENDS
+

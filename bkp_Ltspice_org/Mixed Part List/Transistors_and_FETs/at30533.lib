@@ -1,0 +1,44 @@
+*SPICE model for AT-30533
+
+.SUBCKT AT30533 60      20      40
+LL1     20      25      .05NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T1
+C1T1    25      0       .11PF
+LT1     25      30      .40NH
+C2T1    30      0       .11PF
+*
+LLB     30      35      .5NH
+CCEB    30      50      .04PF
+LL2     40      45      .05NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T2
+C1T2    45      0       .09PF
+LT2     45      50      .33NH
+C2T2    50      0       .09PF
+*
+LLE     50      55      .5NH
+CCEC    50      70      .01PF
+LL3     60      65      .05NH
+* PI NETWORK TO SIMULATE TRANSMISSION LINE T3
+C1T3    65      0       .13PF
+LT3     65      70      .47NH
+C2T3    70      0       .13PF
+*
+CCBC    30      70      .04PF
+* CALL DIE MODEL
+XDIE    70      35      55      AT305
+.ENDS
+
+** DIE MODEL (excludes bond wires)
+.SUBCKT AT305   75      20      85
+CBBP    20      75      .03PF
+CEBP    85      75      .03PF
+QINT    75      20      85      Q305     
+.ENDS
+
+.MODEL  Q305    NPN (BF=100, BR=2.5, IS=7.8E-17, VA=20, 
++               TF=12PS, CJE=1.1E-13, VJE=1.01, MJE=0.6, 
++               PTF=25, XTB=1.818, VTF=6, ITF=1.4E-2, 
++               IKF=6.3E-3, XTF=4, NF=1.03, ISE=2.4E-13, 
++               NE=2.5, RB=38.49, RE=2.44, RC=61.57,
++               CJC=5.1E-14, CJS=7E-14, XCJC=0.19, PS=0.8, 
++               MS=0.5, PC=0.76, MC=0.53)

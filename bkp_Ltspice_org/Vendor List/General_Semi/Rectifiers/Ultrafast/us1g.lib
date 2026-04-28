@@ -1,0 +1,23 @@
+****************************************
+* (c)1999 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Burmen@ieee.org              *
+****************************************
+
+.MODEL US1G D (
++   N=2.79019
++  IS=2.71097E-006
++  RS=0.0145165
++  EG=1.11
++ XTI=3
++ CJO=3.71999E-011
++  VJ=3.63462
++   M=0.834381
++  FC=0.5
++  TT=1.23315E-007
++  BV=400
++ IBV=0.1
++  KF=0
++  AF=1 )

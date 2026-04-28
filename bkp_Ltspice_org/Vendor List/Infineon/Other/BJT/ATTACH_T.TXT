@@ -1,0 +1,82 @@
+ATTACHMENT LIST:
+================
+This list shows how to combine a chip-file and a package-file 
+to get an RF-nonlinear description of a Infineon Technologies
+RF-BJT.
+For frequencies below 100MHz the package equivalent circuit 
+are not required.
+
+Type:      Chip:   Package          Comment:
+
+BFG19S     T296    SOT223_1
+BFG135A    T236    SOT223_2
+BFG193     T359    SOT223_1
+BFG194     T396    SOT223_1         pnp
+BFG196     T395    SOT223_1
+BFG235     T236    SOT223_3         2 chips T236 in parallel
+BFP81      T251    SOT143_1
+BFP93A     T259    SOT143_1
+BFP136W    T239    SOT343_2
+BFP180     T301    SOT143_1
+BFP180W    T301    SOT343_1
+BFP181     T349    SOT143_1
+BFP181W    T349    SOT343_1
+BFP182     T341    SOT143_1
+BFP182W    T341    SOT343_1
+BFP183     T351    SOT143_1
+BFP183W    T351    SOT343_1
+BFP193     T359    SOT143_2
+BFP193W    T359    SOT343_1
+BFP194     T396    SOT143_2         pnp
+BFP196     T395    SOT143_2
+BFP196W    T395    SOT343_1
+BFP280     T302    SOT143_1
+BFP280W    T302    SOT343_1
+BFP405     T501    SOT343_3         SIEGET Grounded emitter
+BFP420     T502    SOT343_3         SIEGET Grounded emitter
+BFP450     T503    SOT343_4         SIEGET Grounded emitter
+BFP490     T504    SCT595           SIEGET Grounded emitter
+BFP520     T506    SOT343_3         SIEGET Grounded emitter
+BFQ81      T251    SOT23
+BFR92P     T89     SOT23
+BFR92W     T89     SOT323
+BFR93A     T259    SOT23
+BFR93AW    T259    SOT323
+BFR106     T296    SOT23
+BFR180     T301    SOT23
+BFR180W    T301    SOT323
+BFR181     T349    SOT23
+BFR181W    T349    SOT323
+BFR182     T341    SOT23
+BFR182W    T341    SOT323
+BFR183     T351    SOT23
+BFR183W    T351    SOT323
+BFR193     T359    SOT23
+BFR193W    T359    SOT323
+BFR194     T396    SOT23            pnp
+BFR280     T302    SOT23
+BFR280W    T302    SOT323
+BFS17P     T122    SOT23
+BFS17S     T122    SOT363/SOT363S   2 Chips in one package 
+BFS17W     T122    SOT323
+BFS480     T302    SOT363/SOT363S   2 Chips in one package
+BFS481     T349    SOT363/SOT363S   2 Chips in one package
+BFS482     T341    SOT363/SOT363S   2 Chips in one package
+BFS483     T351    SOT363/SOT363S   2 Chips in one package
+BFT92      T389    SOT23            pnp
+BFT92W     T389    SOT323           pnp
+BFT93      T309    SOT23            pnp
+
+
+Package comments:
+SOT363  is a complete equivalent circuit of the package 
+        including coupling of the two transistors.
+SOT363S is a simplified equivalent circuit which 
+        describes one of the transistors without coupling 
+        to the other one.
+Different package equivalent circuits of one package type 
+describe different internal package layouts or different 
+chip sizes.
+
+
+                       V 1.4      April 1999       

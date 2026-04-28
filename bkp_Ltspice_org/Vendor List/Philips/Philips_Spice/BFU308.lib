@@ -1,0 +1,16 @@
+*PHILIPS SEMICONDUCTORS        Version 1.0
+*Filename: BFU308.PRM       date: oct 1992
+*
+.MODEL  BFU308   NJF
++             VTO = -3.2130E+000
++            BETA = 3.33257E-003
++          LAMBDA = 2.34410E-002
++              RD = 1.50212E+000
++              RS = 1.50212E+000
++              IS = 3.82746E-016
++            CGS  = 7.60000E-012
++            CGD  = 6.70000E-012
++              PB = 7.76379E-001
++              FC = 5.00000E-001
+*Parameter with default value: FC
+

@@ -1,0 +1,35 @@
+****************************************
+* (c)2000 Thomatronik GmbH             *
+*   info@thomatronik.de                *
+*                                      *
+* Author: Arpad Buermen                *
+*   Arpad.Buermen@fe.uni-lj.si         *
+****************************************
+
+.SUBCKT SB560 1 2
+.MODEL DIO D(
++   N=1.09755
++  IS=5.51411E-007
++  RS=0.0425717
++  EG=0.656024
++ XTI=2.04158
++ CJO=1.08891E-009
++  VJ=0.279874
++   M=0.345573
++  FC=0.5
++  TT=1.4427E-009
++  BV=60
++ IBV=0.0005
++  KF=0
++  AF=1 )
+
+.MODEL GR D(
++   N=1.03547
++  IS=1.30736E-012
++  RS=0.00880338
++  EG=1.15943
++ XTI=3.01552 )
+
+DD 1 2 DIO
+DG 1 2 GR
+.ENDS

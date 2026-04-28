@@ -1,0 +1,37 @@
+GF1					
+* comparison measured simulated data for static behavior					.include gf1g.mod
+					.dc v1 .1 1.45 .05
+v1 1 0 dc 1					.probe
+d1 1 0 gf1g					.temp 0 25 75
+
+* measured data for t=25°C		* measured data for t=0°C		* measured data for t=75°C	
+g25C 10 0 table {v(1)} =		g0C 20 0 table {v(1)} =		g75C 30 0 table {v(1)} =	
++ 678.35m 10MA		+ 723.45m 10MA		+ 584.2m 10MA
++ 709.8m  20MA 		+ 752.1m  20MA 		+ 621.05m  20MA 
++ 751.25m 50MA		+ 789.9m 50MA		+ 670m 50MA
++ 784.35m 100mA		+ 820.75m 100mA		+ 708.85m 100mA
++ 820.95m 200MA		+ 855.05m 200MA		+ 751m 200MA
++ 881.2m 500mA		+ 911.9m 500mA		+ 817.65m 500mA
++ 944.3m 1.0A		+ 972.3m 1.0A		+ 887.6m 1.0A
++ 1036.55m 2.0A		+ 1056.05m 2.0A		+ 987.15m 2.0A
++ 1244.1m 5.0A		+ 1262.35m 5.0A		+ 1209.75m 5.0A
++ 1527.5m  10.0A		+ 1538m  10.0A		+ 1513m  10.0A
+r_g25C 10 0 1		r_g0C 20 0 1		r_g75C 30 0 1
+
+.end				
+.model gf1     
++ Is=5.715n 
++ N=1.813 
++ Rs=50.56m 
++ Ikf=7.16 
++ Xti=3 
++ Eg=1.11 
++ Cjo=19.57p				
++ M=.3282 
++ Vj=.3905 
++ Fc=.5 
++ Isr=100p 
++ Nr=2 
+Bv=reverse voltage* 
++ Ibv=50n Tt=159.8n)				
+* look databook (e.g. for GF1J = 600)			

@@ -1,0 +1,56 @@
+* BFQ621 SPICE MODEL
+* PHILIPS SEMICONDUCTORS
+* Date : September 1995
+*
+* PACKAGE : SOT172A2A DIE MODEL : MOD600
+* 1: COLLECTOR; 2: BASE; 3: EMITTER
+.SUBCKT BFQ621 1 2 3
+Q1 11 22 34 34 MOD600
+* SOT172A2A parasitic model
+               Tc  10 0 11 0 ZO=38.80 F=1e9 NL=11.32e-3
+               Tb  20 0 21 0 ZO=38.80 F=1e9 NL=9.7e-3
+               Te1 31 0 33 0 ZO=99.18 F=1e9 NL=3.35e-3
+               Te2 30 0 31 0 ZO=45.13 F=1e9 NL=5.68e-3
+               Te3 32 0 33 0 ZO=99.18 F=1e9 NL=18.26e-3
+               Te4 30 0 32 0 ZO=45.13 F=1e9 NL=6.57e-3
+               Lb  21 22 1.85n 
+               Le  33 34 1.22n
+               Ccb 10 20 36f
+               Cbe 20 30 225f
+*
+* PHILIPS SEMICONDUCTORS                                     Version:     1.0
+* Filename:   MOD600.PRM                                     Date: Sept. 1992
+*
+.MODEL  MOD600  NPN
++              IS = 1.35800E-015
++              BF = 1.12200E+002
++              NF = 9.90500E-001
++             VAF = 7.80600E+001
++             IKF = 4.29100E+000
++             ISE = 6.43300E-013
++              NE = 1.85100E+000
++              BR = 5.77600E+000
++              NR = 9.99600E-001
++             VAR = 2.35000E+000
++             IKR = 5.02600E-002
++             ISC = 2.45400E-015
++              NC = 1.17500E+000
++              RB = 8.00000E+000
++             IRB = 1.00000E-006
++             RBM = 8.00000E+000
++              RE = 1.58500E+000
++              RC = 1.88000E+000
++              EG = 1.11000E+000
++             XTI = 3.00000E+000
++             CJE = 3.98500E-012
++             VJE = 6.00000E-001
++             MJE = 3.27300E-001
++              TF = 1.40200E-011
++             XTF = 3.98100E+002
++             VTF = 2.94000E+000
++             ITF = 3.08400E+000
++             PTF = 4.50000E+001
++             CJC = 1.52900E-012
++             VJC = 2.15700E-001
+.ENDS
+

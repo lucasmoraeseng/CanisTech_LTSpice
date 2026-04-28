@@ -1,0 +1,53 @@
+* BFQ245 SPICE MODEL
+* PHILIPS SEMICONDUCTORS
+* Date : April 1997
+*
+* PACKAGE : SOT128 DIE MODEL: XV241
+* 1: COLLECTOR; 2: BASE; 3: EMITTER
+
+.SUBCKT XV241 1 2 3  
+Cbpb 1 2 7E-14 
+Cbpe 1 3 7E-14 
+Q1 1 2 3 3 XV241
+*
+* PHILIPS SEMICONDUCTORS
+* Version:   1.0
+* Date: Apr 1997
+* 
+.MODEL XV241 PNP 
++ IS = 6.37E-15 
++ BF = 33.31 
++ NF = 1.049 
++ VAF = 29.31 
++ IKF = 1 
++ ISE = 4.857E-14 
++ NE = 1.595 
++ BR = 9.2 
++ NR = 1.045 
++ VAR = 8 
++ IKR = 0.04645 
++ ISC = 3.109E-13 
++ NC = 1.307 
++ RB = 0.2036 
++ IRB = 0 
++ RBM = 0.07418 
++ RE = 1.397 
++ RC = 1.099 
++ CJE = 1.495E-11 
++ VJE = 0.6 
++ MJE = 0.3008 
++ CJC = 3.323E-12 
++ VJC = 0.5576 
++ MJC = 0.4273 
++ CJS = 0 
++ VJS = 0.7 
++ MJS = 0 
++ XCJC = 0.1647 
++ TR = 0 
++ TF = 1.3E-10 
++ XTF = 120 
++ VTF = 3.25 
++ ITF = 0.795 
++ PTF = 0 
++ FC = 0.82 
+.ENDS

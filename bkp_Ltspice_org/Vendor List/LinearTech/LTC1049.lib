@@ -1,0 +1,94 @@
+* 
+* Linear Technology LTC1049 op amp model  
+* Written: 05-11-1990 11:36:48 Type: PMOS input, internal comp.
+* Typical specs: 
+* Vos=2.0E-06, Ib=3.0E-11, Ios=1.5E-11, GBP=8.0E+05Hz, Phase mar.= 45 deg, 
+* SR(-)=8.0E-01V/us, SR(+)=8.0E-01V/us, Av=160.0dB, CMRR=130.0dB, 
+* Vsat(+)=0.010V, Vsat(-)=0.010V, Isc=+ 3/-10mA, Rout= 200ohms, Iq=0.20mA.
+* Note: Maximum total supply voltage for LTC1049 is 18 volts.
+* 
+* Connections: + - V+V-O 
+.SUBCKT LTC1049 3 2 7 4 6 
+* INPUT
+RD1 4 80 6.6315E+03
+RD2 4 90 6.6315E+03
+M1 80 2 12 12 PM1 
+M2 90 3 12 12 PM2 
+CIN 2 3 5.0000E-12
+DG1 2 7 DMG1
+DG2 3 7 DMG2
+C1 80 90 1.5000E-11
+ISS 7 12 2.4000E-05
+* INTERMEDIATE 
+GCM 0 8 12 0 4.7686E-11
+GA 8 0 80 90 1.5080E-04
+R2 8 0 1.0000E+05
+C2 1 8 3.0000E-11
+GB 1 0 8 0 3.3324E+04
+RO2 1 0 1.9900E+02
+* OUTPUT 
+RSO 1 6 1.0000E+00
+ECL 18 0 1 6 2.8534E+02
+GCL 0 8 20 0 1.0000E+00
+RCL 20 0 1.0000E+01
+D1 18 19 DM1 
+VOD1 19 20 0.0000E+00
+D2 20 21 DM1 
+VOD2 21 18 1.9974E+00
+* 
+D3A 131 70 DM3 
+D3B 13 131 DM3 
+GPL 0 8 70 7 1.0000E+00
+VC 13 6 1.3894E+00
+RPLA 7 70 1.0000E+01
+RPLB 7 131 1.0000E+03
+D4A 60 141 DM3 
+D4B 141 14 DM3 
+GNL 0 8 60 4 1.0000E+00
+VE 6 14 1.3894E+00
+RNLA 60 4 1.0000E+01
+RNLB 141 4 1.0000E+03
+* 
+IP 7 4 1.7600E-04
+DSUB 4 7 DM2 
+* MODELS 
+.MODEL PM1 PMOS (KP=9.4748E-04 VTO=-1.1000000E+00)
+.MODEL PM2 PMOS (KP=9.4748E-04 VTO=-1.1000020E+00)
+.MODEL DM1 D (IS=1.0000E-20)
+.MODEL DM2 D (IS=8.0000E-16 BV=1.9800E+01)
+.MODEL DM3 D (IS=1.0000E-16)
+.MODEL DMG1 D (IS=3.7500E-11)
+.MODEL DMG2 D (IS=2.2500E-11)
+.ENDS LTC1049
+* 
+* - - - - - * FINI LTC1049 * - - - - - * [OAMM VM02 5/11/90]
+***
+*         (C) COPYRIGHT LINEAR TECHNOLOGY CORPORATION 1990
+*                       All rights reserved.
+* 
+*   Linear Technology Corporation hereby grants the users of this
+* macromodel a non-exclusive, nontransferrable license to use this
+*            macromodel under the following conditions:
+* 
+* The user agrees that this macromodel is licensed from Linear
+* Technology and agrees that the macromodel may be used, loaned,
+* given away or included in other model libraries as long as this
+* notice and the model in its entirety and unchanged is included.
+* No right to make derivative works or modifications to the
+* macromodel is granted hereby.  All such rights are reserved.
+* 
+* This model is provided as is.  Linear Technology makes no
+* warranty, either expressed or implied about the suitability or
+* fitness of this model for any particular purpose.  In no event
+* will Linear Technology be liable for special, collateral,
+* incidental or consequential damages in connection with or arising
+* out of the use of this macromodel.  It should be remembered that
+* models are a simplification of the actual circuit.
+* 
+* Linear Technology reserves the right to change these macromodels
+* without prior notice.  Contact Linear Technology at 1630 McCarthy
+* Blvd., Milpitas, CA, 95035-7487 or telephone 408/432-1900 for
+* datasheets on the actual amplifiers or the latest macromodels.
+* 
+* ----------------------------------------------------------------------- *
+

@@ -1,0 +1,125 @@
+*//////////////////////////////////////////////////////////////////////
+* (C) National Semiconductor, Inc.
+* Models developed and under copyright by:
+* National Semiconductor, Inc.  
+
+*/////////////////////////////////////////////////////////////////////
+* Legal Notice: This material is intended for free software support.
+* The file may be copied, and distributed; however, reselling the 
+*  material is illegal
+
+*////////////////////////////////////////////////////////////////////
+* For ordering or technical information on these models, contact:
+* National Semiconductor's Customer Response Center
+*                 7:00 A.M.--7:00 P.M.  U.S. Central Time
+*                                (800) 272-9959
+* For Applications support, contact the Internet address:
+*  amps-apps@galaxy.nsc.com
+
+*//////////////////////////////////////////////////////////
+*LM6262 High Speed OP-AMP MACRO-MODEL
+*//////////////////////////////////////////////////////////
+*
+* connections:      non-inverting input
+*                   |   inverting input
+*                   |   |   positive power supply
+*                   |   |   |   negative power supply
+*                   |   |   |   |   output
+*                   |   |   |   |   |
+*                   |   |   |   |   |
+.SUBCKT LM6262/NS   1   2  99  50  28
+*
+*Features:
+*Low supply current =    5mA
+*High bandwidth =     100MHz
+*High slew rate =    300V/uS
+*
+****************INPUT STAGE**************
+*
+IOS 2 1 150N
+*^Input offset current
+CI1 1 0 2P
+CI2 2 0 2P
+R1 1 3 90K
+R2 3 2 90K
+I1 4 50 1M
+R3 99 5 351.7
+R4 99 6 351.7
+Q1 5 2 45 QX
+Q2 6 7 46 QX
+R43 45 4 300
+R44 46 4 300
+*Fp2=230 MHz
+C4 5 6 9.8376E-13
+*
+***********COMMON MODE EFFECT***********
+*
+I2 99 50 4M
+*^Quiescent supply current
+EOS 7 1 POLY(1) 16 49 3E-3 1
+*Input offset voltage.^
+R8 99 49 80K
+R9 49 50 80K
+*
+*********OUTPUT VOLTAGE LIMITING********
+V2 99 8 1.43
+D1 9 8 DX
+D2 10 9 DX
+V3 10 50 2.23
+*
+**************SECOND STAGE**************
+*
+EH 99 98 99 49 1
+F1 9 98 POLY(1) VA1 0 0 0 .85
+G1 98 9 POLY(1) 5 6 0 6.5E-3 0 8.646E-3
+*Fp1=17.935 KHz
+R5 98 9 1MEG
+C3 98 9 8.874P
+*
+***************POLE STAGE***************
+*
+*Fp=230 MHz
+G3 98 15 9 49 1E-6
+R12 98 15 1MEG
+C5 98 15 6.9198E-16
+*
+***************POLE STAGE***************
+*
+*Fp=250 MHz
+G5 98 18 15 49 1E-6
+R15 98 18 1MEG
+C6 98 18 6.3662E-16
+*
+*********COMMON-MODE ZERO STAGE*********
+*
+*Fpcm=10 KHz
+G4 98 16 3 49 1E-8
+L2 98 17 15.915E-3
+R13 17 16 1K
+*
+**************OUTPUT STAGE**************
+*
+F6 50 99 POLY(1) V6 200U 1
+VA1 99 93 0
+E1 93 23 99 18 1
+R16 24 23 10
+D5 26 24 DX
+V6 26 22 .63V
+R17 23 25 10
+D6 25 27 DX
+C9 23 22 200P
+V7 22 27 .63V
+V5 22 21 .23V
+D4 21 18 DX
+V4 20 22 .23V
+D3 18 20 DX
+L3 22 28 100P
+RL3 22 28 100K
+*
+***************MODELS USED**************
+*
+.MODEL DX D(IS=1E-15)
+.MODEL QX NPN(BF=227.3)
+*
+.ENDS
+*$

@@ -1,0 +1,62 @@
+* FILENAME:         NE68035.CIR
+* NEC PART NUMBER:  NE68035
+* LAST MODIFIED:    11/96
+* BIAS CONDITIONS:  Vce=6V, Ic=5mA to 20mA
+* FREQ RANGE:       0.05GHz to 5GHz
+*
+*                            CCBpkg
+*       .--------------------||-------------.  
+*       |                       CCB         |   
+*       |                   .--||---.       |        
+*       |                   |        |      |             COLLECTOR
+* BASE  |                   |   /----o--LC--o--o--Lcx--Rcx--o--o
+*  o--o-o--Rbx--Lbx--o-LB---o--|Q1   |         |            |
+*     |              |      B   \   --         --           |
+*     |              |          |   -- CCE     -- CCEpkg    |
+*     |              --CBEpkg  Eo----'         |            --
+*     |              --         |              |            -- CCEx_pkg
+*     |              |          Lex            |            | 
+*    --              |          |              |            |
+*    -- CBEx_pkg     |          Rex            |            |
+*     |              |          |              |            |
+*     '--------------o----------o--------------o------------'
+*                               |
+*                               o EMITTER
+*       CCB    = 0.08pF         LB  = 0.57nH    Rbx = 0.1 ohms          
+*       CCE    = 0.08pF LC  = 0.5nH             Rex = 0.1 ohms
+*       CCBpkg = 0.05pF Lbx = 0.15nH            Rcx = 0.1 ohms
+*       CCEpkg = 0.15pF    Lcx = 0.15nH        CBEx_pkg = 0.1pF 
+*       CBEpkg = 0.05pF    Lex = 0.28nH        CCEx_pkg = 0.15pF 
+*
+*                   c b e 
+.SUBCKT NE68035/CEL 2 1 3
+Q1  11 10 9 NE68000
+CCB 10 11 0.08E-12
+CCE 11  9 0.08E-12
+LB   7 10 0.57E-9
+LC   8 11 0.5E-9
+CBEPKG 7 3 0.05E-12
+CCEPKG 8 3 0.15E-12
+CCBPKG 1 8 0.05E-12
+LBX 4 7 0.15E-9
+LEX 9 6 0.28E-9
+LCX 5 8 0.15E-9
+RBX 1 4 0.1
+REX 6 3 0.1
+RCX 2 5 0.1
+CBEX_PKG 1 3 0.1E-12
+CCEX_PKG 2 3 0.15E-12
+.MODEL NE68000 NPN 
++(IS=3.84e-16    BF=124.9         NF=1.04        VAF=11.9         IKF=0.027
++ ISE=1e-14      NE=2.17          BR=1           NR=1.05          VAR=0  
++ IKR=0          ISC=0            NC=2           RE=0.6           RB=17.9  
++ RBM=1.02       IRB=4.01e-4      RC=10.46       CJE=0.358e-12    VJE=0.711
++ MJE=0.5        CJC=0.162e-12    VJC=0.791      MJC=0.638        XCJC=0  
++ CJS=0          VJS=0.75         MJS=0          FC=0.5           TF=8.7e-12    
++ XTF=18         VTF=19.1         ITF=.0818      PTF=0            TR=0.635e-9
++ EG=1.11        XTB=0            XTI=3          KF=0             AF=1 )
+* NOTE:  CEL develops models using the Libra simulator.  For this simulator, 
+*        a value of 0 for IKR is interpreted as infinity.
+.ENDS
+*$
+

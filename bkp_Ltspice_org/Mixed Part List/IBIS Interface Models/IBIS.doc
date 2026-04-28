@@ -1,0 +1,146 @@
+***************
+IBIS Documentation 
+
+Intusoft IBIS Model Release Version 1.0
+May 1993
+
+Copyright Intusoft 1993
+All Rights Reserved
+
+Source: Intusoft P.O. Box 710 San Pedro, Ca. 90733-0710
+        Phone: (310) 833-0710 FAX: (310) 833-9658
+
+*****  Getting More Information About SPICE Models  *****
+
+For technical information describing the models and application 
+notes on how to use the models, please see the Intusoft MAY 1993
+Newsletter.
+
+***************
+Using The IBIS Models
+
+The IBIS models come in 3 levels. Each use a different subcircuit
+topology, but produce similar results. A schematic and netlist 
+describing each of the subcircuit levels (IBIS1, IBIS2, and IBIS3)
+are located in the CIRCUITS directory. In general, the IBIS level
+2 and level 3 subcircuits are the faster than level 1 (by 30% to 200%) and 
+produce more true-to life results. However, they are more difficult
+to make because they require SPICE MOSFET and DIODE models, rather than
+the "plug-in" table type models. Note: SpiceMod can be a big time-saver
+when developing the MOS and Diode models.
+
+I/O VOLTAGE LEVELS
+        Input Voltage    Supply Voltage   Enable Voltage  Program Required
+IBIS1     Rail-Rail         Rail-Rail       Rail-Rail      IsSpice3
+IBIS2     0 - 1V            Rail-Rail       0 - 1V         SPICE 2G.6
+IBIS3     Rail-Rail         Rail-Rail       Rail-Rail      IsSpice3
+
+Note: IBIS level 2 REQUIRES 0 - 1V levels for both the input and enable
+lines.
+
+To use the IBIS models with SpiceNet
+  * Copy the models to your library directory (Normally \SPICE\PR)
+  * Add the "IBIS1.LIB" filename to the LIB.@@@ file
+  * Add the contents of the DBASE.ADD file to your DBASE.SRC file
+  * Update the SpiceNet database by running SINDEX and DBMAKE 
+  * Call the part from the SpiceNet Browse menu as normal
+
+IBIS SUBCIRCUIT NAMES
+Each Model/Part name begins with an abbreviation of the part number. A
+suffix letter (I or O) is then added to indicate whether the buffer is 
+an I/O device or only an Input load only. Another letter is then added to 
+indicated Best, Worst, or Typical behavior. 
+
+Most of the models use IBIS level 1, so the IBIS1.LIB/IBIS1A.LIB files
+are normally called. To use another library level, first check to see
+that the model is supported. Intusoft user's can then simply change
+the *INCLUDE statement from *INCLUDE IBIS1.LIB to *INCLUDE IBIS2.LIB,
+for example.
+
+You can see what models are currently supported by what level by 
+viewing the README.DOC file on this disk or the .LIB files themselves.
+
+***********
+What The Models Can Do
+
+The IBIS models are not functional. They do not perform the same function 
+as the part. The models are only to be used as drivers and circuit loads.
+Their main use is in PCB and IC interconnect simulations. Intusoft has 
+other "exact transistor" and behavioral models that are both functional 
+and I/O capable.
+
+***********
+Making Your Own Digital Buffer Models From IBIS Data
+
+First, you must obtain IBIS data sheets from the hardware manufacturer.
+At this point you may contact Intusoft Technical Support and request 
+that a model be made for you, or, you can do it yourself (See below)
+Note: It is a good idea to obtain the IBIS specification from INTEL.
+Call 1-800-548-4725, ask for literature # 297 267-001.
+
+For all models and levels....
+Best Case uses: IOLMAX, IOHMAX, Min Rise/Fall Ramp Times, Min Packaing Characteristic
+Worst Case uses: IOLMIN, IOHMIN, Max Rise/Fall Ramp Times, Max Packaing Characteristic 
+
+Note: When making your own models it is best to start with a copy of 
+one of the exisiting models and modify it.
+
+
+** IBIS Level 1 - INTEL's Basic Subcircuit
+
+Enter the Package parasitic values from the IBIS data sheet into the
+elements ROPKG, LOPKG, COPKG, and CCOMP.
+
+Calculate the RTF/RTR resistors. Insert the values into the *DEFINE
+statements. RTR = 1e5/(Rise_Ramp_Time), RTF = 1e5/(Fall_Ramp_Time)
+For example, with the Rise Ramp Time (min 5.0/1.0 = 5) RTR=20K
+(This step not required for Input only loads)
+
+Construct the If-Then-Else expressions for the 
+Diode Clamps (VCC_OUT, and GND_OUT) and
+Pull-up/Pull-down structures (EPWL_DNX, EPWL_UPX, EPWL_DNN, EPWL_UPN)
+(contact intusoft if you are having trouble with this step)
+
+IBIS Level 2 - Intusoft's Enhanced SPICE 2 Compatible Subcircuit
+
+Enter the Package parasitic values from the IBIS data sheet into the
+elements ROPKG, LOPKG, COPKG, and CCOMP.
+
+Calculate the SWITCH (RTR) and NSWITCH (RTF) resistors. Insert the 
+values into the last position in the G1 polynomials in the SWITCH 
+and NSWITCH subcircuits. 
+SWITCH G1 value = (Rise_Ramp_Time)/800
+NSWITCH G1 value = (Fall_Ramp_Time)/800
+For example, with the Rise Ramp Time (min 5.0/1.0 = 5) the
+G1 statement in the SWITCH subcircuit would be
+G1 1 2 POLY(2) 1 2 3 0 0 0 0 0 6.25M   ;160 Ohms
+(This step not required for Input only loads)
+
+Construct SPICE models for the diodes and MOSFETs based on the V-I 
+characteristics given.
+Diode Clamps (DIODEV, and DIODEG) and
+Pull-up/Pull-down structures (PCIOUTLX, PCIOUTHX, PCIOUTLN, PCIOUTHN )
+(contact intusoft if you are having trouble with this step)
+
+
+IBIS Level 3 - Intusoft's Enhanced Subcircuit w/IsSpice3 extensions
+
+Enter the Package parasitic values from the IBIS data sheet into the
+elements ROPKG, LOPKG, COPKG, and CCOMP.
+
+Calculate the DRVR resistances. Insert the values into the If-Then-Else
+statement, B1, in the DRVR subcircuit. 
+Rise Resistor value = 800/(Rise_Ramp_Time)
+Fall Resistor value = 800/(Fall_Ramp_Time)
+For example, with the Rise Ramp Time = 5.0/1.0 (160 Ohms)
+and the Fall Ramp Time = 6.0/1.0 (133.33 Ohms)
+the B1 statement in the DRVR subcircuit would be
+B1 0 4 I= V(1) > 1.2 ? V(2,4)/160 : V(3,4)/133.33
+(This step not required for Input only loads)
+
+Construct SPICE models for the diodes and MOSFETs based on the V-I 
+characteristics given.
+Diode Clamps (DIODEV, and DIODEG) and
+Pull-up/Pull-down structures (PCIOUTLX, PCIOUTHX, PCIOUTLN, PCIOUTHN )
+(contact intusoft if you are having trouble with this step)
+

@@ -1,0 +1,113 @@
+* 
+* Linear Technology LT1193 op amp model  
+* Written: 11-25-1992 09:20:47 Type: Bipolar NPN input, internal comp.
+* Typical specs: 
+* Vos=2.0E-03, Ib=0.5E-6, Ios=0.2E-6, GBP=5.5E+07Hz, Phase mar.= 65 deg, 
+* SR(-)=5.0E+02V/us, SR(+)=5.0E+02V/us, Av= 85.0dB, CMRR=70.0dB, 
+* Vsat(+)=1.000V, Vsat(-)=0.500V, Isc=+85/-%100mA, Rout=   3ohms, Iq=%29.60mA.
+* 
+* Connections: + - V+V-O 
+.SUBCKT LT1193 3 2 7 4 6 REF FB
+*****LT1193 FRONTEND*****
+RL1A 7 1A 500
+RL2A 7 5A 500
+RE1A 9A 10A 1K
+RE2A 6A 8A 1K
+I1 9A 4 DC .0013
+I2 10A 4 DC .0013
+I3 6A 4 DC .0014
+I4 8A 4 DC .0014
+Q1A 1A 3 9A MOD1
+Q2A 5A 2 10A MOD2
+Q3A 1A REF 6A MOD1
+Q4A 5A FB 8A MOD2
+RCM1 9A 0 2.5MEG
+RCM2 6A 0 2.5MEG
+CCM1 9A 0 .2PF
+CCM2 6A 0 .2PF
+CIN1 2 3 2PF
+CIN2 REF FB 2PF
+.MODEL MOD1 NPN BF=2000 IS=1.00E-16
+.MODEL MOD2 NPN BF 2500 IS=1.04E-16
+************************* 
+* INPUT
+RC1 7  80 9.6458E+01
+RC2 7  90 9.6458E+01
+Q1  80 1A 10 QM1 
+Q2  90 5A  11 QM2 
+CIN 1A 5A  1.0000E-13
+C1  80 90 1.5000E-11
+RE1 10 12 +9.3806E+01
+RE2 11 12 +9.3806E+01
+IEE 12 4  1.9500E-02
+RE  12 0  1.0256E+04
+* INTERMEDIATE 
+GCM 0  8  12 0  2.0685E-08
+GA  8  0  80 90 1.0367E-02
+R2  8  0  1.0000E+05
+C2  1  8  2.0000E-11
+GB  1  0  8  0  1.1435E+01
+RO2 1  0  1.5000E+00
+* OUTPUT 
+RSO 1  6  1.0000E+00
+ECL 18 0  1  6  1.2338E+01
+GCL 0  8  20 0  1.0000E+00
+RCL 20 0  1.0000E+01
+D1  18 19 DM1  
+VOD1 19 20 0.0000E+00
+D2  20 21 DM1  
+VOD2 21 18 1.8507E-01
+* 
+D3A 131 70 DM3 
+D3B 13 131 DM3 
+GPL 0  8  70 7  1.0000E+00
+VC  13 6  2.6107E+00
+RPLA 7  70 1.0000E+01
+RPLB 7  131 1.0000E+03
+D4A 60 141 DM3 
+D4B 141 14  DM3 
+GNL 0  8  60 4  1.0000E+00
+VE  6  14 2.1107E+00
+RNLA 60 4  1.0000E+01
+RNLB 141 4  1.0000E+03
+* 
+IP  7  4  1.0100E-02
+DSUB 4  7  DM2  
+* MODELS 
+.MODEL QM1 NPN (IS=8.0000E-16 BF=6.5000E+09)
+.MODEL QM2 NPN (IS=8.0003E-16 BF=1.9500E+10)
+.MODEL DM1  D   (IS=1.0000E-20)
+.MODEL DM2  D   (IS=8.0000E-16 BV=2.1600E+01)
+.MODEL DM3  D   (IS=1.0000E-16)
+.ENDS LT1193
+* 
+* - - - - - * FINI LT1193 * - - - - - * [OAMM VN02 10/29/90]
+***
+*         (C) COPYRIGHT LINEAR TECHNOLOGY CORPORATION 1993
+*                       All rights reserved.
+* 
+*   Linear Technology Corporation hereby grants the users of this
+* macromodel a non-exclusive, nontransferrable license to use this
+*            macromodel under the following conditions:
+* 
+* The user agrees that this macromodel is licensed from Linear
+* Technology and agrees that the macromodel may be used, loaned,
+* given away or included in other model libraries as long as this
+* notice and the model in its entirety and unchanged is included.
+* No right to make derivative works or modifications to the
+* macromodel is granted hereby.  All such rights are reserved.
+* 
+* This model is provided as is.  Linear Technology makes no
+* warranty, either expressed or implied about the suitability or
+* fitness of this model for any particular purpose.  In no event
+* will Linear Technology be liable for special, collateral,
+* incidental or consequential damages in connection with or arising
+* out of the use of this macromodel.  It should be remembered that
+* models are a simplification of the actual circuit.
+* 
+* Linear Technology reserves the right to change these macromodels
+* without prior notice.  Contact Linear Technology at 1630 McCarthy
+* Blvd., Milpitas, CA, 95035-7487 or telephone 408/432-1900 for
+* datasheets on the actual amplifiers or the latest macromodels.
+* 
+* ----------------------------------------------------------------------- *

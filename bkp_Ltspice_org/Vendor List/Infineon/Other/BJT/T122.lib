@@ -1,0 +1,21 @@
+***************************************************************
+* SIEMENS Discrete & RF Semiconductors
+* GUMMEL-POON MODEL CHIP PARAMETERS IN SPICE 2G6 SYNTAX
+* >>> T122 <<< (CHIP)
+* Extracted on behalf of SIEMENS Discrete & RF Semiconductors by
+* DANALYSE GMBH BERLIN
+* (C) 1998 SIEMENS AG
+* REV: 98.1        September 1998
+***************************************************************
+.MODEL T122 NPN (IS=0.480F NF=1.008 BF=99.655 VAF=90.000 IKF=0.190
++ ISE=7.490F NE=1.762 NR=1.010 BR=38.400 VAR=7.000 IKR=93.200M
++ ISC=0.200F NC=1.042
++ RB=1.500 IRB=0.100M RBM=1.200
++ RE=0.500 RC=2.680
++ CJE=1.325P VJE=0.700 MJE=0.220 FC=0.890
++ CJC=1.050P VJC=0.610 MJC=0.240 XCJC=0.400
++ TF=56.940P TR=1.000N PTF=21.000
++ XTF=68.398 VTF=0.600 ITF=0.700
++ XTB=1.600 EG=1.110 XTI=3.000
++ KF=1.000F AF=1.000)
+*****************************************************************

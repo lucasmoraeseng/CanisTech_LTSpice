@@ -1,0 +1,53 @@
+* BFQ236A SPICE MODEL
+* PHILIPS SEMICONDUCTORS
+* Date : September 1995
+*
+* PACKAGE : SOT223A DIE MODEL : BFQ234
+* 1: COLLECTOR; 2: BASE; 3: EMITTER;
+.SUBCKT BFQ236A 1 2 3
+Q1 6 5 7 7 BFQ234
+* SOT223A parasitic model
+               Lb  4 5 1.5n 
+               Le  7 8 .5n
+               L1  2 4 .025n
+               L2  1 6 1.19n
+               L3  3 8 .6n
+              Ccb  4 6 16f
+              Cbe  4 8 182f
+*
+* PHILIPS SEMICONDUCTORS                                     Version:   1.0
+* Filename:   BFQ234.PRM                                     Date: Feb 1992
+*
+.MODEL  BFQ234   NPN
++              IS = 1.58441E-015
++              BF = 4.20358E+001
++              NF = 9.91976E-001
++             VAF = 2.20638E+002
++             IKF = 2.00000E+002
++             ISE = 8.19560E-014
++              NE = 1.43769E+000
++              BR = 1.00000E+000
++              NR = 1.00000E+000
++             VAR = 3.00000E+000
++              NC = 2.00000E+000
++              RB = 5.00000E+000
++             IRB = 1.00000E-006
++             RBM = 5.00000E+000
++              RE = 1.29939E+000
++              RC = 8.00000E+000
++              EG = 1.11000E+000
++             XTI = 3.00000E+000
++             CJE = 1.83381E-011
++             VJE = 6.00000E-001
++             MJE = 2.76425E-001
++              TF = 7.00000E-011
++             XTF = 5.00000E+001
++             VTF = 1.00000E+000
++             ITF = 3.50000E-001
++             PTF = 2.00000E+001
++             CJC = 3.09282E-012
++             VJC = 4.45253E-001
++             MJC = 3.43258E-001
++            XCJC = 2.10000E-001
+.ENDS
+

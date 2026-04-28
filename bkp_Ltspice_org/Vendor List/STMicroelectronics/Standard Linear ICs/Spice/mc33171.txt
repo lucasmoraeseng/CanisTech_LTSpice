@@ -1,0 +1,89 @@
+* WARNING : please consider following remarks before usage
+*
+* 1) All models are a tradeoff between accuracy and complexity (ie. simulation 
+*    time).
+* 2) Macromodels are not a substitute to breadboarding, they rather confirm the
+*    validity of a design approach and help to select surrounding component values.
+*
+* 3) A macromodel emulates the NOMINAL performance of a TYPICAL device within 
+*    SPECIFIED OPERATING CONDITIONS (ie. temperature, supply voltage, etc.).
+*    Thus the macromodel is often not as exhaustive as the datasheet, its goal
+*    is to illustrate the main parameters of the product.
+*
+* 4) Data issued from macromodels used outside of its specified conditions
+*    (Vcc, Temperature, etc) or even worse: outside of the device operating 
+*    conditions (Vcc, Vicm, etc) are not reliable in any way.
+
+
+** Macanal, Analog macromodels generator, v.1.0
+** J. REMY, SGS THOMSON, ANACA Grenoble, Aug. 1992.
+** Standard Linear Ics Macromodels, 1993. 
+** CONNECTIONS :
+* 1 INVERTING INPUT
+* 2 NON-INVERTING INPUT
+* 3 OUTPUT
+* 4 POSITIVE POWER SUPPLY
+* 5 NEGATIVE POWER SUPPLY
+.SUBCKT MC33171 1 3 2 4 5 (analog)
+**********************************************************
+.MODEL MDTH D IS=1E-8 KF=1.293682E-15 CJO=10F
+.MODEL NDTH D IS=1E-12
+* INPUT STAGE
+CIP 2 5 1.000000E-12
+CIN 1 5 1.000000E-12
+EIP 10 5 2 5 1
+EIN 16 5 1 5 1
+RIP 10 11 1.733333E+01
+RIN 15 16 1.733333E+01
+RIS 11 15 1.817522E+01
+DIP 11 12 MDTH 400E-12
+DIN 15 14 MDTH 400E-12
+VOFP 12 13 DC 0 
+VOFN 13 14 DC 0
+IPOL 13 5 1.500000E-05
+CPS 11 15 1.848544E-09
+DINN 17 13 MDTH 400E-12
+VIN 17 5 0.000000e+00
+DINR 15 18 MDTH 400E-12
+VIP 4 18 1.800000E+00
+FCP 4 5 VOFP 1.366667E+01
+FCN 5 4 VOFN 1.366667E+01
+FIBP 2 5 VOFP 6.666667E-04
+FIBN 5 1 VOFN 6.666667E-04
+* AMPLIFYING STAGE
+FIP 5 19 VOFP 7.333333E+02
+FIN 5 19 VOFN 7.333333E+02
+DOPM 51 22 MDTH 400E-12
+DONM 21 52 MDTH 400E-12
+HOPM 22 28 VOUT 2.500000E+04
+VIPM 28 4 1.500000E+02
+HONM 21 27 VOUT 5.555556E+03
+VINM 5 27 1.500000E+02
+CC 19 29 5E-09
+HZTP 30 29 VOFP 4.931638E+03
+HZTN 5 30 VOFN 4.931638E+03
+DPOS 19 51 NDTH 400E-12
+DNEG 52 19 NDTH 400E-12
+IBD11 4 19 1U
+IBD12 51 5 1U
+IBD21 4 52 1U
+IBD22 19 5 1U
+RG11 51 5 1.54E+06
+RG12 51 4 1.54E+06
+RG21 52 5 3.48E+06
+RG22 52 4 3.48E+06
+E1 50 40 51 0 1
+E2 40 39 52 0 1
+EDEC1 38 39 4 0 0.5
+EDEC2 0 38 5 0 0.5
+RFOL 50 5 1E12
+EOUT 26 23 50 5 1
+VOUT 23 5 0
+ROUT 26 3 100
+COUT 3 5 1.000000E-12
+DOP 51 25 MDTH 400E-12
+VOP 4 25 3.1
+DON 24 52 MDTH 400E-12
+VON 24 5 2.4
+.ENDS
+

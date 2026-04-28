@@ -1,0 +1,25 @@
+***************************************************************
+* SIEMENS Small Signal Semiconductors
+* GUMMEL-POON MODEL CHIP PARAMETERS IN SPICE 2G6 SYNTAX
+* VALID UP TO 6 GHZ
+* >>> T236 <<< (CHIP)
+* Extracted on behalf of SIEMENS Small Signal Semiconductors by
+* Institut fuer Mobil- und Satellitenfunktechnik (IMST)
+* (C) 1996 SIEMENS AG
+* Version 1.1    July 1997
+***************************************************************
+.MODEL T236 NPN(
++ IS = 9.6952e-15     BF = 86.665       NF = 0.46449
++ VAF = 33.548        IKF = 1.9049      ISE = 3.7545e-15
++ NE = 0.74837        BR = 61.012       NR = 1.1471
++ VAR = 45.693        IKR = 0.019155    ISC = 4.5491e-18
++ NC = 1.2809         RB = 1.0193       IRB = 0.00020816
++ RBM = 0             RE = 1.4768       RC = 0.075508
++ CJE = 3.2968e-14    VJE = 0.87721     MJE = 0.51738
++ TF = 4.2719e-11     XTF = 0.26853     VTF = 0.11783
++ ITF = 0.0047293     PTF = 0           CJC = 2.9998e-12
++ VJC = 1.0086        MJC = 0.39102     XCJC = 0.020778
++ TR = 1.3578e-10     CJS= 0            VJS = 0.75
++ MJS = 0             XTB = 0           EG = 1.11
++ XTI = 3             FC = 0.56371)
+***************************************************************

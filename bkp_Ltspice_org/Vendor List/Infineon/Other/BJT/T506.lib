@@ -1,0 +1,24 @@
+***************************************************************
+* SIEMENS Discrete & RF Semiconductors
+* GUMMEL-POON MODEL CHIP PARAMETERS IN SPICE 2G6 SYNTAX
+* VALID UP TO 6 GHZ
+* >>> T506 <<< (CHIP)
+* Extracted by SIEMENS Semiconductor Group  HL HF SI CDB
+* (C) 1998 SIEMENS AG
+* Version 1.0    December 1998
+***************************************************************
+.MODEL T506 NPN(
++ IS =1.5E-17      NF =1            NR =1        
++ ISE=2.5E-14      NE =2            ISC=2E-14
++ NC =2            BF =235          BR =1.5
++ VAF=25           VAR=2            IKF=0.4
++ IKR=0.01         RB =11           RBM=7.5
++ RE =0.6          RC =7.6          CJE=2.35E-13
++ VJE=0.958        MJE=0.335        CJC=9.3E-14
++ VJC=0.661        MJC=0.236        CJS=0
++ VJS=0.75         MJS=0.333        FC=0.5
++ XCJC=1           TF=1.7E-12       TR=5E-08
++ XTF=10           ITF=0.7          VTF=5
++ PTF=50           XTB=-0.25        XTI=0.035
++ EG=1.11)
+***************************************************************
