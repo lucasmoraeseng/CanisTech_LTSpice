@@ -49,7 +49,7 @@ B_ZC ZC_OK 0 V = {
 * TRIGGER CONDITION (LED CURRENT + ZERO CROSS)
 ************************************************************
 B_ILED ILED_OK 0 V={
-+ 0.5*(1 + tanh((abs(I(R_LED)) - IFT)*2k))
++ 0.5*(1 + tanh((abs(I(R_LED)) - (IFT * 0.99))*50k))
 + }
 
 B_TRIG TRIG 0 V = {
