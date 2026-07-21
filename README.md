@@ -16,16 +16,16 @@ A **Canis-Tech** é uma empresa especializada em desenvolvimento de soluções e
 - **Componentes Passivos**: Resistores, capacitores, indutores, varistores e NTCs
 - **Componentes Especiais**: Optoacopladores, diodos especiais, referências de tensão e reguladores de tensão
 - **Painéis Solares**: Modelos e simulações de painéis fotovoltaicos
-- **Compatibilidade Eletromagnética (IEC61000)**: Modelos de teste de interferência eletromagnética
-- **Convertedores de Potência**: Exemplos e referências de topologias
-- **Circuitos Educacionais**: Diversas simulações e exemplos didáticos
-- **Modelos de Fabricantes**: Modelos SPICE de fornecedores como Analog Devices, Linear Tech, TI, Infineon, STMicroelectronics e muitos outros
+- **Compatibilidade Eletromagnética (IEC61000)**: Modelos de testes de interferência eletromagnética
+- **Conversores de Potência**: Exemplos e referências de diversas topologias
+- **Circuitos Educacionais**: Simulações e exemplos didáticos
+- **Modelos de Fabricantes**: Modelos SPICE de fornecedores como Analog Devices, Linear Technology, Texas Instruments, Infineon, STMicroelectronics e muitos outros
 
 ### Estrutura de Diretórios
 
 ```
 ├── bkp_Ltspice_org/          # Biblioteca original com exemplos e componentes
-│   ├── examples/             # Circuitos de exemplo (tutoriais, aplicações)
+│   ├── examples/             # Circuitos de exemplo (tutoriais e aplicações)
 │   ├── lib/                  # Componentes e símbolos
 │   └── Vendor List/          # Modelos de diversos fabricantes
 ├── IEC61000/                 # Testes de compatibilidade eletromagnética
@@ -41,19 +41,37 @@ A **Canis-Tech** é uma empresa especializada em desenvolvimento de soluções e
 ## 🔧 Como Usar
 
 1. **Clone este repositório:**
+
    ```bash
    git clone https://github.com/lucasmoraeseng/CanisTech_LTSpice.git
    ```
 
-2. **Integre com LTSpice:**
-   - Copie os arquivos de símbolos (`.asy`) para a pasta `sym\` do LTSpice
-   - Copie os modelos (`.sub` e outros arquivos de modelo) para a pasta `lib\sub\` do LTSpice
-   - Copie os componentes para a pasta `lib\cmp\` do LTSpice
+2. **Configure o LTspice:**
+   - Abra o **LTspice**.
+   - Acesse **Tools → Search Paths...**.
+   - Na seção **User Files**, adicione o caminho da pasta clonada do repositório.
+     - Exemplo:
+       ```
+       C:\Users\SeuUsuario\Documents\CanisTech_LTSpice
+       ```
+   - Clique em **OK** para salvar.
+
+   > Após essa configuração, o LTspice localizará automaticamente os símbolos, modelos SPICE e exemplos presentes na biblioteca, sem a necessidade de copiar arquivos para a pasta de instalação do programa.
 
 3. **Utilize os exemplos:**
-   - Abra os arquivos `.asc` (circuitos) no LTSpice
-   - Estude as topologias e configure conforme suas necessidades
-   - Use os modelos de componentes nas suas simulações
+   - Abra os arquivos `.asc` diretamente da biblioteca.
+   - Estude as topologias e adapte os circuitos conforme suas necessidades.
+   - Utilize os modelos e símbolos normalmente em suas simulações.
+
+4. **Mantenha a biblioteca atualizada:**
+
+   Caso tenha clonado o repositório com Git, basta executar:
+
+   ```bash
+   git pull
+   ```
+
+   para obter as versões mais recentes da biblioteca.
 
 ## 📄 Arquivos Inclusos
 
@@ -83,3 +101,5 @@ LTSpice, SPICE, Simulação de Circuitos, Componentes Eletrônicos, Modelos de S
 - **GitHub:** [https://github.com/lucasmoraeseng/CanisTech_LTSpice](https://github.com/lucasmoraeseng/CanisTech_LTSpice)
 
 ## 📄 Licença
+
+Este projeto é distribuído conforme os termos da licença incluída neste repositório.
