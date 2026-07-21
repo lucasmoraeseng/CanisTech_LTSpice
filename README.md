@@ -1,5 +1,11 @@
 # CanisTech LTSpice Library
 
+> **Languages:** [🇧🇷 Português](#português) | [🇺🇸 English](#english)
+
+---
+
+<a id="português"></a>
+
 ## 📚 Descrição
 
 Biblioteca completa de componentes eletrônicos, símbolos e modelos SPICE para **LTSpice** gerenciada e mantida pelo pessoal da **Canis-Tech**. Esta é uma coleção abrangente de circuitos de exemplo, modelos de semicondutores, componentes passivos e ferramentas de simulação para engenheiros e entusiastas de eletrônica.
@@ -103,3 +109,113 @@ LTSpice, SPICE, Simulação de Circuitos, Componentes Eletrônicos, Modelos de S
 ## 📄 Licença
 
 Este projeto é distribuído conforme os termos da licença incluída neste repositório.
+
+---
+
+<a id="english"></a>
+
+# CanisTech LTSpice Library
+
+## 📚 Description
+
+Complete library of electronic components, symbols, and SPICE models for **LTSpice** managed and maintained by the **Canis-Tech** team. This is a comprehensive collection of example circuits, semiconductor models, passive components, and simulation tools for engineers and electronics enthusiasts.
+
+## 🏢 About Canis-Tech
+
+**Canis-Tech** is a company specialized in the development of electronic solutions, engineering consulting, and providing technical resources for circuit simulation. Visit our website: [https://canis-tech.com.br/](https://canis-tech.com.br/)
+
+## 📦 Library Content
+
+### Main Components
+
+- **Semiconductors**: MOSFETs, BJTs, Diodes, JFETs, and integrated circuit models
+- **Passive Components**: Resistors, capacitors, inductors, varistors, and NTCs
+- **Special Components**: Optocouplers, special diodes, voltage references, and voltage regulators
+- **Solar Panels**: Photovoltaic panel models and simulations
+- **Electromagnetic Compatibility (IEC61000)**: Electromagnetic interference test models
+- **Power Converters**: Examples and references for various topologies
+- **Educational Circuits**: Simulations and didactic examples
+- **Manufacturer Models**: SPICE models from suppliers like Analog Devices, Linear Technology, Texas Instruments, Infineon, STMicroelectronics, and many others
+
+### Directory Structure
+
+```
+├── bkp_Ltspice_org/          # Original library with examples and components
+│   ├── examples/             # Example circuits (tutorials and applications)
+│   ├── lib/                  # Components and symbols
+│   └── Vendor List/          # Models from various manufacturers
+├── IEC61000/                 # Electromagnetic compatibility tests
+├── Optocouplers/             # Optocoupler models
+├── Resistors/                # Special resistive components
+├── SolarPanel/               # Solar panel models
+├── SpecialDiodes/            # Specialized diodes
+├── Varistor/                 # Varistors and suppressors
+├── VoltageReference/         # Voltage references (TL431)
+└── VoltageRegulator/         # Voltage regulators (UC3525A)
+```
+
+## 🔧 How to Use
+
+1. **Clone this repository:**
+
+   ```bash
+   git clone https://github.com/lucasmoraeseng/CanisTech_LTSpice.git
+   ```
+
+2. **Configure LTspice:**
+   - Open **LTspice**.
+   - Go to **Tools → Search Paths...**.
+   - In the **User Files** section, add the path to the cloned repository folder.
+     - Example:
+       ```
+       C:\Users\YourUsername\Documents\CanisTech_LTSpice
+       ```
+   - Click **OK** to save.
+
+   > After this configuration, LTspice will automatically locate symbols, SPICE models, and examples from the library without needing to copy files to the program's installation folder.
+
+3. **Use the examples:**
+   - Open `.asc` files directly from the library.
+   - Study the topologies and adapt circuits according to your needs.
+   - Use models and symbols normally in your simulations.
+
+4. **Keep the library updated:**
+
+   If you cloned the repository with Git, simply run:
+
+   ```bash
+   git pull
+   ```
+
+   to get the latest versions from the library.
+
+## 📄 Included Files
+
+- **`.asy`** - Component symbols for LTSpice
+- **`.asc`** - Example and test circuits
+- **`.sub`** - SPICE subcircuit models
+- **`.bjt`, `.dio`, `.jft`, `.mos`** - Transistor and diode model files
+- **`.bat`** - LTSpice automation scripts
+
+## ✨ Features
+
+✅ Accurate SPICE models of hundreds of components  
+✅ Ready-to-simulate circuit examples  
+✅ Intuitive and standardized symbols for LTSpice  
+✅ Professionally managed by Canis-Tech  
+✅ Regularly updated with new components and manufacturers  
+✅ Clear documentation with practical examples  
+
+## 📚 Keywords
+
+LTSpice, SPICE, Circuit Simulation, Electronic Components, Semiconductor Models, EDA, Electronics Engineering, ECAD Simulation, Canis-Tech, Component Reference
+
+## 📞 Contact and Support
+
+- **Official website:** [https://canis-tech.com.br/](https://canis-tech.com.br/)
+- **Managed by:** Canis-Tech
+- **GitHub:** [https://github.com/lucasmoraeseng/CanisTech_LTSpice](https://github.com/lucasmoraeseng/CanisTech_LTSpice)
+
+## 📄 License
+
+This project is distributed under the terms of the license included in this repository.
