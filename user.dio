@@ -1,1 +1,2 @@
 .model BZV55-B3V3 D(Is=30p Rs=.25 Cjo=308.7p M=.3 nbv=1.7 bv=3.6 Vj=.6 Isr=1.86n Nr=2 Ibv=20.245m Ibvl=1.96m Nbvl=15 Tbv1=-21.3u Vpk=3.3 mfg=Nexperia type=Zener)
+.model US1B D(IS=2.5e-7 RS=0.03 N=2.17 BV=110 IBV=0.33 CJO=39.5p M=0.77 VJ=0.8 TT=123n EG=1.11 XTI=2.5 mfg=Vishay type=silicon)

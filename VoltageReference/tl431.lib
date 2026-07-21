@@ -18,7 +18,7 @@
 *
 **********************************************************
 *#
-.subckt TL431_8inch  A K R
+.subckt TL431  A K R
 Bk kr em I=limit(exp(V(B1,agnd)/0.045)*1E-19*(1+V(k,agnd)/va)+I(BEF)*2,0,0.15)
 D1 agnd y D0V5
 CM1 K B 11p 
